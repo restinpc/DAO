@@ -1,4 +1,4 @@
-# Digital Constitution  
+# Digital constitution  
   
 This document contains the digital constitution of the DAO Villa (principles and rules of the community).  
 Compliance with these rules is actually the main requirement for the participants of the social graph.  
