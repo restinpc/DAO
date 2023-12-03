@@ -1,14 +1,11 @@
 <?php
+
+require_once("engine/nodes/config2.php");
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Request-Method: GET, OPTIONS");
 header("Access-Control-Allow-Headers: *");
 
-$_SERVER["config"] = array(
-    "sql_server" => "45.132.19.88",
-    "sql_login" => "insider",
-    "sql_pass" => "mysql_1n\$idEr",
-    "sql_db" => "insider",
-);
 $_SERVER["sql_connection"] = mysqli_connect($_SERVER["config"]["sql_server"], $_SERVER["config"]["sql_login"], $_SERVER["config"]["sql_pass"], $_SERVER["config"]["sql_db"],3306);
 mysqli_select_db($_SERVER["sql_connection"], $_SERVER["config"]["sql_db"]);
 mysqli_query($_SERVER["sql_connection"], "SET SESSION wait_timeout = 4000");
