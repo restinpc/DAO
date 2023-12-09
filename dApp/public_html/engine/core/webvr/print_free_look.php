@@ -12,7 +12,7 @@ function print_free_look() {
         const val = document.getElementById(\'height\').value;
         let cam = window.frames[0].document.getElementById(\'camera\');
         let pos = cam.getAttribute(\'position\'); 
-        cam.setAttribute(\'position\', pos.x + \' \' + (pos.y + val) + \' \' + pos.z);
+        cam.setAttribute(\'position\', pos.x + \' \' + (pos.y + parseFloat(val)) + \' \' + pos.z);
     "/>
     <style>
         .height {
