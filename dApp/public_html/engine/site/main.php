@@ -132,6 +132,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->description = '项目目标是根据 DAO（去中心化自治组织）原则建立社区、别墅和数字基础设施，以确保参与者的舒适生活。';
     $this->keywords = [
         "DAO",
+        "別墅",
         "大廈",
         "Web 3.0",
         "分散的組織",
@@ -144,7 +145,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->content .= '
     <div class="document980 article">
         <div class="whitepaper text">
-        <h1>'.lang("DAO Whitepaper").'</h1>
+        <h1>DAO 別墅</h1>
         <p>
             <video id="intro" width="100%" height="auto" controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="'.$_SERVER["DIR"].'/file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
