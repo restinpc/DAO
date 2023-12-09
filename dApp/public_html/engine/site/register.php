@@ -130,7 +130,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
             <input vr-control id="pass2" required type="password" name="pass_repeat" class="input reg_email" title="' . lang("Repeat password") . '"  value="' . $_POST["pass_repeat"] . '" /><br/>
             <div style="padding: 10px; padding-bottom: 5px; line-height: 1.5;">' .
             lang("By registering on the site, you accept the") . '<br/> <a vr-control id="link-terms" href="/terms_and_conditions" target="_blank">' . lang("Terms and Conditions") . '</a> <br/>' .
-            lang("and are familiar with the") . ' <a vr-control id="link-privacy" href="/privacy_policy" target="_blank">' . lang("Privacy Policy") . '</a>' . '</div>
+            lang("and are familiar with the") . ' <a vr-control id="link-privacy" href="'.$_SERVER["DIR"].'/content/privacy_policy" target="_blank">' . lang("Privacy Policy") . '</a>' . '</div>
             <input vr-control id="input-next" type="button" class="btn reg_submit" value="' . lang("Next") . '" onClick="next();" />
         </div>
         <div id="step2" style="display: none;">
