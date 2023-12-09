@@ -10,6 +10,7 @@ function print_free_look() {
     </button>
     <input id="height" type="range" class="height" min="-10" max="30" step="0.1" onChange="
         const val = document.getElementById(\'height\').value;
+        console.error(val);
         let cam = window.frames[0].document.getElementById(\'camera\');
         let pos = cam.getAttribute(\'position\'); 
         cam.setAttribute(\'position\', pos.x + \' \' + (pos.y + parseFloat(val)) + \' \' + pos.z);
