@@ -20,7 +20,7 @@ function print_free_look() {
             position: fixed;
             top: 200px;
             left: -80px;
-            width: 150px !important;
+            width: 200px !important;
             transform: rotate(270deg);
         }
     </style>
