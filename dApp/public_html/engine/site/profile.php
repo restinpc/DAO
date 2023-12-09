@@ -16,35 +16,32 @@
 * @var $this->configs - Array MySQL configs.
 */
 
-function fallback($site) {
+if (!empty($_GET[1])) {
+    $this->content = engine::error();
+    return;
+}
+$query = 'SELECT * FROM `nodes_user` WHERE `url` LIKE "'.engine::escape_string($_GET[0]).'"';
+$res = engine::mysql($query);
+$user = mysqli_fetch_array($res);
+if (empty($user) || empty($user["pass"])) {
     $query = 'SELECT * FROM `nodes_catalog` WHERE url LIKE "'.engine::escape_string($_GET[0]).'" AND lang = "'.$_SESSION["Lang"].'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if (!empty($data)) {
-        $site->content = '<script>window.location = "'.$_SERVER["DIR"].'/content/'.$data["url"].'";</script>';
+        $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/content/'.$data["url"].'";</script>';
         return;
     } else {
         $query = 'SELECT * FROM `nodes_content` WHERE url LIKE "'.engine::escape_string($_GET[0]).'" AND lang = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         if (!empty($data)) {
-            $site->content = '<script>window.location = "'.$_SERVER["DIR"].'/content/'.$data["url"].'";</script>';
+            $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/content/'.$data["url"].'";</script>';
             return;
         } else {
-            $site->content = engine::error();
+            $this->content = engine::error();
             return;
         }
     }
-}
-
-if (!empty($_GET[1])) {
-    return fallback($this);
-}
-$query = 'SELECT * FROM `nodes_user` WHERE `url` LIKE "'.engine::escape_string($_GET[0]).'"';
-$res = engine::mysql($query);
-$user = mysqli_fetch_array($res);
-if (empty($user) || empty($user["pass"])) {
-    return fallback($this);
 } else {
     $this->title = $user["name"];
     $this->keywords = [$user["name"], lang("Member of") . ' Web 3.0 ' . lang("community"), $user["email"], $user["url"]];
