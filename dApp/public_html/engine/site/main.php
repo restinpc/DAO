@@ -40,7 +40,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->content .= '
     <div class="document980 article">
         <div class="whitepaper text">
-        <h1>'.lang("Web 3.0 community").'</h1>
+        <h1>'.lang("DAO Whitepaper").'</h1>
         <p>
             <video id="intro" width="100%" height="auto" autoplay muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
@@ -144,7 +144,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->content .= '
     <div class="document980 article">
         <div class="whitepaper text">
-        <h1>DAO 大廈</h1>
+        <h1>'.lang("DAO Whitepaper").'</h1>
         <p>
             <video id="intro" width="100%" height="auto" controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="'.$_SERVER["DIR"].'/file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
