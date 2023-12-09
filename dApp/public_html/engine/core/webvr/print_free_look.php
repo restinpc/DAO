@@ -17,11 +17,11 @@ function print_free_look() {
     "/>
     <style>
         .height {
-           position: absolute;
-           top: 100px;
-           right: 0px;
-           width: 100px !important;
-           transform: rotate(270deg);
+            position: fixed;
+            top: 200px;
+            left: -80px;
+            width: 200px !important;
+            transform: rotate(270deg);
         }
     </style>
     ';
