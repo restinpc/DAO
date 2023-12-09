@@ -1374,7 +1374,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .nodes .article ol {
     list-style: decimal;
-    margin-left: 35px;
+    margin-left: 20px;
 }
 .nodes #comments_block{
     display:none;
