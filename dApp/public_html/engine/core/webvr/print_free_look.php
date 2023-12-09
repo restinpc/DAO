@@ -8,12 +8,11 @@ function print_free_look() {
     <button class="icon" id="fullscreen">
         <img id="fullscreen_icon" src="/img/vr/fullscreen.png" width="100%" onClick="document.panorama.toggleScreen();" /> 
     </button>
-    <input id="height" type="range" class="height" min="-10" max="10" step="0.1" onChange="
+    <input id="height" type="range" class="height" min="-10" max="30" step="0.1" onChange="
         const val = document.getElementById(\'height\').value;
-        console.error(val);
         let cam = window.frames[0].document.getElementById(\'camera\');
         let pos = cam.getAttribute(\'position\'); 
-        cam.setAttribute(\'position\', pos.x + \' \' + (pos.y + 1) + \' \' + pos.z);
+        cam.setAttribute(\'position\', pos.x + \' \' + (pos.y + val) + \' \' + pos.z);
     "/>
     <style>
         .height {
