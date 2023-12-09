@@ -18,9 +18,9 @@ function print_free_look() {
     <style>
         .height {
             position: fixed;
-            top: 200px;
-            left: -80px;
-            width: 200px !important;
+            top: 210px;
+            left: -50px;
+            width: 150px !important;
             transform: rotate(270deg);
         }
     </style>
