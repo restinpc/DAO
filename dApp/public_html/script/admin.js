@@ -3,7 +3,7 @@
  * Do not edit directly.
  * @path /script/admin.source.js
  *
- * @name    DAO Mansion    @version 1.0.0
+ * @name    DAO Mansion    @version 1.0.1
  * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -28,7 +28,6 @@ function edit_seo(id) {
         },
         url: root_dir+"/bin.php",
         success:function(data){
-            console.log("edit_seo: "+data);
             jQuery('#button_'+id).css("opacity","1");
             jQuery('#button_'+id).css("display","none");
         }
@@ -53,7 +52,6 @@ function confirm_order(id, text, shipment, soldout){
                         data: {	"order_id" : id, "status" : "0", "track" : str },
                         url: root_dir+"/bin.php",
                         success: function(data){
-                            console.log(data);
                             window.location = root_dir+"/admin/?mode=orders";
                         }
                     });
@@ -63,7 +61,6 @@ function confirm_order(id, text, shipment, soldout){
                         data: {	"order_id" : id, "status" : "1", "track" : str },
                         url: root_dir+"/bin.php",
                         success: function(data){
-                            console.log(data);
                             window.location = root_dir+"/admin/?mode=orders";
                         }
                     });
@@ -126,7 +123,6 @@ function archive_order(id, text){
                     data: {	"archive_id" : id },
                     url: root_dir+"/bin.php",
                     success: function(data){
-                        console.log("archive_order: "+data);
                         window.location = root_dir+"/admin/?mode=orders";
                     }
                 });

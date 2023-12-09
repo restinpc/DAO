@@ -2,8 +2,8 @@
 /**
 * Print admin users page.
 * @path /engine/core/admin/print_admin_users.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.1
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,7 +13,7 @@
 * @var $cms->menu - Page HTML navigaton menu.
 * @var $cms->onload - Page executable JavaScript code.
 * @var $cms->statistic - Array with statistics.
-* 
+*
 * @param object $cms Admin class object.
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_users($cms); </code>
@@ -66,9 +66,9 @@ function print_admin_users($cms){
         $query = 'UPDATE `nodes_user` SET `confirm` = "1" WHERE `id` = "'.intval($_POST["confirm"]).'"';
         engine::mysql($query);
     }
-    $fout = '<div class="document640">';
+    $fout = '<div class="document980">';
     if($_SESSION["order"]=="id") $_SESSION["order"] = "name";
-    $arr_count = 0;    
+    $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
     $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
     $query = 'SELECT * FROM `nodes_user` WHERE `ban` >= 0 AND `admin` = 0'
@@ -95,7 +95,7 @@ function print_admin_users($cms){
             $table .= '
             <th></th>
         </tr>
-        </thead>';      
+        </thead>';
     $res = engine::mysql($query);
     while($data = mysqli_fetch_array($res)){
         $arr_count++;
@@ -124,11 +124,11 @@ document.getElementById("delete_form").submit();
 new_transaction('.$data["id"].', "'.lang("Transfer amount").'");
                 }
             }else{this.selectedIndex=0;}\'>';
-            if(intval($data["ban"])){ 
+            if(intval($data["ban"])){
                 $ban .= '<option vr-control id="option-user-'.$i.'-0" value="0" selected disabled>'.lang("Banned").'</option>'
                         . '<option vr-control id="option-user-'.$i.'-1" value="1">'.lang("Unban").'</option>'
                         . '<option vr-control id="option-user-'.$i.'-2" value="2">'.lang("Delete").'</option>';
-            }else{ 
+            }else{
                 $ban .= '<option vr-control id="option-user-'.$i.'-0" value="0" selected disabled>'.lang("Active").'</option>'
                         . '<option vr-control id="option-user-'.$i.'-3" value="3">'.lang("Ban").'</option>'
                         . '<option vr-control id="option-user-'.$i.'-4" value="4">'.lang("Delete").'</option>';

@@ -3,7 +3,7 @@
 * Backend main page file.
 * @path /engine/site/main.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.1
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -24,9 +24,10 @@ if(!empty($_GET[0])){
 $this->title = lang("DAO Mansion");
 // $this->content .= engine::print_site_navigation(lang("Project whitepaper"));
 if ($_SESSION["Lang"] == "ru") {
-    $this->description = 'Цель проекта - построить сообщество, виллу и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
+    $this->description = 'Цель проекта - построить сообщество, особняк и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
     $this->keywords = [
         "DAO",
+        "Особняк",
         "Вилла",
         "Web 3.0",
         "Децентрализованная организация",
@@ -39,13 +40,13 @@ if ($_SESSION["Lang"] == "ru") {
     $this->content .= '
     <div class="document980 article">
         <div class="whitepaper text">
-        <h1>DAO Вилла</h1>
+        <h1>DAO Особняк</h1>
         <p>
-            <video id="intro" width="100%" height="auto" controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
+            <video id="intro" width="100%" height="auto" autoplay muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
-        <p>Цель проекта - построить сообщество, виллу и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).</p>
+        <p>Цель проекта - построить сообщество, особняк и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).</p>
         <ul>
             <li><a href="#1">Описание проекта</a></li>
             <li><a href="#2">Децентрализованное приложение</a></li>
@@ -56,17 +57,16 @@ if ($_SESSION["Lang"] == "ru") {
         </ul>
         <h2>Описание проекта</h2>
         <a name="1"></a>
-        <p>Проект на базе открытой модели общества и использующий принципы блокчейна для минимизации энтропии и предотвращения бессмысленных манипуляций. Проект предусматривает создание комфортной модели сообщества, которая позволит избежать лжи и шантажа со
-            стороны, а также организовать микроэкономику. В зависимости от конкретного этапа, целевой вид проект отличается: </p>
+        <p>Проект на базе открытой модели общества и использующий принципы блокчейна для организации микроэкономики. В зависимости от конкретного этапа, целевой вид проект отличается: </p>
         <ol>
             <li>Децентрализованное приложение. </li>
-            <li>Вилла на базе принципов DAO. </li>
+            <li>Недвижимость на базе принципов DAO. </li>
             <li>Листинг внутреннего токена на бирже. </li>
         </ol>
         <p>Воплощая концепцию информационного общества типа Web 3.0, проект нацелен на создание прогрессивного, устойчивого сообщества, которое совместит экологические, социальные и экономические преимущества.</p>
         <h2>Децентрализованное приложение</h2>
         <a name="2"></a>
-        <p>Вилла будет монетизироваться через продажу услуг, доступных через dApp, который позволит пользователям завести криптовалюту на свой счет и обратно, а также получить доступ ко всем аспектам проекта.</p>
+        <p>Недвижимость будет монетизироваться через продажу услуг, доступных через dApp, который позволит пользователям завести криптовалюту на свой счет и обратно, а также получить доступ ко всем аспектам проекта.</p>
         <p>Кроме того, приложение будет содержать следующие коммерческие функции:</p>
         <ol>
             <li>Аренда гостевых номеров посуточно, гостевого зала и парковки почасово и парилки поминутно.</li>
@@ -161,7 +161,7 @@ if ($_SESSION["Lang"] == "ru") {
         </ul>
         <h2>项目描述</h2>
         <a name="1"></a>
-        <p>该项目基于开放社会模型，并利用区块链原则来降低熵并防止无意义的操纵。该项目旨在创建一个舒适的社区模型，以避免虚假和威胁，并组织微观经济。根据具体阶段的不同，项目的目标类型也不同：</p>
+        <p>一個基於社會開放模型並利用區塊鏈原理組織微觀經濟學的項目。根据具体阶段的不同，项目的目标类型也不同：</p>
         <ol>
             <li>去中心化应用</li>
             <li>DAO 原则下的别墅</li>
@@ -243,7 +243,7 @@ if ($_SESSION["Lang"] == "ru") {
                <source src="'.$_SERVER["DIR"].'/file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
-        <p>The project is about to build a community, villa, and digital infrastructure for the comfortable existence of participants according to the principles of a Decentralized Autonomous Organization (DAO).</p>
+        <p>The project is about to build a community, mansion, and digital infrastructure for the comfortable existence of participants according to the principles of a Decentralized Autonomous Organization (DAO).</p>
         <ul>
             <li><a href="#1">Project Description</a></li>
             <li><a href="#2">Decentralized Application</a></li>
@@ -254,11 +254,10 @@ if ($_SESSION["Lang"] == "ru") {
         </ul>
         <h2>Project Description</h2>
         <a name="1"></a>
-        <p>The project is based on an open model of society and utilizes blockchain principles to minimize entropy and prevent meaningless manipulations. The project envisages creating a comfortable community model that avoids lies and blackmail, while also organizing a microeconomy. 
-        Depending on the specific stage, the project\'s target form differs:</p>
+        <p>A project based on an open model of society and using blockchain principles to organize microeconomics. Depending on the specific stage, the project\'s target form differs:</p>
         <ol>
             <li>Decentralized Application.</li>
-            <li>Villa based on DAO principles.</li>
+            <li>Realty with a DAO manage principles.</li>
             <li>Listing of internal token on the exchange.</li>
         </ol>
         <p>Incorporating the concept of Web 3.0 information society, the project aims to create a progressive and sustainable community that combines ecological, social, and economic benefits.</p>

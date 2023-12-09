@@ -1,12 +1,28 @@
 <?php
 
 function print_free_look() {
-    return '<iframe id="free-look" src="'.$_SERVER["DIR"].'/apps/free-look/" class="app" onLoad="loading_site();" width="100%"></iframe>
+    return '<iframe id="free-look" src="https://nodes-tech.ru/apps/free-look" class="app" onLoad="loading_site();" width="100%"></iframe>
     <button class="vr icon" id="vr">
         <img id="icon vr_icon" src="/img/vr/vr.png" width="100%" onClick="document.panorama.vrMode();" /> 
     </button>
     <button class="icon" id="fullscreen">
         <img id="fullscreen_icon" src="/img/vr/fullscreen.png" width="100%" onClick="document.panorama.toggleScreen();" /> 
     </button>
+    <input id="height" type="range" class="height" min="-10" max="10" step="0.1" onChange="
+        const val = document.getElementById(\'height\').value;
+        console.error(val);
+        let cam = window.frames[0].document.getElementById(\'camera\');
+        let pos = cam.getAttribute(\'position\'); 
+        cam.setAttribute(\'position\', pos.x + \' \' + (pos.y + 1) + \' \' + pos.z);
+    "/>
+    <style>
+        .height {
+           position: absolute;
+           top: 100px;
+           right: 0px;
+           width: 100px !important;
+           transform: rotate(270deg);
+        }
+    </style>
     ';
 }

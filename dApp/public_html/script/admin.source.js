@@ -3,7 +3,7 @@
 * Do not edit directly.
 * @path /script/admin.source.js
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.1
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -22,13 +22,12 @@ function edit_seo(id) {
         data: {
             "seo_id":id,
             "title":title ,
-            "description":description, 
-            "keywords":keywords, 
+            "description":description,
+            "keywords":keywords,
             "mode":mode
         },
         url: root_dir+"/bin.php",
         success:function(data){
-            console.log("edit_seo: "+data);
             jQuery('#button_'+id).css("opacity","1");
             jQuery('#button_'+id).css("display","none");
         }
@@ -37,7 +36,7 @@ function edit_seo(id) {
 //------------------------------------------------------------------------------
 /**
 * Confirms a product order shipment.
-* 
+*
 * @param {int} id @mysql[nodes_order]->id.
 * @param {string} text Text of message.
 * @param {string} shipment Text of button 1.
@@ -45,15 +44,14 @@ function edit_seo(id) {
 */
 function confirm_order(id, text, shipment, soldout){
     alertify.prompt('<h3>'+text+'</h3><br/>', function (e, str) {if (e) {
-        alertify.confirm('<h3>'+shipment+'</h3><br/>'+soldout+'<br/><br/>', 
+        alertify.confirm('<h3>'+shipment+'</h3><br/>'+soldout+'<br/><br/>',
         function (e, str1) {
-            if (e) { 
+            if (e) {
                 jQuery.ajax({
                     type: "POST",
                     data: {	"order_id" : id, "status" : "0", "track" : str },
                     url: root_dir+"/bin.php",
                     success: function(data){
-                        console.log(data);
                         window.location = root_dir+"/admin/?mode=orders";
                     }
                 });
@@ -63,13 +61,12 @@ function confirm_order(id, text, shipment, soldout){
                     data: {	"order_id" : id, "status" : "1", "track" : str },
                     url: root_dir+"/bin.php",
                     success: function(data){
-                        console.log(data);
                         window.location = root_dir+"/admin/?mode=orders";
                     }
                 });
             }
-        }, ""); 
-    }}, ""); 
+        }, "");
+    }}, "");
 }
 //------------------------------------------------------------------------------
 /**
@@ -83,8 +80,7 @@ function delete_image(id, pos){
         type: "POST",
         data: {	"product_id" : id, "pos" : pos },
         url: root_dir+"/bin.php",
-        success: function(data){ 
-            console.log("delete_image: "+data);
+        success: function(data){
             document.getElementById("edit_product_form").submit();
         }
     });
@@ -102,13 +98,12 @@ function new_transaction(id, text){
             type: "POST",
             data: {"user_id": id, "transaction" : str },
             url: root_dir+"/bin.php",
-            success: function(data){ 
-                console.log("transaction: "+data);
+            success: function(data){
                 alertify.alert(data);
                 window.location.reload();
             }
         });
-    }}, ""); 
+    }}, "");
 }
 //------------------------------------------------------------------------------
 /**
@@ -118,18 +113,17 @@ function new_transaction(id, text){
 * @param {string} text Text of message.
 */
 function archive_order(id, text){
-    alertify.confirm('<h3>'+text+'?<br/><br/>', 
+    alertify.confirm('<h3>'+text+'?<br/><br/>',
     function (e, str1) {
-        if (e) { 
+        if (e) {
             jQuery.ajax({
                 type: "POST",
                 data: {	"archive_id" : id },
                 url: root_dir+"/bin.php",
-                success: function(data){ 
-                    console.log("archive_order: "+data);
+                success: function(data){
                     window.location = root_dir+"/admin/?mode=orders";
                 }
             });
         }
-    }, ""); 
+    }, "");
 }

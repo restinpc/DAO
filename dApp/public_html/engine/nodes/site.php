@@ -3,7 +3,7 @@
 * Framework site primary class.
 * @path /engine/nodes/site.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.1
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -206,13 +206,7 @@ function __construct(){
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
 require_once("template/meta.php");
 if (!isset($_POST["jQuery"])) {
-    $fout .= '<script>';
-    if($_SERVER["cardboard"]){
-        $fout .= 'var vr_state = 1;';
-    }else{
-        $fout .= 'var vr_state = 0;';
-    }
-    $fout .= '
+    $fout .= '<script>
     let loading_stages = 2;'
     . 'let loading_state = 0; '
     . 'let preloaded = 0;'
@@ -220,10 +214,10 @@ if (!isset($_POST["jQuery"])) {
         . 'if(!window.jQuery){ setTimeout(() => { '
             . 'document.body.style.opacity = "1";'
             . 'document.body.style.display = "contents";'
-        . '}, 1000); '
+        . '}, 300); '
         . '}else{ '
-            . 'jQuery("html, body").animate({opacity: 1}, 1000); '
-        . 'document.body.style.display = "contents";'
+            . 'jQuery("html, body").animate({opacity: 1}, 300); '
+            . 'document.body.style.display = "contents";'
         .'}'
     . '}'
     . 'var tm = setTimeout(display, 5000); '
@@ -234,7 +228,7 @@ if (!isset($_POST["jQuery"])) {
         . 'if(loading_state!=loading_stages){ return; } '
         . 'try{ '
             . 'preload(); loading_state=1; '
-            . 'setTimeout(() => (display()), 3000);'
+            . 'setTimeout(() => (display()), 1000);'
         . '}catch(e){};'
         . 'clearTimeout(tm);
         '

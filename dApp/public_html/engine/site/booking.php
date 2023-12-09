@@ -3,7 +3,7 @@
 * Backend booking page file.
 * @path /engine/site/booking.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.1
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -44,7 +44,7 @@ if ($_SESSION["Lang"] == "en") {
     $this->description = '在線房地產租賃';
 } else {
     $this->keywords = [
-        "DAO Вилла",
+        "DAO Особняк",
         "Снять жилье",
         "Аренда недвижимости",
         "Арендовать комнату",

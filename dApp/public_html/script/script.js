@@ -1,9 +1,9 @@
 /**
 * Nodes Framework JavaScript library source file.
 * Do not edit directly.
-* @path /script/script.source.js
+* @path /script/script.js
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.1
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -465,11 +465,11 @@ function goto(href) {
             document.documentElement.style.backgroundSize = "45px";
             window_state = 1;
             try{$id("load_bar").style.display="block";}catch(e){};
-            jQuery("#content").animate({opacity: 0}, 300);
+            jQuery("#content").animate({opacity: 0}, 100);
             try{ scrolltoTop(); }catch(e){}
             var to = setTimeout(function(){
                 jQuery("#content").html(error);
-                jQuery("#content").animate({opacity: 1}, 500);
+                jQuery("#content").animate({opacity: 1}, 300);
             }, 30000);
             var anchor = '';
             var details = href.split('#');
@@ -477,44 +477,41 @@ function goto(href) {
                 href = details[0];
                 anchor = details[1];
             }
-            const request = jQuery.ajax({
-            url: href,
-            async: true,
-            type: "POST",
-            data: {'jQuery': 'true'},
-            success: function (data) {
-                setTimeout(ajaxing, 1);
-                setTimeout(checkAnchors, 1);
-                var title = jQuery(data).filter('title').text();
-                document.title = title;
-                try {
-                    jQuery('.site_title').text(title);
-                } catch(e){}
-                try {
-                    history.replaceState({}, null, jQuery(data).filter('link[itemprop="url"]')[0].getAttribute("href"));
-                } catch(e){}
-                setTimeout(function() {
-                    jQuery("#content").html(data);
-                    jQuery("#content").animate({opacity: 1}, 500);
-                    clearTimeout(to);
+            jQuery.ajax({
+                url: href,
+                async: true,
+                type: "POST",
+                data: {'jQuery': 'true'},
+                success: function (data) {
+                    setTimeout(ajaxing, 1);
+                    setTimeout(checkAnchors, 1);
+                    var title = jQuery(data).filter('title').text();
+                    document.title = title;
                     try {
-                        document.documentElement.style.background = "#1a1d1d";
+                        jQuery('.site_title').text(title);
                     } catch(e){}
-                    if (anchor != '') {
-                        showAnchor(anchor);
-                    }
                     try {
-                        loading_site();
+                        history.replaceState({}, null, jQuery(data).filter('link[itemprop="url"]')[0].getAttribute("href"));
                     } catch(e){}
-                }, 300);
-            },
-            error: function() {
-                jQuery("#content").html(error);
-                jQuery("#content").animate({opacity: 1}, 500);
-                try {
-                    onload_print_footer();
-                } catch(e){}
-            }
+                    setTimeout(function() {
+                        $id("content").innerHTML = data;
+                        jQuery("#content").animate({opacity: 1}, 300);
+                        clearTimeout(to);
+                        try {
+                            document.documentElement.style.background = "#1a1d1d";
+                        } catch(e){}
+                        if (anchor != '') {
+                            showAnchor(anchor);
+                        }
+                        try {
+                            loading_site();
+                        } catch(e){}
+                    }, 1);
+                },
+                error: function() {
+                    $id("content").innerHTML = error;
+                    jQuery("#content").animate({opacity: 1}, 300);
+                }
             });
         }else{
             var hash = href.split("#");

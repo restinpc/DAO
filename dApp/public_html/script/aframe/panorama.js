@@ -3,7 +3,6 @@ var current_function = null;
 var coordinates = AFRAME.utils.coordinates;
 var isCoordinates = coordinates.isCoordinates;
 var popup_state = 0;
-var popup_position = null;
 var vr_load_state = 0;
 var zoom = 1;
 var object_id = 0;
@@ -26,7 +25,6 @@ var marker = null;
 var mouse_control_state = 0;
 var mouse_listner_flag = 0;
 var scene_state = 0;
-var vr_state = 0;
 var level_id = 0;
 //------------------------------------------------------------------------------
 function pc_mode(){
@@ -132,7 +130,6 @@ function vr_load(levelId){
         }catch(e){console.log("Error c");}
         try{
             scene.addEventListener('enter-vr', function () {
-                vr_state = 1;
                 if(scene_state == 3){
                     try{
                         $id("sectionsNav").style.opacity="0";
@@ -149,7 +146,6 @@ function vr_load(levelId){
                 }
              });
             scene.addEventListener('exit-vr', function () {
-                vr_state = 0;
                 try{
                     $id("sectionsNav").style.opacity="1";
                     $id("sectionsNav").style.display="block";
@@ -272,10 +268,10 @@ function navigate(){
     for(var i = 0; i < points.length; i++){
         var point = points[i].object3D.getWorldPosition();
         var distance = Math.sqrt(
-                (position.x-point.x)*(position.x-point.x)+
-                (position.y-point.y)*(position.y-point.y)+
-                (position.z-point.z)*(position.z-point.z)
-            );
+            (position.x-point.x)*(position.x-point.x)+
+            (position.y-point.y)*(position.y-point.y)+
+            (position.z-point.z)*(position.z-point.z)
+        );
         if(lowest == 0 || distance < lowest){
             lowest = distance;
             point_id = points[i].id;
@@ -285,7 +281,6 @@ function navigate(){
     if(point_id != null && point_id != "point_new_nav"){
         vr_click($id(point_id));
     }
-
 }
 //------------------------------------------------------------------------------
 function zoom_scene(e){
@@ -328,19 +323,14 @@ function zoom_scene(e){
             }catch(e){}
         }
     }else if(zoom == 2){
-
         $id("cubemap_0").setAttribute("scale", '1.01 1.01 1.01');
         $id("cubemap_1").setAttribute("scale", '1 1 1');
         $id("cubemap_2").setAttribute("scale", '1.01 1.01 1.01');
         $id("cubemap_3").setAttribute("scale", '1.01 1.01 1.01');
-
-        //console.log("cubemap_1");
         for(var x = 0; x < $id("cubemap_1").childNodes.length; x++){
             var k = $id("cubemap_1").childNodes[x].id;
             try{
-                //if($id(k).getAttribute("is_load") == 'true'){
-                    $id(k).setAttribute("opacity", "1");
-                //}
+                $id(k).setAttribute("opacity", "1");
             }catch(e){}
         }
         for(var x = 0; x < $id("cubemap_2").childNodes.length; x++){
@@ -356,13 +346,10 @@ function zoom_scene(e){
             }catch(e){}
         }
     }else if(zoom == 3){
-        //console.log("cubemap_2");
-
         $id("cubemap_0").setAttribute("scale", '1.01 1.01 1.01');
         $id("cubemap_1").setAttribute("scale", '1.01 1.01 1.01');
         $id("cubemap_2").setAttribute("scale", '1 1 1');
         $id("cubemap_3").setAttribute("scale", '1.01 1.01 1.01');
-
         for(var x = 0; x < $id("cubemap_2").childNodes.length; x++){
             var k = $id("cubemap_2").childNodes[x].id;
             try{
@@ -457,12 +444,6 @@ delete AFRAME.components['nodes-camera'];
 AFRAME.registerComponent("nodes-camera", {
     tick: function () {
         if(!vr_load_state) return;
-        if(vr_state){
-            try{
-                $id("sectionsNav").style.opacity="1";
-                $id("sectionsNav").style.display="block";
-            }catch(e){}
-        }
         try{
             logo.object3D.rotation.y = camera.object3D.rotation.y+rig.object3D.rotation.y;
             var rotation = (camera.getAttribute("rotation").x+rig.getAttribute("rotation").x)+";"+(camera.getAttribute("rotation").y+rig.getAttribute("rotation").y);
@@ -722,7 +703,6 @@ function load_scene(id, object_id){
         jQuery("#vr-sound").trigger('play');
         // window.location = '/panorama.php?id=' + id;
      }, 1000);
-
      */
     jQuery("#vr-sound").trigger('play');
     try{
