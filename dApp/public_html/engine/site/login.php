@@ -15,11 +15,11 @@
 * @var $this->onload - Page executable JavaScript code.
 * @var $this->configs - Array MySQL configs.
 */
+
 if(!empty($_GET[4])){
     $this->content = engine::error();
     return;
 }
-
 $this->content .= '<div class="w320 pt20 m0a">';
 if(empty($_GET[1])){
     $flag = 0;
@@ -176,5 +176,8 @@ if(empty($_GET[1])){
             <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.lang("Submit").'" />
         </form>';
     }
+} else {
+    $this->content = engine::error(404);
+    return;
 }
 $this->content .= '</div>';
