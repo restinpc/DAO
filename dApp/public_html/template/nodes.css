@@ -1771,6 +1771,16 @@ h1,h2,h3,h4,h5,h6{
     padding-top: 0px;
     padding-bottom: 25px;
 }
+.nodes .height {
+    position: fixed;
+    top: 210px;
+    left: -50px;
+    width: 150px !important;
+    transform: rotate(270deg);
+    padding: 20px;
+}
+
+
 .nodes .vr_fullscreen{
     width:100%;
     height:100%;

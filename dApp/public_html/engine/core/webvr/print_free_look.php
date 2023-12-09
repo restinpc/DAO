@@ -17,14 +17,5 @@ function print_free_look() {
             cam.setAttribute(\'position\', pos.x + \' \' + (parseFloat(val)) + \' \' + pos.z);
         }
     </script>
-    <style>
-        .height {
-            position: fixed;
-            top: 210px;
-            left: -50px;
-            width: 150px !important;
-            transform: rotate(270deg);
-        }
-    </style>
     ';
 }
