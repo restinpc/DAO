@@ -21,7 +21,7 @@ if(!empty($_GET[0])){
     return;
 }
 
-$this->title = lang("DAO Mansion");
+$this->title = "DAO Mansion";
 // $this->content .= engine::print_site_navigation(lang("Project whitepaper"));
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
@@ -40,7 +40,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->content .= '
     <div class="document980 article">
         <div class="whitepaper text">
-        <h1>'.lang("DAO Mansion whitepaper").'</h1>
+        <h1>DAO Mansion</h1>
         <p>
             <video id="intro" width="100%" height="auto" autoplay muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
