@@ -207,7 +207,7 @@ function __construct(){
 require_once("template/meta.php");
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
-    let loading_stages = 2;'
+    let loading_stages = 3;'
     . 'let loading_state = 0; '
     . 'let preloaded = 0;'
     . 'function display(){ '
@@ -227,7 +227,7 @@ if (!isset($_POST["jQuery"])) {
         . 'loading_state++; '
         . 'if(loading_state!=loading_stages){ return; } '
         . 'try{ '
-            . 'preload(); loading_state=1; '
+            . 'preload(); loading_state=2; '
             . 'setTimeout(() => (display()), 1000);'
         . '}catch(e){};'
         . 'clearTimeout(tm);
@@ -239,8 +239,8 @@ $fout .= '
 <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
 <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'loading_site();\' />
 </head>
-<body style="opacity: 0;" class="nodes">
-<img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" width=64 height=64 alt="'.lang("Loading").'" />';
+<body style="opacity: 0; display: contents !important;" class="nodes">
+<img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" onLoad=\'loading_site();\' width=64 height=64 alt="'.lang("Loading").'" />';
     } else {
         $fout = '<title>'.$this->title.'</title>
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
