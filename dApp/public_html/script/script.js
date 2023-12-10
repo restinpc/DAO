@@ -464,7 +464,6 @@ function goto(href) {
             document.documentElement.style.background = "#1a1d1d url(/img/load.gif) no-repeat center center fixed";
             document.documentElement.style.backgroundSize = "45px";
             window_state = 1;
-            try{$id("load_bar").style.display="block";}catch(e){};
             jQuery("#content").animate({opacity: 0}, 100);
             try{ scrolltoTop(); }catch(e){}
             var to = setTimeout(function(){
