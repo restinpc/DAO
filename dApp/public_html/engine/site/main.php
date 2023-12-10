@@ -322,8 +322,10 @@ if ($_SESSION["Lang"] == "ru") {
 
 $this->onload .= '
     try {
-        document.getElementById("outro").addEventListener("ended", () => {
-            window.location = "'.$_SERVER["DIR"].'/webvr/panorama";
-        }, false);
+        window.addEventListener("click", () => {
+            document.getElementById("outro").addEventListener("ended", () => {
+                window.location = "'.$_SERVER["DIR"].'/webvr/panorama";
+            }, false);
+        });
     } catch(e) { }
 ';
