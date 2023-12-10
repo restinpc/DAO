@@ -24,6 +24,9 @@ $query = 'SELECT * FROM `nodes_user` WHERE `url` LIKE "'.engine::escape_string($
 $res = engine::mysql($query);
 $user = mysqli_fetch_array($res);
 if (empty($user) || empty($user["pass"])) {
+    $this->content = engine::error();
+    return;
+    /*
     $query = 'SELECT * FROM `nodes_catalog` WHERE url LIKE "'.engine::escape_string($_GET[0]).'" AND lang = "'.$_SESSION["Lang"].'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -42,6 +45,7 @@ if (empty($user) || empty($user["pass"])) {
             return;
         }
     }
+    */
 } else {
     $this->title = $user["name"];
     $this->keywords = [$user["name"], lang("Member of") . ' Web 3.0 ' . lang("community"), $user["email"], $user["url"]];
