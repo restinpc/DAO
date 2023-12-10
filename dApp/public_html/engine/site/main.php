@@ -115,6 +115,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>Проектная область</h2>
         <a name="6"></a>
+        <p><a target="_blank" href="https://dao.nodes-tech.ru/">Публичный DAO репозиторий</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">Исходники макета здания</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">Демо-версия с поддержкой VR</a> </p>
         <p><a target="_blank" href="https://www.blockchain.com/explorer/addresses/btc/bc1qx5mxlve9tx2v5mdtmh8uetgar0d62mk0cu8ngv">Холодный BTC кошелек проекта</a> </p>
@@ -209,6 +210,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>项目领域</h2>
         <a name="6"></a>
+        <p><a target="_blank" href="https://dao.nodes-tech.ru/">公共 DAO 儲存庫</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">建筑设计源文件</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">支持虚拟现实的演示版本</a> </p>
         <p><a target="_blank" href="https://www.blockchain.com/explorer/addresses/btc/bc1qx5mxlve9tx2v5mdtmh8uetgar0d62mk0cu8ngv">冷钱包</a> </p>
@@ -302,6 +304,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>Project Scope</h2>
         <a name="6"></a>
+        <p><a target="_blank" href="https://dao.nodes-tech.ru/">Public DAO repository</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">Mansion VR sources</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">Mansion VR demo version</a> </p>
         <p><a target="_blank" href="https://www.blockchain.com/explorer/addresses/btc/bc1qx5mxlve9tx2v5mdtmh8uetgar0d62mk0cu8ngv">BTC cold wallet</a> </p>
