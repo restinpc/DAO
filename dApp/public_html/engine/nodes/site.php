@@ -240,7 +240,7 @@ $fout .= '
 <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'loading_site();\' />
 </head>
 <body style="opacity: 0;" class="nodes">
-<img src="'.$_SERVER["DIR"].'/img/load.gif" width=64 height=64 alt="'.lang("Loading").'" />';
+<img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" width=64 height=64 alt="'.lang("Loading").'" />';
     } else {
         $fout = '<title>'.$this->title.'</title>
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
