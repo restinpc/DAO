@@ -180,6 +180,13 @@ function show_window(content){
     }
 }
 //------------------------------------------------------------------------------
+function chane_height() {
+    const val = document.getElementById('height').value;
+    let cam = window.frames[0].document.getElementById('camera');
+    let pos = cam.getAttribute('position');
+    cam.setAttribute('position', pos.x + ' ' + (parseFloat(val)) + ' ' + pos.z);
+}
+//------------------------------------------------------------------------------
 /**
 * Displays a popup window with specified content.
 */
