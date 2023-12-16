@@ -8,14 +8,6 @@ function print_free_look() {
     <button class="icon" id="fullscreen">
         <img id="fullscreen_icon" src="/img/vr/fullscreen.png" width="100%" onClick="document.panorama.toggleScreen();" /> 
     </button>
-    <input id="height" type="range" value="1.5" class="height" min="-10" max="30" step="0.1" onChange="chane_height()" oninput="chane_height()"/>
-    <script>
-        function chane_height() {
-          const val = document.getElementById(\'height\').value;
-            let cam = window.frames[0].document.getElementById(\'camera\');
-            let pos = cam.getAttribute(\'position\'); 
-            cam.setAttribute(\'position\', pos.x + \' \' + (parseFloat(val)) + \' \' + pos.z);
-        }
-    </script>
+    <input id="height" type="range" value="1.5" class="height" min="-10" max="30" step="0.1" onChange="chane_height()" oninput="document.panorama.chane_height()"/>
     ';
 }

@@ -26,6 +26,13 @@ var mouse_control_state = 0;
 var mouse_listner_flag = 0;
 var scene_state = 0;
 var level_id = 0;
+
+function chane_height() {
+    const val = document.getElementById('height').value;
+    let cam = window.frames[0].document.getElementById('camera');
+    let pos = cam.getAttribute('position');
+    cam.setAttribute('position', pos.x + ' ' + (parseFloat(val)) + ' ' + pos.z);
+}
 //------------------------------------------------------------------------------
 function pc_mode(){
     scene_state = 1;
@@ -276,8 +283,7 @@ function navigate(){
             lowest = distance;
             point_id = points[i].id;
         }
-        //console.log(distance);
-    };
+    }
     if(point_id != null && point_id != "point_new_nav"){
         vr_click($id(point_id));
     }
