@@ -21,7 +21,7 @@ if(!empty($_GET[0])){
     return;
 }
 
-$this->title = "DAO Mansion";
+$this->title = "DAO";
 // $this->content .= engine::print_site_navigation(engine::lang("Project whitepaper"));
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
