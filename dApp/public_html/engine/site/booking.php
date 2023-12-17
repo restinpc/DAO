@@ -1,27 +1,27 @@
 <?php
 /**
-* Backend booking page file.
-* @path /engine/site/booking.php
-*
-* @name    DAO Mansion    @version 1.0.1
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
-* @license http://www.apache.org/licenses/LICENSE-2.0
-*
-* @var $this->title - Page title.
-* @var $this->content - Page HTML data.
-* @var $this->keywords - Array meta keywords.
-* @var $this->description - Page meta description.
-* @var $this->img - Page meta image.
-* @var $this->onload - Page executable JavaScript code.
-* @var $this->configs - Array MySQL configs.
-*/
+ * Backend booking page file.
+ * @path /engine/site/booking.php
+ *
+ * @name    DAO Mansion    @version 1.0.2
+ * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * @var $this->title - Page title.
+ * @var $this->content - Page HTML data.
+ * @var $this->keywords - Array meta keywords.
+ * @var $this->description - Page meta description.
+ * @var $this->img - Page meta image.
+ * @var $this->onload - Page executable JavaScript code.
+ * @var $this->configs - Array MySQL configs.
+ */
 
 if(!empty($_GET[2])){
     $this->content = engine::error();
     return;
 }
 
-$this->title = lang("Booking rooms");
+$this->title = engine::lang("Booking rooms");
 if ($_SESSION["Lang"] == "en") {
     $this->keywords = [
         "DAO Mansion",
@@ -53,5 +53,5 @@ if ($_SESSION["Lang"] == "en") {
     ];
     $this->description = "Аренда недвижимости онлайн";
 }
-$this->content .= engine::print_site_navigation(lang("Booking rooms")).
+$this->content .= engine::print_site_navigation(engine::lang("Booking rooms")).
 $this->content .= engine::print_under_construction();

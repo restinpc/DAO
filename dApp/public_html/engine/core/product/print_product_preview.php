@@ -2,8 +2,8 @@
 /**
 * Print product preview page.
 * @path /engine/core/product/print_product_preview.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @param array $data @mysql[nodes_product].
 * @param bool $right Right floating of blocks.
@@ -30,7 +30,7 @@ function print_product_preview($site, $data, $right=0){
         $fout .= 'right';
     }
     $fout .= '">
-    <a vr-control id="product-'.$data["id"].'" href="'.$_SERVER["DIR"].'/product/'.$data["id"].'">
+    <a id="product-'.$data["id"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/product/'.$data["id"]).'">
         <div class="title">
             <b>'.$data["title"].'</b>
         </div>
@@ -40,19 +40,19 @@ function print_product_preview($site, $data, $right=0){
     </a>';
     if($data["status"]){
         $fout .= '<div class="clear h7"></div>
-        <div vr-control id="buy-now-'.$data["id"].'" class="buy_now"';
+        <div  id="buy-now-'.$data["id"].'" class="buy_now"';
         if($data["user_id"]==$_SESSION["user"]["id"]){
-            $fout .= ' onClick=\'alert("'.lang("Unable to purchase your own product").'")\' ';  
+            $fout .= ' onClick=\'alert("'.engine::lang("Unable to purchase your own product").'")\' ';
         }else{
             //TODO selector propertis and count
-            
+
             $fout .= ' onClick=\'buy_now('.$data["id"].', '
-                    . '"'.lang("A new item has been added to your Shopping Cart").'", '
-                    . '"'.lang("Continue").'", '
-                    . '"'.lang("Checkout").'");\' ';
+                    . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
+                    . '"'.engine::lang("Continue").'", '
+                    . '"'.engine::lang("Checkout").'");\' ';
         }
         $fout .= '>
-            <div class="label_1">'.lang("Buy Now").'&nbsp;</div> 
+            <div class="label_1">'.engine::lang("Buy Now").'&nbsp;</div> 
             <div class="label_2 cart_img">&nbsp;</div>
             <div class="label_3">&nbsp;$'.intval($data["price"]).'</div>
         </div>';

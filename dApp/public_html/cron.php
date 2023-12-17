@@ -4,7 +4,7 @@
 * Executable crontab file.
 * Should be configured on autoexec every 1 minute.
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */

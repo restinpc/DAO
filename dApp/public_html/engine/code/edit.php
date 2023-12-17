@@ -3,7 +3,7 @@
 * Source code viewer.
 * @path /engine/code/edit.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -34,7 +34,7 @@ if(!empty($_GET["file"])&&$_SESSION["user"]["admin"]=="1"){
     $file = file_get_contents($file);
     if($ext == "js") $ace_mode = 'javascript';
     if($ext == "css") $ace_mode = 'css';
-    if($ext == "php"){ 
+    if($ext == "php"){
         $ace_mode = 'php';
         $file = htmlspecialchars($file);
     }

@@ -3,7 +3,7 @@
 * Image croper & uploader.
 * @path /engine/code/uploader.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Alexandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -18,7 +18,7 @@ $THUHEIGHT = 400;
 if(!empty($_GET["height"])) $THUHEIGHT = $_GET["height"];
 $f1 = "f1";
 if(!empty($_GET["id"])) $f1 .= $_GET["id"];
-$result_file = "result_file";   
+$result_file = "result_file";
 if(!empty($_GET["id"])) $result_file .= $_GET["id"];
 $result_caption = "result_caption";
 if(!empty($_GET["id"])) $result_caption .= $_GET["id"];
@@ -48,7 +48,7 @@ if(!empty($_GET["dragndrop"])||!empty($_FILES)){
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/' . $fn
         )){
             die('<form method="POST" id="new_image_form">
-            <input type="hidden" name="name" value="'.lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
+            <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
             <input type="hidden" name="new_image" value="'.$fn.'" id="new_image" />
             </form><script>document.getElementById("new_image_form").submit();</script>');
         }else{
@@ -70,9 +70,9 @@ echo '<!DOCTYPE html>
 <script type="text/javascript">     
     var width = twidth='.$THUWIDTH.';
     var height = theight='.$THUHEIGHT.';
-    var no_drag_dpop = "'.lang("Error! Drag-n-drop disabled on this server").'";  
-    var uploading = "'.lang("Uploading").'";
-    var confirm_upload = "'.lang("Upload selection as thumb?").'";
+    var no_drag_dpop = "'.engine::lang("Error! Drag-n-drop disabled on this server").'";  
+    var uploading = "'.engine::lang("Uploading").'";
+    var confirm_upload = "'.engine::lang("Upload selection as thumb?").'";
     var post_new_image = '.(!empty($_POST["new_image"])?'1':'0').';
     var dir = "'.$_SERVER["DIR"].'";
     var posx = posy = 30;
@@ -86,17 +86,17 @@ if(!empty($_POST["name"])){
     if(!empty($_POST["url"])){
         $ext = strtolower(array_pop(explode(".", $_POST["url"])));
         $name = md5($_POST["filename"]+date("U"));
-        $img = new image($_POST["url"]); 
+        $img = new image($_POST["url"]);
         $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/', $name, $ext, true, 100);
         unlink($_POST["url"]);
         $img->crop(
-                intval($_POST["l"]*$_POST["scale"]), 
+                intval($_POST["l"]*$_POST["scale"]),
                 intval($_POST["t"]*$_POST["scale"]),
                 intval($_POST["w"]),
                 intval($_POST["h"])
-            ); 
-        $img->resize($THUWIDTH, $THUHEIGHT); 
-        $path = $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/thumb/', $name, $ext, true, 100); 
+            );
+        $img->resize($THUWIDTH, $THUHEIGHT);
+        $path = $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/thumb/', $name, $ext, true, 100);
         $fout .= '<body class="nodes result_body">
             <img src="'.$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.'" />
             <script type="text/javascript">
@@ -105,7 +105,7 @@ if(!empty($_POST["name"])){
                     var df_img = document.createElement("img"); 
                     df_img.id = "d_img";
                     df_img.src = "//'.$_SERVER["HTTP_HOST"].$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.'";';
-        
+
         if(!empty($_GET["id"]) && $_GET["id"]<6){
             $fout .= '
                     var z = parent.document.getElementById("new_img'.(intval($_GET["id"])+1).'"); 
@@ -146,18 +146,18 @@ if(!empty($_POST["name"])){
                 }catch(e){ console.log("error 4"); };
             </script>
         </body>
-        </html>';                
+        </html>';
         die($fout);
     }else if(!empty($_POST["new_image"])){
         $file = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$_POST["new_image"];
         $size = getimagesize($file);
-        if($size[0]<$THUWIDTH||$size[1]<$THUHEIGHT) 
-            die('<script type="text/javascript">alert("'.lang("Image too small. Minimal size is ".$THUWIDTH.'x'.$THUHEIGHT).'."); window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";</script></html>');
+        if($size[0]<$THUWIDTH||$size[1]<$THUHEIGHT)
+            die('<script type="text/javascript">alert("'.engine::lang("Image too small. Minimal size is ".$THUWIDTH.'x'.$THUHEIGHT).'."); window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";</script></html>');
         $f_name = "";
         $a = md5(date('U').$file);
         $ext = strtolower(array_pop(explode(".", $file)));
         if($ext != "jpeg" && $ext != "jpg" && $ext != "png" && $ext != "gif"){
-             die(lang("Error").'<script type="text/javascript">setTimeout(function(){window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 1000);</script>'); 
+             die(engine::lang("Error").'<script type="text/javascript">setTimeout(function(){window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 1000);</script>');
         }if($ext == "jpeg") $ext = "jpg";
         $f_name = "img/data/big/".$a.".".$ext;
         $thuname = "img/data/thumb/".$a.".".$ext;
@@ -178,7 +178,7 @@ if(!empty($_POST["name"])){
             $width = intval($size[0]);
             $height = intval($size[1]);
             $scale = 1;
-            $fout = '<body class="nodes uploader_body" draggable="false" title="'.lang("For uploading selected area use double click").'">
+            $fout = '<body class="nodes uploader_body" draggable="false" title="'.engine::lang("For uploading selected area use double click").'">
                 <div id="image" draggable="false" onDragStart="return false;" style="background: url('.$_SERVER["DIR"].'/'.$f_name.') top left no-repeat; width: '.($width/$scale).'px; height: '.($height/$scale).'px; background-size: cover;" >
                     <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width/$scale).'px; height: '.($height/$scale).'px;" />
                 </div>
@@ -199,7 +199,7 @@ if(!empty($_POST["name"])){
                     <input type="hidden" id="w" name="w" value="'.$THUWIDTH.'"/>
                     <input type="hidden" id="h" name="h" value="'.$THUHEIGHT.'"/>
                     <input type="hidden" id="scale" name="scale" value="'.$scale.'"/>
-                    <input type="submit" class="btn w280" value="'.lang("Crop image").'" />
+                    <input type="submit" class="btn w280" value="'.engine::lang("Crop image").'" />
                 </form>
                 <script type="text/javascript">
                     var s1 = '.$height.'/(parent.parent.document.getElementById("img_editor").offsetHeight-120);
@@ -228,22 +228,22 @@ if(!empty($_POST["name"])){
             </body>
             </html>';
             die($fout);
-        }die(lang("Error").'<script type="text/javascript">setTimeout(function(){window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 5000);</script></html>');
+        }die(engine::lang("Error").'<script type="text/javascript">setTimeout(function(){window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 5000);</script></html>');
     }
 }else{
     echo '<body class="nodes dragndrop_body"> 
 <form id="upload" method="POST" enctype="multipart/form-data">
     <div style="height: 100%;">
         <input type="file" id="fileselect" name="fileselect" onChange=\'document.getElementById("upload").submit();\' />
-        <div vr-control id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.lang("Drop file here").'</div>
+        <div  id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Drop file here").'</div>
     </div>
     <div id="submitbutton">
-        <button class="btn" type="submit">'.lang("Upload Files").'</button>
+        <button class="btn" type="submit">'.engine::lang("Upload Files").'</button>
     </div>
-    <input type="hidden" name="name" value="'.lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
+    <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
 </form>
 <form method="POST" id="new_image_form">
-    <input type="hidden" name="name" value="'.lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
+    <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
     <input type="hidden" name="new_image" value="" id="new_image" />
 </form>
 <div id="messages"></div>

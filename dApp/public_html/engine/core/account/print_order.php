@@ -2,8 +2,8 @@
 /**
 * Print account order block.
 * @path /engine/core/account/print_order.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @param int $user_id @mysql[nodes_product_order]->id.
 * @return string Returns content of page on success, or die with error.
@@ -61,27 +61,27 @@ function print_order($site, $order_id){
             if(!empty($address["street1"])) $addresstr .= $address["street1"].', ';
             if(!empty($address["street2"])) $addresstr .= $address["street2"].', ';
             if(!empty($address["zip"])) $addresstr .= "zip ".$address["zip"];
-            $addresstr = '<a vr-control id="link-address-'.$d["id"].'" title="'.$addresstr.'" onClick=\'alert(this.title);\'>'.$address["country"].'</a>';
+            $addresstr = '<a id="link-address-'.$d["id"].'" title="'.$addresstr.'" onClick=\'alert(this.title);\'>'.$address["country"].'</a>';
             if($d["status"]==1){
-                $status = lang('Sended');
+                $status = engine::lang('Sended');
             }else if($d["status"]==0){
                 $buttons = '
-                <input vr-control id="input-confirm-shipment" type="button" class="btn shipment" value="'.lang('Confirm Shipment').'" onClick=\'confirm_order("'.$d["id"].'", "'.lang("Post track number").'", "'.lang("Shipment is confirmed").'", "'.lang("This item is sold out now?").'");\' />
+                <input id="input-confirm-shipment" type="button" class="btn shipment" value="'.engine::lang('Confirm Shipment').'" onClick=\'confirm_order("'.$d["id"].'", "'.engine::lang("Post track number").'", "'.engine::lang("Shipment is confirmed").'", "'.engine::lang("This item is sold out now?").'");\' />
                 ';
-                $status = lang('New order');
+                $status = engine::lang('New order');
             }else{
-                $buttons = '<input vr-control id="input-archive" type="button" class="btn shipment" value="'.lang('Archive order').'" onClick=\'archive_order("'.$d["id"].'", "'.lang("Archive order").'");\' />';
-                $status = lang('Finished');
+                $buttons = '<input id="input-archive" type="button" class="btn shipment" value="'.engine::lang('Archive order').'" onClick=\'archive_order("'.$d["id"].'", "'.engine::lang("Archive order").'");\' />';
+                $status = engine::lang('Finished');
             }
-            $fout .= '<div class="print_order">
+            $fout = '<div class="print_order">
             <div class="print_order_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
             <div>
                 <div class="print_order_date">'.date("d/m/Y", $d["date"]).'<br/>
                 <strong>'.$status.'</strong></div>
                 <b>'.$product["title"].'</b><br/><br/>
                 <font class="print_order_price">$ '.$product["price"].'</font><br/><br/>
-                '.lang("Purchaser").': <a vr-control id="link-user-'.$order["user_id"].'-'.$d["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$order["user_id"].'" target="_blank">'.$user["name"].'</a><br/><br/>
-                '.lang("Shipping address").': '.$addresstr.'
+                '.engine::lang("Purchaser").': <a id="link-user-'.$order["user_id"].'-'.$d["id"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox/'.$order["user_id"]).'" target="_blank">'.$user["name"].'</a><br/><br/>
+                '.engine::lang("Shipping address").': '.$addresstr.'
             </div>
             <div class="clear"></div>
             <div class="print_order_buttons">';

@@ -2,8 +2,8 @@
 /**
 * Print order confirmation page.
 * @path /engine/core/account/print_order_confirm.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_order_confirm($site); </code>
@@ -31,7 +31,7 @@ function print_order_confirm($site){
         $r = engine::mysql($query);
         $order = mysqli_fetch_array($r);
         if($order["user_id"] != $_SESSION["user"]["id"]){
-            $site->title = lang("Access denied").' - '.$site->title;
+            $site->title = engine::lang("Access denied").' - '.$site->title;
             $site->onload .= ' parent.window.location = "'.$_SERVER["DIR"].'/account"; ';
             return;
         }else if(!empty($_POST["rating"])){
@@ -51,7 +51,7 @@ function print_order_confirm($site){
                 if(empty($d) && intval($_SESSION["user"]["id"]>0)){
                     $query = 'INSERT INTO `nodes_comment` (`url`, `reply`, `user_id`, `text`, `date`) '
                     . 'VALUES("'.$url.'", "'.intval($_POST["reply"]).'", "'.$_SESSION["user"]["id"].'", "'.$text.'", "'.date("U").'")';
-                    engine::mysql($query); 
+                    engine::mysql($query);
                 }
             }
             $query = 'UPDATE `nodes_product` SET `rating` = "'.($product["rating"]+$_POST["rating"]).'", '
@@ -67,13 +67,13 @@ function print_order_confirm($site){
         $images = explode(';', $product["img"]);
         $fout = '
         <div class="document delivery">
-            <h1>'.lang("Delivery confirmation").'</h1><br/><br/>
+            <h1>'.engine::lang("Delivery confirmation").'</h1><br/><br/>
             <div class="delivery_confirm">
                 <div class="delivery_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
                 <div>
                 <form method="POST">
                     <input type="hidden" name="rating" id="nodes_rating" value="5" />    
-                    <div class="delivery_quality">'.lang("Quality").':</div>
+                    <div class="delivery_quality">'.engine::lang("Quality").':</div>
                     <div class="rating_star">
                         <div class="rating_stars" >
                             <div class="rating_blank"></div>
@@ -81,8 +81,8 @@ function print_order_confirm($site){
                             <div class="rating_votes"></div>
                         </div>
                     </div><br/>
-                    <textarea vr-control id="textarea-comment" name="comment" class="input delivery_textarea" placeHolder="'.lang("Your comment here").'"></textarea><br/><br/>
-                    <input vr-control id="input-submit-confirmation" type="submit" class="btn w280" value="'.lang("Submit").'" /><br/>
+                    <textarea id="textarea-comment" name="comment" class="input delivery_textarea" placeHolder="'.engine::lang("Your comment here").'"></textarea><br/><br/>
+                    <input id="input-submit-confirmation" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/>
                 </form>
                 </div>
             </div>

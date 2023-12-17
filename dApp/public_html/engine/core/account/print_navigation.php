@@ -2,8 +2,8 @@
 /**
 * Print account navigation menu.
 * @path /engine/core/account/print_navigation.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,42 +14,45 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @param string $title Page title.
 * @return string Returns content of page on success, or die with error.
-* @usage <code> engine::print_navigation($site, lang("Profile")); </code>
+* @usage <code> engine::print_navigation($site, engine::lang("Profile")); </code>
 */
+
 function print_navigation($site, $title){
     $fout = '<div class="profile_menu">
         <div class="container">
             <span class="profile_menu_item show_all selected" ><a>'.$title.'</a>
-                <div class="fr nav_button" alt="'.lang("Show navigation").'">&nbsp;</div>    
+                <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>    
             </span>';
     $query = 'SELECT COUNT(*) FROM `nodes_inbox` WHERE `to` = "'.$_SESSION["user"]["id"].'" AND `readed` = 0';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     $count = '';
-    if($data[0]>0) $count = ' ('.$data[0].')';
-    if($_SESSION["user"]["admin"]=="1"){
-        $fout .= '<span vr-control id="profile_menu_span_3" class="profile_menu_item" onClick=\'document.getElementById("profile_menu_link_3").click();\'>'
-            . '<a vr-control id="profile_menu_link_3" href="'.$_SERVER["DIR"].'/admin">'.lang("Admin").'</a></span>';
+    if ($data[0]>0) {
+        $count = ' ('.$data[0].')';
     }
-    $fout .= '<span vr-control id="profile_menu_span_4" class="profile_menu_item '.($title == lang("Profile")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_4").click();\'>'
-        . '<a vr-control id="profile_menu_link_4" href="'.$_SERVER["DIR"].'/account">'.lang("Profile").'</a></span>';
+    if ($_SESSION["user"]["admin"]=="1") {
+        $fout .= '<span  id="profile_menu_span_3" class="profile_menu_item" onClick=\'document.getElementById("profile_menu_link_3").click();\'>'
+            . '<a id="profile_menu_link_3" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin').'">'.engine::lang("Admin").'</a></span>';
+    }
+    $fout .= '<span  id="profile_menu_span_1" class="profile_menu_item '.($title == engine::lang("Profile")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_1").click();\'>'
+        . '<a id="profile_menu_link_1" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account').'/account">'.engine::lang("Profile").'</a></span>';
 
     $fout .= '
-        <span vr-control id="profile_menu_span_2" class="profile_menu_item '.($title == lang("Finances")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_2").click();\'>'
-        . '<a vr-control id="profile_menu_link_2" href="'.$_SERVER["DIR"].'/account/finances">'.lang("Finances").'</a></span>';
+        <span id="profile_menu_span_2" class="profile_menu_item '.($title == engine::lang("Finances")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_2").click();\'>'
+        . '<a id="profile_menu_link_2" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/finances').'/account/finances">'.engine::lang("Finances").'</a></span>';
 
 
     $fout .= '
-        <span vr-control id="profile_menu_span_5" class="profile_menu_item '.($title == lang("Messages")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_5").click();\'>'
-        . '<a vr-control id="profile_menu_link_5" href="'.$_SERVER["DIR"].'/account/inbox">'.lang("Messages").$count.'</a></span>';
+        <span id="profile_menu_span_5" class="profile_menu_item '.($title == engine::lang("Messages")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_5").click();\'>'
+        . '<a id="profile_menu_link_5" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox').'/">'.engine::lang("Messages").$count.'</a></span>';
 
     $fout .= '
-        <span vr-control id="profile_menu_span_6" class="profile_menu_item '.($title == lang("Settings")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_6").click();\'>'
-        . '<a vr-control id="profile_menu_link_6" href="'.$_SERVER["DIR"].'/account/settings">'.lang("Settings").'</a></span>'
+        <span id="profile_menu_span_6" class="profile_menu_item '.($title == engine::lang("Settings")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_6").click();\'>'
+        . '<a id="profile_menu_link_6" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/settings').'/">'.engine::lang("Settings").'</a></span>'
         . '</div>'
     . '</div>';
     return $fout;

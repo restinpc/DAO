@@ -3,7 +3,7 @@
 * Backend dao page file.
 * @path /engine/site/dao.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,7 +20,7 @@ if(!empty($_GET[2])){
     $this->content = engine::error();
     return;
 } else if (!empty($_GET[1]) && $_GET[1] == "management") {
-    $this->title = lang("Decentralized management");
+    $this->title = engine::lang("Decentralized management");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public management of digital resources of a decentralized organization";
         $this->keywords = ["DAO", "Blockchain", "Management", "Decentralized organization", "Web 3.0"];
@@ -31,10 +31,10 @@ if(!empty($_GET[2])){
         $this->description = "Общественное управление цифровыми ресурсами децентрализованной организации";
         $this->keywords = ["DAO", "Blockchain", "Менеджмент", "Децентрализованная организация", "Web 3.0"];
     }
-    $this->content .= engine::print_dao_navigation(lang("Decentralized management"));
+    $this->content .= engine::print_dao_navigation(engine::lang("Decentralized management"));
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "monitor") {
-    $this->title = lang("Blockchain monitor");
+    $this->title = engine::lang("Blockchain monitor");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public monitoring of all DAO-related blockchain transactions";
         $this->keywords = ["DAO", "Blockchain", "Explorer", "Decentralized organization", "Web 3.0"];
@@ -45,11 +45,11 @@ if(!empty($_GET[2])){
         $this->description = "Публичный мониторинг всех связанных с DAO blockchain транзакций";
         $this->keywords = ["DAO", "Blockchain", "Мониторинг", "Децентрализованная организация", "Web 3.0"];
     }
-    $this->content .= engine::print_dao_navigation(lang("Blockchain monitor"));
+    $this->content .= engine::print_dao_navigation(engine::lang("Blockchain monitor"));
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "capitalization") {
-    $this->title = lang("Capitalization");
-    $this->keywords = ["DAO", lang("Capitalization"), lang("Decentralized organization"), "Web 3.0"];
+    $this->title = engine::lang("Capitalization");
+    $this->keywords = ["DAO", engine::lang("Capitalization"), engine::lang("Decentralized organization"), "Web 3.0"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Project capitalization history chart";
     } else if ($_SESSION["Lang"] == "zh") {
@@ -57,11 +57,11 @@ if(!empty($_GET[2])){
     } else {
         $this->description = "График истории капитализации проекта";
     }
-    $this->content .= engine::print_dao_navigation(lang("Capitalization"));
+    $this->content .= engine::print_dao_navigation(engine::lang("Capitalization"));
     $this->content .= '<iframe id="capital" src="'.$_SERVER["DIR"].'/apps/capital/" class="app" onLoad="loading_site();"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "market") {
-    $this->title = lang("P2P marketplace");
-    $this->keywords = ["DAO", "P2P", lang("Decentralized organization"), "Web 3.0"];
+    $this->title = engine::lang("P2P marketplace");
+    $this->keywords = ["DAO", "P2P", engine::lang("Decentralized organization"), "Web 3.0"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Internal P2P platform of the project with support for digital and physical spot trading";
     } else if ($_SESSION["Lang"] == "zh") {
@@ -69,11 +69,11 @@ if(!empty($_GET[2])){
     } else {
         $this->description = "Внутренняя P2P площадка проекта с поддержкой цифровой и физической спотовой торговли";
     }
-    $this->content .= engine::print_dao_navigation(lang("P2P marketplace"));
+    $this->content .= engine::print_dao_navigation(engine::lang("P2P marketplace"));
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "git") {
-    $this->title = lang("Git repository");
-    $this->keywords = ["DAO", "Git", lang("Decentralized organization"), "Web 3.0"];
+    $this->title = engine::lang("Git repository");
+    $this->keywords = ["DAO", "Git", engine::lang("Decentralized organization"), "Web 3.0"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public Git repository of the project";
     } else if ($_SESSION["Lang"] == "zh") {
@@ -81,7 +81,7 @@ if(!empty($_GET[2])){
     } else {
         $this->description = "Публичный Git репозиторий проекта";
     }
-    $this->content .= engine::print_dao_navigation(lang("Git repository"));
+    $this->content .= engine::print_dao_navigation(engine::lang("Git repository"));
     $this->content .= '<iframe src="/git.php" onLoad="loading_site();" width="100%" class="app"></iframe>';
 } else {
     $this->content = engine::error();

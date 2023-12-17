@@ -3,7 +3,7 @@
 * AJAX requsts processor.
 * @path /engine/code/bin.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -121,12 +121,12 @@ if(!empty($_POST["id"])){
         $query = 'SELECT * FROM `nodes_transaction` WHERE `user_id` = "'.$user["id"].'" AND `status` = "1"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        if(!empty($data)) die(lang("Withdrawal already requested"));
+        if(!empty($data)) die(engine::lang("Withdrawal already requested"));
         $query = 'INSERT INTO `nodes_transaction`(user_id, order_id, amount, status, date, comment)'
                 . 'VALUES("'.$_SESSION["user"]["id"].'", "0", "'.$user["balance"].'", "1", "'.date("U").'", "'.$paypal.'" )';
         engine::mysql($query);
         email::new_withdrawal($user["id"], $user["balance"], "PayPal", $paypal);
-        die(lang("Withdrawal request accepted"));
+        die(engine::lang("Withdrawal request accepted"));
     }else if(!empty($_POST["transaction"]) && !empty($_POST["user_id"]) && $_SESSION["user"]["admin"]=="1"){
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
                 . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "users" '
@@ -136,7 +136,7 @@ if(!empty($_POST["id"])){
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
         if($admin_access != 2){
-            die(lang("Error"));
+            die(engine::lang("Error"));
         }
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.intval($_POST["user_id"]).'"';
         $res = engine::mysql($query);
@@ -147,7 +147,7 @@ if(!empty($_POST["id"])){
         engine::mysql($query);
         $query = 'UPDATE `nodes_user` SET `balance` = "'.$balance.'" WHERE `id` = "'.intval($_POST["user_id"]).'"';
         engine::mysql($query);
-        die(lang("Transaction completed"));
+        die(engine::lang("Transaction completed"));
     }else if(!empty($_POST["comment_id"]) && $_SESSION["user"]["admin"]=="1"){
         $query = 'DELETE FROM `nodes_comment` WHERE `id` = "'.intval($_POST["comment_id"]).'"';
         engine::mysql($query);
@@ -160,7 +160,7 @@ if(!empty($_POST["id"])){
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
         if($admin_access != 2){
-            die(lang("Error"));
+            die(engine::lang("Error"));
         }
         $query = 'SELECT * FROM `nodes_product_order` WHERE `id` = "'.intval($_POST["order_id"]).'"';
         $res = engine::mysql($query);
@@ -182,7 +182,7 @@ if(!empty($_POST["id"])){
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
         if($admin_access != 2){
-            die(lang("Error"));
+            die(engine::lang("Error"));
         }
         $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.intval($_POST["product_id"]).'"';
         $res = engine::mysql($query);
@@ -215,7 +215,7 @@ if(!empty($_POST["id"])){
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
         if($admin_access != 2){
-            die(lang("Error"));
+            die(engine::lang("Error"));
         }
         $query = 'UPDATE `nodes_product` SET `status` = 2 WHERE `id` = "'.intval($_POST["archive_id"]).'" AND `user_id` = "'.$_SESSION["user"]["id"].'"';
         engine::mysql($query);
@@ -228,7 +228,7 @@ if(!empty($_POST["id"])){
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
         if($admin_access != 2){
-            die(lang("Error"));
+            die(engine::lang("Error"));
         }
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
                 . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "Pages" '

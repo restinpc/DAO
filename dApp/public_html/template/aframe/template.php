@@ -3,7 +3,7 @@
 * Template file.
 * @path /template/empty/template.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $this->title - Page title
@@ -19,7 +19,7 @@ if(!isset($_POST["jQuery"])){
 $header = '
 <div id="content">
 <!-- content -->';
-//  Header End  
+//  Header End
 //------------------------------------------------------------------------------
 //  Footer Start
 $footer = '

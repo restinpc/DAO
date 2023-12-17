@@ -3,7 +3,7 @@
  * Prints an metaverse whitepaper.
  * @path /engine/core/webvr/print_ru_metaverse.php
  *
- * @name    DAO Mansion    @version 1.0.0
+ * @name    DAO Mansion    @version 1.0.2
  * @param object $site Site class object.
  * @return string Returns content of metaverse whitepaper.
  * @usage <code>

@@ -3,7 +3,7 @@
 * Framework session loader.
 * @path /engine/nodes/session.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -44,7 +44,6 @@ if (!empty($_COOKIE["token"])) {
         engine::mysql($query);
     }
 }
-
 if (!empty($_POST["template"])) {
     $_SESSION["template"] = $_POST["template"];
 } else if (empty($_SESSION["template"])) {
@@ -74,26 +73,6 @@ if (!empty($_REQUEST["lang"])) {
         }
     }
 }
-
-function lang($key) {
-    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "'.$_SESSION["Lang"].'"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if (!empty($data["value"])) {
-        return $data["value"];
-    } else {
-        $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "en" AND `value` <> ""';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        if (!empty($d)) {
-            return $d["value"];
-        } else {
-            $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$key.'", "en", "'.$key.'")';
-            engine::mysql($query);
-            return $key;
-        }
-    }
-}
 $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
 $res = engine::mysql($query);
 $ref = mysqli_fetch_array($res);
@@ -104,7 +83,6 @@ if(!empty($_SERVER["HTTP_REFERER"])) {
         $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
     } else $ref_id = -1;
 } else $ref_id = 0;
-
 if (strpos($_SERVER["SCRIPT_URI"], "/search") === false
     && strpos($_SERVER["SCRIPT_URI"], "/account") === false
     && strpos($_SERVER["SCRIPT_URI"], "/admin") === false

@@ -2,8 +2,8 @@
 /**
 * Print product page.
 * @path /engine/core/product/print_product.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @param array $data @mysql[nodes_product].
 * @return string Returns content of page on success, or die with error.
@@ -37,10 +37,10 @@ function print_product($site, $data){
                         <div class="baseimage" style="margin-top: -'.(160-round($rating)*32).'px;" ></div>
                     </div>
                     <div class="votes">
-                       '.$rating.' / 5.00 ('.$data["votes"].' '.lang("votes").')
+                       '.$rating.' / 5.00 ('.$data["votes"].' '.engine::lang("votes").')
                     </div>
                 </div>
-                <div class="share_block"><div>'.lang("Share friends").'</div><br/>'.
+                <div class="share_block"><div>'.engine::lang("Share friends").'</div><br/>'.
                     engine::print_share($site, $_SERVER["PUBLIC_URL"].'/product/'.$data["id"], $data["title"]).'</div>
                 <div class="clear"></div>
                 <p>'.$data["text"].'</p>
@@ -58,29 +58,29 @@ function print_product($site, $data){
     $flag = 0;
     while($d = mysqli_fetch_array($res)){
         $flag = 1;
-        $list .= '<li>'.lang($d["name"]).': <b>'.lang($d["value"]).'</b></li>';
+        $list .= '<li>'.engine::lang($d["name"]).': <b>'.engine::lang($d["value"]).'</b></li>';
     }
     $list .= '</ul><br/>';
     if($flag) $fout .= $list;
-    $fout .= '<div vr-control id="buy-now-'.$data["id"].'" class="btn w280" ';
+    $fout .= '<div  id="buy-now-'.$data["id"].'" class="btn w280" ';
         if($data["user_id"]==$_SESSION["user"]["id"]){
-            $fout .= ' onClick=\'alert("'.lang("Unable to purchase your own product").'")\' ';  
+            $fout .= ' onClick=\'alert("'.engine::lang("Unable to purchase your own product").'")\' ';
         }else{
             $fout .= ' onClick=\'buy_now('.$data["id"].', '
-                    . '"'.lang("A new item has been added to your Shopping Cart").'", '
-                    . '"'.lang("Continue").'", '
-                    . '"'.lang("Checkout").'");\' ';
+                    . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
+                    . '"'.engine::lang("Continue").'", '
+                    . '"'.engine::lang("Checkout").'");\' ';
         }
         $fout .= ' >
                     <div class="detail_buy_now">
-                        <div class="label_1">'.lang("Buy Now").'&nbsp;</div> 
+                        <div class="label_1">'.engine::lang("Buy Now").'&nbsp;</div> 
                         <div class="label_2 cart_img">&nbsp;</div>
                         <div class="label_3">&nbsp;$'.intval($data["price"]).'</div>    
                     </div>
-                </div><a vr-control id="show_comments" href="#comments" onClick=\'document.getElementById("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.lang("Show comments").'</button></a>';
+                </div><a id="show_comments" href="#comments" onClick=\'document.getElementById("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.engine::lang("Show comments").'</button></a>';
     if($_SESSION["user"]["id"]=="1"){
         $fout .= '<br/><br/>
-                <a vr-control id="edit-product" href="'.$_SERVER["DIR"].'/admin/?mode=products&action=edit&id='.$data["id"].'"><button class="btn w280">'.lang("Edit product").'</button></a>';
+                <a id="edit-product" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=products&action=edit&id='.$data["id"]).'"><button class="btn w280">'.engine::lang("Edit product").'</button></a>';
     }
     $fout .= '</div>
             <div class="clear"><br/></div>
@@ -89,14 +89,14 @@ function print_product($site, $data){
         if(!empty($data["description"])){ $fout .= $data["description"].'<br/>'; }
     $fout .= '<div id="comments_block">
         <a name="comments"></a>
-        <div class="tal pl10 fs21"><b>'.lang("Latest comments").'</b><br/><br/></div>
+        <div class="tal pl10 fs21"><b>'.engine::lang("Latest comments").'</b><br/><br/></div>
         '.engine::print_comments("/product/".$data["id"]).'<br/>
         </div>
     </div>';
     $blocks = engine::print_more_products($site, $data["id"]);
     if(!empty($blocks)){
         $new_fout .= '<div class="clear"></div><br/>'
-            . '<div class="tal pl10 fs21"><b>'.lang("You might also be interested in").'</b></div>
+            . '<div class="tal pl10 fs21"><b>'.engine::lang("You might also be interested in").'</b></div>
                 <br/><br/>
             <div class="preview_blocks">'
             .$blocks.

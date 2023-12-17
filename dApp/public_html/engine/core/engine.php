@@ -3,14 +3,14 @@
 * Framework engine class.
 * @path /engine/core/engine.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @example <code> engine::timezone_list(); </code>
 */
-class engine{
-//------------------------------------------------------------------------------
+
+class engine {
 /**
 * Includes a file from engine/core/../<function_name>.php and
 * execute <function_name>($arguments[0], $arguments[1], ...);
@@ -57,51 +57,85 @@ public static function __callStatic($name, $arguments) {
             return $name($arguments[0]);
         }else if($count==2){
             return $name(
-                    $arguments[0],
-                    $arguments[1]
-                    );
+                $arguments[0],
+                $arguments[1]
+            );
         }else if($count==3){
             return $name(
-                    $arguments[0],
-                    $arguments[1],
-                    $arguments[2]
-                    );
+                $arguments[0],
+                $arguments[1],
+                $arguments[2]
+            );
         }else if($count==4){
             return $name(
-                    $arguments[0],
-                    $arguments[1],
-                    $arguments[2],
-                    $arguments[3]
-                    );
+                $arguments[0],
+                $arguments[1],
+                $arguments[2],
+                $arguments[3]
+            );
         }else if($count==5){
             return $name(
-                    $arguments[0],
-                    $arguments[1],
-                    $arguments[2],
-                    $arguments[3],
-                    $arguments[4]
-                    );
+                $arguments[0],
+                $arguments[1],
+                $arguments[2],
+                $arguments[3],
+                $arguments[4]
+            );
         }else if($count==6){
             return $name(
-                    $arguments[0],
-                    $arguments[1],
-                    $arguments[2],
-                    $arguments[3],
-                    $arguments[4],
-                    $arguments[5]
-                    );
+                $arguments[0],
+                $arguments[1],
+                $arguments[2],
+                $arguments[3],
+                $arguments[4],
+                $arguments[5]
+            );
         }else if($count==7){
             return $name(
-                    $arguments[0],
-                    $arguments[1],
-                    $arguments[2],
-                    $arguments[3],
-                    $arguments[4],
-                    $arguments[5],
-                    $arguments[6]
-                    );
+                $arguments[0],
+                $arguments[1],
+                $arguments[2],
+                $arguments[3],
+                $arguments[4],
+                $arguments[5],
+                $arguments[6]
+            );
         }
     }else self::error();
+}
+//------------------------------------------------------------------------------
+static function lang($key) {
+    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "'.$_SESSION["Lang"].'"';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    if (!empty($data["value"])) {
+        return $data["value"];
+    } else {
+        $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "en" AND `value` <> ""';
+        $res = engine::mysql($query);
+        $d = mysqli_fetch_array($res);
+        if (!empty($d)) {
+            return $d["value"];
+        } else {
+            $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$key.'", "en", "'.$key.'")';
+            engine::mysql($query);
+            return $key;
+        }
+    }
+}
+//------------------------------------------------------------------------------
+static function href($url) {
+    $fout = $url;
+    if ($_SESSION["Lang"] != "ru") {
+        if (!strpos($url, 'lang=')) {
+            if (strpos($url, "?")) {
+                $fout = $url . "&lang=" . $_SESSION["Lang"];
+            } else {
+                $fout = $url . "?lang=" . $_SESSION["Lang"];
+            }
+        }
+    }
+    return $fout;
 }
 //------------------------------------------------------------------------------
 /**

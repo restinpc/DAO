@@ -2,8 +2,8 @@
 /**
 * Print admin outbox page.
 * @path /engine/core/admin/print_admin_outbox.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,7 +13,7 @@
 * @var $cms->menu - Page HTML navigaton menu.
 * @var $cms->onload - Page executable JavaScript code.
 * @var $cms->statistic - Array with statistics.
-* 
+*
 * @param object $cms Admin class object.
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_outbox($cms); </code>
@@ -31,7 +31,7 @@ function print_admin_outbox($cms){
         return;
     }
     if($_SESSION["order"]=="id") $_SESSION["order"] = "date";
-    $arr_count = 0;    
+    $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
     $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
     $fout = '<div class="document640">';
@@ -48,7 +48,7 @@ function print_admin_outbox($cms){
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             if(!empty($data)){
-                $fout .= '<script>alert("'.lang("This bulk message already exist").'");</script>';
+                $fout .= '<script>alert("'.engine::lang("This bulk message already exist").'");</script>';
             }else{
                 $query = 'INSERT INTO `nodes_outbox`(caption, text, action, date) '
                         . 'VALUES("'.$caption.'", "'.$text.'", "'.$action.'", "'.date("U").'")';
@@ -61,35 +61,35 @@ function print_admin_outbox($cms){
                             . 'VALUES("'.$user["id"].'", "'.$id.'", "0", "0")';
                     engine::mysql($query);
                 }
-                $fout = '<script>alert("'.lang("Bulk message is sending now").'"); window.location="'.$_SERVER["DIR"].'/admin?mode=outbox";</script>';
+                $fout = '<script>alert("'.engine::lang("Bulk message is sending now").'"); window.location="'.$_SERVER["DIR"].'/admin?mode=outbox";</script>';
                 return $fout;
             }
         }
-        $fout .= '<h2>'.lang("New bulk message").'</h2><br/>
+        $fout .= '<h2>'.engine::lang("New bulk message").'</h2><br/>
         <div class="table">
             <form method="POST">
             <table width=100% id="table">
             <tr>
-                <td>'.lang("Caption").'</td>
-                <td><input vr-control id="input-bulk-caption" type="text" name="caption" class="input w100p" /></td>
+                <td>'.engine::lang("Caption").'</td>
+                <td><input id="input-bulk-caption" type="text" name="caption" class="input w100p" /></td>
             </tr>
             <tr>
-                <td>'.lang("Action").'</td>
+                <td>'.engine::lang("Action").'</td>
                 <td>
-                    <select vr-control id="select-action" type="text" name="action" class="input w100p" >
-                        <option vr-control id="option-action-0" value="0">'.lang("Send to email").'</option>
-                        <option vr-control id="option-action-1" value="1">'.lang("Send in chat").'</option>
-                        <option vr-control id="option-action-2" value="2">'.lang("Send as notification").'</option>
+                    <select  id="select-action" type="text" name="action" class="input w100p" >
+                        <option id="option-action-0" value="0">'.engine::lang("Send to email").'</option>
+                        <option id="option-action-1" value="1">'.engine::lang("Send in chat").'</option>
+                        <option id="option-action-2" value="2">'.engine::lang("Send as notification").'</option>
                     </select>
                 </td>
             </tr>
             <tr>
-                <td colspan=2><textarea vr-control id="textarea-message" name="text" class="input w100p" rows=5 placeHolder="'.lang("Text of message").'" ></textarea></td>
+                <td colspan=2><textarea id="textarea-message" name="text" class="input w100p" rows=5 placeHolder="'.engine::lang("Text of message").'" ></textarea></td>
             </tr>
             </table><br/>
-            <input vr-control id="input-bulk-send" type="submit" class="btn w280" value="'.lang("Send messages").'" />
+            <input id="input-bulk-send" type="submit" class="btn w280" value="'.engine::lang("Send messages").'" />
             </form><br/>
-            <a vr-control id="back-to-outbox" href="'.$_SERVER["DIR"].'/admin/?mode=outbox"><input class="btn w280" type="button" value="'.lang("Back to outbox").'" /></a>
+            <a id="back-to-outbox" href="'.$_SERVER["DIR"].'/admin/?mode=outbox"><input class="btn w280" type="button" value="'.engine::lang("Back to outbox").'" /></a>
         </div>';
     }else{
         if(!empty($_POST["id"])){
@@ -119,9 +119,9 @@ function print_admin_outbox($cms){
                 ); foreach($array as $order=>$value){
                     $table .= '<th>';
                     if($_SESSION["order"]==$order){
-                        if($_SESSION["method"]=="ASC") $table .= '<a vr-control id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "DESC"; submit_search_form();\'>'.lang($value).'&nbsp;&uarr;</a>';
-                        else $table .= '<a vr-control id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.lang($value).'&nbsp;&darr;</a>';
-                    }else $table .= '<a vr-control id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.lang($value).'</a>';
+                        if($_SESSION["method"]=="ASC") $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "DESC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+                        else $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
+                    }else $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'</a>';
                     $table .= '</th>';
                 }
                 $table .= '
@@ -134,7 +134,7 @@ function print_admin_outbox($cms){
             if($data["action"]) $action = "Chat";
             else $action = "Email";
             $table .= '<tr>
-                <td vr-control id="td-text-'.$arr_count.'" align=left valign=middle onClick=\'alert("'.$data["text"].'");\' class="pointer" title="'.strip_tags($data["text"]).'">'.$data["caption"].'</td>
+                <td  id="td-text-'.$arr_count.'" align=left valign=middle onClick=\'alert("'.$data["text"].'");\' class="pointer" title="'.strip_tags($data["text"]).'">'.$data["caption"].'</td>
                 <td align=left valign=middle>'.$action.'</td>
                 <td align=left valign=middle>'.$data["sended"].' / '.$data["total"].'</td>
                 <td align=left valign=middle>'.date("d/m/Y H:i", $data["date"]).'</td>
@@ -143,7 +143,7 @@ function print_admin_outbox($cms){
                 $table .= '
                     <form method="POST">
                         <input type="hidden" name="id" value="'.$data["id"].'" />
-                        <input vr-control id="input-chat-'.$arr_count.'" type="submit" value="'.lang("Delete").'" onClick=\'if(!confirm("'.lang("Are you sure?").'")){event.preventDefault(); return 0;}\' class="btn small" />
+                        <input id="input-chat-'.$arr_count.'" type="submit" value="'.engine::lang("Delete").'" onClick=\'if(!confirm("'.engine::lang("Are you sure?").'")){event.preventDefault(); return 0;}\' class="btn small" />
                     </form>';
             }
             $table .= '
@@ -165,19 +165,19 @@ function print_admin_outbox($cms){
         $count = $data[0];
         if($to > $count) $to = $count;
         if($data[0]>0){
-            $fout .= '<p class="p5">'.lang("Showing").' '.$from.' '.lang("to").' '.$to.' '.lang("from").' '.$count.' '.lang("entries").', 
-                <nobr><select vr-control id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
-                 <option vr-control id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-                 <option vr-control id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-                 <option vr-control id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
-                </select> '.lang("per page").'.</nobr></p>';
+            $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
+                <nobr><select  id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
+                 <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
+                 <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
+                 <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+                </select> '.engine::lang("per page").'.</nobr></p>';
         }$fout .= '
         </div><div class="cr"></div>';
         if($count>$_SESSION["count"]){
            $fout .= '<div class="pagination" >';
                 $pages = ceil($count/$_SESSION["count"]);
                if($_SESSION["page"]>1){
-                    $fout .= '<span vr-control id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Previous").'</a></span>';
+                    $fout .= '<span  id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                 }$fout .= '<ul>';
                $a = $b = $c = $d = $e = $f = 0;
                for($i = 1; $i <= $pages; $i++){
@@ -190,7 +190,7 @@ function print_admin_outbox($cms){
                            $b = 1; $e = 0;
                           $fout .= '<li class="active-page">'.$i.'</li>';
                        }else{
-                           $fout .= '<li vr-control id="page-'.$i.'" onClick=\'goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                           $fout .= '<li  id="page-'.$i.'" onClick=\'goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                        }
                    }else if((!$c||!$b) && !$f && $i<$pages){
                        $f = 1; $e = 0;
@@ -199,18 +199,18 @@ function print_admin_outbox($cms){
                        $fout .= '<li class="dots">. . .</li>';
                    }
                }if($_SESSION["page"]<$pages){
-                   $fout .= '<li vr-control id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Next").'</a></li>';
+                   $fout .= '<li  id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                }$fout .= '
          </ul>
         </div>';
              }$fout .= '<div class="clear"></div>';
         $fout .= '</form>';
         }else{
-            $fout .= '<div class="clear_block">'.lang("Messages not found").'</div>';
+            $fout .= '<div class="clear_block">'.engine::lang("Messages not found").'</div>';
         }
         if($admin_access == 2){
-            $fout .= '<br/><br/><a vr-control id="new_bulk" href="'.$_SERVER["DIR"].'/admin/?mode=outbox&act=new">'
-                    . '<input type="button" class="btn w280" value="'.lang("New bulk message").'"></a>';
+            $fout .= '<br/><br/><a id="new_bulk" href="'.$_SERVER["DIR"].'/admin/?mode=outbox&act=new">'
+                    . '<input type="button" class="btn w280" value="'.engine::lang("New bulk message").'"></a>';
         }
     }
     $fout .= '</div>';

@@ -2,8 +2,8 @@
 /**
 * Print admin config page.
 * @path /engine/core/admin/print_admin_config.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,7 +13,7 @@
 * @var $cms->menu - Page HTML navigaton menu.
 * @var $cms->onload - Page executable JavaScript code.
 * @var $cms->statistic - Array with statistics.
-* 
+*
 * @param object $cms Admin class object.
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_config($cms); </code>
@@ -53,13 +53,13 @@ function print_admin_config($cms){
                 <tr>
                     <td width=100 align=left class="p5">'.$data["text"].'</td>
                     <td class="p5" align=left >
-                    <select vr-control id="select-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" name="'.$data["name"].'">';
+                    <select  id="select-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" name="'.$data["name"].'">';
             if($data["value"]){
-                $fout .= '<option vr-control id="option-no-'.$i.'" value="0">'.lang("No").'</option>'
-                        . '<option vr-control id="option-yes-'.$i.'" value="1" selected>'.lang("Yes").'</option>';
+                $fout .= '<option id="option-no-'.$i.'" value="0">'.engine::lang("No").'</option>'
+                        . '<option id="option-yes-'.$i.'" value="1" selected>'.engine::lang("Yes").'</option>';
             }else{
-                $fout .= '<option vr-control id="option-no-'.$i.'" value="0" selected>'.lang("No").'</option>'
-                        . '<option vr-control id="option-yes-'.$i.'" value="1">'.lang("Yes").'</option>';
+                $fout .= '<option id="option-no-'.$i.'" value="0" selected>'.engine::lang("No").'</option>'
+                        . '<option id="option-yes-'.$i.'" value="1">'.engine::lang("Yes").'</option>';
             }
             $fout .= '        
                     </select>
@@ -70,7 +70,7 @@ function print_admin_config($cms){
                 <tr>
                     <td width=100 align=left class="p5">'.$data["text"].'</td>
                     <td class="p5" align=left >
-                    <input vr-control id="input-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" type="text" name="'.$data["name"].'" value="'.$data["value"].'" />
+                    <input id="input-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" type="text" name="'.$data["name"].'" value="'.$data["value"].'" />
                     </td>
                 </tr>';
         }
@@ -79,7 +79,7 @@ function print_admin_config($cms){
             . '</div>';
     if($admin_access == 2){
         $fout .= '<br/>'
-            . '<input vr-control id="input-save-settings" type="submit" class="btn w280" value="'.lang("Save settings").'" />';
+            . '<input id="input-save-settings" type="submit" class="btn w280" value="'.engine::lang("Save settings").'" />';
     }
     $fout .= '</form>'
             . '</div>';

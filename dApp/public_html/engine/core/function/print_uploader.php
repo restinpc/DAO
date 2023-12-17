@@ -2,8 +2,8 @@
 /**
 * Prints image uploader form.
 * @path /engine/core/function/print_uploder.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -23,7 +23,7 @@ function print_uploader($count=1){
         }
     $fout .= '
     <div class="clear"></div><br/>
-    <input vr-control id="input-upload-new" type="button" class="btn w280" id="uploading_button1" value="'.lang("Upload new image").'" onClick=\' try{  
+    <input id="input-upload-new" type="button" class="btn w280" id="uploading_button1" value="'.engine::lang("Upload new image").'" onClick=\' try{  
         parent.document.getElementById("uploading_button1").style.display="none"; 
         parent.document.getElementById("new_img1").style.display="block"; 
     }catch(e){ } \' />

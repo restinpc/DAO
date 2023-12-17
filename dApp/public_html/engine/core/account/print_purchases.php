@@ -2,8 +2,8 @@
 /**
 * Print account purchases page.
 * @path /engine/core/account/print_purchases.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_purchases($site); </code>
@@ -27,7 +27,7 @@ function print_purchases($site){
     while($data = mysqli_fetch_array($res)){
         if($data["status"]=="1"){
             $site->onload .= '
-                alert("'.lang("Thank you for your order! Shipment in process now.").'");
+                alert("'.engine::lang("Thank you for your order! Shipment in process now.").'");
                 document.getElementById("purcases_count").innerHTML = "";
                 document.getElementById("purcases").style.display = "none";
                 ';
@@ -37,7 +37,7 @@ function print_purchases($site){
         $flag = 1;
         $fout .= engine::print_purchase($site, $data);
     }if(!$flag){
-        $fout .= '<div class="clear_block">'.lang("There is no purchases").'</div>';
+        $fout .= '<div class="clear_block">'.engine::lang("There is no purchases").'</div>';
     }$fout .= '</div>';
     return $fout;
 }

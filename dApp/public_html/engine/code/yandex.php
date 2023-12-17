@@ -3,15 +3,15 @@
 * Yandex payment processor.
 * @path /engine/code/yandex.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 require_once("engine/nodes/session.php");
 $validate = $_POST["notification_type"].'&'.$_POST["operation_id"].'&'.$_POST["amount"].'&'.$_POST["currency"].'&'.$_POST["datetime"].'&'.$_POST["sender"].'&'.$_POST["codepro"].'&0rpDbwhcMPf+lRF4sqY+Z+TJ&'.$_POST["label"];
-if( !empty($_POST["withdraw_amount"]) && 
-    $_POST["sha1_hash"] == sha1($validate) && 
-    $_POST["currency"] == 643 && 
+if( !empty($_POST["withdraw_amount"]) &&
+    $_POST["sha1_hash"] == sha1($validate) &&
+    $_POST["currency"] == 643 &&
     $_POST["unaccepted"] == "false"
 ){
     $invoice_id = intval($_POST["label"]);

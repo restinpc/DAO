@@ -3,7 +3,7 @@
 * Print account inbox page.
 * @path /engine/core/account/print_inbox.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -35,7 +35,7 @@ function print_inbox($site, $target_id){
         $res = engine::mysql($query);
         $target= mysqli_fetch_array($res);
         if(empty($target)) return engine::error();
-        if($target["ban"]==1) return '<div class="clear_block">'.lang("User banned").'</div>';
+        if($target["ban"]==1) return '<div class="clear_block">'.engine::lang("User banned").'</div>';
         $site->onload .= '
             refresh_chat("'.$target_id.'");
             setInterval(refresh_chat, 10000, "'.$target_id.'");
@@ -47,15 +47,15 @@ function print_inbox($site, $target_id){
         $res = engine::mysql($query);
         $u = mysqli_fetch_array($res);
         if($target["online"] > date("U")-300){
-            $online = '<br/><font class="chat_font">'.lang("online").'</font>';
+            $online = '<br/><font class="chat_font">'.engine::lang("online").'</font>';
         }else{
-            $online = '<br/><font class="chat_font">'.lang("offline").'</font>';
+            $online = '<br/><font class="chat_font">'.engine::lang("offline").'</font>';
         }
         $fout .= '<div class="chat_user_left">
                 <img src="'.$_SERVER["DIR"].'/img/pic/'.$u["photo"].'" width=50 /><br/>
                 <div class="chat_user_name">
                     <font class="chat_user_name_font">'.$u["name"].'</font>
-                    <font class="chat_font">'.lang("online").'</font>
+                    <font class="chat_font">'.engine::lang("online").'</font>
                 </div>
             </div>
             <div id="div-user-'.$target["id"].'" class="chat_user_right" onClick=\'document.getElementById("target").click();\'>
@@ -66,10 +66,10 @@ function print_inbox($site, $target_id){
                 </div>
             </div>
             <div class="chat_center">
-                <textarea name="text" id="nodes_message_text" class="input" placeHolder="'.lang("Your message here").'"
+                <textarea name="text" id="nodes_message_text" class="input" placeHolder="'.engine::lang("Your message here").'"
                 onkeypress=\'if(event.keyCode==13&&!event.shiftKey){ event.preventDefault(); post_message("'.$target_id.'"); } \'
                 ></textarea><br/>
-                <input id="send-message" type="button" onClick=\'post_message("'.$target_id.'");\' class="btn" value="'.lang("Send message").'"  />
+                <input id="send-message" type="button" onClick=\'post_message("'.$target_id.'");\' class="btn" value="'.engine::lang("Send message").'"  />
             </div>
             <div class="clear"></div><br/>';
     }else{
@@ -77,7 +77,7 @@ function print_inbox($site, $target_id){
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         if(empty($data)){
-            $fout .= '<div class="clear_block">'.lang("There is no users, you can send a message").'</div>';
+            $fout .= '<div class="clear_block">'.engine::lang("There is no users, you can send a message").'</div>';
         }else{
             $query = 'SELECT * FROM `nodes_user` WHERE `id` <> "'.$_SESSION["user"]["id"].'" AND `ban` <= 0';
             $res = engine::mysql($query);
@@ -95,13 +95,13 @@ function print_inbox($site, $target_id){
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 if($d[0] > 0){
-                    if($d[0] == 1) $new = '<span class="new_message">'.lang("New message").'</span><br/>';
-                    else $new = '<span class="new_message">'.$d[0].' '.lang("new messages").'</span><br/>';
+                    if($d[0] == 1) $new = '<span class="new_message">'.engine::lang("New message").'</span><br/>';
+                    else $new = '<span class="new_message">'.$d[0].' '.engine::lang("new messages").'</span><br/>';
                 }else $new = '';
                 if($u["online"] > date("U")-300){
-                    $online = '<font class="chat_font">'.lang("online").'</font>';
+                    $online = '<font class="chat_font">'.engine::lang("online").'</font>';
                 }else{
-                    $online = '<font class="chat_font">'.lang("offline").'</font>';
+                    $online = '<font class="chat_font">'.engine::lang("offline").'</font>';
                 }
                 $fout .= '<a id="link-user-'.$u["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$u["id"].'">'
                         . '<div class="user_block">'

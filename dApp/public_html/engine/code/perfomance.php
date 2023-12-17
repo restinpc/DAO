@@ -3,7 +3,7 @@
 * Perfomance graph.
 * @path /engine/code/perfomance.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -16,7 +16,7 @@ $county=10; // Lines count
 //------------------------------------------------------------------------------
 /**
 * Draws a wide canvas line.
-* 
+*
 * @param resource $image Source image.
 * @param int $x1 X-coordinate for point 1.
 * @param int $y1 Y-coordinate for point 1.
@@ -31,11 +31,11 @@ function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1){
     array_push($_SERVER["CONSOLE"], "draw_line(..)");
     $t = $thick / 2 - 0.5;
     if ($x1 == $x2 || $y1 == $y2) {
-        return imagefilledrectangle($image, 
-            round(min($x1, $x2) - $t), 
-            round(min($y1, $y2) - $t), 
-            round(max($x1, $x2) + $t), 
-            round(max($y1, $y2) + $t), 
+        return imagefilledrectangle($image,
+            round(min($x1, $x2) - $t),
+            round(min($y1, $y2) - $t),
+            round(max($x1, $x2) + $t),
+            round(max($y1, $y2) + $t),
             $color
         );
     }
@@ -86,7 +86,7 @@ for ($i=0;$i<10;$i++) {
         $step = 2.5;
         $from = strtotime($date." ".date("H:i:s")." - ".((10-$i)*120)." minutes");
         $to = strtotime($date." ".date("H:i:s")." - ".((9-$i)*120)." minutes");
-        $DATA["x"][]=date("H:i", $to); 
+        $DATA["x"][]=date("H:i", $to);
     }
     $query = 'SELECT * FROM `nodes_perfomance` WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'"';
     $res = engine::mysql($query);
@@ -106,12 +106,12 @@ for ($i=0;$i<10;$i++) {
     $mid_server = mysqli_fetch_array($res);
     if($script>0){
         $script_time = $script/$count;
-    }else{ 
+    }else{
         $script_time = 0;
     }
     if($server>0){
         $server_time = $server/$count;
-    }else{ 
+    }else{
         $server_time = 0;
     }
     $DATA[0][] = $script_time;
@@ -193,7 +193,7 @@ for ($i=1;$i<$count;$i++) {
             }else{
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[1],10);
             }
-        } 
+        }
         $y=$Y0-($RH/$max*$DATA[0][$i]);
         if($DATA[0][$i]>0){
             if($mid_script[0]<$DATA[0][$i]){

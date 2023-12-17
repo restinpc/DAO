@@ -3,7 +3,7 @@
 * Prints comments block.
 * @path /engine/core/content/print_comments.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -11,9 +11,12 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_comments("/"); </code>
 */
+
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 function print_comment($id, $noreply = 0){
+    $fout = '';
+    $fout1 = '';
     $query = 'SELECT * FROM `nodes_comment` WHERE `id` = "'.intval($id).'"';
     $rc = engine::mysql($query);
     $c = mysqli_fetch_array($rc);
@@ -23,17 +26,17 @@ function print_comment($id, $noreply = 0){
     if(!empty($c)){
         $fout .= '<tr><td align=left valign=top class="comment">
                 <div class="comment_image">
-                    <a id="comment-user-'.$id.'" href="'.$_SERVER["DIR"].'/'.$d['url'].'"><img src="'.$_SERVER["DIR"].'/img/pic/'.$d["photo"].'" width=50 /></a>
+                    <a id="comment-user-'.$id.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/'.$d['url']).'"><img src="'.$_SERVER["DIR"].'/img/pic/'.$d["photo"].'" width=50 /></a>
                 </div>
                 <div class="comment_div">
                     <strong>'.$d["name"].'</strong> <small>'.date("d/m/Y H:i", $c["date"]).'</small>
                     <div class="comment_text">'.$c["text"].'</div>';
         if($_SESSION["user"]["id"]=="1" && !$noreply){
             if($_SESSION["user"]["id"]=="1"){
-                $fout .= '<a id="delete-comment-'.$id.'" class="red" onClick=\'delete_comment("'.lang("Are you sure?").'", '.$c["id"].');\'>'.lang("Delete").'</a>';
+                $fout .= '<a id="delete-comment-'.$id.'" class="red" onClick=\'delete_comment("'.engine::lang("Are you sure?").'", '.$c["id"]. ')\'>'.engine::lang("Delete").'</a>';
             }
-            if(!$no_reply){
-                $fout .= ' <a id="reply-comment-'.$id.'" onClick=\'add_comment("'.lang("Add new comment").'", "'.lang("Submit comment").'", "'.$c["id"].'");\'>'.lang("Reply").'</a><br/>';
+            if(!$noreply){
+                $fout .= ' <a id="reply-comment-'.$id.'" onClick=\'add_comment("'.engine::lang("Add new comment").'", "'.engine::lang("Submit comment").'", "'.$c["id"].'");\'>'.engine::lang("Reply").'</a><br/>';
             }
         }
         $fout1 .= '<table align=center class="comment_table">';
@@ -54,6 +57,8 @@ function print_comment($id, $noreply = 0){
 }
 
 function print_comments($url){
+    $fout = '';
+    $fout1 = '';
     $url = trim(str_replace('"', "'", urldecode($url)));
     if(!empty($_POST["comment"])){
         $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
@@ -72,7 +77,7 @@ function print_comments($url){
                 email::new_comment($_SESSION["user"]["id"], $url);
             }
             $fout .= '
-            <script>alert("'.lang("Comment submited!").'");</script>
+            <script>alert("'.engine::lang("Comment submited!").'");</script>
             ';
         }
     }
@@ -89,15 +94,15 @@ function print_comments($url){
     $fout1 .= '</table><br/>';
     if(!empty($_SESSION["user"])){
         if(!$flag){
-            $fout .= '<br/>'.lang("There is no comments").'<br/><br/>';
+            $fout .= '<br/>'.engine::lang("There is no comments").'<br/><br/>';
         }else{
             $fout .= $fout1;
         }
         $fout .= '<br/>
-            <input id="add-comment-btn" type="button" class="btn w280" value="'.lang("Add comment").'"  onClick=\'add_comment("'.lang("Add new comment").'", "'.lang("Submit comment").'");\' /><br/>
+            <input id="add-comment-btn" type="button" class="btn w280" value="'.engine::lang("Add comment").'"  onClick=\'add_comment("'.engine::lang("Add new comment").'", "'.engine::lang("Submit comment").'");\' /><br/>
             ';
     }else{
-        $fout .= '<center>'.lang("To post a comment, please").' <a id="sign-in" href="'.$_SERVER["DIR"].'/login">'.strtolower(lang("sign in")).'</a> '.strtolower(lang("or")).' <a id="register-now" href="'.$_SERVER["DIR"].'/register" target="account">'.strtolower(lang("register now")).'</a>.</center>';
+        $fout .= '<center>'.engine::lang("To post a comment, please").' <a id="sign-in" hreflang="'.$_SESSION["Lang"].'" href="'.engine::lang($_SERVER["DIR"].'/login').'">'.strtolower(engine::lang("sign in")).'</a> '.strtolower(engine::lang("or")).' <a id="register-now" href="'.$_SERVER["DIR"].'/register" target="account">'.strtolower(engine::lang("register now")).'</a>.</center>';
     }
     return $fout;
 }

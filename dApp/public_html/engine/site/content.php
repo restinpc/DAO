@@ -3,7 +3,7 @@
 * Backend content pages file.
 * @path /engine/site/content.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -61,9 +61,9 @@ if ($_GET[0]!="content" || (!empty($_GET[1]) && $_GET[0]=="content")) {
             $this->content .= engine::print_articles($this, $data);
         } else {
             if ($data["url"] == "privacy_policy") {
-               $this->content .= engine::print_site_navigation(lang("Privacy policy"));
+               $this->content .= engine::print_site_navigation(engine::lang("Privacy policy"));
             } else if ($data["url"] == "terms_and_conditions") {
-                $this->content .= engine::print_site_navigation(lang("Terms & conditions"));
+                $this->content .= engine::print_site_navigation(engine::lang("Terms & conditions"));
             }
             $this->content .= '<div class="document980">';
             $this->content .= engine::print_catalog($this, $data);
@@ -89,7 +89,7 @@ if ($_GET[0]!="content" || (!empty($_GET[1]) && $_GET[0]=="content")) {
         }
     }
 } else {
-    $this->title = lang("Content");
+    $this->title = engine::lang("Content");
     if ($_SESSION["Lang"] == "en") {
         $this->keywords = [
             "Нейросети",
@@ -124,7 +124,7 @@ if ($_GET[0]!="content" || (!empty($_GET[1]) && $_GET[0]=="content")) {
          Мы анализируем перспективы Web 3.0, включая распределенные приложения (dApps) и нейросети.
          Также мы рассматриваем различные аспекты виртуальной реальности, включая создание и использование цифровых миров, социальные взаимодействия и возможности для бизнеса.";
     }
-    $this->content .= engine::print_content_navigation($this, lang("All articles"));
+    $this->content .= engine::print_content_navigation($this, engine::lang("All articles"));
     $this->content .= '<div class="document980">';
     $this->content .= '<div class="article pt10"><div class="text"><p>'.$this->description.'</p></div></div>';
     $this->content .= engine::print_articles($this);

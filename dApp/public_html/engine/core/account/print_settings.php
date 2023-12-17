@@ -2,8 +2,8 @@
 /**
 * Print account settings page.
 * @path /engine/core/account/print_settings.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_settings($site); </code>
@@ -40,7 +40,7 @@ function print_settings($site){
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             if(!empty($data)){
-                $site->onload .= ' alert("'.lang("Sorry, this email already registered").'"); ';
+                $site->onload .= ' alert("'.engine::lang("Sorry, this email already registered").'"); ';
             }else{
                 $query = 'UPDATE `nodes_user` SET `email` = "'.$email.'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
                 engine::mysql($query);
@@ -57,12 +57,12 @@ function print_settings($site){
                 $_SESSION["user"]["photo"] = $_POST["new_profile_picture"];
             }
         }if(!empty($_POST["pass"])){
-            $password = md5(trim(strtolower($_POST["pass"]))); 
+            $password = md5(trim(strtolower($_POST["pass"])));
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
             engine::mysql($query);
         }
         if(empty($_SESSION["user"]["email"])){
-            $fout .= '<p>'.lang("Enter your email and password to continue").'</p>';
+            $fout .= '<p>'.engine::lang("Enter your email and password to continue").'</p>';
         }
         $fout .= '
         <form method="POST" id="edit_profile_form"> 
@@ -72,50 +72,50 @@ function print_settings($site){
                 <td align=left colspan=2>
                     <div class="user_photo_block"><img src="'.$_SERVER["DIR"].'/img/pic/'.$_SESSION["user"]["photo"].'" width=80 /></div>
                     <div class="ml100">
-                        '.lang("Profile image").'
+                        '.engine::lang("Profile image").'
                         <br/>
-                        <input vr-control id="change-picture" type="button" class="btn w280" value="'.lang("Change picture").'" onClick=\'show_photo_editor(0, 0);\' /><br/>
+                        <input id="change-picture" type="button" class="btn w280" value="'.engine::lang("Change picture").'" onClick=\'show_photo_editor(0, 0);\' /><br/>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td align=right class="settings_caption">'.lang("Name").'</td>
-                <td class="pb10"><input vr-control id="input-name" type="text" name="name" value="'.$_SESSION["user"]["name"].'" class="input w280" /></td>
+                <td align=right class="settings_caption">'.engine::lang("Name").'</td>
+                <td class="pb10"><input id="input-name" type="text" name="name" value="'.$_SESSION["user"]["name"].'" class="input w280" /></td>
             </tr>';
 
         if(!empty($_SESSION["user"]["email"])){
             $fout .= '
             <tr>
-                <td align=right class="settings_caption">'.lang("Email").'</td>
-                <td class="pb10"><input vr-control id="input-email" type="text" name="email" value="'.$_SESSION["user"]["email"].'" class="input w280" /></td>
+                <td align=right class="settings_caption">'.engine::lang("Email").'</td>
+                <td class="pb10"><input id="input-email" type="text" name="email" value="'.$_SESSION["user"]["email"].'" class="input w280" /></td>
             </tr>
             <tr>
-                <td align=right class="settings_caption">'.lang("Password").'</td>
-                <td class="pb10"><input vr-control id="input-password" type="password" name="pass" value="" placeHolder="'.lang("New password").'" class="input w280" /></td>
+                <td align=right class="settings_caption">'.engine::lang("Password").'</td>
+                <td class="pb10"><input id="input-password" type="password" name="pass" value="" placeHolder="'.engine::lang("New password").'" class="input w280" /></td>
             </tr>';
         }else{
             $fout .= '
             <tr>
-                <td align=right class="settings_caption">'.lang("Email").'</td>
-                <td class="pb10"><input vr-control id="input-email" required type="text" name="email" placeHolder="'.lang("Enter your email").'" class="input w280" /></td>
+                <td align=right class="settings_caption">'.engine::lang("Email").'</td>
+                <td class="pb10"><input id="input-email" required type="text" name="email" placeHolder="'.engine::lang("Enter your email").'" class="input w280" /></td>
             </tr>
             <tr>
-                <td align=right class="settings_caption">'.lang("Password").'</td>
-                <td class="pb10"><input vr-control id="input-password" required type="password" name="pass" value="" placeHolder="'.lang("Enter your password").'" class="input w280" /></td>
-            </tr>'; 
+                <td align=right class="settings_caption">'.engine::lang("Password").'</td>
+                <td class="pb10"><input id="input-password" required type="password" name="pass" value="" placeHolder="'.engine::lang("Enter your password").'" class="input w280" /></td>
+            </tr>';
         }
         $fout .= '
         <tr>
-            <td align=right class="settings_caption">'.lang("Subscription").'</td>
+            <td align=right class="settings_caption">'.engine::lang("Subscription").'</td>
             <td class="pb10">
-                <select vr-control id="select-subscription" name="bulk_ignore" class="input w280" >
-                    <option vr-control id="option-enabled" value="0">'.lang("Enabled").'</option>
-                    <option vr-control id="option-disabled" value="1" '.($_SESSION["user"]["bulk_ignore"]?'selected':'').'>'.lang("Disabled").'</option>
+                <select  id="select-subscription" name="bulk_ignore" class="input w280" >
+                    <option id="option-enabled" value="0">'.engine::lang("Enabled").'</option>
+                    <option id="option-disabled" value="1" '.($_SESSION["user"]["bulk_ignore"]?'selected':'').'>'.engine::lang("Disabled").'</option>
                 </select>
             </td>
         </tr> 
         <tr>
-        <td align=right  class="settings_caption">'.lang("Telegram").'</td>
+        <td align=right  class="settings_caption">'.engine::lang("Telegram").'</td>
         <td align=left class="pl7">
             <div class="settings_url">
                 <a href="https://t.me/'.str_replace('@', '', $_SESSION["user"]["url"]).'" target="_blank">'.$_SESSION["user"]["url"].'</a>
@@ -126,8 +126,8 @@ function print_settings($site){
             </tr>
             <tr>
                 <td class="pt20" colspan=2>
-                    <input vr-control id="input-save-changes" type="submit" class="btn w280" value="'.lang("Save changes").'" /><br/><br/>
-                    <input vr-control id="input-delete-account" type="button" class="btn w280" value="'.lang("Delete account").'" onClick=\'alertify.confirm("'.lang("Are you sure you want to delete your account").'?", function(){ window.location = "/account/settings/delete"; }, function(){ alertify.confirm().destroy();} );\' />
+                    <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" /><br/><br/>
+                    <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'alertify.confirm("'.engine::lang("Are you sure you want to delete your account").'?", function(){ window.location = "/account/settings/delete"; }, function(){ alertify.confirm().destroy();} );\' />
                 </td>
             </tr>
             </table>

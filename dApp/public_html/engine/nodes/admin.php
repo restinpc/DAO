@@ -3,7 +3,7 @@
 * Framework admin class.
 * @path /engine/nodes/admin.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -64,14 +64,14 @@ function admin($site){
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_done"';
         $res = engine::mysql($query);
         $done = mysqli_fetch_array($res);
-        if($exec["value"]<date("U")-3600) $this->statistic["cron"] .= lang("Disabled");
-        else if($exec["value"]>$done["value"]+300) $this->statistic["cron"] .= lang("Error");
-        else $this->statistic["cron"] .= lang("Ok");
+        if($exec["value"]<date("U")-3600) $this->statistic["cron"] .= engine::lang("Disabled");
+        else if($exec["value"]>$done["value"]+300) $this->statistic["cron"] .= engine::lang("Error");
+        else $this->statistic["cron"] .= engine::lang("Ok");
         if(!empty($_GET["mode"])){
-            $this->title = lang(ucfirst($_GET["mode"]));
+            $this->title = engine::lang(ucfirst($_GET["mode"]));
             $function = 'print_admin_'.$_GET["mode"];
         }else{
-            $this->title = lang("Admin");
+            $this->title = engine::lang("Admin");
             $function = 'print_admin';
         }
         $this->content = engine::$function($this);

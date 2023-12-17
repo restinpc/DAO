@@ -3,7 +3,7 @@
 * Email library.
 * @path /engine/core/email.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -37,7 +37,7 @@ static function email_template($text){
         $fout .= '<img src="data:image/png;base64,'.$image.'" alt="'.$site_name["value"].'" title="'.$site_name["value"].'" /><br/><br/>';
     }
     $fout .= ' <p>'.$text.'</p><hr/>
-    <center>'.lang("Thanks for using our service").' <a href="'.$_SERVER["PUBLIC_URL"].'/" target="_blank">'.$site_name["value"].'</a></center>
+    <center>'.engine::lang("Thanks for using our service").' <a href="'.$_SERVER["PUBLIC_URL"].'/" target="_blank">'.$site_name["value"].'</a></center>
     </div>';
     return $fout;
 }
@@ -64,10 +64,10 @@ static function bulk_mail($data){
         $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`) '
             . 'VALUES("1", "'.intval($user["id"]).'", "'.$outbox["text"].'", "'.date("U").'")';
         engine::mysql($query);
-        $caption = lang("New message at").' '.$_SERVER["HTTP_HOST"];
-        $body = lang('Dear').' '.$user["name"].'!<br/><br/>
-            Admin '.lang("sent a message for you").'!<br/>
-            '.lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].'/account/inbox/1" target="_blank">'.lang("here").'</a>.';
+        $caption = engine::lang("New message at").' '.$_SERVER["HTTP_HOST"];
+        $body = engine::lang('Dear').' '.$user["name"].'!<br/><br/>
+            Admin '.engine::lang("sent a message for you").'!<br/>
+            '.engine::lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].'/account/inbox/1" target="_blank">'.engine::lang("here").'</a>.';
         if(engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body))){
             $status = 1;
         }else{
@@ -111,14 +111,14 @@ static function daily_report(){
     $d_email = mysqli_fetch_array($r_email);
     $file = engine::curl_get_query($_SERVER["PUBLIC_URL"].'/perfomance.php?interval=day&date='.date("Y-m-d"));
     $perfomance_image = base64_encode($file);
-    $caption = $_SERVER["HTTP_HOST"].' '.date("d/m/Y").' '.lang('daily report');
-    $body = '<h3>'.lang("Average response time").'</h3>
+    $caption = $_SERVER["HTTP_HOST"].' '.date("d/m/Y").' '.engine::lang('daily report');
+    $body = '<h3>'.engine::lang("Average response time").'</h3>
         <center>
         <a href="'.$_SERVER["PUBLIC_URL"].'/admin?mode=perfomance" target="_blank">
             <img src="data:image/png;base64,'.$perfomance_image.'">
         </a>
         </center>
-        <h3>'.lang("Errors").'</h3>
+        <h3>'.engine::lang("Errors").'</h3>
         <ul>';
     $query = 'SELECT * FROM nodes_error ORDER BY id ASC';
     $res = engine::mysql($query);
@@ -151,9 +151,9 @@ static function registration($email, $name){
     $r = engine::mysql($query);
     $d = mysqli_fetch_array($r);
     $site_name = $d["value"];
-    $caption = lang('Registration at').' '.$_SERVER["HTTP_HOST"];
-    $body = lang('Dear').' '.$name.'!<br/><br/>'
-            .lang('We are glad to confirm successful registration at').' '
+    $caption = engine::lang('Registration at').' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang('Dear').' '.$name.'!<br/><br/>'
+            .engine::lang('We are glad to confirm successful registration at').' '
             . '<a href="'.$_SERVER["PUBLIC_URL"].'/">'.$_SERVER["HTTP_HOST"].'</a>';
     engine::send_mail($email, $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }
@@ -170,11 +170,11 @@ static function confirmation($email, $name, $code){
     $r = engine::mysql($query);
     $d = mysqli_fetch_array($r);
     $site_name = $d["value"];
-    $caption = lang('Registration at').' '.$_SERVER["HTTP_HOST"];
-    $body = lang('Dear').' '.$name.',<br/><br/>'
-    .lang('We are glad to confirm successful registration at').' '
+    $caption = engine::lang('Registration at').' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang('Dear').' '.$name.',<br/><br/>'
+    .engine::lang('We are glad to confirm successful registration at').' '
     . '<a href="'.$_SERVER["PUBLIC_URL"].'/">'.$_SERVER["HTTP_HOST"].'</a>
-    '.lang("To confirm your email, please enter or click on the following code").':<br/>
+    '.engine::lang("To confirm your email, please enter or click on the following code").':<br/>
     <br/>
     <a href="'.$_SERVER["PUBLIC_URL"].'/account/'.$code.'" target="_blank" style="font-size: 24px;"><b>'.$code.'</b></a><br/>';
     engine::send_mail($email, $site_name."<no-reply".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
@@ -195,11 +195,11 @@ static function restore_password($email, $new_pass, $code){
     $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    $body = lang("Dear").' '.$user["name"].'!<br/><br/>'.
-        lang("New password is")." <b>".$new_pass.'</b><br/>'
-        . '<br/>'.lang("To confirm this password, use").
-        ' <a href="'.$_SERVER["PUBLIC_URL"].'/account.php?mode=remember&email='.$email.'&code='.$code.'">'.lang("this link").'</a>';
-    $caption = lang("New password for")." ".$_SERVER["HTTP_HOST"];
+    $body = engine::lang("Dear").' '.$user["name"].'!<br/><br/>'.
+        engine::lang("New password is")." <b>".$new_pass.'</b><br/>'
+        . '<br/>'.engine::lang("To confirm this password, use").
+        ' <a href="'.$_SERVER["PUBLIC_URL"].'/account.php?mode=remember&email='.$email.'&code='.$code.'">'.engine::lang("this link").'</a>';
+    $caption = engine::lang("New password for")." ".$_SERVER["HTTP_HOST"];
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }
 //----------------------------------------------------
@@ -220,9 +220,9 @@ static function new_comment($user_id, $url){
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "email"';
     $r_email = engine::mysql($query);
     $d_email = mysqli_fetch_array($r_email);
-    $caption = lang("New comment at")." ".$_SERVER["HTTP_HOST"];
-    $message = lang("User").' '.$_SESSION["user"]["name"].' '.lang("add new comment").'!<br/>'.
-            lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].$url.'" target="_blank">'.lang("here").'</a>';
+    $caption = engine::lang("New comment at")." ".$_SERVER["HTTP_HOST"];
+    $message = engine::lang("User").' '.$_SESSION["user"]["name"].' '.engine::lang("add new comment").'!<br/>'.
+            engine::lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].$url.'" target="_blank">'.engine::lang("here").'</a>';
     engine::send_mail($d_email["value"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($message));
 }
 //----------------------------------------------------
@@ -240,10 +240,10 @@ static function new_transaction($user_id, $amount){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    $caption = lang("The funds have been added to your account balance").' '.$_SERVER["HTTP_HOST"];
-    $body = lang('Dear').' '.$user["name"].'!<br/><br/>
-        '.lang('The funds').' ( $'.$amount.' ) '.lang("has beed added to your account balance").'!<br/>
-        '.lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].'/account/finance" target="_blank">'.lang("here").'</a>.';
+    $caption = engine::lang("The funds have been added to your account balance").' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang('Dear').' '.$user["name"].'!<br/><br/>
+        '.engine::lang('The funds').' ( $'.$amount.' ) '.engine::lang("has beed added to your account balance").'!<br/>
+        '.engine::lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].'/account/finance" target="_blank">'.engine::lang("here").'</a>.';
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }
 //----------------------------------------------------
@@ -264,10 +264,10 @@ static function new_message($user_id, $sender_id){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$sender_id.'"';
     $res = engine::mysql($query);
     $sender = mysqli_fetch_array($res);
-    $caption = lang("New message at").' '.$_SERVER["HTTP_HOST"];
-    $body = lang('Dear').' '.$user["name"].'!<br/><br/>
-        '.lang("User").' '.$sender["name"].' '.lang("sent a message for you").'!<br/>
-        '.lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].'/account/inbox/'.$sender["id"].'" target="_blank">'.lang("here").'</a>.';
+    $caption = engine::lang("New message at").' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang('Dear').' '.$user["name"].'!<br/><br/>
+        '.engine::lang("User").' '.$sender["name"].' '.engine::lang("sent a message for you").'!<br/>
+        '.engine::lang("For details, click").' <a href="'.$_SERVER["PUBLIC_URL"].'/account/inbox/'.$sender["id"].'" target="_blank">'.engine::lang("here").'</a>.';
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }
 //----------------------------------------------------
@@ -289,20 +289,20 @@ static function new_withdrawal($user_id, $amount, $wallet, $id){
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "email"';
     $res = engine::mysql($query);
     $email = mysqli_fetch_array($res);
-    $caption = lang("Withdrawal request at")." ".$_SERVER["HTTP_HOST"];
+    $caption = engine::lang("Withdrawal request at")." ".$_SERVER["HTTP_HOST"];
     if($wallet == "PayPal"){
-        $wallet_string = lang("on your PayPal account");
+        $wallet_string = engine::lang("on your PayPal account");
     }else if($wallet == "Yandex"){
-        $wallet_string = lang("on your Yandex Money account");
+        $wallet_string = engine::lang("on your Yandex Money account");
     }
-    $body = lang('Dear').' '.$user["name"].'!<br/><br/>
-        '.lang("You withdrawal request is pending now").'.<br/>
-        '.lang("After some time you will receive").' $'.$amount.' '.$wallet_string.' <b>'.$id.'</b>.';
+    $body = engine::lang('Dear').' '.$user["name"].'!<br/><br/>
+        '.engine::lang("You withdrawal request is pending now").'.<br/>
+        '.engine::lang("After some time you will receive").' $'.$amount.' '.$wallet_string.' <b>'.$id.'</b>.';
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
-    $body =  lang("Dear").' Admin!<br/><br/>'
-        . lang("There in new withdrawal request at").' '.$_SERVER["HTTP_HOST"].'.<br/>'
-        . lang("Need to pay").' $'.$amount.' '.$wallet_string.' <b>'.$id.'</b> '.lang("and confirm request").'.<br/>'
-        . lang("Details").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/admin/?mode=finance">'.lang("here").'</a>.';
+    $body =  engine::lang("Dear").' Admin!<br/><br/>'
+        . engine::lang("There in new withdrawal request at").' '.$_SERVER["HTTP_HOST"].'.<br/>'
+        . engine::lang("Need to pay").' $'.$amount.' '.$wallet_string.' <b>'.$id.'</b> '.engine::lang("and confirm request").'.<br/>'
+        . engine::lang("Details").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/admin/?mode=finance">'.engine::lang("here").'</a>.';
     engine::send_mail($email["value"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }
 //----------------------------------------------------
@@ -319,10 +319,10 @@ static function finish_withdrawal($user_id){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    $caption = lang("Withdrawal is complete at")." ".$_SERVER["HTTP_HOST"];
-    $body = lang("Dear").' '.$user["name"].'!<br/><br/>
-        '.lang("You withdrawal is complete").'!<br/>
-        '.lang("Thanks for using our service and have a nice day").'.';
+    $caption = engine::lang("Withdrawal is complete at")." ".$_SERVER["HTTP_HOST"];
+    $body = engine::lang("Dear").' '.$user["name"].'!<br/><br/>
+        '.engine::lang("You withdrawal is complete").'!<br/>
+        '.engine::lang("Thanks for using our service and have a nice day").'.';
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }
 //----------------------------------------------------
@@ -342,10 +342,10 @@ static function new_purchase($id){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$order["user_id"].'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    $caption = lang("New purchase at").' '.$_SERVER["HTTP_HOST"];
-    $body = lang("Dear").' '.$user["name"].'!<br/><br/>
-        '.lang("Congratulations on your purchase at").' '.$_SERVER["HTTP_HOST"].'.<br/>
-        '.lang("You can see details of your purchases").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/account/purchases">'.lang("here").'</a>.';
+    $caption = engine::lang("New purchase at").' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang("Dear").' '.$user["name"].'!<br/><br/>
+        '.engine::lang("Congratulations on your purchase at").' '.$_SERVER["HTTP_HOST"].'.<br/>
+        '.engine::lang("You can see details of your purchases").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/account/purchases">'.engine::lang("here").'</a>.';
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
     $query = 'SELECT * FROM `nodes_transaction` WHERE `order_id` = "'.$order["id"].'"';
     $res = engine::mysql($query);
@@ -353,12 +353,12 @@ static function new_purchase($id){
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "email"';
     $res = engine::mysql($query);
     $email = mysqli_fetch_array($res);
-    $caption = lang("New purchase at").' '.$_SERVER["HTTP_HOST"];
-    $body = lang("Dear").' Admin!<br/><br/>'
-            . lang("There in new purchase at").' '.$_SERVER["HTTP_HOST"].'. '
-            . lang("Details").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/admin/?mode=orders">'.lang("here").'</a>.';
+    $caption = engine::lang("New purchase at").' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang("Dear").' Admin!<br/><br/>'
+            . engine::lang("There in new purchase at").' '.$_SERVER["HTTP_HOST"].'. '
+            . engine::lang("Details").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/admin/?mode=orders">'.engine::lang("here").'</a>.';
     if($transaction["txt_id"]!="test_transaction"){
-        $body .= '<br/>'.$user["name"].'</a> '.lang("make a payment").' $'.$transaction["amount"].' '.lang("to your PayPal account").'.';
+        $body .= '<br/>'.$user["name"].'</a> '.engine::lang("make a payment").' $'.$transaction["amount"].' '.engine::lang("to your PayPal account").'.';
     }
     engine::send_mail($email["value"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
     $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`, `system`) '
@@ -388,10 +388,10 @@ static function shipping_confirmation($id){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$order["user_id"].'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    $caption = lang("Your order has been shipped at").' '.$_SERVER["HTTP_HOST"];
-    $body = lang("Dear").' '.$user["name"].'!<br/><br/>
-        '.lang("Your order").' "'.$product["title"].'" '.lang("has been shipped").'.<br/>
-        '.lang("After receiving, please update purchase status").' <a target="_blank" href="'.$_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].'/account/purchases">'.lang("here").'</a>.';
+    $caption = engine::lang("Your order has been shipped at").' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang("Dear").' '.$user["name"].'!<br/><br/>
+        '.engine::lang("Your order").' "'.$product["title"].'" '.engine::lang("has been shipped").'.<br/>
+        '.engine::lang("After receiving, please update purchase status").' <a target="_blank" href="'.$_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].'/account/purchases">'.engine::lang("here").'</a>.';
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
     $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`, `system`) '
     . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$user["id"].'", "Order has been shipped", "'.date("U").'", "1")';
@@ -420,12 +420,12 @@ static function delivery_confirmation($id){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$data["user_id"].'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    $caption = lang("Your order has been completed at").' '.$_SERVER["HTTP_HOST"];
-    $body = lang("Dear").' '.$user["name"].'!<br/><br/>
-        '.lang("Your order has been completed").'! ';
+    $caption = engine::lang("Your order has been completed at").' '.$_SERVER["HTTP_HOST"];
+    $body = engine::lang("Dear").' '.$user["name"].'!<br/><br/>
+        '.engine::lang("Your order has been completed").'! ';
     if($user["id"]!="1"){
-        $body .= '<br/>'.lang("Funds added to your account and available for withdrawal").' '
-        . '<a target="_blank" href="'.$_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].'/account/finances">'.lang("here").'</a>.';
+        $body .= '<br/>'.engine::lang("Funds added to your account and available for withdrawal").' '
+        . '<a target="_blank" href="'.$_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].'/account/finances">'.engine::lang("here").'</a>.';
     }
     engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
     $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`, `system`) '

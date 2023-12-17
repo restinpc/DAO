@@ -1,9 +1,9 @@
 <?php
-/** 
+/**
 * Backend file.
 * @path /engine/code/images.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -23,7 +23,7 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
         $name = engine::escape_string($_POST["name"]);
         $file = file::upload('tiny_image', 'img/data', 1);
         if($file == "error"){
-            $fout .= '<script>alert("'.lang("Error").'");parent.js_hide_wnd();</script>';
+            $fout .= '<script>alert("'.engine::lang("Error").'");parent.js_hide_wnd();</script>';
         }else{
             $image_size = getimagesize($_SERVER["DOCUMENT_ROOT"].'/img/data/'.$file);
             $fout .= '
@@ -33,12 +33,12 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
             </script>';
         }
     }else{
-        $fout .= '<p>'.lang("Select an image to upload").'</p><br/>
+        $fout .= '<p>'.engine::lang("Select an image to upload").'</p><br/>
         <div class="w100p center">
             <form method="POST" ENCTYPE="multipart/form-data" id="form" >
                 <input type="file" class="input w280" name="tiny_image" /><br/><br/>
-                <input type="text" name="name" class="input w280" required placeHolder="'.lang("Image description").'" /><br/><br/>
-                <input type="submit" class="btn w280" value="'.lang("Upload image").'" />
+                <input type="text" name="name" class="input w280" required placeHolder="'.engine::lang("Image description").'" /><br/><br/>
+                <input type="submit" class="btn w280" value="'.engine::lang("Upload image").'" />
             </form>
         </div>';
     }
@@ -104,7 +104,7 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
         document.getElementById("input-upload-new").style.display="none";
         document.getElementById("new_img1").style.display="block"; 
         </script>
-        </center></form>';   
+        </center></form>';
     }
 }echo $fout.
 '</body>

@@ -2,8 +2,8 @@
 /**
 * Prints new message block.
 * @path /engine/core/function/print_new_message.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @return string Returns content of block on success, or die with error.
 * @usage <code> engine::print_new_message($site); </code>
@@ -30,16 +30,16 @@ function print_new_message($site){
         $res = engine::mysql($query);
         $user = mysqli_fetch_array($res);
         if(strlen($data["text"])>100) $data["text"] = mb_substr($data["text"], 0, 100)."..";
-        if($user["online"] > date("U")-300) $online = '<span class="fs11">'.lang("online").'</span>';
+        if($user["online"] > date("U")-300) $online = '<span class="fs11">'.engine::lang("online").'</span>';
         $fout .= '
             <div id="nodes_message">
-                <div vr-control id="new_msg_img" class="new_msg_img" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
+                <div  id="new_msg_img" class="new_msg_img" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" width=50 /><br/>'.$online.'
                 </div>
                 <div class="new_msg_close">
-                    <div vr-control id="new_msg_close" class="close_image" title="'.lang("Close window").'" onClick=\'document.getElementById("nodes_message").style.display="none";\'> </div>
+                    <div  id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'" onClick=\'document.getElementById("nodes_message").style.display="none";\'> </div>
                 </div>
-                <div vr-control id="new_msg_name"  class="pointer" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
+                <div  id="new_msg_name"  class="pointer" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <div class="new_msg_name">'.$user["name"].'</div>'
                     .$data["text"].'
                 </div>

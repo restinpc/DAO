@@ -2,8 +2,8 @@
 /**
 * Prints share friends block.
 * @path /engine/core/function/print_share.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param string $url Page URL.
 * @param string $caption Page caption.
 * @return string Returns content of block on success, or die with error.
@@ -23,24 +23,19 @@
 require_once("engine/nodes/session.php");
 function share_twitter($url, $caption){
  return '
-<a title="'.lang("Share friends in").' Twitter" onClick="window.open(\'http://twitter.com/share?text='.$caption.'&url='.urlencode($url).'\', \'Twitter\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/tweeter.jpg" /></a>&nbsp;';
+<a title="'.engine::lang("Share friends in").' Twitter" onClick="window.open(\'http://twitter.com/share?text='.$caption.'&url='.urlencode(engine::href($url)).'\', \'Twitter\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/tweeter.jpg" /></a>&nbsp;';
 }
 function share_facebook($url, $caption){
  return '
-<a  title="'.lang("Share friends in").' Facebook" onClick="window.open(\'http://www.facebook.com/sharer.php?u='.urlencode($url).'&t='.$caption.'\', \'Facebook\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/fb.jpg" /></a>&nbsp;';
-}
-function share_gplus($url, $caption){
- return '
-<a title="'.lang("Share friends in").' Google+" onClick="window.open(\'https://plus.google.com/share?url='. urlencode($url).'\', \'Google+\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/gp.jpg" /></a>';
+<a title="'.engine::lang("Share friends in").' Facebook" onClick="window.open(\'http://www.facebook.com/sharer.php?u='.urlencode(engine::href($url)).'&t='.$caption.'\', \'Facebook\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/fb.jpg" /></a>&nbsp;';
 }
 function share_vkontakte($url, $caption){
  return '
-<a title="'.lang("Share friends in").' VK" onClick="window.open(\'http://vk.com/share.php?url='.urlencode($url).'&title='.$caption.'\', \'Vkontakte\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/vk.jpg" /></a>&nbsp;';
+<a title="'.engine::lang("Share friends in").' VK" onClick="window.open(\'http://vk.com/share.php?url='.urlencode(engine::href($url)).'&title='.$caption.'\', \'Vkontakte\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/vk.jpg" /></a>&nbsp;';
 }
 function print_share($site, $url, $caption){
-    return 
+    return
         share_twitter($url, $caption).
         share_facebook($url, $caption).
-        share_vkontakte($url, $caption).
-        share_gplus($url, $caption);
+        share_vkontakte($url, $caption);
 }

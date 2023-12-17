@@ -3,7 +3,7 @@
 * User identity system script.
 * @path /engine/code/account.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -21,17 +21,17 @@ if($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"]
             $new_pass_data = engine::encode_password($new_pass);
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$new_pass_data["pass"].'", `salt` = "'.$new_pass_data["salt"].'" WHERE `email` = "'.$email.'"';
             engine::mysql($query);
-            echo '<div class="center pt100">'.lang("New password activated!").'</div>
+            echo '<div class="center pt100">'.engine::lang("New password activated!").'</div>
                     <script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
         }else{
-            echo '<div class="center pt100">'.lang("Invalid confirmation code").'.</div>'
-             . '<script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';  
+            echo '<div class="center pt100">'.engine::lang("Invalid confirmation code").'.</div>'
+             . '<script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
         }
     }else{
-       echo '<div class="center pt100">Email '.lang("not found").'.</div>'
-        . '<script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';  
+       echo '<div class="center pt100">Email '.engine::lang("not found").'.</div>'
+        . '<script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
     }
-}else if($_GET["mode"] == "social" && !empty($_GET["method"])){ 
+}else if($_GET["mode"] == "social" && !empty($_GET["method"])){
     if($_GET["method"]=="fb"){
         require_once("engine/api/oauth/fb_auth.php");
     }else if($_GET["method"]=="vk"){
@@ -41,7 +41,7 @@ if($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"]
     }else if($_GET["method"]=="gp"){
         require_once("engine/api/oauth/google_auth.php");
     }
-}else if($_GET["mode"] == "logout"){ 
+}else if($_GET["mode"] == "logout"){
     $query = 'UPDATE `nodes_user` SET `token` = "" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
     engine::mysql($query);
     unset($_SESSION["user"]);

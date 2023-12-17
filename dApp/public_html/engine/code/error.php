@@ -3,7 +3,7 @@
 * Error file.
 * @path /engine/code/error.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -61,28 +61,28 @@ $fout = '
         if(isset($_GET["504"])){
             $fout .= '
         <span class="error_code">504</span><br/><br/>
-        <span class="error_text">'.lang("Gateway Timeout").'</span>
-                ';  
+        <span class="error_text">'.engine::lang("Gateway Timeout").'</span>
+                ';
         }else if(isset($_GET["204"])){
             if(empty($_POST["jQuery"])){
                 header("HTTP/1.0 204 No Content");
             }
             $fout .= '
         <span class="error_code">204</span><br/><br/>
-        <span class="error_text">'.lang("Under construction").'</span>
-                ';  
+        <span class="error_text">'.engine::lang("Under construction").'</span>
+                ';
         }else if(isset($_GET["401"])){
             if(empty($_POST["jQuery"])){
                 header("HTTP/1.0 401 No Content");
             }
             $fout .= '
         <span class="error_code">401</span><br/><br/>
-        <span class="error_text">'.lang("Access denied").'</span>
-        <br/><br/><br/>';  
+        <span class="error_text">'.engine::lang("Access denied").'</span>
+        <br/><br/><br/>';
             if(empty($_SESSION["user"])){
-                $fout .= '<span id="redirect"><a vr-control id="error-login" href="'.$_SERVER["DIR"].'/login">'.lang("Login to website").'</a></span><br/>';
+                $fout .= '<span id="redirect"><a id="error-login" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'">'.engine::lang("Login to website").'</a></span><br/>';
             }else{
-                $fout .= '<span id="redirect"><a vr-control id="error-home-page" href="'.$_SERVER["DIR"].'/">'.lang("Back to Home Page").'</a></span><br/>';
+                $fout .= '<span id="redirect"><a id="error-home-page" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/').'">'.engine::lang("Back to Home Page").'</a></span><br/>';
             }
         }else if(isset($_GET["500"])){
             if(empty($_POST["jQuery"])){
@@ -90,23 +90,23 @@ $fout = '
             }
             $fout .= '
         <span class="error_code">500</span><br/><br/>
-        <span class="error_text">'.lang("Internal Server Error").'</span>
+        <span class="error_text">'.engine::lang("Internal Server Error").'</span>
         <br/><br/><br/>
-        <span id="redirect"><a vr-control id="error-home-page" href="'.$_SERVER["DIR"].'/">'.lang("Back to Home Page").'</a></span><br/>
+        <span id="redirect"><a id="error-home-page" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/').'">'.engine::lang("Back to Home Page").'</a></span><br/>
 <!--
 MySQL -> '.mysqli_error($_SERVER["sql_connection"]).'; 
 PHP -> '.print_r(error_get_last(), 1).';
 -->
-        ';  
+        ';
         }else{
             if(empty($_POST["jQuery"])){
                 header("HTTP/1.0 404 Not Found");
             }
             $fout .= '
         <span class="error_code">404</span><br/><br/>
-        <span class="error_text">'.lang("Page not found").'</span>
+        <span class="error_text">'.engine::lang("Page not found").'</span>
         <br/><br/><br/>
-        <span id="redirect"><a vr-control id="error-home-page" href="'.$_SERVER["DIR"].'/">'.lang("Back to Home Page").'</a></span><br/>
+        <span id="redirect"><a id="error-home-page" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/').'">'.engine::lang("Back to Home Page").'</a></span><br/>
                 ';
         }
         $fout .= '

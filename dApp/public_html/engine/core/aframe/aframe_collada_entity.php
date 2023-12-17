@@ -2,8 +2,8 @@
 /**
 * Print cardboard collada model.
 * @path /engine/core/aframe/aframe_collada_entity.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -16,9 +16,9 @@
 * @usage <code> engine::aframe_collada_entity(1, "/res/models/*.collada"); </code>
 */
 function aframe_collada_entity(
-        $id, 
+        $id,
         $collada_model,
-        $position="0 0 0", 
+        $position="0 0 0",
         $rotation="0 0 0",
         $scale="1 1 1"
     ){

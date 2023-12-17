@@ -1,16 +1,16 @@
 /**
 * Uploader JavaScript library source file.
 * Do not edit directly.
-* @path /script/uploader.source.js
+* @path /script/uploader.js
 *
 * @name    DAO Mansion    @version 1.0.0
 * @author  Alexandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
-//------------------------------------------------------------------------------
+
 /**
 * Attaches an event handler to the specified element.
-* 
+*
 * @param {object} object DOM Element.
 * @param {string} event A String that specifies the name of the event.
 * @param {function} handler Callback function.
@@ -53,11 +53,11 @@ function drag(e){
         }
         posx -= fx;
         posy -= fy;
-        if(posx>document.getElementById("img").clientWidth-document.getElementById("frame").clientWidth+34) 
+        if(posx>document.getElementById("img").clientWidth-document.getElementById("frame").clientWidth+34)
             posx = document.getElementById("img").clientWidth-document.getElementById("frame").clientWidth+34;
-        if(posy>document.getElementById("img").clientHeight-document.getElementById("frame").clientHeight+34) 
+        if(posy>document.getElementById("img").clientHeight-document.getElementById("frame").clientHeight+34)
             posy = document.getElementById("img").clientHeight-document.getElementById("frame").clientHeight+34;
-        if(posy<34) posy = 34; 
+        if(posy<34) posy = 34;
         if(posx<34) posx = 34;
         document.getElementById("frame").style.left = (posx-6)+"px";
         document.getElementById("frame").style.top = (posy-6)+"px";
@@ -68,12 +68,12 @@ function drag(e){
         var height1 = width1 * (twidth/theight);
         if( (width1-26 <= document.getElementById("img").clientWidth-parseInt(document.getElementById("frame").style.left))
             && (height1-26 <= document.getElementById("img").clientHeight-parseInt(document.getElementById("frame").style.top))
-              && height1 >= theight/scale  && width1 >= twidth/scale  ) 
+              && height1 >= theight/scale  && width1 >= twidth/scale  )
         {
             width = width1+4;
             height = height1+4;
             document.getElementById("frame").style.width = width+"px";
-            document.getElementById("frame").style.height = height+"px";   
+            document.getElementById("frame").style.height = height+"px";
             document.getElementById("w").value = width*scale;
             document.getElementById("h").value = height*scale;
         }
@@ -105,8 +105,8 @@ function load(){
     }
     document.getElementById("frame").style.width = width;
     document.getElementById("frame").style.height = height;
-    document.getElementById("frame").style.display = "block"; 
-}  
+    document.getElementById("frame").style.display = "block";
+}
 //------------------------------------------------------------------------------
 /**
 * Disables dragging mode.
@@ -117,7 +117,7 @@ function undrag(){
 //------------------------------------------------------------------------------
 /**
 * Gets an DOM element using ID.
-* 
+*
 * @param {string} id Element ID.
 * @return {object} Returns a DOM elemnt on success, or die with error.
 * @usage <code> var id = $id("content"); </code>
@@ -185,7 +185,7 @@ function UploadFile(file) {
         xhr.setRequestHeader("X_FILENAME", file.name);
         xhr.setRequestHeader("HTTP_X_FILENAME", file.name);
         xhr.send(file);
-        document.getElementById("filedrag").innerHTML = uploading+".."; 
+        document.getElementById("filedrag").innerHTML = uploading+"..";
     }
 }
 //------------------------------------------------------------------------------

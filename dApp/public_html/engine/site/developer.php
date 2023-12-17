@@ -3,7 +3,7 @@
 * Backend developed by page file.
 * @path /engine/site/developer.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -21,7 +21,7 @@ if (!empty($_GET[2])) {
     return;
 }
 
-$this->title = lang("Developed by");
+$this->title = engine::lang("Developed by");
 $this->keywords = ["Aleksandr V", "restinpc", "Vorkunov", "Metaverse Developer", "Full-Stack Developer", "C# (Unity, SteamVR)", "JavaScript (Node.js, React.js, A-Frame)", "Java", "SQL", "Web 3.0"];
 if ($_SESSION["Lang"] == "en") {
     $this->description = "Powered by an experienced Full-Stack/Metaverse Developer with a high-level proficiency";
@@ -30,5 +30,5 @@ if ($_SESSION["Lang"] == "en") {
 } else {
     $this->description = "Создано опытным Full-Stack/Metaverse разработчиком с высоким уровнем квалификации";
 }
-$this->content .= engine::print_site_navigation(lang("Developed by"));
+$this->content .= engine::print_site_navigation(engine::lang("Developed by"));
 $this->content .= '<iframe src="https://cv.nodes-tech.ru" onLoad="loading_site();" width="100%" class="app"></iframe>';

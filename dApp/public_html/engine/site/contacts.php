@@ -3,7 +3,7 @@
 * Backend contacts page file.
 * @path /engine/site/contacts.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -21,7 +21,7 @@ if (!empty($_GET[2])) {
     return;
 }
 
-$this->title = lang("Contact us");
+$this->title = engine::lang("Contact us");
 if ($_SESSION["Lang"] == "en") {
     $this->keywords = [
         "Feedback",
@@ -44,5 +44,5 @@ if ($_SESSION["Lang"] == "en") {
     ];
     $this->description = "Контактная информация и форма обратной связи с администратором проекта";
 }
-$this->content .= engine::print_site_navigation(lang("Contact us"));
+$this->content .= engine::print_site_navigation(engine::lang("Contact us"));
 $this->content .= engine::print_under_construction();

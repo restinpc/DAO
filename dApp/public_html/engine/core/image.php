@@ -3,20 +3,20 @@
 * Image resize library.
 * @path /engine/core/image.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
-* 
+*
 * @example <code>
-*  $img = new image("/img/1.jpg"); 
-*  $img->crop(10,10,200,200); 
-*  $img->resize(100, 100); 
-*  $img->save("/img/", "1", "jpg", true, 100); 
+*  $img = new image("/img/1.jpg");
+*  $img->crop(10,10,200,200);
+*  $img->resize(100, 100);
+*  $img->save("/img/", "1", "jpg", true, 100);
 * </code> crops /img/1.jpg and saves selection.
 */
 class image{
 private $image;
-private $width; 
+private $width;
 private $height;
 private $type;
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ function __construct($file){
     if (@!file_exists($file)) exit("File does not exist");
     if(!$this->setType($file)) exit("File is not an image");
     if($this->type == "png"){
-        $this->image = @imagecreatefrompng($file);  
+        $this->image = @imagecreatefrompng($file);
     }else{
         $this->image = @imagecreatefromjpeg($file);
     }
@@ -47,7 +47,7 @@ function resize($width = false, $height = false){
             $newSize = $this->getSizeByHeight($height);
     }else $newSize = array($this->width, $this->height);
     $newImage = imagecreatetruecolor($newSize[0], $newSize[1]);
-    imagecopyresampled($newImage, $this->image, 0, 0, 0, 0, 
+    imagecopyresampled($newImage, $this->image, 0, 0, 0, 0,
         $newSize[0], $newSize[1], $this->width, $this->height);
     $this->image = $newImage;
     $this->setSize();
@@ -78,9 +78,9 @@ private function cropSave($x0, $y0, $w, $h){
 //------------------------------------------------------------------------------
 /**
 * Saves image to file.
-* 
+*
 * @usage <code>
-*  $img = new image("/img/1.jpg");  
+*  $img = new image("/img/1.jpg");
 *  $img->save("/img/", "2", "jpg", true, 100);
 * </code> copies /img/1.jpg to /img/2.jpg
 */
@@ -120,7 +120,7 @@ private function setType($file){
             return true;
         case 'jpeg':
             $this->type = "jpg";
-            return true; 
+            return true;
         case 'png':
             $this->type = "png";
             return true;
@@ -143,7 +143,7 @@ private function setSize(){
 * Gets an image size based on arguments.
 */
 private function getSizeByFramework($width, $height){
-    if($this->width <= $width && $this->height <= height) 
+    if($this->width <= $width && $this->height <= height)
         return array($this->width, $this->height);
     if($this->width / $width > $this->height / $height){
         $newSize[0] = $width;
@@ -176,7 +176,7 @@ private function getSizeByHeight($height){
 //------------------------------------------------------------------------------
 /**
 * Copies and resize an image.
-* 
+*
 * @param string $src Source image path.
 * @param string $dest Destination image path.
 * @param int $width Destination image width in px.
@@ -185,8 +185,8 @@ private function getSizeByHeight($height){
 * @param int $quality Destination image quality in % from 0 to 100.
 * @param bool $proportions Flag to save image proportions while resizing.
 * @return bool Returns TRUE on success, FALSE on failure.
-* @usage <code> 
-*  image::resize_image('img/1.jpg', 'img/2.jpg', 800, 600, 0xfff, 100, 0); 
+* @usage <code>
+*  image::resize_image('img/1.jpg', 'img/2.jpg', 800, 600, 0xfff, 100, 0);
 * </code>
 */
 static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quality=80, $proportions=0){
@@ -208,7 +208,7 @@ static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quali
         $new_height  = !$use_x_ratio ? $height : round($size[1] * $ratio);
         $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
         $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
-        imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);  
+        imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);
     }else{
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
     }
@@ -230,7 +230,7 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
     //echo $icfunc;
     if (!function_exists($icfunc)) return false;
     $isrc = $icfunc($src);
-    
+
     $idest = imagecreatetruecolor($width, $height);
     imagesavealpha($idest, true);
     if($ext == 'jpg'){
@@ -249,13 +249,13 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
         $new_height  = !$use_x_ratio ? $height : round($size[1] * $ratio);
         $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
         $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
-        imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);  
+        imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);
     }else{
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
     }
-    if( $ext == "jpg" || 
-        $ext == "jpeg" || 
-        $ext == "JPG" || 
+    if( $ext == "jpg" ||
+        $ext == "jpeg" ||
+        $ext == "JPG" ||
         $ext == "JPEG"){
         imagejpeg($idest, $dest, $quality);
     }else if($ext == "gif" || $ext == "GIF"){
@@ -271,18 +271,18 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
 //------------------------------------------------------------------------------
 /**
 * Saves base64 encoded image string to jpg file.
-* 
+*
 * @param string $base64_string Base64 encoded image string.
 * @param string $output_file Destination image path.
-* @usage <code> 
-*  image::base64_to_jpg('data:image/png;base64,iVBORw0KGgo..', 'img/file.jpg'); 
+* @usage <code>
+*  image::base64_to_jpg('data:image/png;base64,iVBORw0KGgo..', 'img/file.jpg');
 * </code>
 */
 static function base64_to_jpg($base64_string, $output_file) {
-    $ifp = fopen( $output_file, 'wb' ); 
+    $ifp = fopen( $output_file, 'wb' );
     $data = explode( ',', $base64_string );
     fwrite( $ifp, base64_decode( $data[ 1 ] ) );
-    fclose( $ifp ); 
-    return $output_file; 
+    fclose( $ifp );
+    return $output_file;
 }
 }

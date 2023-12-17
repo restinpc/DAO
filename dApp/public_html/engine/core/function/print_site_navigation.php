@@ -3,7 +3,7 @@
 * Prints mansion navigation block.
 * @path /engine/core/function/print_site_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -23,11 +23,11 @@
 
 function print_site_navigation($current){
     $arr = [
-        lang("Developed by") => $_SERVER["DIR"]."/developer",
-        lang("Terms & conditions") => $_SERVER["DIR"]."/content/terms_and_conditions",
-        lang("Privacy policy") => $_SERVER["DIR"]."/content/privacy_policy",
-        lang("Contact us") => $_SERVER["DIR"]."/contacts",
-        lang("Booking rooms") => $_SERVER["DIR"]."/booking",
+        engine::lang("Developed by") => $_SERVER["DIR"]."/developer",
+        engine::lang("Terms & conditions") => $_SERVER["DIR"]."/content/terms_and_conditions",
+        engine::lang("Privacy policy") => $_SERVER["DIR"]."/content/privacy_policy",
+        engine::lang("Contact us") => $_SERVER["DIR"]."/contacts",
+        engine::lang("Booking rooms") => $_SERVER["DIR"]."/booking",
     ];
     return engine::print_navigation($current, $arr);
 }

@@ -2,8 +2,8 @@
 /**
 * Prints Yandex payment form.
 * @path /engine/core/function/print_yandex_form.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,15 +14,15 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param int $invoice_id @mysql[nodes_invoice->id].
 * @param double $sum Amount to pay via PayPal.
 * @param string $return URL for redirection after payment.
 * @param bool $autopay Autosubmit form flag.
 * @return string Returns content of block on success, or die with error.
-* @usage <code> 
+* @usage <code>
 *   $return = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$_SERVER["DIR]."/";
-*   engine::print_yandex_form(1, 100, $return); 
+*   engine::print_yandex_form(1, 100, $return);
 * </code>
 */
 function print_yandex_form($invoice_id, $sum, $return, $autopay=0){
@@ -52,7 +52,7 @@ function print_yandex_form($invoice_id, $sum, $return, $autopay=0){
             <input type="hidden" name="need-phone" value="false">    
             <input type="hidden" name="need-address" value="false"> 
             <input type="hidden" name="successURL" value="'.$return.'" />
-            <button vr-control id="yandex-button-payment" type="submit" class="btn w280">'.lang("Make a payment").'</button>
+            <button id="yandex-button-payment" type="submit" class="btn w280">'.engine::lang("Make a payment").'</button>
         </form>';
     if($autopay){
         $fout.= '<script>document.getElementById("yandex_form").submit();</script>';

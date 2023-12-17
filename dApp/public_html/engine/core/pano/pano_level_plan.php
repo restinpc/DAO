@@ -19,6 +19,7 @@ function pano_level_plan($level_id){
     $top = null;
     $left = null;
     $right = null;
+    $bottom = null;
     while($data = mysqli_fetch_array($res)){
         array_push($scenes, $data);
         if($data["lat"] < $left || $left == null) $left = $data["lat"];
@@ -29,15 +30,15 @@ function pano_level_plan($level_id){
     $points = '';
     $bt = 550/($bottom-$top);
     $rl = 550/($right-$left);
-    if($bt > $rl){
+    if ($bt > $rl) {
         $rl *= ($rl/$bt);
-    }else{
+    } else {
         $bt *= ($bt/$rl);
     }
-    foreach($scenes as $scene){
+    foreach ($scenes as $scene) {
         $t = (5+($scene["lng"]-$top)*($bt));
         $l = (5+($right-$scene["lat"])*($rl));
-        $fout .= '<img draggable="true" onDblClick=\'window.open("/aframe/'.$scene["id"].'")\' class="dragable" id="camera_icon_'.$scene["id"].'" src="/img/hotpoint.png" width=30 '
+        $fout .= '<img draggable="true" onDblClick=\'window.open("'.$_SERVER["DIR"].'/panorama.php?id='.$scene["id"].'")\' class="dragable" id="camera_icon_'.$scene["id"].'" src="/img/hotpoint.png" width=30 '
                 . 't="'.$t.'" l="'.$l.'" g="'.$scene["id"].'"'
                 . ' style="position:absolute; top:'.($t+$scene["top"]).'px;'
                 . 'left:'.($l+$scene["left"]).'px; cursor: move;" title="ID: '.$scene["id"].'; Name:'.$scene["name"].'" />';
@@ -52,20 +53,22 @@ function pano_level_plan($level_id){
         <input type="hidden" name="action" value="edit_level_plan" />
         <input type="hidden" name="id" value="'.$level_id.'" />
         <input id="points_json" type="hidden" name="json" />
-        Image rotation: <br/>
+        '.engine::href("Image rotation").': <br/>
         <input required type="number" step="1" class="input w280" name="rotation" id="level_plan_rotation" value="'.$level["rotation"].'" /><br/>
         <br/>
-        Image scale: <br/>
+        '.engine::lang("Image scale").': <br/>
         <input required type="number" step="0.01" class="input w280" name="scale" id="level_plan_scale" value="'.$level["scale"].'" /><br/>
         <br/>
-        Upload new image: <br/>
+        '.engine::lang("Upload new image").': <br/>
         <input type="file"  class="input w280" id="level_plan_file" name="image"  /><br/>
         <br/>
-        <input type="button" onClick=\'level_apply_chages();\' class="btn w280" value="Apply chages" />
+        <input type="button" onClick=\'level_apply_chages();\' class="btn w280" value="'.engine::lang("Apply changes").'" />
         <br/>
-        <input type="submit" class="btn w280" value="Save chages" />
+        <input type="submit" class="btn w280" value="'.engine::lang("Save changes").'" />
         <br/>
-        <a href="/admin/?mode=panoramas&project_id='.$level["project_id"].'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a>
+        <a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/admin/?mode=panoramas&project_id='.$level["project_id"].'&level_id='.$level_id).'">
+            <input type="button" class="btn w280" value="'.engine::lang("Cancel").'" />
+        </a>
         <br/>
     </form>
     <div class="clear"></div>

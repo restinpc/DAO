@@ -1,13 +1,13 @@
 /**
  * Admin JavaScript library source file.
  * Do not edit directly.
- * @path /script/admin.source.js
+ * @path /script/admin.js
  *
- * @name    DAO Mansion    @version 1.0.1
+ * @name    DAO Mansion    @version 1.0.2
  * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
-//------------------------------------------------------------------------------
+
 /**
  * Submits page meta information from admin.
  */
@@ -33,7 +33,7 @@ function edit_seo(id) {
         }
     });
 }
-//------------------------------------------------------------------------------
+
 /**
  * Confirms a product order shipment.
  *
@@ -68,7 +68,7 @@ function confirm_order(id, text, shipment, soldout){
             }, "");
     }}, "");
 }
-//------------------------------------------------------------------------------
+
 /**
  * Removes an image from a product.
  *
@@ -86,7 +86,7 @@ function delete_image(id, pos){
         }
     });
 }
-//------------------------------------------------------------------------------
+
 /**
  * Creates a new transaction.
  *
@@ -107,7 +107,7 @@ function new_transaction(id, text){
         });
     }}, "");
 }
-//------------------------------------------------------------------------------
+
 /**
  * Archivates an order.
  *
@@ -127,5 +127,6 @@ function archive_order(id, text){
                     }
                 });
             }
-        }, "");
+        },
+    "");
 }

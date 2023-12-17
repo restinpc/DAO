@@ -2,8 +2,8 @@
 /**
 * Print cardboard camera entity.
 * @path /engine/core/aframe/aframe_default_camera.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *

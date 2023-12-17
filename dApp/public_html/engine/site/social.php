@@ -3,7 +3,7 @@
 * Backend social page file.
 * @path /engine/site/social.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,7 +20,7 @@ if (!empty($_GET[2])) {
     $this->content = engine::error();
     return;
 } else if (!empty($_GET[1]) && $_GET[1] == "telegram") {
-    $this->title = lang("Telegram group");
+    $this->title = engine::lang("Telegram group");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Web 3.0 Community in Telegram";
         $this->keywords = ["Social", "Telegram", "Web 3.0", "Community"];
@@ -31,10 +31,10 @@ if (!empty($_GET[2])) {
         $this->description = "Web 3.0 сообщество в Telegram";
         $this->keywords = ["Общество", "Telegram", "Web 3.0", "Сообщество"];
     }
-    $this->content .= engine::print_social_navigation(lang("Telegram group"));
+    $this->content .= engine::print_social_navigation(engine::lang("Telegram group"));
     $this->content .= '<iframe src="/telegram.php" onLoad="loading_site();" width="100%" class="app"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "constitution") {
-    $this->title = lang("Digital constitution");
+    $this->title = engine::lang("Digital constitution");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public inner constitution with principles and rules of community";
         $this->keywords = ["Social", "Constitution", "Rules", "Web 3.0", "Community"];
@@ -47,22 +47,22 @@ if (!empty($_GET[2])) {
     }
     $content = engine::curl_get_query("https://raw.githubusercontent.com/restinpc/DAO/main/Rules/".$_SESSION["Lang"].".md");
     $content = str_replace("  ", "<br/>", $content);
-    $content = str_replace("# ".lang("Community rules"), "<h1>".lang("Community rules")."</h1>", $content);
-    $this->content .= engine::print_social_navigation(lang("Digital constitution")).'
+    $content = str_replace("# ".engine::lang("Community rules"), "<h1>".engine::lang("Community rules")."</h1>", $content);
+    $this->content .= engine::print_social_navigation(engine::lang("Digital constitution")).'
     <div class="document980 article">
         <div class="text">
             '.$content.'
             <br/>
-            '.lang("The original document is in a").' 
+            '.engine::lang("The original document is in a").' 
             <a href="https://github.com/restinpc/DAO/blob/main/Rules/'.$_SESSION["Lang"].'.md" target="_blank">
-                '.lang("public repository").'
-            </a>, '.lang("and is available for editing by the community").'
+                '.engine::lang("public repository").'
+            </a>, '.engine::lang("and is available for editing by the community").'
             <br/>
             <br/>
         </div>
     </div>';
 } else if (!empty($_GET[1]) && $_GET[1] == "democracy") {
-    $this->title = lang("Crypto democracy");
+    $this->title = engine::lang("Crypto democracy");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public tokenized elections";
         $this->keywords = ["Social", "Blockchain", "Elections", "Web 3.0", "Community"];
@@ -73,10 +73,10 @@ if (!empty($_GET[2])) {
         $this->description = "Публичные токенизированные голосования";
         $this->keywords = ["Общество", "Голосования", "Выборы", "Web 3.0", "Сообщество"];
     }
-    $this->content .= engine::print_social_navigation(lang("Crypto democracy")).
+    $this->content .= engine::print_social_navigation(engine::lang("Crypto democracy")).
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "crowdfunding") {
-    $this->title = lang("Crowdfunding");
+    $this->title = engine::lang("Crowdfunding");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Crowdfunding platform for inner initiatives";
         $this->keywords = ["Social", "Crowdfunding", "Web 3.0", "Community"];
@@ -87,10 +87,10 @@ if (!empty($_GET[2])) {
         $this->description = "Краудфандинговая платформа для внутренних инициатив";
         $this->keywords = ["Общество", "Краудфандинг", "Web 3.0", "Сообщество"];
     }
-    $this->content .= engine::print_social_navigation(lang("Crowdfunding")).
+    $this->content .= engine::print_social_navigation(engine::lang("Crowdfunding")).
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "graph") {
-    $this->title = lang("Social graph");
+    $this->title = engine::lang("Social graph");
     if ($_SESSION["Lang"] == "en") {
         $this->description = 'Web 3.0 Community Social Graph Viewer App';
         $this->keywords = ["Social", "Web 3.0", "Community"];
@@ -101,7 +101,7 @@ if (!empty($_GET[2])) {
         $this->description = 'Приложение для просмотра социального графа сообщества';
         $this->keywords = ["Общество", "Web 3.0", "Сообщество"];
     }
-    $this->content .= engine::print_social_navigation(lang("Social graph"));
+    $this->content .= engine::print_social_navigation(engine::lang("Social graph"));
     $this->content .= '<iframe src="https://eisman.github.io/neo4jd3/#" onLoad="loading_site();" width="100%" class="app"></iframe>';
 } else {
     $this->content = engine::error();

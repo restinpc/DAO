@@ -3,7 +3,7 @@
 * Backend main page file.
 * @path /engine/site/main.php
 *
-* @name    DAO Mansion    @version 1.0.1
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -22,7 +22,7 @@ if(!empty($_GET[0])){
 }
 
 $this->title = "DAO Mansion";
-// $this->content .= engine::print_site_navigation(lang("Project whitepaper"));
+// $this->content .= engine::print_site_navigation(engine::lang("Project whitepaper"));
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
     $this->keywords = [

@@ -3,7 +3,7 @@
 * Captcha generator.
 * @path /engine/code/captcha.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -23,7 +23,7 @@ if(!empty($_GET["text"])){
     $font_size = 21;
     $let_amount = 6;
     $fon_let_amount = 30;
-    $font = "font/Open-Sans-regular/Open-Sans-regular.ttf";	 
+    $font = "font/Open-Sans-regular/Open-Sans-regular.ttf";
     $src = imagecreatetruecolor($width, $height);
     $fon = imagecolorallocatealpha($src,255,255,255,0);
     $text_colour = imagecolorallocate( $src, 0, 0, 0 );

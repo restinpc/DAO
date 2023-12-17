@@ -3,7 +3,7 @@
 * Backend webvr page file.
 * @path /engine/site/webvr.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -177,9 +177,9 @@ $this->content = '<style>
 </script>';
 
 if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
-    $this->title = lang("Metaverse");
-    $this->keywords = ["VR", "AI", "WebVR", "3D", lang("Metaverse"), "Web 3.0", "Blockchain", "NFT"];
-    $this->content .= engine::print_webvr_navigation(lang("Metaverse"));
+    $this->title = engine::lang("Metaverse");
+    $this->keywords = ["VR", "AI", "WebVR", "3D", engine::lang("Metaverse"), "Web 3.0", "Blockchain", "NFT"];
+    $this->content .= engine::print_webvr_navigation(engine::lang("Metaverse"));
     $this->content .= '<div class="document980 article">
     <div class="whitepaper text">';
     if ($_SESSION["Lang"] == "en") {
@@ -195,8 +195,8 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     $this->content .= '</div>
     </div>';
 } else if (!empty($_GET[1]) && $_GET[1] == "orbital") {
-    $this->title = lang("Orbital preview");
-    $this->keywords = ["3D", lang("Mansion"), "Web 3.0", "Autodesk"];
+    $this->title = engine::lang("Orbital preview");
+    $this->keywords = ["3D", engine::lang("Mansion"), "Web 3.0", "Autodesk"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion orbital viewer application inspired by Autodesk Forge Viewer';
     } else if ($_SESSION["Lang"] == "zh") {
@@ -204,11 +204,11 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     } else {
         $this->description = 'Приложение для орбитального просмотра 3D Mansion, вдохновленное Autodesk Forge Viewer';
     }
-    $this->content .= engine::print_webvr_navigation(lang("Orbital preview"));
+    $this->content .= engine::print_webvr_navigation(engine::lang("Orbital preview"));
     $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/orbital/" onLoad="loading_site();" class="app" width="100%"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "panorama") {
-    $this->title = lang("Panorama viewer");
-    $this->keywords = ["WebVR", lang("Panorama"), "3D", lang("Mansion"), "Web 3.0", "AFrame", "VR"];
+    $this->title = engine::lang("Panorama viewer");
+    $this->keywords = ["WebVR", engine::lang("Panorama"), "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion panorama viewer application with VR support inspired by Google Maps';
     } else if ($_SESSION["Lang"] == "zh") {
@@ -216,11 +216,11 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     } else {
         $this->description = 'Приложение для панорамного просмотра 3D Mansion с поддержкой VR режима, вдохновленное Google Maps';
     }
-    $this->content .= engine::print_webvr_navigation(lang("Panorama viewer")).
+    $this->content .= engine::print_webvr_navigation(engine::lang("Panorama viewer")).
     $this->content .= engine::print_panorama();
 } else if (!empty($_GET[1]) && $_GET[1] == "multiplayer") {
-    $this->title = lang("Multiplayer game");
-    $this->keywords = ["WebVR", "3D", lang("Multiplayer"), "DAO", "Web 3.0", "AFrame"];
+    $this->title = engine::lang("Multiplayer game");
+    $this->keywords = ["WebVR", "3D", engine::lang("Multiplayer"), "DAO", "Web 3.0", "AFrame"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion multiplayer game with VR support inspired by VRChat';
     } else if ($_SESSION["Lang"] == "zh") {
@@ -228,11 +228,11 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     } else {
         $this->description = 'Многопользовательская игра 3D Mansion с поддержкой VR, вдохновленная VRChat';
     }
-    $this->content .= engine::print_webvr_navigation(lang("Multiplayer scene")).
+    $this->content .= engine::print_webvr_navigation(engine::lang("Multiplayer scene")).
     $this->content .= '<iframe src="https://webvr.nodes-tech.ru" onLoad="loading_site();" class="app" width="100%"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "free-look") {
-    $this->title = lang("Free look mode");
-    $this->keywords = ["WebVR", "3D", lang("Mansion"), "Web 3.0", "AFrame", "VR"];
+    $this->title = engine::lang("Free look mode");
+    $this->keywords = ["WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR"];
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion free-look mode viewer application with VR support powered by AFrame';
     } else if ($_SESSION["Lang"] == "zh") {
@@ -240,7 +240,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     } else {
         $this->description = 'Приложение для просмотра 3D Mansion в режиме свободного полета на базе AFrame';
     }
-    $this->content .= engine::print_webvr_navigation(lang("Free look mode"));
+    $this->content .= engine::print_webvr_navigation(engine::lang("Free look mode"));
     $this->content .= engine::print_free_look();
 } else {
     $this->content = engine::error();

@@ -3,7 +3,7 @@
 * Print admin panoramas page.
 * @path /engine/core/admin/print_admin_panoramas.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -54,12 +54,12 @@ function print_admin_panoramas($cms){
             <table id="table" class="w100p" style="max-width:700px;">
             <thead>
             <tr>
-                <th>'.lang("Project Name").'</th>
-                <th>'.lang("Levels").'</th>
-                <th>'.lang("Scenes").'</th>
-                <th>'.lang("Objects").'</th>
-                <th>'.lang("Portals").'</th>
-                <th>'.lang("Links").'</th>
+                <th>'.engine::lang("Project Name").'</th>
+                <th>'.engine::lang("Levels").'</th>
+                <th>'.engine::lang("Scenes").'</th>
+                <th>'.engine::lang("Objects").'</th>
+                <th>'.engine::lang("Portals").'</th>
+                <th>'.engine::lang("Links").'</th>
                 <th></th>
             </tr>
             </thead>';
@@ -119,18 +119,18 @@ function print_admin_panoramas($cms){
             $count = $data[0];
             if($to > $count) $to = $count;
             if($data[0]>0){
-                $fout.= '<p class="p5">'.lang("Showing").' '.$from.' '.lang("to").' '.$to.' '.lang("from").' '.$count.' '.lang("entries").', 
+                $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                     <nobr><select id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
                      <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                      <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                      <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
-                    </select> '.lang("per page").'.</nobr></p>';
+                    </select> '.engine::lang("per page").'.</nobr></p>';
             }$fout .= '</div><div class="cr"></div>';
             if($count>$_SESSION["count"]){
                 $fout .= '<div class="pagination" >';
                 $pages = ceil($count/$_SESSION["count"]);
                 if($_SESSION["page"]>1){
-                    $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Previous").'</a></span>';
+                    $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                 }$fout .= '<ul>';
                 $a = $b = $c = $d = $e = $f = 0;
                 for($i = 1; $i <= $pages; $i++){
@@ -152,27 +152,27 @@ function print_admin_panoramas($cms){
                        $fout .= '<li class="dots">. . .</li>';
                    }
                 }if($_SESSION["page"]<$pages){
-                   $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Next").'</a></li>';
+                   $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }$fout .= '</ul>
                 </div>
                 ';
              }$fout .= '
                 </form><div class="clear"></div>';
         }else{
-            $fout .= '<div class="clear_block">'.lang("Projects not found").'</div>';
+            $fout .= '<div class="clear_block">'.engine::lang("Projects not found").'</div>';
         }
         $fout .= '
-            <input type="button" class="btn w280" value="'.lang("Add new project").'" onClick=\'this.style.display="none";$id("new_project").style.display="block";\' />
+            <input type="button" class="btn w280" value="'.engine::lang("Add new project").'" onClick=\'this.style.display="none";$id("new_project").style.display="block";\' />
             <form method="POST"  ENCTYPE="multipart/form-data" id="new_project" style="display:none;" >
                 <input type="hidden" name="action" value="add_project" />
-                <h2 class="fs21">'.lang("Add new project").'</h2><br/>
+                <h2 class="fs21">'.engine::lang("Add new project").'</h2><br/>
                 <center>
-                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.lang("Name").'" /><br/><br/>
+                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
                     <!-- <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" /><br/><br/> -->
                     <div class="w600">
                     <textarea class="input w600" id="editable" name="text" placeHolder="Text" required></textarea>
                     </div><br/><br/>
-                    <input id="input-submit" type="submit" onClick=\'$id("new_project").submit();\' class="btn w280" value="'.lang("Submit").'"  /><br/><br/>
+                    <input id="input-submit" type="submit" onClick=\'$id("new_project").submit();\' class="btn w280" value="'.engine::lang("Submit").'"  /><br/><br/>
                     <br/>
                 </center>
             </form>
@@ -246,11 +246,11 @@ function print_admin_panoramas($cms){
                     <table id="table" class="w100p" style="max-width:700px;">
                     <thead>
                     <tr>
-                        <th>'.lang("Level Name").'</th>
-                        <th>'.lang("Scenes").'</th>
-                        <th>'.lang("Objects").'</th>
-                        <th>'.lang("Portals").'</th>
-                        <th>'.lang("Links").'</th>
+                        <th>'.engine::lang("Level Name").'</th>
+                        <th>'.engine::lang("Scenes").'</th>
+                        <th>'.engine::lang("Objects").'</th>
+                        <th>'.engine::lang("Portals").'</th>
+                        <th>'.engine::lang("Links").'</th>
                         <th></th>
                     </tr>
                     </thead>';
@@ -307,18 +307,18 @@ function print_admin_panoramas($cms){
                     $count = $data[0];
                     if($to > $count) $to = $count;
                     if($data[0]>0){
-                        $fout.= '<p class="p5">'.lang("Showing").' '.$from.' '.lang("to").' '.$to.' '.lang("from").' '.$count.' '.lang("entries").', 
+                        $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                             <nobr><select id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
                              <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                              <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                              <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
-                            </select> '.lang("per page").'.</nobr></p>';
+                            </select> '.engine::lang("per page").'.</nobr></p>';
                     }$fout .= '</div><div class="cr"></div>';
                     if($count>$_SESSION["count"]){
                         $fout .= '<div class="pagination" >';
                         $pages = ceil($count/$_SESSION["count"]);
                         if($_SESSION["page"]>1){
-                            $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Previous").'</a></span>';
+                            $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                         }$fout .= '<ul>';
                         $a = $b = $c = $d = $e = $f = 0;
                         for($i = 1; $i <= $pages; $i++){
@@ -340,20 +340,20 @@ function print_admin_panoramas($cms){
                                $fout .= '<li class="dots">. . .</li>';
                            }
                         }if($_SESSION["page"]<$pages){
-                           $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Next").'</a></li>';
+                           $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                         }$fout .= '</ul>
                         </div>
                         ';
                      }$fout .= '
                         </form><div class="clear"></div>';
                 }else{
-                    $fout .= '<div class="clear_block">'.lang("Levels not found").'</div>';
+                    $fout .= '<div class="clear_block">'.engine::lang("Levels not found").'</div>';
                 }
 
                 $fout .= '
-                    <a target="_blank" href="/admin/?mode=panoramas&project_id='.$project_id.'&action=scheme"><input id="project_scheme_button" type="button" class="btn w280" value="'.lang("Show project scheme").'" /></a>
+                    <a target="_blank" href="/admin/?mode=panoramas&project_id='.$project_id.'&action=scheme"><input id="project_scheme_button" type="button" class="btn w280" value="'.engine::lang("Show project scheme").'" /></a>
                         <br/>
-                    <input id="add_new_level_button" type="button" class="btn w280" value="'.lang("Add new level").'" onClick=\'
+                    <input id="add_new_level_button" type="button" class="btn w280" value="'.engine::lang("Add new level").'" onClick=\'
                         this.style.display="none";
                         $id("project_scheme_button").style.display="none";
                         $id("new_level").style.display="block";
@@ -361,28 +361,28 @@ function print_admin_panoramas($cms){
                         \' />
                     <form method="POST"  ENCTYPE="multipart/form-data" id="new_level" style="display:none;" >
                         <input type="hidden" name="action" value="new_level" />
-                        <h2 class="fs21">'.lang("Add new level").'</h2><br/>
+                        <h2 class="fs21">'.engine::lang("Add new level").'</h2><br/>
                         <center>
-                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.lang("Name").'" /><br/><br/>
+                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
                         <input id="input-article-image" type="file" class="input w600" name="image" /><br/><br/>
                         <div class="w600">
                         <textarea class="input w600" id="editable" name="text" placeHolder="Text" required></textarea>
                         </div><br/><br/>
-                        <input id="input-submit" type="submit" onClick=\'$id("new_level").submit();\' class="btn w280" value="'.lang("Submit").'"  /><br/><br/>
+                        <input id="input-submit" type="submit" onClick=\'$id("new_level").submit();\' class="btn w280" value="'.engine::lang("Submit").'"  /><br/><br/>
                         <br/></center>
                     </form>
                     <br/>
-                    <input id="edit_project_button" type="button" class="btn w280" value="'.lang("Project properties").'" onClick=\'this.style.display="none";$id("edit_project").style.display="block";$id("add_new_level_button").style.display="none";\' />
+                    <input id="edit_project_button" type="button" class="btn w280" value="'.engine::lang("Project properties").'" onClick=\'this.style.display="none";$id("edit_project").style.display="block";$id("add_new_level_button").style.display="none";\' />
                     <form method="POST"  ENCTYPE="multipart/form-data" id="edit_project" style="display:none;" >
                         <input type="hidden" name="action" value="edit_project" />
-                        <h2 class="fs21">'.lang("Project properties").'</h2><br/>
+                        <h2 class="fs21">'.engine::lang("Project properties").'</h2><br/>
                         <center>
-                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.lang("Name").'" value="'.$project["name"].'" /><br/><br/>
+                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" value="'.$project["name"].'" /><br/><br/>
                         <!-- <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" value="'.$project["url"].'" /><br/><br/> -->
                         <div class="w600">
                         <textarea class="input w600" id="editable_2" name="text" placeHolder="Text" required>'.$project["text"].'</textarea>
                         </div><br/><br/>
-                        <input id="input-submit" type="submit" class="btn w280" value="'.lang("Submit").'"  /><br/><br/>
+                        <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/><br/>
                         <br/></center>
                     </form>
                 </div>';
@@ -926,10 +926,10 @@ function print_admin_panoramas($cms){
                 <table id="table" class="w100p" style="max-width:700px;">
                 <thead>
                 <tr>
-                    <th>'.lang("Scene Name").'</th>
-                    <th>'.lang("Objects").'</th>
-                    <th>'.lang("Portals").'</th>
-                    <th>'.lang("Links").'</th>  
+                    <th>'.engine::lang("Scene Name").'</th>
+                    <th>'.engine::lang("Objects").'</th>
+                    <th>'.engine::lang("Portals").'</th>
+                    <th>'.engine::lang("Links").'</th>  
                     <th></th>
                 </tr>
                 </thead>';
@@ -992,18 +992,18 @@ function print_admin_panoramas($cms){
                 $count = $data[0];
                 if($to > $count) $to = $count;
                 if($data[0]>0){
-                    $fout.= '<p class="p5">'.lang("Showing").' '.$from.' '.lang("to").' '.$to.' '.lang("from").' '.$count.' '.lang("entries").', 
+                    $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                         <nobr><select id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
                          <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                          <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                          <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
-                        </select> '.lang("per page").'.</nobr></p>';
+                        </select> '.engine::lang("per page").'.</nobr></p>';
                 }$fout .= '</div><div class="cr"></div>';
                 if($count>$_SESSION["count"]){
                     $fout .= '<div class="pagination" >';
                     $pages = ceil($count/$_SESSION["count"]);
                     if($_SESSION["page"]>1){
-                        $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Previous").'</a></span>';
+                        $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                     }$fout .= '<ul>';
                     $a = $b = $c = $d = $e = $f = 0;
                     for($i = 1; $i <= $pages; $i++){
@@ -1025,20 +1025,20 @@ function print_admin_panoramas($cms){
                            $fout .= '<li class="dots">. . .</li>';
                        }
                     }if($_SESSION["page"]<$pages){
-                       $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.lang("Next").'</a></li>';
+                       $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                     }$fout .= '</ul>
                     </div>
                     ';
                  }$fout .= '
                     </form><div class="clear"></div>';
             }else{
-                $fout .= '<div class="clear_block">'.lang("Scenes not found").'</div>';
+                $fout .= '<div class="clear_block">'.engine::lang("Scenes not found").'</div>';
             }
 
             $fout .= '
                 </div>
                 <div style="max-width: 640px; margin:0px auto;">
-                    <input id="show_level_plan" type="button" class="btn w280" value="'.lang("Show level plan").'" onClick=\'
+                    <input id="show_level_plan" type="button" class="btn w280" value="'.engine::lang("Show level plan").'" onClick=\'
                        $id("show_level_plan").style.display="none";
                        $id("upload_scene_button").style.display="none";
                        $id("edit_scene_button").style.display="none";
@@ -1051,7 +1051,7 @@ function print_admin_panoramas($cms){
                        '.engine::pano_level_plan($level_id).'
                    </div>
                    <br/>
-                   <input id="upload_scene_button" type="button" class="btn w280" value="'.lang("Upload scenes").'" onClick=\'
+                   <input id="upload_scene_button" type="button" class="btn w280" value="'.engine::lang("Upload scenes").'" onClick=\'
                        $id("show_level_plan").style.display="none";
                        $id("upload_scene_button").style.display="none";
                        $id("upload_scene").style.display="block";
@@ -1061,19 +1061,19 @@ function print_admin_panoramas($cms){
                    \' />
                    <form method="POST"  ENCTYPE="multipart/form-data" id="upload_scene" style="display:none; text-align:left;" >
                        <input type="hidden" name="action" value="upload_scene" />
-                       <center><h2 class="fs21">'.lang("Upload scenes").'</h2></center><br/>
+                       <center><h2 class="fs21">'.engine::lang("Upload scenes").'</h2></center><br/>
                        JSON File:<br/>
                        <input id="input-article-caption" type="file" class="input w600" name="json" required /><br/><br/>
                        <!--
                        Scene images:<br/>
                        <input id="input-article-images" type="file" multiple class="input w600" name="file[]"  /><br/><br/>
                        -->
-                       <center><input id="input-submit" type="submit" class="btn w280" value="'.lang("Submit").'"  /><br/>
+                       <center><input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
                        <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a></center><br/><br/>
                        <br/>
                    </form>
                    <br/>
-                   <input id="add_new_scene_button" type="button" class="btn w280" value="'.lang("Add new scene").'" onClick=\'
+                   <input id="add_new_scene_button" type="button" class="btn w280" value="'.engine::lang("Add new scene").'" onClick=\'
                        $id("show_level_plan").style.display="none";
                        $id("upload_scene_button").style.display="none";
                        $id("new_scene").style.display="block";
@@ -1083,7 +1083,7 @@ function print_admin_panoramas($cms){
                        \' />
                    <form method="POST" ENCTYPE="multipart/form-data" id="new_scene" style="display:none; text-align:left;" >
                        <input type="hidden" name="action" value="new_scene" />
-                       <center><h2 class="fs21">'.lang("Add new scene").'</h2></center><br/>
+                       <center><h2 class="fs21">'.engine::lang("Add new scene").'</h2></center><br/>
                            
   <main id="worker_wnd" class="lh2 w280 m0a">
     <section>
@@ -1119,29 +1119,29 @@ function print_admin_panoramas($cms){
   
                 <div style="display:none;" id="new_scene_details">
                     Scene name:<br/>
-                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.lang("Name").'" /><br/><br/>
+                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
                     Scene position:<br/>
-                    <input id="input-article-position" type="text" class="input w600" name="position" required placeHolder="'.lang("Position").'" value="0 3 0" /><br/><br/>
+                    <input id="input-article-position" type="text" class="input w600" name="position" required placeHolder="'.engine::lang("Position").'" value="0 3 0" /><br/><br/>
                     Scene rotation:<br/>
-                    <input id="input-article-rotation" type="text" class="input w600" name="rotation" required placeHolder="'.lang("Rotation").'" value="0 0 0" /><br/><br/>
+                    <input id="input-article-rotation" type="text" class="input w600" name="rotation" required placeHolder="'.engine::lang("Rotation").'" value="0 0 0" /><br/><br/>
                     Scene latitude:<br/>
-                    <input id="input-article-latitude" type="number" class="input w600" name="lat" required placeHolder="'.lang("Latitude").'" value="0" /><br/><br/>
+                    <input id="input-article-latitude" type="number" class="input w600" name="lat" required placeHolder="'.engine::lang("Latitude").'" value="0" /><br/><br/>
                     Scene longitude:<br/>
-                    <input id="input-article-longitude" type="number" class="input w600" name="lng" required placeHolder="'.lang("Longitude").'" value="0" /><br/><br/>
+                    <input id="input-article-longitude" type="number" class="input w600" name="lng" required placeHolder="'.engine::lang("Longitude").'" value="0" /><br/><br/>
                     Floor position:<br/>
-                    <input id="input-article-floor-position" type="text" class="input w600" name="floor_position" required placeHolder="'.lang("Floor position").'" value="0 -2 0" /><br/><br/>
+                    <input id="input-article-floor-position" type="text" class="input w600" name="floor_position" required placeHolder="'.engine::lang("Floor position").'" value="0 -2 0" /><br/><br/>
                     Floor radius:<br/>
-                    <input id="input-article-floor-radius" type="number" class="input w600" name="floor_radius" required placeHolder="'.lang("Floor radius").'" value="20" /><br/><br/>
+                    <input id="input-article-floor-radius" type="number" class="input w600" name="floor_radius" required placeHolder="'.engine::lang("Floor radius").'" value="20" /><br/><br/>
                     Logo size:<br/>
-                    <input id="input-article-floor-radius" type="number" class="input w600" name="logo_size" required placeHolder="'.lang("Logo size").'" value="4" /><br/><br/>
-                    <center><input id="input-submit-new-scene" type="submit" class="btn w280" value="'.lang("Submit").'"  /><br/>
+                    <input id="input-article-floor-radius" type="number" class="input w600" name="logo_size" required placeHolder="'.engine::lang("Logo size").'" value="4" /><br/><br/>
+                    <center><input id="input-submit-new-scene" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
                         <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a><br/>
                         </center><br/><br/>
                     <br/>
                 </div>
                 </form>
                 <br/>
-                <input id="edit_scene_button" type="button" class="btn w280" value="'.lang("level properties").'" onClick=\'
+                <input id="edit_scene_button" type="button" class="btn w280" value="'.engine::lang("level properties").'" onClick=\'
                     $id("show_level_plan").style.display="none";
                     $id("upload_scene_button").style.display="none";
                     $id("edit_level").style.display="block";
@@ -1151,13 +1151,13 @@ function print_admin_panoramas($cms){
                     \' />
                 <form method="POST"  ENCTYPE="multipart/form-data" id="edit_level" style="display:none;" >
                     <input type="hidden" name="action" value="edit_level" />
-                    <h2 class="fs21">'.lang("Level properties").'</h2><br/>
+                    <h2 class="fs21">'.engine::lang("Level properties").'</h2><br/>
                     <center>
-                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.lang("Name").'" value="'.$project["name"].'" /><br/><br/>
+                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" value="'.$project["name"].'" /><br/><br/>
                     <div class="w600">
                     <textarea class="input w600" id="editable" name="text" placeHolder="Text" required>'.$project["text"].'</textarea>
                     </div><br/><br/>
-                    <input id="input-submit" type="submit" class="btn w280" value="'.lang("Submit").'"  /><br/>
+                    <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
                     <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a>
                     <br/>
                     <br/></center>

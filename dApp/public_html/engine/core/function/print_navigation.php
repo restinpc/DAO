@@ -3,7 +3,7 @@
 * Prints navigation block.
 * @path /engine/core/function/print_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -36,7 +36,9 @@ function print_navigation($current, $arr){
     $i = 0;
     foreach($arr as $key => $value) {
         $i++;
-        $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($current === $key ? "selected" : "").'" onclick=\'document.getElementById("profile_menu_link_'.$i.'").click();\'><a id="profile_menu_link_'.$i.'" href="'.$value.'">'.$key.'</a></span>';
+        $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($current === $key ? "selected" : "").'" onclick=\'document.getElementById("profile_menu_link_'.$i.'").click();\'>
+            <a id="profile_menu_link_'.$i.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($value).'">'.$key.'</a>
+        </span>';
     }
     $fout .= '
         </div>

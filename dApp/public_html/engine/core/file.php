@@ -3,10 +3,10 @@
 * File managment library.
 * @path /engine/core/file.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
-* 
+*
 * @example <code>
 *  if(file::zip('/temp', '/temp/files.zip')){
 *      file::delete('/temp');
@@ -17,7 +17,7 @@ class file{
 //------------------------------------------------------------------------------
 /**
 * Backup a file, or recursively copy a folder and its contents.
-* 
+*
 * @param string $source Source path.
 * @param string $dest Destination path.
 * @param int $permissions New folder creation permissions.
@@ -26,7 +26,7 @@ class file{
 */
 static function copy($source, $dest, $permissions = 0755){
     if (is_link($source)) return symlink(readlink($source), $dest);
-    if (is_file($source)){ 
+    if (is_file($source)){
         $res = copy($source, $dest);
         chmod($dest, $permissions);
         return $res;
@@ -34,10 +34,10 @@ static function copy($source, $dest, $permissions = 0755){
     if (!is_dir($dest)) mkdir($dest, $permissions);
     $dir = dir($source);
     while (false !== $entry = $dir->read()) {
-        if ($entry == '.' || 
-            $entry == '..' || 
-            $entry == 'backup' || 
-            $entry == 'session') 
+        if ($entry == '.' ||
+            $entry == '..' ||
+            $entry == 'backup' ||
+            $entry == 'session')
                 continue;
         self::copy("$source/$entry", "$dest/$entry", $permissions);
     }
@@ -47,7 +47,7 @@ static function copy($source, $dest, $permissions = 0755){
 //------------------------------------------------------------------------------
 /**
 * Recursively delete a directory.
-* 
+*
 * @param string $dir Destination path.
 * @return bool Returns TRUE on success, FALSE on failure.
 * @usage <code> file::delete("/temp"); </code>
@@ -55,7 +55,7 @@ static function copy($source, $dest, $permissions = 0755){
 static function delete($dir) {
     foreach(scandir($dir) as $file) {
         if ('.' === $file || '..' === $file) continue;
-        if (is_dir("$dir/$file")) 
+        if (is_dir("$dir/$file"))
             self::delete("$dir/$file");
         else unlink("$dir/$file");
     }rmdir($dir);
@@ -64,7 +64,7 @@ static function delete($dir) {
 //------------------------------------------------------------------------------
 /**
 * Uploading file from FILES request data to server.
-* 
+*
 * @param string $filename Source input name.
 * @param string $path Destination path.
 * @param bool $md5 MD5 name modification.
@@ -96,51 +96,51 @@ static function upload($filename, $path, $md5=0){
                 if (move_uploaded_file($_FILES[$filename]["tmp_name"][$i], $f_name)){
                     $fout .= $a.';';
                 }
-            } 
+            }
         } return $fout;
     }
  }
 //------------------------------------------------------------------------------
 /**
-* Add files and sub-directories in a folder to zip file. 
-* 
+* Add files and sub-directories in a folder to zip file.
+*
 * @param string $folder Input directory
 * @param ZipArchive $zipFile Link to file
-* @param int $exclusiveLength Number of text to be exclusived from the file path. 
-*/ 
-private static function zip_folder($folder, &$zipFile, $exclusiveLength) { 
-    $handle = opendir($folder); 
-    while (false !== $f = readdir($handle)) { 
-      if ($f != '.' && $f != '..') { 
+* @param int $exclusiveLength Number of text to be exclusived from the file path.
+*/
+private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
+    $handle = opendir($folder);
+    while (false !== $f = readdir($handle)) {
+      if ($f != '.' && $f != '..') {
         $filePath = "$folder/$f";
-        $localPath = mb_substr($filePath, $exclusiveLength); 
-        if (is_file($filePath)) { 
-          $zipFile->addFile($filePath, $localPath); 
-        } elseif (is_dir($filePath)) { 
-          $zipFile->addEmptyDir($localPath); 
-          self::zip_folder($filePath, $zipFile, $exclusiveLength); 
-        } 
-      } 
-    } 
-    closedir($handle); 
-} 
+        $localPath = mb_substr($filePath, $exclusiveLength);
+        if (is_file($filePath)) {
+          $zipFile->addFile($filePath, $localPath);
+        } elseif (is_dir($filePath)) {
+          $zipFile->addEmptyDir($localPath);
+          self::zip_folder($filePath, $zipFile, $exclusiveLength);
+        }
+      }
+    }
+    closedir($handle);
+}
 //------------------------------------------------------------------------------
 /**
-* Zip a folder (include itself). 
-* 
-* @param string $sourcePath Path of directory to be zip. 
-* @param string $outZipPath Path of output zip file. 
-* @usage <code> file::zip('/img', '/backup/img.zip'); </code> 
-*/ 
-static function zip($sourcePath, $outZipPath) { 
-    $pathInfo = pathInfo($sourcePath); 
-    $parentPath = $pathInfo['dirname']; 
-    $dirName = $pathInfo['basename']; 
-    $z = new ZipArchive(); 
-    $z->open($outZipPath, ZIPARCHIVE::CREATE); 
-    $z->addEmptyDir($dirName); 
-    self::zip_folder($sourcePath, $z, strlen("$parentPath/")); 
-    $z->close(); 
+* Zip a folder (include itself).
+*
+* @param string $sourcePath Path of directory to be zip.
+* @param string $outZipPath Path of output zip file.
+* @usage <code> file::zip('/img', '/backup/img.zip'); </code>
+*/
+static function zip($sourcePath, $outZipPath) {
+    $pathInfo = pathInfo($sourcePath);
+    $parentPath = $pathInfo['dirname'];
+    $dirName = $pathInfo['basename'];
+    $z = new ZipArchive();
+    $z->open($outZipPath, ZIPARCHIVE::CREATE);
+    $z->addEmptyDir($dirName);
+    self::zip_folder($sourcePath, $z, strlen("$parentPath/"));
+    $z->close();
     return is_file($outZipPath);
-} 
+}
 }

@@ -3,7 +3,7 @@
 * Backend login page file.
 * @path /engine/site/login.php
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.2
 * @author  Alexandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -23,7 +23,7 @@ if(!empty($_GET[4])){
 $this->content .= '<div class="w320 pt20 m0a">';
 if(empty($_GET[1])){
     $flag = 0;
-    $this->title = lang("Login");
+    $this->title = engine::lang("Login");
     if ($_SESSION["Lang"] == "en") {
         $this->keywords = [
             "Authorization",
@@ -54,7 +54,7 @@ if(empty($_GET[1])){
         $pass = trim(strtolower($_POST["pass"]));
         if (!empty($data) && engine::match_passwords($pass, $data["pass"], $data["salt"])) {
             if ($data["ban"] == "1") {
-                $this->onload .= 'alert("'.lang("Access denied").'");';
+                $this->onload .= 'alert("'.engine::lang("Access denied").'");';
             } else {
                 $_SESSION["user"] = $data;
                 $query = 'UPDATE `nodes_user` SET `token` = "'.session_id().'", '
@@ -71,24 +71,24 @@ if(empty($_GET[1])){
                 $flag = 1;
             }
         }else{
-            $this->onload .= 'alert("'.lang("Incorrect email of password").'");';
+            $this->onload .= 'alert("'.engine::lang("Incorrect email of password").'");';
         }
     }
     if(!$flag){
-        $this->content .= '<h1>'.lang("Login").'</h1>
+        $this->content .= '<h1>'.engine::lang("Login").'</h1>
         <form method="POST" action="'.$_SERVER["DIR"].'/login" id="login_form" class="lh2">
-            <div class="input-caption">'.lang("Email").'</div>
+            <div class="input-caption">'.engine::lang("Email").'</div>
             <input id="input-login-email" type="text" required name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="Email" />
             <br/>
-            <div class="input-caption">'.lang("Password").'</div>
-            <input id="input-login-password" type="password" required name="pass" class="input reg_email" value="'.$_POST["pass"].'" placeHolder="'.lang("Password").'" />
+            <div class="input-caption">'.engine::lang("Password").'</div>
+            <input id="input-login-password" type="password" required name="pass" class="input reg_email" value="'.$_POST["pass"].'" placeHolder="'.engine::lang("Password").'" />
             <br/>
-            <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.lang("Continue").'" />
+            <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Continue").'" />
             <br/>
             <div style="color: #0e2556; font-size: 14px; padding-top: 25px;">
-                <a id="link-sign-up" href="'.$_SERVER["DIR"].'/signup">'.lang("Do not have an account?").'</a>
+                <a id="link-sign-up" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/signup').'">'.engine::lang("Do not have an account?").'</a>
                 <br/>
-                <a id="link-restore-pass" rel="nofollow" href="'.$_SERVER["DIR"].'/login/restore">'.lang("Forgot password").'?</a>
+                <a id="link-restore-pass" hreflang="'.$_SESSION["Lang"].'" rel="nofollow" href="'.engine::href($_SERVER["DIR"].'/login/restore').'">'.engine::lang("Forgot password").'?</a>
             </div>
         </form>';
     }
@@ -117,7 +117,7 @@ if(empty($_GET[1])){
     }
     $flag = 0;
     if (!empty($_GET[2]) && !empty($_GET[3])) {
-        $this->title = lang("Setup new password");
+        $this->title = engine::lang("Setup new password");
         $email = urldecode($_GET[2]);
         $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
         $res = engine::mysql($query);
@@ -131,22 +131,22 @@ if(empty($_GET[1])){
                     $salt = $password["salt"];
                     $query = 'UPDATE `nodes_user` SET `pass` = "'.$pass.'", `salt` = "'.$salt.'" WHERE `email` = "'.$email.'"';
                     engine::mysql($query);
-                    $this->content .= '<div class="clear_block">'.lang("Your password has been updated").'!</div>'
+                    $this->content .= '<div class="clear_block">'.engine::lang("Your password has been updated").'!</div>'
                     . '<script>function redirect(){window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
                 }else{
                     $this->content .= ''
-                    . '<h1>'.lang("Setup new password").'</h1><br/>'
+                    . '<h1>'.engine::lang("Setup new password").'</h1><br/>'
                     . '<form method="POST" class="lh2">'
-                    . '<input id="input-login-password" type="password" required name="pass" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.lang("Password").'" /><br/>'
-                    . '<input id="input-login-submit" type="submit" class="btn reg_submit" value="'.lang("Submit").'" />
+                    . '<input id="input-login-password" type="password" required name="pass" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Password").'" /><br/>'
+                    . '<input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Submit").'" />
                     </form>';
                 }
                 $flag = 1;
             }else{
-                $this->onload .= 'alert("'.lang("Invalid confirmation code").'");';
+                $this->onload .= 'alert("'.engine::lang("Invalid confirmation code").'");';
             }
         }else{
-            $this->onload .= 'alert("Email '.lang("not found").'");';
+            $this->onload .= 'alert("Email '.engine::lang("not found").'");';
         }
     }
     if(!empty($_POST["email"])){
@@ -159,21 +159,21 @@ if(empty($_GET[1])){
             $code = mb_substr(md5($email.date("Y-m-d")), 0, 4);
             $new_pass = mb_substr(md5($email.date("Y-m-d")), 0, 8);
             email::restore_password($data["email"], $new_pass, $code);
-            $this->content .= '<div class="clear_block">'.lang("To process restore, please check your email").'.</div>'
+            $this->content .= '<div class="clear_block">'.engine::lang("To process restore, please check your email").'.</div>'
                     . '<script>'
                     . 'function redirect(){this.location = "'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000); </script>';
             $flag = 1;
         }else{
-            $this->onload .= 'alert("Email '.lang("not found").'");';
+            $this->onload .= 'alert("Email '.engine::lang("not found").'");';
         }
     }
     if (!$flag) {
-        $this->title = lang("Reset password");
-        $this->content .= '<h1>'.lang("Reset password").'</h1>
+        $this->title = engine::lang("Reset password");
+        $this->content .= '<h1>'.engine::lang("Reset password").'</h1>
         <form method="POST" class="lh2">
-            <div class="input-caption">'.lang("Email").'</div>
+            <div class="input-caption">'.engine::lang("Email").'</div>
             <input id="input-login-email" type="text" required name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="Email" /><br/>
-            <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.lang("Submit").'" />
+            <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Submit").'" />
         </form>';
     }
 } else {

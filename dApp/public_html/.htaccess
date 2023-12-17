@@ -2,10 +2,6 @@ RewriteEngine on
 AddDefaultCharset UTF-8
 RewriteCond %{HTTP_HOST} ^www\.(.*)
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-RewriteCond %{HTTP_HOST} ^cv\.(.*)
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-RewriteCond %{HTTP_HOST} ^aframe\.(.*)
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 RewriteCond %{HTTP:HTTPS} !=on [NC]
 RewriteRule ^(.*)$ https://nodes-tech.ru/$1 [R=301,L]
 php_value upload_max_filesize 512M

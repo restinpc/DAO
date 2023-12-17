@@ -2,8 +2,8 @@
 /**
 * Print account header block.
 * @path /engine/core/account/print_header.php
-* 
-* @name    DAO Mansion    @version 1.0.0
+*
+* @name    DAO Mansion    @version 1.0.2
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,7 @@
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
-* 
+*
 * @param object $site Site class object.
 * @param int $user_id @mysql[nodes_user]->id.
 * @return string Returns content of page on success, or die with error.
@@ -25,10 +25,10 @@ function print_header($site, $id){
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
     if($user["online"]>date("U")-300){
-        $online = '<b>'.lang("Online").'</b><br/>';
+        $online = '<b>'.engine::lang("Online").'</b><br/>';
     }else{
         $date = date("d/m/Y H:i", $user["online"]);
-        $online = lang("Last visit").' ';
+        $online = engine::lang("Last visit").' ';
         $online .= $date;
         $online .= '<br/>';
     }
