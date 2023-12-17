@@ -40,7 +40,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->content .= '
     <div class="document980 article">
         <div class="whitepaper text">
-        <h1>DAO Mansion</h1>
+        <h1>DAO</h1>
         <p>
             <video id="intro" width="100%" height="auto" autoplay muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
