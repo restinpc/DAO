@@ -29,7 +29,9 @@ $d = mysqli_fetch_array($r);
 $limit = $d[0];
 $query = 'SELECT * FROM `nodes_user_outbox` WHERE `status` > -2 AND `status` < 1 ORDER BY RAND() DESC LIMIT 0, '.$limit;
 $res = engine::mysql($query);
-while($data = mysqli_fetch_array($res)) email::bulk_mail($data);
+while ($data = mysqli_fetch_array($res)) {
+    email::bulk_mail($data);
+}
 //------------------------------------------------------------------------------
 /*
 * Clean-up temp BTC transactions.
@@ -43,11 +45,11 @@ engine::mysql($query);
 $query = 'SELECT `date` FROM `nodes_perfomance` WHERE `date` > "'.(date("U")-1200).'"';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
-if(empty($data)){
+if (empty($data)) {
     $query = 'SELECT * FROM `nodes_cache` WHERE `interval` >= "-1" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY RAND() DESC LIMIT 0, 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if(!empty($data)){
+    if (!empty($data)) {
         $flag = 1;
         $current = doubleval(microtime(1));
         $html = engine::curl_post_query($data["url"], "nocache=1");
@@ -61,16 +63,16 @@ if(empty($data)){
 /*
 * Generates site daily report to admin email once a day.
 */
-if(!$flag){
-    if(date("H")>=23){
+if (!$flag) {
+    if (date("H") >= 23) {
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "daily_report"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        if(intval($data["value"])){
+        if (intval($data["value"])) {
             $query = 'SELECT * FROM `nodes_config` WHERE `name` = "lastreport"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
-            if($data["value"]<date("U")-86000){
+            if ($data["value"] < date("U")-86000) {
                 $flag = 2;
                 email::daily_report();
                 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "lastreport"';
@@ -83,53 +85,61 @@ if(!$flag){
 /*
 * Unlinks temp images once a day.
 */
-if(!$flag){
+if (!$flag) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_images"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if($data["value"]<date("U")-86400){
+    if ($data["value"] < date("U") - 86400) {
         $flag = 5;
         $images = array();
         $query = 'SELECT * FROM  `nodes_product`';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
+        while ($data = mysqli_fetch_array($res)) {
             $imgs = explode(';', $data["img"]);
-            foreach($imgs as $img){
+            foreach ($imgs as $img) {
                 $img = trim($img);
-                if(!empty($img)){
-                    if(!in_array($img, $images)) array_push($images, $img);
+                if (!empty($img)) {
+                    if (!in_array($img, $images)) {
+                        array_push($images, $img);
+                    }
                 }
             }
         }
         $query = 'SELECT * FROM `nodes_content`';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
+        while ($data = mysqli_fetch_array($res)) {
             $img = trim($data["img"]);
-            if(!empty($img)){
-                if(!in_array($img, $images)) array_push($images, $img);
+            if (!empty($img)) {
+                if (!in_array($img, $images)) {
+                    array_push($images, $img);
+                }
             }
             $imgs = explode(';', $data["imgs"]);
-            foreach($imgs as $img){
+            foreach ($imgs as $img) {
                 $img = trim($img);
-                if(!empty($img)){
-                    if(!in_array($img, $images)) array_push($images, $img);
+                if (!empty($img)) {
+                    if (!in_array($img, $images)) {
+                        array_push($images, $img);
+                    }
                 }
             }
         }
         $query = 'SELECT * FROM `nodes_catalog`';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
+        while ($data = mysqli_fetch_array($res)) {
             $img = trim($data["img"]);
-            if(!empty($img)){
-                if(!in_array($img, $images)) array_push($images, $img);
+            if (!empty($img)) {
+                if (!in_array($img, $images)) {
+                    array_push($images, $img);
+                }
             }
         }
         $path = "img/data/big/";
         $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
         $hdl = opendir($dir);
-        while ($file_name = readdir($hdl)){
-            if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)){
-                if(!in_array($file_name, $images)){
+        while ($file_name = readdir($hdl)) {
+            if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)) {
+                if (!in_array($file_name, $images)) {
                     unlink($dir.$file_name);
                 }
             }
@@ -138,9 +148,9 @@ if(!$flag){
         $path = "img/data/thumb/";
         $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
         $hdl = opendir($dir);
-        while ($file_name = readdir($hdl)){
-            if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)){
-                if(!in_array($file_name, $images)){
+        while ($file_name = readdir($hdl)) {
+            if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)) {
+                if (!in_array($file_name, $images)) {
                     unlink($dir.$file_name);
                 }
             }
@@ -149,19 +159,21 @@ if(!$flag){
         $images = array();
         $query = 'SELECT * FROM  `nodes_user`';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
+        while ($data = mysqli_fetch_array($res)) {
             $img = trim($data["photo"]);
-            if(!empty($img)){
-                if(!in_array($img, $images)) array_push($images, $img);
+            if (!empty($img)) {
+                if (!in_array($img, $images)) {
+                    array_push($images, $img);
+                }
             }
         }
         $path = "img/pic/";
         $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
         $hdl = opendir($dir);
-        while ($file_name = readdir($hdl)){
+        while ($file_name = readdir($hdl)) {
             if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)
-                    && ($file_name != "admin.jpg") && ($file_name != "anon.jpg")){
-                if(!in_array($file_name, $images)){
+                && ($file_name != "admin.jpg") && ($file_name != "anon.jpg")) {
+                if (!in_array($file_name, $images)) {
                     unlink($dir.$file_name);
                 }
             }
@@ -185,14 +197,13 @@ if (!$flag) {
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         $count = round($data[0]/1440);
-        if ($count<1) {
+        if ($count < 1) {
             $count = 1;
         }
         $query = 'SELECT * FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY `date` ASC LIMIT 0, '.$count;
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
-            if ($data["date"]<=intval(date("U")-$data["interval"])) {
-                echo $data["url"];
+            if ($data["date"] <= intval(date("U") - $data["interval"])) {
                 $flag = 7;
                 $url = $data["url"];
                 cache::update_cache($url,0,$data["lang"]);
@@ -204,15 +215,15 @@ if (!$flag) {
 /*
 * Updates a cache info for new pages.
 */
-if(!$flag){
+if (!$flag) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     $is_cache = intval($data["value"]);
-    if($is_cache){
+    if ($is_cache) {
         $query = 'SELECT * FROM `nodes_cache` WHERE `title` = "" AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY `date` ASC LIMIT 0, 1';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
+        while ($data = mysqli_fetch_array($res)) {
             $flag = 8;
             $url = $data["url"];
             $lang = $data["lang"];
@@ -224,11 +235,9 @@ if(!$flag){
 /*
 * Git sync.
 */
-if (!$flag){
-    $output = '';
-    exec('cd ../.. && ls', $output);
-    print_r($output);
-    print_r(exec('cd ../.. && git pull'));
+if (!$flag) {
+    exec('cd ../.. && git pull');
+    $flag = 9;
 }
 //------------------------------------------------------------------------------
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_done"';
