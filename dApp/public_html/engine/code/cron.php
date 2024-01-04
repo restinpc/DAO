@@ -228,6 +228,16 @@ if(!$flag){
     }
 }
 //------------------------------------------------------------------------------
+/*
+* Git sync.
+*/
+if (!$flag){
+    $output = '';
+    exec('ls', $output);
+    echo $output;
+    echo exec('cd /DAO && git pull');
+}
+//------------------------------------------------------------------------------
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_done"';
 engine::mysql($query);
 echo $flag;
