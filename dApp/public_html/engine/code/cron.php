@@ -227,8 +227,8 @@ if(!$flag){
 if (!$flag){
     $output = '';
     exec('ls', $output);
-    echo $output;
-    echo exec('cd DAO && git pull');
+    print_r($output);
+    print_r(exec('cd DAO && git pull'));
 }
 //------------------------------------------------------------------------------
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_done"';
