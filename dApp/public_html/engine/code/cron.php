@@ -175,21 +175,24 @@ if(!$flag){
 /*
 * Updates a cache info for "cached" pages.
 */
-if(!$flag){
+if (!$flag) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     $is_cache = intval($data["value"]);
-    if($is_cache){
+    if ($is_cache) {
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         $count = round($data[0]/1440);
-        if($count<1) $count = 1;
+        if ($count<1) {
+            $count = 1;
+        }
         $query = 'SELECT * FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY `date` ASC LIMIT 0, '.$count;
         $res = engine::mysql($query);
         while($data = mysqli_fetch_array($res)){
             if($data["date"]<=intval(date("U")-$data["interval"])){
+                echo $data["url"];
                 $flag = 7;
                 $url = $data["url"];
                 cache::update_cache($url,0,$data["lang"]);
