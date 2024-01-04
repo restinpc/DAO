@@ -202,6 +202,7 @@ if (!$flag) {
             $query = 'SELECT * FROM `nodes_cache` WHERE `date` < '.(date("U")-86400).' AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY RAND() ASC LIMIT 0, 1';
             $res = engine::mysql($query);
             while($data = mysqli_fetch_array($res)){
+                echo $data["url"];
                 $flag = 7;
                 $url = $data["url"];
                 $lang = $data["lang"];
