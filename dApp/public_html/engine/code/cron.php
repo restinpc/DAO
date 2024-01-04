@@ -232,14 +232,6 @@ if (!$flag) {
     }
 }
 //------------------------------------------------------------------------------
-/*
-* Git sync.
-*/
-if (!$flag) {
-    exec('cd /home/n/nodestecru/DAO && git pull 1> git.log 2> git.error');
-    $flag = 9;
-}
-//------------------------------------------------------------------------------
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_done"';
 engine::mysql($query);
 echo $flag;
