@@ -190,23 +190,12 @@ if (!$flag) {
         }
         $query = 'SELECT * FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY `date` ASC LIMIT 0, '.$count;
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
-            if($data["date"]<=intval(date("U")-$data["interval"])){
+        while ($data = mysqli_fetch_array($res)) {
+            if ($data["date"]<=intval(date("U")-$data["interval"])) {
                 echo $data["url"];
                 $flag = 7;
                 $url = $data["url"];
                 cache::update_cache($url,0,$data["lang"]);
-            }
-        }
-        if(!$flag){
-            $query = 'SELECT * FROM `nodes_cache` WHERE `date` < '.(date("U")-86400).' AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY RAND() ASC LIMIT 0, 1';
-            $res = engine::mysql($query);
-            while($data = mysqli_fetch_array($res)){
-                echo $data["url"];
-                $flag = 7;
-                $url = $data["url"];
-                $lang = $data["lang"];
-                cache::update_cache($url,0,$lang);
             }
         }
     }
