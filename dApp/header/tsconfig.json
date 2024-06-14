@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/dist/",
+    "noImplicitAny": false,
+    "allowJs": false,
+    "lib": ["es2017", "dom"],
+    "typeRoots": [
+        "./node_modules/@types",
+        "./node_modules/typescript/lib/lib.dom.d.ts"
+    ],
+    // "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
+  }
+}
