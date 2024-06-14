@@ -46,9 +46,13 @@ function print_chat($user_id){
                     . '<table cellpadding=0 cellspacing=0 height=100% class="list received" >'
                     . '<td align=left width=100% valign=top>';
             if (!$data["system"]) {
+                $text = $data["text"];
+                if (strpos($text, "http") >= 0) {
+                    $text = preg_replace('/((https:|http:\/\/)[^ ]+)/', '<a target="_blank" href="\1">\1</a>', $text);
+                } 
                 $fout .= '<div class="chat_right_text">'
                         . engine::lang("Received").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
-                    . '<div class="clear"></div>'.$data["text"];
+                    . '<div class="clear"></div>'.$text;
             } else {
                 $fout .= '<div class="chat_right_text">'
                         . engine::lang("System message").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
