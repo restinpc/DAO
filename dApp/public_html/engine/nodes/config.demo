@@ -1,0 +1,12 @@
+<?php
+/**
+* DB config file
+*/
+
+$_SERVER["config"] = array(
+    "name" => "",
+    "sql_server" => "localhost",
+    "sql_login" => "root",
+    "sql_pass" => "",
+    "sql_db" => "dao"
+);

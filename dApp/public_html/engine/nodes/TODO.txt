@@ -1,2 +1,0 @@
-config.php -> db.sql
-config2.php -> db2.sql
