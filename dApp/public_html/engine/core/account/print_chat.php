@@ -30,7 +30,7 @@ function print_chat($user_id){
             if (!$data["system"]) {
                 $text = $data["text"];
                 if (strpos($text, "http") >= 0) {
-                    $text = preg_replace('/((https:|http:\/\/)[^ ]+)/', '<a target="_blank" href="\1">\1</a>', $text);
+                    $text = preg_replace('/((https:|http:\/\/)[^ |<]+)/', '<a target="_blank" href="\1">\1</a>', $text);
                 } 
                 $fout .= '<span class="chat_left_text">'.engine::lang("Sended").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></span><br/>'.$text;
             } else {
@@ -48,7 +48,7 @@ function print_chat($user_id){
             if (!$data["system"]) {
                 $text = $data["text"];
                 if (strpos($text, "http") >= 0) {
-                    $text = preg_replace('/((https:|http:\/\/)[^ ]+)/', '<a target="_blank" href="\1">\1</a>', $text);
+                    $text = preg_replace('/((https:|http:\/\/)[^ |<]+)/', '<a target="_blank" href="\1">\1</a>', $text);
                 } 
                 $fout .= '<div class="chat_right_text">'
                         . engine::lang("Received").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
