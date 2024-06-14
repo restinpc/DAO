@@ -1,0 +1,53 @@
+-- Database dump for ./dApp/public_html/engine/nodes/config2.php
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+
+CREATE TABLE IF NOT EXISTS `finance_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `usd` double NOT NULL DEFAULT '0',
+  `eur` double NOT NULL DEFAULT '0',
+  `btc` double NOT NULL DEFAULT '0',
+  `btc-local` double NOT NULL DEFAULT '0',
+  `eth` double NOT NULL DEFAULT '0',
+  `usdt` double NOT NULL DEFAULT '0',
+  `rub` double NOT NULL DEFAULT '0',
+  `stock` double NOT NULL DEFAULT '0',
+  `credit` double NOT NULL DEFAULT '0',
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `date` (`date`),
+  KEY `user_id` (`user_id`,`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `finance_rate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usd` double NOT NULL DEFAULT '0',
+  `eur` double NOT NULL DEFAULT '0',
+  `btc` double NOT NULL DEFAULT '0',
+  `eth` double NOT NULL DEFAULT '0',
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `date` (`date`)
+) ENGINE=MyISAM AUTO_INCREMENT=19461 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `finance_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `finance_rate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -1,0 +1,49 @@
+{
+    "results": [{
+        "columns": ["user", "entity"],
+        "data": [{
+            "graph": {
+                "nodes": [{
+                    "id": "1",
+                    "labels": ["User"],
+                    "properties": {
+                        "name": "Aleksandr",
+                        "url": "https://nodes-tech.ru/@restinpc"
+                    }
+                }, {
+                    "id": "2",
+                    "labels": ["User"],
+                    "properties": {
+                        "name": "Ann",
+                        "url": "https://nodes-tech.ru/@anchester"
+                    }
+                }, {
+                    "id": "3",
+                    "labels": ["User"],
+                    "properties": {
+                        "name": "julk",
+                        "url": "https://nodes-tech.ru/julk_v"
+                    }
+                }],
+                "relationships": [{
+                    "id": "1",
+                    "type": "Sexual",
+                    "startNode": "1",
+                    "endNode": "2",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }, {
+                    "id": "2",
+                    "type": "Partnership",
+                    "startNode": "1",
+                    "endNode": "3",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }]
+            }
+        }]
+    }],
+    "errors": []
+}
