@@ -3,7 +3,7 @@
 * Print account chat page.
 * @path /engine/core/account/print_chat.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -29,9 +29,9 @@ function print_chat($user_id){
                     . '<td align=left width=100% valign=top>';
             if (!$data["system"]) {
                 $text = $data["text"];
-                if (strpos($text, "http") === 0) {
-                    $text = '<a href="'.$text.'" target="_blank">'.$text.'</a>';
-                }
+                if (strpos($text, "http") >= 0) {
+                    $text = preg_replace('/((https:|http:\/\/)[^ ]+)/', '<a target="_blank" href="\1">\1</a>', $str);
+                } 
                 $fout .= '<span class="chat_left_text">'.engine::lang("Sended").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></span><br/>'.$text;
             } else {
                 $fout .= '<span class="chat_left_text">'.engine::lang("System message").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span><br/>'.'<i>'.engine::lang($data["text"]).'</i>';
