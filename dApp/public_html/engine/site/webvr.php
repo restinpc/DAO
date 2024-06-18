@@ -3,7 +3,7 @@
 * Backend webvr page file.
 * @path /engine/site/webvr.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -218,6 +218,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     }
     $this->content .= engine::print_webvr_navigation(engine::lang("Panorama viewer")).
     $this->content .= engine::print_panorama();
+    /*
 } else if (!empty($_GET[1]) && $_GET[1] == "multiplayer") {
     $this->title = engine::lang("Multiplayer game");
     $this->keywords = Array("WebVR", "3D", engine::lang("Multiplayer"), "DAO", "Web 3.0", "AFrame");
@@ -230,6 +231,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     }
     $this->content .= engine::print_webvr_navigation(engine::lang("Multiplayer scene")).
     $this->content .= '<iframe src="https://webvr.nodes-tech.ru" onLoad="loading_site();" class="app" width="100%"></iframe>';
+    */
 } else if (!empty($_GET[1]) && $_GET[1] == "free-look") {
     $this->title = engine::lang("Free look mode");
     $this->keywords = Array("WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");
