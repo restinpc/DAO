@@ -3,7 +3,7 @@
 * Framework autoloader.
 * @path /engine/nodes/autoload.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -11,7 +11,7 @@
 error_reporting(0);
 date_default_timezone_set('UTC');
 $GLOBALS["time"] = doubleval(microtime(1));
-$_SERVER["PROTOCOL"] = "http";
+$_SERVER["PROTOCOL"] = "https";
 if(!isset($_SERVER["SCRIPT_URI"])) $_SERVER["SCRIPT_URI"] = '';
 if(!isset($_SERVER["CRON"])) $_SERVER["CRON"] = 0;
 if(!isset($_SERVER["HTTP_REFERER"])) $_SERVER["HTTP_REFERER"] = '';
