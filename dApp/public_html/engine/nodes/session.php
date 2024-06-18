@@ -8,6 +8,7 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
+require_once("engine/nodes/mysql.php");
 $session_lifetime = 2592000;
 session_set_cookie_params($session_lifetime, '/', '.'.$_SERVER["HTTP_HOST"]);
 session_name('token');
@@ -22,7 +23,6 @@ foreach ($data as $key => $value) {
         $_SESSION["user"][$key] = '';
     }
 }
-require_once("engine/nodes/mysql.php");
 if (!empty($_COOKIE["token"])) {
     if (empty($_SESSION["user"]["id"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `token` = "'.$_COOKIE["token"].'"';
