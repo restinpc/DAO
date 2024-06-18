@@ -17,7 +17,7 @@ $content = str_replace('<link rel="stylesheet" href="/vendor/plugins/semantic/se
 $content = str_replace('<link rel="stylesheet" href="/vendor/assets/octicons/octicons.min.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/octicons.min.css', $content);
 $content = str_replace('<link rel="preload" href="/vendor/assets/font-awesome/css/font-awesome.min.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/font-awesome.min.css', $content);
 $content = str_replace('<link rel="stylesheet" href="/vendor/plugins/highlight/github.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/github.css', $content);
-
+$content = preg_replace('#<div class="ui top secondary stackable main menu following bar light">.*?<div class="repository file list">#su', '<div class="repository file list">', $content);
 $content = preg_replace('#href="/#', 'target="_blank" href="http://dao.nodes-tech.ru:3000/', $content);
 // $content = preg_replace('#src="/#', ' src="https://nodes-tech.ru/res/files/', $content);
 echo $content;
