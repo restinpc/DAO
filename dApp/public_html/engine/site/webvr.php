@@ -218,20 +218,6 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     }
     $this->content .= engine::print_webvr_navigation(engine::lang("Panorama viewer")).
     $this->content .= engine::print_panorama();
-    /*
-} else if (!empty($_GET[1]) && $_GET[1] == "multiplayer") {
-    $this->title = engine::lang("Multiplayer game");
-    $this->keywords = Array("WebVR", "3D", engine::lang("Multiplayer"), "DAO", "Web 3.0", "AFrame");
-    if ($_SESSION["Lang"] == "en") {
-        $this->description = '3D Mansion multiplayer game with VR support inspired by VRChat';
-    } else if ($_SESSION["Lang"] == "zh") {
-        $this->description = '受VRChat启发的支持虚拟现实的3D豪宅多人游戏。';
-    } else {
-        $this->description = 'Многопользовательская игра 3D Mansion с поддержкой VR, вдохновленная VRChat';
-    }
-    $this->content .= engine::print_webvr_navigation(engine::lang("Multiplayer scene")).
-    $this->content .= '<iframe src="https://webvr.nodes-tech.ru" onLoad="loading_site();" class="app" width="100%"></iframe>';
-    */
 } else if (!empty($_GET[1]) && $_GET[1] == "free-look") {
     $this->title = engine::lang("Free look mode");
     $this->keywords = Array("WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");

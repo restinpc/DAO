@@ -3,7 +3,7 @@
 * Bootstrap template file.
 * @path /template/bootstrap/template.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @license http://www.apache.org/licenses/LICENSE-2.0 GNU Public License
 *
 * @var $this->title - Page title
@@ -47,7 +47,6 @@ $header = '
                         <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/orbital').'" target="_parent">'.engine::lang("Orbital preview") .'</a></li>
                         <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/panorama').'" target="_parent">'.engine::lang("Panorama viewer") .'</a></li>
                         <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/metaverse').'" target="_parent">'.engine::lang("Metaverse") .'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/multiplayer').'" target="_parent">'.engine::lang("Multiplayer scene").'</a></li>
                     </ul>
                 </li>
                 <li id="menu_1" class="dropdown">
