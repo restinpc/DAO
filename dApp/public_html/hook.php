@@ -31,5 +31,4 @@ if ($decoded["secret"] != $_SERVER["DOCUMENT_ROOT"]) {
     error_log('FAILED - payload signature');
     exit();
 }
-
 echo system('cd ../../ && git reset --hard origin/master && git pull 1> logs/git.log 2> logs/git.error && chmod 705 ./dApp/public_html/cron.php');
