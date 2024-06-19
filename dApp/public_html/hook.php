@@ -56,4 +56,4 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
-system("cd ../../ && git reset --hard origin/master && git pull 1> git.log 2> git.error & && chmod 705 cron.php &");
+system("cd ../../ && git reset --hard origin/master && git pull 1> logs/git.log 2> logs/git.error & && chmod 705 cron.php &");
