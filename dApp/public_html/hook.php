@@ -33,3 +33,5 @@ if ($decoded["secret"] != $_SERVER["DOCUMENT_ROOT"]) {
 }
 
 echo system("cd ../../ && git reset --hard origin/master && git pull 1> git.log 2> git.error & && chmod 705 cron.php &");
+
+echo "SUCCESS";
