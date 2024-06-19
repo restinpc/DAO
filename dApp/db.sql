@@ -176,7 +176,7 @@ CREATE TABLE `nodes_comment` (
   `url` varchar(100) NOT NULL,
   `reply` int(11) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL DEFAULT '0',
-  `text` text NOT NULL,
+  `text` varchar(4000) NOT NULL,
   `date` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -189,7 +189,7 @@ CREATE TABLE `nodes_comment` (
 CREATE TABLE `nodes_config` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `value` text NOT NULL,
+  `value` varchar(400) NOT NULL,
   `text` varchar(100) NOT NULL,
   `type` varchar(10) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -264,9 +264,9 @@ CREATE TABLE `nodes_error` (
   `lang` varchar(3) NOT NULL,
   `date` int(11) NOT NULL DEFAULT '0',
   `ip` varchar(20) NOT NULL,
-  `get` text NOT NULL,
-  `post` text NOT NULL,
-  `session` text NOT NULL,
+  `get` varchar(400) NOT NULL,
+  `post` varchar(400) NOT NULL,
+  `session` varchar(400) NOT NULL,
   `count` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -292,7 +292,7 @@ CREATE TABLE `nodes_inbox` (
   `id` int(11) NOT NULL,
   `from` int(11) NOT NULL DEFAULT '0',
   `to` int(11) NOT NULL DEFAULT '0',
-  `text` text NOT NULL,
+  `text` varchar(4000) NOT NULL,
   `date` int(11) NOT NULL DEFAULT '0',
   `readed` int(11) NOT NULL DEFAULT '0',
   `inform` tinyint(1) NOT NULL,
@@ -2329,9 +2329,9 @@ CREATE TABLE `nodes_product` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(100) NOT NULL,
-  `text` text NOT NULL,
-  `description` text NOT NULL,
-  `img` text NOT NULL,
+  `text` varchar(400) NOT NULL,
+  `description` varchar(4000) NOT NULL,
+  `img` varchar(400) NOT NULL,
   `shipping` int(11) NOT NULL DEFAULT '0',
   `price` double NOT NULL,
   `order` int(11) NOT NULL DEFAULT '0',
@@ -2413,7 +2413,7 @@ CREATE TABLE `nodes_property_data` (
 
 CREATE TABLE `nodes_referrer` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL
+  `name` varchar(400) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2460,7 +2460,7 @@ CREATE TABLE `nodes_transaction` (
   `date` int(11) NOT NULL DEFAULT '0',
   `gateway` varchar(40) NOT NULL,
   `payment_date` varchar(100) NOT NULL,
-  `comment` text NOT NULL,
+  `comment` varchar(400) NOT NULL,
   `ip` varchar(40) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -2522,7 +2522,7 @@ CREATE TABLE `vr_level` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `text` text NOT NULL,
+  `text` varchar(4000) NOT NULL,
   `image` varchar(100) NOT NULL,
   `rotation` int(11) NOT NULL,
   `scale` double NOT NULL
@@ -2571,11 +2571,11 @@ CREATE TABLE `vr_object` (
   `scene_id` int(11) NOT NULL,
   `level_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
-  `text` text NOT NULL,
+  `text` varchar(4000) NOT NULL,
   `width` double NOT NULL,
   `height` double NOT NULL,
   `color` varchar(40) NOT NULL,
-  `base64` text NOT NULL,
+  `base64` varchar(4000) NOT NULL,
   `position` varchar(100) NOT NULL,
   `rotation` varchar(100) NOT NULL,
   `scale` varchar(100) NOT NULL
@@ -2591,7 +2591,7 @@ CREATE TABLE `vr_project` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `url` varchar(100) NOT NULL,
-  `text` text NOT NULL
+  `text` varchar(4000) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

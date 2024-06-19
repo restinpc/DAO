@@ -3,7 +3,7 @@
 * Prints see also content block.
 * @path /engine/core/content/print_more_articles.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -28,19 +28,37 @@ function print_more_articles($site, $url){
     $count = 0;
     $fout = '';
     $urls = Array();
-    // print articles based on [any catalog] and [not in session] selection
+    // print articles same catalog
     do {
         $query = 'SELECT * FROM `nodes_content` WHERE `id` <> "'.$data["id"].'" '
+                . 'AND `cat_id` = "'.$data["cat_id"].'" '
                 . 'AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY RAND() DESC';
         $res = engine::mysql($query);
         while ($d = mysqli_fetch_array($res)) {
             if (!in_array($d["id"], $urls)) {
-                if($count > 5) break;
+                if($count > 11) break;
                 $count++;
                 $fout .= engine::print_preview($site, $d);
                 array_push($urls, $d["id"]);
             }
         }
-    } while ($count < 6);
+    } while ($count < 12);
+    // print articles other catalog if required
+    if ($count < 12) {
+        do {
+            $query = 'SELECT * FROM `nodes_content` WHERE `id` <> "'.$data["id"].'" '
+                    . 'AND `cat_id` <> "'.$data["cat_id"].'" '
+                    . 'AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY RAND() DESC';
+            $res = engine::mysql($query);
+            while ($d = mysqli_fetch_array($res)) {
+                if (!in_array($d["id"], $urls)) {
+                    if($count > 11) break;
+                    $count++;
+                    $fout .= engine::print_preview($site, $d);
+                    array_push($urls, $d["id"]);
+                }
+            }
+        } while ($count < 12);
+    }
     return $fout;
 }
