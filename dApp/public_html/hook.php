@@ -30,6 +30,16 @@ if (empty($payload)) {
     exit();
 }
 
+print_r($payload);
+
+// get header signature
+$header_signature = isset($_SERVER['HTTP_X_GITEA_SIGNATURE']) ? $_SERVER['HTTP_X_GITEA_SIGNATURE'] : '';
+
+if (empty($header_signature)) {
+    error_log('FAILED - header signature missing');
+    exit();
+}
+
 // calculate payload signature
 $payload_signature = hash_hmac('sha256', $payload, $_SERVER["DOCUMENT_ROOT"], false);
 
