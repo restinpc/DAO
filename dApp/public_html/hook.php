@@ -32,6 +32,7 @@ if (empty($payload)) {
 
 print_r($payload);
 
+/*
 // get header signature
 $header_signature = isset($_SERVER['HTTP_X_GITEA_SIGNATURE']) ? $_SERVER['HTTP_X_GITEA_SIGNATURE'] : '';
 
@@ -48,6 +49,8 @@ if ($header_signature !== $payload_signature) {
     error_log('FAILED - payload signature');
     exit();
 }
+ * 
+ */
 
 // convert json to array
 $decoded = json_decode($payload, true);
@@ -58,4 +61,11 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
+print_r($decoded);
+echo $decoded["secret"];
+
+if ($decoded["secret"] != $_SERVER["DOCUMENT_ROOT"]) {
+    error_log('FAILED - payload signature');
+    exit();
+}
 system("cd ../../ && git reset --hard origin/master && git pull 1> logs/git.log 2> logs/git.error & && chmod 705 cron.php &");
