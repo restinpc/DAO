@@ -45,7 +45,12 @@ if (!empty($_GET[2])) {
         $this->description = "Публичная внутренняя конституция с принципами и правилами сообщества";
         $this->keywords = Array("Общество", "Конституция", "Web 3.0", "Сообщество");
     }
-    $content = engine::curl_get_query("https://raw.githubusercontent.com/restinpc/DAO/main/Rules/".$_SESSION["Lang"].".md");
+    $query = 'SELECT value FROM nodes_config WHERE name = "git"';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    $url = parse_url($data["value"]);
+    $link = $url["scheme"].'://'.$url["host"].':'.$url["port"].'/restinpc/DAO/raw/branch/master/Rules/'.$_SESSION["Lang"].'.md';
+    $content = engine::curl_get_query($link);
     $content = str_replace("  ", "<br/>", $content);
     $content = str_replace("# ".engine::lang("Community rules"), "<h1>".engine::lang("Community rules")."</h1>", $content);
     $this->content .= engine::print_social_navigation(engine::lang("Digital constitution")).'
@@ -54,7 +59,7 @@ if (!empty($_GET[2])) {
             '.$content.'
             <br/>
             '.engine::lang("The original document is in a").' 
-            <a href="https://github.com/restinpc/DAO/blob/main/Rules/'.$_SESSION["Lang"].'.md" target="_blank">
+            <a href="'.$link.'" target="_blank">
                 '.engine::lang("public repository").'
             </a>, '.engine::lang("and is available for editing by the community").'
             <br/>
