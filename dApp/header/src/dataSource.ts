@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Primary data factory.
  *
- * 1.0.1 # Aleksandr Vorkunov <developing@nodes-tech.ru>
+ * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
  
  import { IApp } from "./interfaces";
@@ -19,7 +19,7 @@ export default class DataSource {
         this.app = app;
         this.app.handler.log("DataSource.constructor()");
         // @ts-ignore
-        this.url = process.env.API_URL;
+        this.url = window.location.origin;
         this.data = {};
         this.request = "";
         this.errorState = 0;

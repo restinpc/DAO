@@ -4,7 +4,7 @@
 * @path /engine/code/rss.php
 *
 * @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
@@ -51,7 +51,7 @@ while($data = mysqli_fetch_array($res)) {
                     "labels": ["User"],
                     "properties": {
                         "name": "'.$data["name"].'",
-                        "url": "https://nodes-tech.ru/'.$data["url"].'"
+                        "url": "'.$_SERVER["PUBLIC_URL"].'/@'.$data["url"].'"
                     }
                 }';
 }

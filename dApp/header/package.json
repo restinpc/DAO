@@ -1,6 +1,6 @@
 {
   "name": "header-application",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "devDependencies": {
     "@types/node": "^17.0.45",
     "@types/webpack-dev-server": "^4.7.2",
@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "webpack --watch --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "webpack --mode production && cp ./public/dist/bundle.js ../public_html/apps/header"
   }
 }

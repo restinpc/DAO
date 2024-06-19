@@ -3,8 +3,8 @@
 * Print admin users page.
 * @path /engine/core/admin/print_admin_users.php
 *
-* @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $cms->site - Site object.
@@ -18,6 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_users($cms); </code>
 */
+
 function print_admin_users($cms){
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
             . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "users" '
@@ -26,40 +27,40 @@ function print_admin_users($cms){
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
-    if(!$admin_access){
+    if (!$admin_access) {
         engine::error(401);
         return;
     }
-    if(!empty($_POST["delete"])){
-        if($admin_access != 2){
+    if (!empty($_POST["delete"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
         $query = 'DELETE FROM `nodes_user` WHERE `id` = "'.intval($_POST["delete"]).'"';
         engine::mysql($query);
-    }else if(!empty($_POST["ban"])){
-        if($admin_access != 2){
+    } else if(!empty($_POST["ban"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
         $query = 'UPDATE `nodes_user` SET `ban` = "1" WHERE `id` = "'.intval($_POST["ban"]).'"';
         engine::mysql($query);
-    }else if(!empty($_POST["die"])){
-        if($admin_access != 2){
+    } else if(!empty($_POST["die"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
         $query = 'UPDATE `nodes_user` SET `ban` = "-1" WHERE `id` = "'.intval($_POST["die"]).'"';
         engine::mysql($query);
-    }else if(!empty($_POST["unban"])){
-        if($admin_access != 2){
+    } else if (!empty($_POST["unban"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
         $query = 'UPDATE `nodes_user` SET `ban` = "0" WHERE `id` = "'.intval($_POST["unban"]).'"';
         engine::mysql($query);
-    }else if(!empty($_POST["confirm"])){
-        if($admin_access != 2){
+    } else if (!empty($_POST["confirm"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
@@ -67,7 +68,9 @@ function print_admin_users($cms){
         engine::mysql($query);
     }
     $fout = '<div class="document980">';
-    if($_SESSION["order"]=="id") $_SESSION["order"] = "name";
+    if ($_SESSION["order"] == "id") {
+        $_SESSION["order"] = "name";
+    }
     $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
     $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
@@ -84,12 +87,18 @@ function print_admin_users($cms){
                 "email" => "Email",
                 "balance" => "Balance",
                 "online" => "Last visit"
-            ); foreach($array as $order=>$value){
+            );
+            foreach ($array as $order=>$value) {
                 $table .= '<th>';
-                if($_SESSION["order"]==$order){
-                    if($_SESSION["method"]=="ASC") $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "DESC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
-                    else $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
-                }else $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'</a>';
+                if ($_SESSION["order"]==$order) {
+                    if ($_SESSION["method"]=="ASC") {
+                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "DESC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+                    } else {
+                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
+                    }
+                } else {
+                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'</a>';
+                }
                 $table .= '</th>';
             }
             $table .= '
@@ -97,61 +106,71 @@ function print_admin_users($cms){
         </tr>
         </thead>';
     $res = engine::mysql($query);
-    while($data = mysqli_fetch_array($res)){
+    while ($data = mysqli_fetch_array($res)) {
         $arr_count++;
-        if($data["online"] > date("U")-300) $online = '<center>'.engine::lang("Online").'</center>';
-        else $online = date("d/m/Y", $data["online"]);
+        if ($data["online"] > date("U")-300) {
+            $online = '<center>'.engine::lang("Online").'</center>';
+        } else {
+            $online = date("d/m/Y", $data["online"]);
+        }
         $ban = '<form method="POST" id="ban_form"><input type="hidden" name="ban" id="ban_value" value="0" /></form>'
             . '<form method="POST" id="unban_form"><input type="hidden" name="unban" id="unban_value" value="0" /></form>'
             . '<form method="POST" id="delete_form"><input type="hidden" name="delete" id="delete_value" value="0" /></form>'
             . '<form method="POST" id="die_form"><input type="hidden" name="die"  id="die_value" value="0" /></form>'
             . '<form method="POST" id="confirm_form"><input type="hidden" name="confirm"  id="confirm_value" value="0" /></form>'
-            . '<select  id="select-user-'.$i.'" class="input" onChange=\'if(confirm("'.engine::lang("Are you sure?").'")){if(this.value=="1"){
-document.getElementById("unban_value").value="'.$data["id"].'";
-document.getElementById("unban_form").submit();
-                }else if(this.value=="2"){
-if(confirm("'.engine::lang("Confirm deleting banned user").'")){
-    document.getElementById("die_value").value="'.$data["id"].'";
-    document.getElementById("die_form").submit();
-}
-                }else if(this.value=="3"){
-document.getElementById("ban_value").value="'.$data["id"].'"; 
-document.getElementById("ban_form").submit();
-                }else if(this.value=="4"){
-document.getElementById("delete_value").value="'.$data["id"].'";
-document.getElementById("delete_form").submit();
-                }else if(this.value=="5"){
-new_transaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
+            . '<select  id="select-user-'.$i.'" class="input" onChange=\'
+                if(confirm("'.engine::lang("Are you sure?").'")){if(this.value=="1"){
+                    document.getElementById("unban_value").value="'.$data["id"].'";
+                    document.getElementById("unban_form").submit();
+                } else if(this.value=="2") {
+                    if (confirm("'.engine::lang("Confirm deleting banned user").'")) {
+                        document.getElementById("die_value").value="'.$data["id"].'";
+                        document.getElementById("die_form").submit();
+                    }
+                } else if(this.value=="3") {
+                    document.getElementById("ban_value").value="'.$data["id"].'"; 
+                    document.getElementById("ban_form").submit();
+                } else if(this.value=="4") {
+                    document.getElementById("delete_value").value="'.$data["id"].'";
+                    document.getElementById("delete_form").submit();
+                } else if(this.value=="5") {
+                    new_transaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
                 }
-            }else{this.selectedIndex=0;}\'>';
-            if(intval($data["ban"])){
+            } else{
+                this.selectedIndex=0;
+            }\'>';
+            if (intval($data["ban"])) {
                 $ban .= '<option id="option-user-'.$i.'-0" value="0" selected disabled>'.engine::lang("Banned").'</option>'
                         . '<option id="option-user-'.$i.'-1" value="1">'.engine::lang("Unban").'</option>'
                         . '<option id="option-user-'.$i.'-2" value="2">'.engine::lang("Delete").'</option>';
-            }else{
+            } else {
                 $ban .= '<option id="option-user-'.$i.'-0" value="0" selected disabled>'.engine::lang("Active").'</option>'
                         . '<option id="option-user-'.$i.'-3" value="3">'.engine::lang("Ban").'</option>'
                         . '<option id="option-user-'.$i.'-4" value="4">'.engine::lang("Delete").'</option>';
             }
         $ban .= '<option id="option-user-'.$i.'-5" value="5">'.engine::lang("New transaction").'</option>';
         $ban .= '</select>';
-        if($data["confirm"]) $flag = '<input type="checkbox" checked disabled />';
-        else $flag = '<input id="input-checkbox-'.$arr_count.'" type="checkbox" title="'.engine::lang("Code").': '.$data["code"].'" '
+        if ($data["confirm"]) {
+            $flag = '<input type="checkbox" checked disabled />';
+        } else {
+            $flag = '<input id="input-checkbox-'.$arr_count.'" type="checkbox" title="'.engine::lang("Code").': '.$data["code"].'" '
                 . 'onClick=\'document.getElementById("confirm_value").value="'.$data["id"].'"; '
                 . 'document.getElementById("confirm_form").submit();\' />';
+        }
         $table .= '<tr><td align=left class="nowrap">'.$flag.'&nbsp;<a id="user-'.$data["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$data["id"].'">'.$data["name"].'</a></td>'
                 . '<td align=left><a href="mailto:'.$data["email"].'">'.$data["email"].'</a></td>'
                 . '<td align=left>'.$data["balance"].'$</td>'
                 . '<td align=left>'.$online.'</td>'
                 . '<td width=45 align=left>';
-        if($admin_access == 2){
+        if ($admin_access == 2) {
             $table .= $ban;
         }
         $table .= '</td></tr>';
-    }$table .= '</table>
+    }
+    $table .= '</table>
 </div>
 <br/>';
-    if($arr_count){
+    if ($arr_count) {
         $fout .= $table.'
     <form method="POST"  id="query_form"  onSubmit="submit_search();">
     <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
@@ -163,8 +182,10 @@ new_transaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
     $res = engine::mysql($requery);
     $data = mysqli_fetch_array($res);
     $count = $data[0];
-    if($to > $count) $to = $count;
-    if($data[0]>0){
+    if($to > $count) {
+        $to = $count;
+    }
+    if ($data[0]>0) {
         $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
             <nobr><select  id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
              <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>

@@ -4,7 +4,7 @@
 * @path /engine/site/main.php
 *
 * @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $this->title - Page title.
@@ -22,6 +22,12 @@ if(!empty($_GET[0])){
 }
 $this->title = "DAO";
 // $this->content .= engine::print_site_navigation(engine::lang("Project whitepaper"));
+
+$query = 'SELECT value FROM nodes_config WHERE name = "git"';
+$res = engine::mysql($query);
+$data = mysqli_fetch_array($res);
+$git = $data["value"];
+
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
     $this->keywords = Array(
@@ -114,7 +120,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>Проектная область</h2>
         <a name="6"></a>
-        <p><a target="_blank" href="https://dao.nodes-tech.ru/">Публичный DAO репозиторий</a></p>
+        <p><a target="_blank" href="'.$git.'">Публичный DAO репозиторий</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">Исходники макета здания</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">Демо-версия с поддержкой VR</a> </p>
         <br/>
@@ -208,7 +214,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>项目领域</h2>
         <a name="6"></a>
-        <p><a target="_blank" href="https://dao.nodes-tech.ru/">公共 DAO 儲存庫</a></p>
+        <p><a target="_blank" href="'.$git.'">公共 DAO 儲存庫</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">建筑设计源文件</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">支持虚拟现实的演示版本</a> </p>
         <br/>
@@ -301,7 +307,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>Project Scope</h2>
         <a name="6"></a>
-        <p><a target="_blank" href="https://dao.nodes-tech.ru/">Public DAO repository</a></p>
+        <p><a target="_blank" href="'.$git.'">Public DAO repository</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">Mansion VR sources</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">Mansion VR demo version</a> </p>
         <br/>

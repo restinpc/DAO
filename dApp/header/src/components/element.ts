@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Virtual DOM element primary component.
  *
- * 1.0.1 # Aleksandr Vorkunov <developing@nodes-tech.ru>
+ * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
 
 import App from "../app";

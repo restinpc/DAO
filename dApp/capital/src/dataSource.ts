@@ -1,7 +1,7 @@
 /**
  * Capital - Base API functions.
  *
- * @version 1.2.5
+ * @version 1.2.7
  * @author Aleksandr Vorkunov
  */
 
@@ -16,7 +16,7 @@ class DataSource {
         // @ts-ignore
         document["handler"].log("DataSource.constructor()");
         this.axios = axios.create({
-            baseURL: `https://nodes-tech.ru`,
+            baseURL: window.location.origin,
             timeout: 100000,
             headers: {
                 sid: `${cookie.load('sid')}`

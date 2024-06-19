@@ -3,8 +3,8 @@
 * Print account settings page.
 * @path /engine/core/account/print_settings.php
 *
-* @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $site->title - Page title.
@@ -58,7 +58,7 @@ function print_settings($site){
                 $_SESSION["user"]["photo"] = $_POST["new_profile_picture"];
             }
         }if(!empty($_POST["pass"])){
-            $password = md5(trim(strtolower($_POST["pass"])));
+            $password = engine::encode_password(trim(strtolower($_POST["pass"])));
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
             engine::mysql($query);
         }

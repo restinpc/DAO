@@ -9,7 +9,7 @@
  * @usage <code>
  *   engine::print_ru_metaverse($site);
  * </code>
- * @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+ * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
  * @var $site->title - Page title.

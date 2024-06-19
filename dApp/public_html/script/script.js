@@ -4,7 +4,7 @@
 * @path /script/script.js
 *
 * @name    DAO Mansion    @version 1.0.1
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 var ua = navigator.userAgent.toLowerCase();         // Navigator

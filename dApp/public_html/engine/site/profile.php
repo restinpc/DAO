@@ -3,8 +3,8 @@
 * Backend profile pages file.
 * @path /engine/site/profile.php
 *
-* @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $this->title - Page title.
@@ -16,36 +16,16 @@
 * @var $this->configs - Array MySQL configs.
 */
 
-if (!empty($_GET[1])) {
+if (!empty($_GET[1]) || $_GET[0][0] !== "@") {
     $this->content = engine::error();
     return;
 }
-$query = 'SELECT * FROM `nodes_user` WHERE `url` LIKE "'.engine::escape_string($_GET[0]).'"';
+$query = 'SELECT * FROM `nodes_user` WHERE `url` LIKE "'.engine::escape_string(str_replace("@", "", $_GET[0])).'"';
 $res = engine::mysql($query);
 $user = mysqli_fetch_array($res);
 if (empty($user) || empty($user["pass"])) {
     $this->content = engine::error();
     return;
-    /*
-    $query = 'SELECT * FROM `nodes_catalog` WHERE url LIKE "'.engine::escape_string($_GET[0]).'" AND lang = "'.$_SESSION["Lang"].'"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if (!empty($data)) {
-        $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/content/'.$data["url"].'";</script>';
-        return;
-    } else {
-        $query = 'SELECT * FROM `nodes_content` WHERE url LIKE "'.engine::escape_string($_GET[0]).'" AND lang = "'.$_SESSION["Lang"].'"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        if (!empty($data)) {
-            $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/content/'.$data["url"].'";</script>';
-            return;
-        } else {
-            $this->content = engine::error();
-            return;
-        }
-    }
-    */
 } else {
     $this->title = $user["name"];
     $this->keywords = Array(

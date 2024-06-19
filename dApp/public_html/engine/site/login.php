@@ -3,8 +3,8 @@
 * Backend login page file.
 * @path /engine/site/login.php
 *
-* @name    DAO Mansion    @version 1.0.2
-* @author  Alexandr Vorkunov  <developing@nodes-tech.ru>
+* @name    DAO Mansion    @version 1.0.3
+* @author  Alexandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $this->title - Page title.
@@ -52,7 +52,7 @@ if(empty($_GET[1])){
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         $pass = trim(strtolower($_POST["pass"]));
-        if (!empty($data) && engine::match_passwords($pass, $data["pass"], $data["salt"])) {
+        if (!empty($data) && engine::match_passwords($pass, $data["pass"])) {
             if ($data["ban"] == "1") {
                 $this->onload .= 'alert("'.engine::lang("Access denied").'");';
             } else {
@@ -125,12 +125,10 @@ if(empty($_GET[1])){
             if($code == $_GET[3]){
                 if(!empty($_POST["pass"])){
                     $password = engine::encode_password(trim(strtolower($_POST["pass"])));
-                    $pass = $password["pass"];
-                    $salt = $password["salt"];
-                    $query = 'UPDATE `nodes_user` SET `pass` = "'.$pass.'", `salt` = "'.$salt.'" WHERE `email` = "'.$email.'"';
+                    $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `email` = "'.$email.'"';
                     engine::mysql($query);
                     $this->content .= '<div class="clear_block">'.engine::lang("Your password has been updated").'!</div>'
-                    . '<script>function redirect(){window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
+                    . '<script>function redirect(){ window.location="'.$_SERVER["DIR"].'/login"; }setTimeout(redirect, 3000);</script>';
                 }else{
                     $this->content .= ''
                     . '<h1>'.engine::lang("Setup new password").'</h1><br/>'

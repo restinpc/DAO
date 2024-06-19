@@ -4,9 +4,10 @@
 * @path /template/email.source.css
 *
 * @name    DAO Mansion    @version 1.0.0
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
+
 @charset "UTF-8";
 .document{
     width: 100%;

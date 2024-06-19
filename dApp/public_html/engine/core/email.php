@@ -4,7 +4,7 @@
 * @path /engine/core/email.php
 *
 * @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @example <code> email::daily_report(); </code>
@@ -73,23 +73,10 @@ static function bulk_mail($data){
         }else{
             $status = $data["status"]-1;
         }
-    }else if($outbox["action"] == 2){
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "image"';
-        $r = engine::mysql($query);
-        $d = mysqli_fetch_array($r);
-        $image = $d["value"];
-        $query = 'SELECT * FROM `nodes_firebase` WHERE `user_id` = "'.$outbox["user_id"].'"';
-        $fr = engine::mysql($query);
-        while($fd = mysqli_fetch_array($fr)){
-            if(!empty($fd["token"])){
-                $body = str_replace("<br/>", "\r\n", $outbox["text"]);
-                engine::send_notification($fd["token"], $outbox["caption"], $body, $image, $_SERVER["PUBLIC_URL"]);
-            }
-        }
-    }else{
-        if(engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $outbox["caption"], email::email_template($outbox["text"]))){
+    } else {
+        if (engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $outbox["caption"], email::email_template($outbox["text"]))){
             $status = 1;
-        }else{
+        } else {
             $status = $data["status"]-1;
         }
     }

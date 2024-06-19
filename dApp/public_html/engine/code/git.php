@@ -4,23 +4,27 @@
 * @path /engine/code/git.php
 *
 * @name    DAO Mansion    @version 1.0.3
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-$content = engine::curl_get_query("http://dao.nodes-tech.ru:3000/restinpc/DAO");
-$content = str_replace('<link rel="shortcut icon" href="/img/favicon.png" />', '<link rel="shortcut icon" href="https://nodes-tech.ru/res/files/favicon.png" />', $content);
-$content = str_replace('<link rel="stylesheet" href="/css/index.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/index.css', $content);
-$content = str_replace('<script src="/vendor/plugins/cssrelpreload/loadCSS.min.js', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/loadCSS.min.js', $content);
-$content = str_replace('<script src="/vendor/plugins/cssrelpreload/cssrelpreload.min.js', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/cssrelpreload.min.js', $content);
-$content = str_replace('<link rel="stylesheet" href="/vendor/plugins/semantic/semantic.min.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/semantic.min.css', $content);
-$content = str_replace('<link rel="stylesheet" href="/vendor/assets/octicons/octicons.min.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/octicons.min.css', $content);
-$content = str_replace('<link rel="preload" href="/vendor/assets/font-awesome/css/font-awesome.min.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/font-awesome.min.css', $content);
-$content = str_replace('<link rel="stylesheet" href="/vendor/plugins/highlight/github.css', '<link rel="stylesheet" href="https://nodes-tech.ru/res/files/github.css', $content);
-$content = str_replace('src="/avatars/49a23b50620e6a1a28373d7e5a6f8770"', 'src="https://nodes-tech.ru/res/files/49a23b50620e6a1a28373d7e5a6f8770.png"', $content);
-
+$query = 'SELECT value FROM nodes_config WHERE name = "git"';
+$res = engine::mysql($query);
+$data = mysqli_fetch_array($res);
+$git = $data["value"];
+$url = parse_url($git);
+         
+$content = engine::curl_get_query($git);
+$content = str_replace('<link rel="shortcut icon" href="/img/favicon.png" />', '<link rel="shortcut icon" href="'.$_SERVER["PUBLIC_URL"].'/res/files/favicon.png" />', $content);
+$content = str_replace('<link rel="stylesheet" href="/css/index.css', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/index.css', $content);
+$content = str_replace('<script src="/vendor/plugins/cssrelpreload/loadCSS.min.js', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/loadCSS.min.js', $content);
+$content = str_replace('<script src="/vendor/plugins/cssrelpreload/cssrelpreload.min.js', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/cssrelpreload.min.js', $content);
+$content = str_replace('<link rel="stylesheet" href="/vendor/plugins/semantic/semantic.min.css', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/semantic.min.css', $content);
+$content = str_replace('<link rel="stylesheet" href="/vendor/assets/octicons/octicons.min.css', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/octicons.min.css', $content);
+$content = str_replace('<link rel="preload" href="/vendor/assets/font-awesome/css/font-awesome.min.css', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/font-awesome.min.css', $content);
+$content = str_replace('<link rel="stylesheet" href="/vendor/plugins/highlight/github.css', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/github.css', $content);
+$content = str_replace('src="/avatars/49a23b50620e6a1a28373d7e5a6f8770"', 'src="'.$_SERVER["PUBLIC_URL"].'/res/files/49a23b50620e6a1a28373d7e5a6f8770.png"', $content);
 $content = preg_replace('#<div class="ui top secondary stackable main menu following bar light">.*?<div class="repository file list">#su', '<div class="repository file list">', $content);
-$content = preg_replace('#href="/#', 'target="_blank" href="http://dao.nodes-tech.ru:3000/', $content);
+$content = preg_replace('#href="/#', 'target="_blank" href="'.$url["scheme"].'://'.$url["host"].':'.$url["port"].'/', $content);
 
-// $content = preg_replace('#src="/#', ' src="https://nodes-tech.ru/res/files/', $content);
 echo $content;

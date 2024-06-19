@@ -4,7 +4,7 @@
 * @path /script/uploader.js
 *
 * @name    DAO Mansion    @version 1.0.0
-* @author  Alexandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Alexandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 

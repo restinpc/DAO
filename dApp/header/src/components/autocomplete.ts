@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Virtual DOM <input><datalist></input> wrapper component.
  *
- * 1.0.1 # Aleksandr Vorkunov <developing@nodes-tech.ru>
+ * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
 
 import DOMElement from "./element";

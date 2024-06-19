@@ -1,13 +1,14 @@
 {
     "name": "capital",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "license": "MIT",
     "main": "webpack.config.babel.js",
     "scripts": {
         "build": "webpack --config webpack.config.babel.js",
         "start": "webpack --env mode=dev --env isDevServer --env NODE_ENV=local --config webpack.config.babel.js",
         "test": "jest",
-        "serve": "webpack serve --config webpack.config.babel.js"
+        "serve": "webpack serve --config webpack.config.babel.js",
+        "deploy": "webpack --config webpack.config.babel.js && rm -rf ../public_html/apps/capital/* && cp -r ./dist/* ../public_html/apps/capital"
     },
     "husky": {
         "hooks": {

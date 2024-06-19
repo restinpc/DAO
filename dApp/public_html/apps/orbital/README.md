@@ -7,6 +7,3 @@
 3. Explode faces or separate objects of the model
 4. Fully responsive with mobile support
 5. Standard 3D views with orientation cube
-
-## Demo
-https://nodes-tech.ru/webvr/orbital

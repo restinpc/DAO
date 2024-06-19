@@ -207,13 +207,14 @@ INSERT INTO `nodes_config` (`id`, `name`, `value`, `text`, `type`) VALUES
 (6, 'image', 'https://nodes-tech.ru/img/preview.jpg', 'Site image', 'string'),
 (7, 'email_image', 'https://nodes-tech.ru/img/preview.jpg', 'Email header image', 'string'),
 (8, 'invoice_image', 'https://nodes-tech.ru/img/preview.jpg', 'Invoice logo image', 'string'),
-(9, 'template', 'bootstrap', 'Template', 'string'),
-(10, 'default', 'profile.php', 'System', 'string'),
-(11, 'debug', '0', 'Debug mode', 'bool'),
-(12, 'cron', '0', 'jQuery cron', 'bool'),
-(13, 'cache', '1', 'Allow cache', 'bool'),
-(14, 'compress', '1', 'Compress HTML', 'bool'),
-(15, 'sandbox', '1', 'Sandbox payment mode', 'bool'),
+(9, 'git', 'http://dao.nodes-tech.ru:3000/restinpc/DAO', 'Git repository url', 'string'),
+(10, 'template', 'bootstrap', 'Template', 'string'),
+(11, 'default', 'profile.php', 'System', 'string'),
+(12, 'debug', '0', 'Debug mode', 'bool'),
+(13, 'cron', '0', 'jQuery cron', 'bool'),
+(14, 'cache', '1', 'Allow cache', 'bool'),
+(15, 'compress', '1', 'Compress HTML', 'bool'),
+(16, 'sandbox', '1', 'Sandbox payment mode', 'bool'),
 (20, 'free_message', '0', 'Messages between users', 'bool'),
 (21, 'daily_report', '1', 'Daily report to email', 'bool'),
 (22, 'confirm_signup_email', '0', 'Email confirmation while sign up', 'bool'),
@@ -221,7 +222,6 @@ INSERT INTO `nodes_config` (`id`, `name`, `value`, `text`, `type`) VALUES
 (24, 'send_registration_email', '1', 'Email user on sign up', 'bool'),
 (25, 'send_message_email', '1', 'Email user on message', 'bool'),
 (26, 'send_paypal_email', '1', 'Email user on payment', 'bool'),
-(29, 'firebase_server_key', '', '<a href=\"http://console.firebase.google.com/\" target=\"_blank\">Firebase Server Key</a>', 'string'),
 (30, 'yandex_money', '', '<a href=\"https://money.yandex.ru/\" target=\"_blank\">Yandex Money ID</a>', 'string'),
 (31, 'paypal_test', '1', 'PayPal test mode', 'bool'),
 (32, 'paypal_id', '', '<a href=\"https://www.paypal.com/\" target=\"_blank\">PayPal user ID</a>', 'string'),
@@ -2478,7 +2478,6 @@ CREATE TABLE `nodes_user` (
   `url` varchar(400) NOT NULL,
   `email` varchar(400) NOT NULL,
   `pass` varchar(64) NOT NULL,
-  `salt` varchar(32) NOT NULL,
   `lang` varchar(3) NOT NULL,
   `balance` double NOT NULL,
   `ip` varchar(20) NOT NULL,
@@ -2496,8 +2495,8 @@ CREATE TABLE `nodes_user` (
 -- Дамп данных таблицы `nodes_user`
 --
 
-INSERT INTO `nodes_user` (`id`, `admin`, `name`, `photo`, `url`, `email`, `pass`, `salt`, `lang`, `balance`, `ip`, `ban`, `online`, `rating`, `votes`, `token`, `confirm`, `code`, `bulk_ignore`) VALUES
-(1, 1, 'Admin', 'admin.jpg', '', 'test@test.test', 'MJlsC38esUUrRmIcCTIDtKgxlYtAk5y', '$2y$11$01faaf5b087ffe4', 'en', 0, '109.194.51.80', -1, 1703700747, 0, 0, '9oj9oddbqnesifenjhu2mpjgb6', 1, '0', 0);
+INSERT INTO `nodes_user` (`id`, `admin`, `name`, `photo`, `url`, `email`, `pass`, `lang`, `balance`, `ip`, `ban`, `online`, `rating`, `votes`, `token`, `confirm`, `code`, `bulk_ignore`) VALUES
+(1, 1, 'Admin', 'admin.jpg', '', 'devbyzero@yandex.ru', '$2y$11$IIHRKrcBuu7Z1TuUtYhJaeBXqO9Yc4JZFUCDHoOtGzrsRSX5B4RNa', 'en', 0, '127.0.0.1', -1, 1703700747, 0, 0, '9oj9oddbqnesifenjhu2mpjgb6', 1, '0', 0);
 
 -- --------------------------------------------------------
 

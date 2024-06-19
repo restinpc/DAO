@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Error handler
  *
- * 1.0.1 # Aleksandr Vorkunov <developing@nodes-tech.ru>
+ * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
  
 import { IApp } from "./interfaces";

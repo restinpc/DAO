@@ -4,7 +4,7 @@
 * @path /engine/site/register.php
 *
 * @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @var $this->title - Page title.
@@ -55,8 +55,6 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
         $telegram = strtolower(engine::escape_string($_POST["telegram"]));
         $code = mb_substr(md5(date("U")), 0, 4);
         $password = engine::encode_password(trim(strtolower($_POST["pass"])));
-        $pass = $password["pass"];
-        $salt = $password["salt"];
         $confirm = !$this->configs["confirm_signup_email"];
         $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
         $r = engine::mysql($query);
@@ -65,8 +63,8 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
             $this->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Email").' '.engine::lang("already exist").'."); ';
             unset($_POST["email"]);
         } else if(strpos($email, "@")) {
-            $query = 'INSERT INTO `nodes_user` (`name`, `photo`, `url`, `email`, `pass`, `salt`, `lang`, `online`, `confirm`, `code`) 
-                VALUES ("'.$name.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$pass.'", "'.$salt.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
+            $query = 'INSERT INTO `nodes_user` (`name`, `photo`, `url`, `email`, `pass`, `lang`, `online`, `confirm`, `code`) 
+                VALUES ("'.$name.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$password.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
             engine::mysql($query);
             $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
             $res = engine::mysql($query);

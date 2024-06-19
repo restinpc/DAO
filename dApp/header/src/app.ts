@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Application primary object class.
  *
- * 1.0.1 # Aleksandr Vorkunov <developing@nodes-tech.ru>
+ * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
 
 import DataSource from "./dataSource";

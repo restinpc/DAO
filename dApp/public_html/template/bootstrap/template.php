@@ -29,7 +29,7 @@ $header = '
                     <span class="icon-bar"></span>
                 </button>
             </noindex>
-            <a class="navbar-brand" '.($_SERVER["app"]=="TRUE"?'':' hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/').'"').'>
+            <a class="navbar-brand" '.($_SERVER["app"] == "TRUE" ? '' : ' hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/').'"').'>
                 <noindex class="material-icons nav-btn">home</noindex>
                 <span>Mansion</span>
             </a>

@@ -4,7 +4,7 @@
 * @path /engine/code/sitemap.php
 *
 * @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
@@ -77,9 +77,9 @@ while($data = mysqli_fetch_array($res)){
 }
 echo $fout;
 echo '
-    <li><a href="https://nodes-tech.ru/sitemap.php?lang=en" target="_blank" hreflang="en">Sitemap</a></li>
-    <li><a href="https://nodes-tech.ru/sitemap.php?lang=ru" target="_blank" hreflang="ru">Карта сайта</a></li>
-    <li><a href="https://nodes-tech.ru/sitemap.php?lang=zh" target="_blank" hreflang="zh">網站地圖</a></li>
+    <li><a href="'.$_SERVER["PUBLIC_URL"].'/sitemap.php?lang=en" target="_blank" hreflang="en">Sitemap</a></li>
+    <li><a href="'.$_SERVER["PUBLIC_URL"].'/sitemap.php?lang=ru" target="_blank" hreflang="ru">Карта сайта</a></li>
+    <li><a href="'.$_SERVER["PUBLIC_URL"].'/sitemap.php?lang=zh" target="_blank" hreflang="zh">網站地圖</a></li>
     </ul>
     </div>
 </body>
@@ -119,15 +119,15 @@ while($data = mysqli_fetch_array($res)) {
             }
 }
 echo '<url> 
-      <loc>https://nodes-tech.ru/sitemap.php?lang=ru</loc>
+      <loc>'.$_SERVER["PUBLIC_URL"].'/sitemap.php?lang=ru</loc>
       <lastmod>2023-07-03T16:14:44+00:00</lastmod>
     </url>
     <url> 
-      <loc>https://nodes-tech.ru/sitemap.php?lang=en</loc>
+      <loc>'.$_SERVER["PUBLIC_URL"].'/sitemap.php?lang=en</loc>
       <lastmod>2023-07-03T16:14:44+00:00</lastmod>
     </url>
     <url> 
-      <loc>https://nodes-tech.ru/sitemap.php?lang=zh</loc>
+      <loc>'.$_SERVER["PUBLIC_URL"].'/sitemap.php?lang=zh</loc>
       <lastmod>2023-07-03T16:14:44+00:00</lastmod>
     </url>
 </urlset>';

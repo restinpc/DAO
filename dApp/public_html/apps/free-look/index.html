@@ -26,11 +26,15 @@
   </style>
 </head>
 <body>
-<a-scene vr-mode-ui="enabled: true;"  joystick gltf-model="basisTranscoderPath:https://cdn.jsdelivr.net/npm/super-three@0.141.0/examples/js/libs/basis/;" background="color: #FAFAFA" renderer="colorManagement: true;">
-  <a-entity id="camera" camera look-controls wasd-controls="acceleration:100" position="0 1.5 0" rotation="0 0 0"></a-entity>
+<a-scene vr-mode-ui="enabled: true;"
+    joystick
+    gltf-model="basisTranscoderPath:https://cdn.jsdelivr.net/npm/super-three@0.154.0/examples/js/libs/basis/;"
+    renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true;"
+>
+    <a-entity id="camera" camera look-controls wasd-controls="acceleration:100" position="0 1.5 0" rotation="0 0 0" ></a-entity>
   <a-assets timeout="120000">
     <a-asset-item id="mansion"
-      src="https://nodes-tech.ru/file/mansion.glb"
+      src="../../file/mansion2.glb"
       response-type="arraybuffer"
       crossorigin="anonymous"></a-asset-item>
   </a-assets>

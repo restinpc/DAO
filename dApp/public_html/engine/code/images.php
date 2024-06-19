@@ -4,9 +4,10 @@
 * @path /engine/code/images.php
 *
 * @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
+
 require_once("engine/nodes/session.php");
 if(empty($_SESSION["user"]["id"])) die(engine::error(401));
 $fout = '<!DOCTYPE html>
@@ -42,40 +43,43 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
             </form>
         </div>';
     }
-}else if(!empty($_GET['id']) && !empty($_GET["pos"])){
-    if(!empty($_POST)){
-        if(file_exists('img/data/thumb/'.$_POST["file1"])){
+} else if (!empty($_GET['id']) && !empty($_GET["pos"])) {
+    if (!empty($_POST)) {
+        if (file_exists('img/data/thumb/'.$_POST["file1"])) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.intval($_GET["id"]).'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             $images = explode(";", $data["img"]);
-            if(empty($images[0])) $images = array($data["img"]);
+            if (empty($images[0])) {
+                $images = array($data["img"]);
+            }
             $imgs = array();
-            foreach($images as $img){
+            foreach ($images as $img) {
                 $img = trim($img);
-                if(!empty($img)){
+                if (!empty($img)) {
                     array_push($imgs, $img);
                 }
             }
             $i = 0;
             $files = '';
-            foreach($imgs as $img){
+            foreach($imgs as $img) {
                 $i++;
-                if($_GET["pos"]==$i){
+                if ($_GET["pos"] == $i) {
                     $files .= $_POST["file1"].';';
-                }else{
+                } else {
                     $files .= $img.';';
                 }
-            }if($_GET["pos"]>$i){
+            }
+            if ($_GET["pos"] > $i) {
                 $files .= $_POST["file1"].';';
             }
             $query = 'UPDATE `nodes_product` SET `img` = "'.$files.'" WHERE `id` = "'.$_GET["id"].'"';
             engine::mysql($query);
             $fout = '<script>top.document.getElementById("edit_product_form").submit();</script>';
-        }else{
+        } else {
             $fout = "Error. ".$_SERVER["DIR"].'/img/data/thumb/'.$_POST["file1"].' not found';
         }
-    }else{
+    } else {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';
         $fout .= engine::print_uploader(1);
         $fout .= '<script> 
@@ -86,7 +90,7 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
         </form>';
     }
 }else{
-    if(!empty($_POST)){
+    if (!empty($_POST)) {
         $fout .= '<script>
             try{ 
                 parent.document.getElementById("delete_image_block").style.display="none"; 
@@ -97,15 +101,16 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
             }catch(e){ };
             top.js_hide_wnd();
             </script>';
-    }else{
+    } else {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';
         $fout .= engine::print_uploader(1);
         $fout .= '<script> 
-        document.getElementById("input-upload-new").style.display="none";
-        document.getElementById("new_img1").style.display="block"; 
+            document.getElementById("input-upload-new").style.display="none";
+            document.getElementById("new_img1").style.display="block"; 
         </script>
         </center></form>';
     }
-}echo $fout.
+}
+echo $fout.
 '</body>
 </html>';

@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Application interfaces.
  *
- * 1.0.1 # Aleksandr Vorkunov <developing@nodes-tech.ru>
+ * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
 
 import DOMElement from "./components/element";

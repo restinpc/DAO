@@ -3,11 +3,11 @@
 * Framework engine class.
 * @path /engine/core/engine.php
 *
-* @name    DAO Mansion    @version 1.0.2
-* @author  Aleksandr Vorkunov  <developing@nodes-tech.ru>
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
-* @example <code> engine::timezone_list(); </code>
+* @example <code> engine::error(); </code>
 */
 
 class engine {
@@ -103,7 +103,7 @@ public static function __callStatic($name, $arguments) {
         }
     }else self::error();
 }
-//------------------------------------------------------------------------------
+
 static function lang($key) {
     $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "'.$_SESSION["Lang"].'"';
     $res = engine::mysql($query);
@@ -123,7 +123,7 @@ static function lang($key) {
         }
     }
 }
-//------------------------------------------------------------------------------
+
 static function href($url) {
     $fout = $url;
     if ($_SESSION["Lang"] != "ru") {
@@ -137,7 +137,7 @@ static function href($url) {
     }
     return $fout;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Register error in a DB and print error page.
 *
@@ -214,7 +214,7 @@ static function error($error_code='0'){
     }
     die();
 }
-//------------------------------------------------------------------------------
+
 /**
 * Sends a query to the currently active MySQL DB.
 *
@@ -232,11 +232,11 @@ static function mysql($query){
     $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error(500));
     return $res;
 }
-//------------------------------------------------------------------------------
+
 static function escape_string($string){
     return strip_tags(mysqli_real_escape_string($_SERVER["sql_connection"], trim($string)));
 }
-//------------------------------------------------------------------------------
+
 /**
 * Sends a mail.
 *
@@ -262,53 +262,7 @@ static function send_mail($email, $header, $theme, $message){
         return true;
     } return false;
 }
-//------------------------------------------------------------------------------
-/**
-* Sends a push notification.
-*
-* @param string $token Firebase token of user.
-* @param string $title Notification title.
-* @param string $body Notification text.
-* @param string $image Notification image.
-* @param string $url Notification URL.
-* @return string Returns response of Firebase server.
-* @usage <code>
-*  engine::send_notification("..", "Test notification", "Text text text", "http://../image.png", "http://../");
-* </code>
-*/
-//------------------------------------------------------------------------------
-static function send_notification($token, $title, $body, $image, $url){
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "firebase_server_key"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $api_key = $data["value"];
-    if(!empty($api_key)){
-        $request_body = array(
-            'notification' => array(
-                'title' => $title,
-                'body' => $body,
-                'icon' => $image,
-                'click_action' => $url
-            ),
-            'to' => $token
-        );
-        $request_headers = array(
-            'Content-Type: application/json',
-            'Authorization: key=' . $api_key,
-        );
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_body));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
-    }else return 'Firebase API Key is not defined';
-}
-//------------------------------------------------------------------------------
+
 /**
 * Convert a string to URL-compatible format.
 *
@@ -334,7 +288,7 @@ static function url_translit($str){
     $str = preg_replace ("/[^a-zA-ZА-Яа-я0-9_\s]/", "", $str);
     return $str;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Send GET request using CURL Library.
 *
@@ -344,7 +298,7 @@ static function url_translit($str){
 * @usage <code> engine::curl_get_query("http://google.com"); </code>
 */
 static function curl_get_query($url, $format=0){
-    array_push($_SERVER["CONSOLE"], "engine::curl_get_query");
+    array_push($_SERVER["CONSOLE"], "engine::curl_get_query(".$url.")");
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -354,7 +308,7 @@ static function curl_get_query($url, $format=0){
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_VERBOSE, 1);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'DAO Mansion https://nodes-tech.ru');
+    curl_setopt($ch, CURLOPT_USERAGENT, 'DAO Mansion <'.$_SERVER["PUBLIC_URL"].'>');
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
     $html = curl_exec($ch);
     $error = curl_error($ch);
@@ -369,7 +323,7 @@ static function curl_get_query($url, $format=0){
         $html = str_replace("\t", "", $html);
     }return $html;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Send POST request using CURL Library.
 *
@@ -380,7 +334,7 @@ static function curl_get_query($url, $format=0){
 * @usage <code> engine::curl_post_query("http://google.com", 'foo=1&bar=2'); </code>
 */
 static function curl_post_query($url, $query, $format=0){
-    array_push($_SERVER["CONSOLE"], "engine::curl_post_query");
+    array_push($_SERVER["CONSOLE"], "engine::curl_post_query(".$url.")");
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -392,7 +346,7 @@ static function curl_post_query($url, $query, $format=0){
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
     curl_setopt($ch, CURLOPT_VERBOSE, 1);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'DAO Mansion https://nodes-tech.ru');
+    curl_setopt($ch, CURLOPT_USERAGENT, 'DAO Mansion <'.$_SERVER["PUBLIC_URL"].'>');
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
     $html = curl_exec($ch);
     $error = curl_error($ch);
@@ -407,91 +361,23 @@ static function curl_post_query($url, $query, $format=0){
         $html = str_replace("\t", "", $html);
     }return $html;
 }
-//------------------------------------------------------------------------------
+
 static function redirect($url){
     array_push($_SERVER["CONSOLE"], "engine::redirect");
     header( 'Location: '.$url );
     die('<script>window.location = "'.$url.'";</script>');
 }
-//------------------------------------------------------------------------------
-static function encode_password($password){
-    require_once("engine/nodes/config.php");
-    $salt = substr(md5(date("U").$_SERVER["REMOTE_ADDR"]),0,22);
-    $salt = '$'.implode('$',array( "2y", str_pad(11, 2, "0", STR_PAD_LEFT), str_replace("+",".",$salt)));
-    $salt = substr($salt, 0, (strlen($salt) - strlen($_SERVER["config"]["crypt_salt"]))-1);
-    $key = $salt.$_SERVER["config"]["crypt_salt"].'.';
-    $hashed_password = crypt($password, $key);
-    $hashed_password = str_replace($key, '', $hashed_password);
-    $fout = array("pass" => $hashed_password, "salt" => $salt);
-    return $fout;
+
+static function encode_password($password) {
+    array_push($_SERVER["CONSOLE"], "engine::encode_password(".$password.")");
+    return password_hash($password, PASSWORD_BCRYPT, [
+        'cost' => 11,
+        'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+    ]);
 }
-//------------------------------------------------------------------------------
-static function match_passwords($password, $hashed_password, $salt){
-    require_once("engine/nodes/config.php");
-    $key = $salt.$_SERVER["config"]["crypt_salt"].'.';
-    $valid_password = crypt($password, $key);
-    $valid_password = str_replace($key, '', $valid_password);
-    if($hashed_password == $valid_password){
-        return 1;
-    }else{
-        return 0;
-    }
-}
-//------------------------------------------------------------------------------
-/**
-* Gets the timezone list used by all date/time functions.
-*
-* @return array Returns array with timezone.
-* @usage <code> engine::timezone_list(); </code>
-*/
-static function timezone_list(){
-    $zones_array = array();
-    $timestamp = time();
-    $default = date_default_timezone_get();
-    foreach(timezone_identifiers_list() as $key => $zone) {
-      date_default_timezone_set($zone);
-      $zones_array[$zone] = date('Z', $timestamp);
-    }
-    date_default_timezone_set($default);
-    return $zones_array;
-}
-//------------------------------------------------------------------------------
-/**
-* Check URL in @mysql[nodes_content] and @mysql[nodes_catalog].
-*
-* @return array Returns TRUE if URL is article.
-* @usage <code> engine::is_article(); </code>
-*/
-static function is_article($url){
-    array_push($_SERVER["CONSOLE"], "engine::is_article");
-    $url = str_replace($_SERVER["PUBLIC_URL"].'/', '', $url);
-    if(strpos($url, "content/")!==FALSE) $url = mb_substr($url, 8);
-    $query = 'SELECT * FROM `nodes_content` WHERE `url` = "'.$url.'" AND `lang` = "'.$_SESSION["Lang"].'"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if(!empty($data)) return 1;
-    $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$url.'" AND `lang` = "'.$_SESSION["Lang"].'"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if(!empty($data)) return 1;
-    return 0;
-}
-//------------------------------------------------------------------------------
-/**
-* Check URL in @mysql[nodes_product].
-*
-* @return array Returns TRUE if URL is porduct.
-* @usage <code> engine::is_product(); </code>
-*/
-static function is_product($url){
-    array_push($_SERVER["CONSOLE"], "engine::is_product");
-    $url = str_replace($_SERVER["PUBLIC_URL"].'/', '', $url);
-    if(strpos($url, "product/")!==FALSE){
-        $id = intval(mb_substr($url, 8));
-        $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$id.'"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        if(!empty($data)) return $id;
-    }else return 0;
+
+static function match_passwords($password, $hashed_password) {
+    array_push($_SERVER["CONSOLE"], "engine::match_passwords(".$password.", ".$hashed_password.")");
+    return password_verify($password, $hashed_password);
 }
 }

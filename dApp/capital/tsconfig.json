@@ -19,7 +19,6 @@
         "rootDir": "./",
         "typeRoots": [
             "./node_modules/@types/*",
-            "./global.d.ts",
             "./src/@types/declarations.d.ts"
         ],
         "allowSyntheticDefaultImports": true,

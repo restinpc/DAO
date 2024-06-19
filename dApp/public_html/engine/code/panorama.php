@@ -415,9 +415,9 @@ if(!empty($_GET["id"])){
         <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
         <a-circle id="move_point" action=\'navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
         <a-image id="cursor_img" transparent="true" position="0 0 0"  look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
-        <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" <!-- src="#logo" --> src=""></a-image>
+        <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo" src=""></a-image>
     </a-scene>
-    <audio id="vr-sound" preload autoplay><source src="/res/sounds/vr-load.wav" type="audio/wav"></audio>
+    <audio id="vr-sound" preload autoplay><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
         ';
     if($_SESSION["user"]["id"] == "1"){
         $fout .= engine::pano_scene_editor($data);
@@ -450,7 +450,7 @@ echo '<!DOCTYPE html>
         display: none;
     }
 </style>
-<link href="/template/bootstrap/template.css" rel="stylesheet" type="text/css" />
+<link href="'.$_SERVER["DIR"].'/template/bootstrap/template.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="nodes">
     '.$fout.'
@@ -459,11 +459,15 @@ echo '<!DOCTYPE html>
     <script>window.addEventListener("load", () => {
         const scene = document.getElementById("nodes_scene");
         scene.addEventListener("enter-vr", () => {
-            parent.document.panorama.permission();
-            parent.document.panorama.fullScreen();
+            try {
+                parent.document.panorama.permission();
+                parent.document.panorama.fullScreen();
+            } catch (e) {}
         });
         scene.addEventListener("exit-vr", () => {
-            parent.document.panorama.hideFullScreen();
+            try {
+                parent.document.panorama.hideFullScreen();
+            } catch (e) {}
         });
         '.$onload.' 
     });</script>
