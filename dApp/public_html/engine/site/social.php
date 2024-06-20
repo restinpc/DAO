@@ -3,7 +3,7 @@
 * Backend social page file.
 * @path /engine/site/social.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -32,7 +32,7 @@ if (!empty($_GET[2])) {
         $this->keywords = Array("Общество", "Telegram", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Telegram group"));
-    $this->content .= '<iframe src="/telegram.php" onLoad="loading_site();" width="100%" class="app"></iframe>';
+    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/telegram.php" onLoad="loading_site();" width="100%" class="app"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "constitution") {
     $this->title = engine::lang("Digital constitution");
     if ($_SESSION["Lang"] == "en") {
@@ -59,9 +59,8 @@ if (!empty($_GET[2])) {
             '.$content.'
             <br/>
             '.engine::lang("The original document is in a").' 
-            <a href="'.$link.'" target="_blank">
-                '.engine::lang("public repository").'
-            </a>, '.engine::lang("and is available for editing by the community").'
+            <a href="'.$link.'" target="_blank">'.engine::lang("public repository").'/a>, '
+            .engine::lang("and is available for editing by the community").'
             <br/>
             <br/>
         </div>
@@ -107,7 +106,7 @@ if (!empty($_GET[2])) {
         $this->keywords = Array("Общество", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Social graph"));
-    $this->content .= '<iframe src="/apps/graph/index.html" onLoad="loading_site();" width="100%" class="app"></iframe>';
+    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/graph/index.html" onLoad="loading_site();" width="100%" class="app"></iframe>';
 } else {
     $this->content = engine::error();
     return;

@@ -3,13 +3,14 @@
 * User identity system script.
 * @path /engine/code/account.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
+
 if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"])) {
     $email = urldecode($_GET["email"]);
     $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
@@ -23,7 +24,7 @@ if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `email` = "'.$email.'"';
             engine::mysql($query);
             echo '<div class="center pt100">'.engine::lang("New password activated!").'</div>
-                    <script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
+                <script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
         } else {
             echo '<div class="center pt100">'.engine::lang("Invalid confirmation code").'.</div>'
              . '<script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
@@ -33,7 +34,7 @@ if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"
         . '<script>function redirect(){parent.window.location="'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000);</script>';
     }
 } else if($_GET["mode"] == "logout") {
-    $query = 'UPDATE `nodes_user` SET `token` = "" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
+    $query = 'DELETE FROM nodes_session WHERE token LIKE "'.$_COOKIE["token"].'" AND user_id = "'.$_SESSION["user"]["id"].'"';
     engine::mysql($query);
     unset($_SESSION["user"]);
     unset($_COOKIE['token']);

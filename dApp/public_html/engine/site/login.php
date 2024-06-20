@@ -57,8 +57,8 @@ if(empty($_GET[1])){
                 $this->onload .= 'alert("'.engine::lang("Access denied").'");';
             } else {
                 $_SESSION["user"] = $data;
-                $query = 'UPDATE `nodes_user` SET `token` = "'.session_id().'", '
-                    . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
+                $query = 'INSERT INTO nodes_session(user_id, token, ip, create_at, expire_at) '
+                       .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
                 engine::mysql($query);
                 if(!empty($_SESSION["redirect"])) {
                     $this->content .= '<script language="JavaScript">setTimeout(function(){ window.location = "'.($_SESSION["redirect"]).'"; }, 1);</script>';
@@ -128,14 +128,13 @@ if(empty($_GET[1])){
                     $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `email` = "'.$email.'"';
                     engine::mysql($query);
                     $this->content .= '<div class="clear_block">'.engine::lang("Your password has been updated").'!</div>'
-                    . '<script>function redirect(){ window.location="'.$_SERVER["DIR"].'/login"; }setTimeout(redirect, 3000);</script>';
+                    .'<script>function redirect(){ window.location="'.$_SERVER["DIR"].'/login"; }setTimeout(redirect, 3000);</script>';
                 }else{
-                    $this->content .= ''
-                    . '<h1>'.engine::lang("Setup new password").'</h1><br/>'
-                    . '<form method="POST" class="lh2">'
-                    . '<input id="input-login-password" type="password" required name="pass" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Password").'" /><br/>'
-                    . '<input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Submit").'" />
-                    </form>';
+                    $this->content .= '<h1>'.engine::lang("Setup new password").'</h1><br/>'
+                        . '<form method="POST" class="lh2">'
+                        . ' <input id="input-login-password" type="password" required name="pass" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Password").'" /><br/>'
+                        . ' <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Submit").'" />'
+                        . '</form>';
                 }
                 $flag = 1;
             }else{
@@ -156,8 +155,10 @@ if(empty($_GET[1])){
             $new_pass = mb_substr(md5($email.date("Y-m-d")), 0, 8);
             email::restore_password($data["email"], $new_pass, $code);
             $this->content .= '<div class="clear_block">'.engine::lang("To process restore, please check your email").'.</div>'
-                    . '<script>'
-                    . 'function redirect(){this.location = "'.$_SERVER["DIR"].'/login";}setTimeout(redirect, 3000); </script>';
+                . '<script>'
+                . ' function redirect(){ this.location = "'.$_SERVER["DIR"].'/login"; } '
+                . ' setTimeout(redirect, 3000);'
+                . '</script>';
             $flag = 1;
         }else{
             $this->onload .= 'alert("Email '.engine::lang("not found").'");';

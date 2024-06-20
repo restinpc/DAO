@@ -1,4 +1,4 @@
--- Database dump for /dApp/public_html/engine/nodes/config.php
+-- Database dump for ./dApp/public_html/engine/nodes/config.php
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -270,17 +270,6 @@ CREATE TABLE `nodes_error` (
   `count` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `nodes_firebase`
---
-
-CREATE TABLE `nodes_firebase` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `token` varchar(400) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2419,6 +2408,21 @@ CREATE TABLE `nodes_referrer` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `nodes_session`
+--
+
+CREATE TABLE `nodes_session` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(32) NOT NULL,
+  `ip` varchar(40) NOT NULL,
+  `create_at` datetime NOT NULL,
+  `expire_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `nodes_shipping`
 --
 
@@ -2485,7 +2489,6 @@ CREATE TABLE `nodes_user` (
   `online` int(11) NOT NULL DEFAULT '0',
   `rating` int(11) NOT NULL DEFAULT '0',
   `votes` int(11) NOT NULL DEFAULT '0',
-  `token` varchar(32) NOT NULL,
   `confirm` tinyint(1) NOT NULL,
   `code` varchar(4) NOT NULL,
   `bulk_ignore` tinyint(4) NOT NULL DEFAULT '0'
@@ -2495,8 +2498,8 @@ CREATE TABLE `nodes_user` (
 -- Дамп данных таблицы `nodes_user`
 --
 
-INSERT INTO `nodes_user` (`id`, `admin`, `name`, `photo`, `url`, `email`, `pass`, `lang`, `balance`, `ip`, `ban`, `online`, `rating`, `votes`, `token`, `confirm`, `code`, `bulk_ignore`) VALUES
-(1, 1, 'Admin', 'admin.jpg', '', 'devbyzero@yandex.ru', '$2y$11$IIHRKrcBuu7Z1TuUtYhJaeBXqO9Yc4JZFUCDHoOtGzrsRSX5B4RNa', 'en', 0, '127.0.0.1', -1, 1703700747, 0, 0, '9oj9oddbqnesifenjhu2mpjgb6', 1, '0', 0);
+INSERT INTO `nodes_user` (`id`, `admin`, `name`, `photo`, `url`, `email`, `pass`, `lang`, `balance`, `ip`, `ban`, `online`, `rating`, `votes`, `confirm`, `code`, `bulk_ignore`) VALUES
+(1, 1, 'Admin', 'admin.jpg', '', 'devbyzero@yandex.ru', '$2y$11$IIHRKrcBuu7Z1TuUtYhJaeBXqO9Yc4JZFUCDHoOtGzrsRSX5B4RNa', 'en', 0, '127.0.0.1', -1, 1703700747, 0, 0, 1, '0', 0);
 
 -- --------------------------------------------------------
 
@@ -2692,12 +2695,6 @@ ALTER TABLE `nodes_error`
   ADD KEY `lang` (`lang`);
 
 --
--- Индексы таблицы `nodes_firebase`
---
-ALTER TABLE `nodes_firebase`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Индексы таблицы `nodes_inbox`
 --
 ALTER TABLE `nodes_inbox`
@@ -2791,6 +2788,12 @@ ALTER TABLE `nodes_property_data`
 -- Индексы таблицы `nodes_referrer`
 --
 ALTER TABLE `nodes_referrer`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `nodes_session`
+--
+ALTER TABLE `nodes_session`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2918,12 +2921,6 @@ ALTER TABLE `nodes_error`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `nodes_firebase`
---
-ALTER TABLE `nodes_firebase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT для таблицы `nodes_inbox`
 --
 ALTER TABLE `nodes_inbox`
@@ -3005,6 +3002,12 @@ ALTER TABLE `nodes_property_data`
 -- AUTO_INCREMENT для таблицы `nodes_referrer`
 --
 ALTER TABLE `nodes_referrer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `nodes_referrer`
+--
+ALTER TABLE `nodes_session`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

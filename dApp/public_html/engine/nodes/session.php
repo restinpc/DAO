@@ -3,12 +3,13 @@
 * Framework session loader.
 * @path /engine/nodes/session.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
 require_once("engine/nodes/mysql.php");
+
 $session_lifetime = 2592000;
 session_set_cookie_params($session_lifetime, '/', '.'.$_SERVER["HTTP_HOST"]);
 session_name('token');
@@ -25,22 +26,27 @@ foreach ($data as $key => $value) {
 }
 if (!empty($_COOKIE["token"])) {
     if (empty($_SESSION["user"]["id"])) {
-        $query = 'SELECT * FROM `nodes_user` WHERE `token` = "'.$_COOKIE["token"].'"';
+        $query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_COOKIE["token"].'" AND expire_at > NOW()';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         if (!empty($data)) {
-            unset($data["pass"]);
-            unset($data[5]);
-            unset($data["token"]);
-            unset($data[9]);
-            $_SESSION["user"] = $data;
+            $query = 'SELECT * FROM nodes_user WHERE id = '.$data["user_id"];
+            $res = engine::mysql($query);
+            $data = mysqli_fetch_array($res);
+            if (!empty($data)) {
+                unset($data["pass"]);
+                unset($data[5]);
+                $_SESSION["user"] = $data;
+            }
+        } else {
+            
         }
     }
 } else {
     $_COOKIE["token"] = session_id();
     if (!empty($_SESSION["user"])) {
-        $query = 'UPDATE `nodes_user` SET `token` = "'.session_id().'", '
-            . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
+        $query = 'INSERT INTO nodes_session(user_id, token, ip, create_at, expire_at) '
+                .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
         engine::mysql($query);
     }
 }
