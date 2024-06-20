@@ -8,9 +8,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-header("Keep-Alive: timeout=60, max=100");
-set_time_limit(60);
-
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     error_log('FAILED - not POST - '. $_SERVER['REQUEST_METHOD']);
     exit();
