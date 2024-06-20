@@ -17,6 +17,7 @@ php_value client_max_body_size 512M;
     Header unset Pragma
     Header unset Expires
     Header unset Last-Modified
+    Header set Connection keep-alive 60
     Header set Cache-Control "max-age=0, pre-check=0, no-cache, no-store, must-revalidate"
     Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
     <FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf|ttf|svg|woff2|FLV|GIF|JPG|JPEG|PNG|ICO|SWF|JS|CSS|PDF|TTF|SVG|WOFF2)$">
