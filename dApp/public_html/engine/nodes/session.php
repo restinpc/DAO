@@ -93,6 +93,7 @@ if (strpos($_SERVER["SCRIPT_URI"], "/search") === false
     && strpos($_SERVER["SCRIPT_URI"], ".xml") === false
     && strpos($_SERVER["SCRIPT_URI"], ".js") === false
     && strpos($_SERVER["SCRIPT_URI"], ".txt") === false
+    && strpos($_SERVER["HTTP_HOST"], "dev.") === false
 ) {
     if (empty($_SERVER["SCRIPT_URI"])) {
         $_SERVER["SCRIPT_URI"] = '/';
