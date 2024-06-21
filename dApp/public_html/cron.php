@@ -1,4 +1,4 @@
-#!/usr/bin/php7
+#!/usr/bin/php7.0
 <?php
 /**
 * Executable crontab file.
