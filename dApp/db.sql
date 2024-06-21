@@ -2230,7 +2230,25 @@ INSERT INTO `nodes_language` (`id`, `name`, `lang`, `value`) VALUES
 (1945, 'DAO Mansion whitepaper', 'zh', 'DAO 別墅白皮書'),
 (1946, 'Web 3.0 community', 'ru', 'Web 3.0 сообщество'),
 (1947, 'DAO Whitepaper', 'ru', 'Технический документ DAO'),
-(1948, 'DAO Mansion whitepaper', 'ru', 'Технический документ DAO Mansion');
+(1948, 'DAO Mansion whitepaper', 'ru', 'Технический документ DAO Mansion'),
+(1957, 'Email is required', 'en', 'Email is required'),
+(1958, 'Password is required', 'en', 'Password is required'),
+(1959, 'Password confirmation is required', 'en', 'Password confirmation is required'),
+(1960, 'Telegram id is required', 'en', 'Telegram id is required'),
+(1961, 'Email confirmation', 'en', 'Email confirmation'),
+(1964, 'Please check your email and enter the code from the mail to activate your account', 'en', 'Please check your email and enter the code from the mail to activate your account'),
+(1965, 'Email is required', 'ru', 'Email обязателен'),
+(1966, 'Password is required', 'ru', 'Пароль обязателен'),
+(1967, 'Password confirmation is required', 'ru', 'Подтверждение пароля обязательно'),
+(1968, 'Telegram id is required', 'ru', 'Telegram id обязателен'),
+(1969, 'Email confirmation', 'ru', 'Подтверждение Email адреса'),
+(1970, 'Please check your email and enter the code from the mail to activate your account', 'ru', 'Пожалуйста, проверьте свою электронную почту и введите код из письма, чтобы активировать свою учетную запись'),
+(1971, 'Email is required', 'zh', '電子郵件為必填項'),
+(1972, 'Password is required', 'zh', '密碼是必需的'),
+(1973, 'Password confirmation is required', 'zh', '需要確認密碼'),
+(1974, 'Telegram id is required', 'zh', '電報 ID 為必填項'),
+(1975, 'Email confirmation', 'zh', '郵件確認'),
+(1976, 'Please check your email and enter the code from the mail to activate your account', 'zh', '請檢查您的電子郵件並輸入郵件中的代碼以啟動您的帳戶');
 
 -- --------------------------------------------------------
 
