@@ -24,30 +24,24 @@ foreach ($data as $key => $value) {
         $_SESSION["user"][$key] = '';
     }
 }
-if (!empty($_COOKIE["token"])) {
-    if (empty($_SESSION["user"]["id"])) {
-        $query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_COOKIE["token"].'" AND expire_at > NOW()';
+if (empty($_COOKIE["token"])) {
+    $_COOKIE["token"] = session_id();
+}
+if (empty($_SESSION["user"]["id"])) {
+    $query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_COOKIE["token"].'" AND expire_at > NOW()';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    if (!empty($data)) {
+        $query = 'SELECT * FROM nodes_user WHERE id = '.$data["user_id"];
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         if (!empty($data)) {
-            $query = 'SELECT * FROM nodes_user WHERE id = '.$data["user_id"];
-            $res = engine::mysql($query);
-            $data = mysqli_fetch_array($res);
-            if (!empty($data)) {
-                unset($data["pass"]);
-                unset($data[5]);
-                $_SESSION["user"] = $data;
-            }
-        } else {
-            
+            unset($data["pass"]);
+            unset($data[5]);
+            $_SESSION["user"] = $data;
         }
-    }
-} else {
-    $_COOKIE["token"] = session_id();
-    if (!empty($_SESSION["user"])) {
-        $query = 'INSERT INTO nodes_session(user_id, token, ip, create_at, expire_at) '
-                .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
-        engine::mysql($query);
+    } else {
+
     }
 }
 if (!empty($_POST["template"])) {
