@@ -8,6 +8,9 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
+set_time_limit(60);
+ini_set('max_execution_time', "60");
+
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     error_log('FAILED - not POST - '. $_SERVER['REQUEST_METHOD']);
     exit();

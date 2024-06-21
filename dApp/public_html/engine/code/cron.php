@@ -3,23 +3,21 @@
 * Crontab system script.
 * @path /engine/code/cron.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-$_SERVER["CRON"] = 1;
 set_time_limit(60);
 ini_set('max_execution_time', "60");
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/mysql.php");
 require_once("engine/nodes/session.php");
-//----------------------------------------------------------
+
 $flag = 0;
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_exec"';
 engine::mysql($query);
 $server = doubleval(microtime(1)-$GLOBALS["time"]);
-//------------------------------------------------------------------------------
 /*
 * Sends bulk mail messages every minute if exists.
 */
@@ -32,13 +30,11 @@ $res = engine::mysql($query);
 while ($data = mysqli_fetch_array($res)) {
     email::bulk_mail($data);
 }
-//------------------------------------------------------------------------------
 /*
 * Clean-up temp BTC transactions.
 */
 $query = 'DELETE FROM `nodes_transaction` WHERE `comment` = "Temp" AND `date` < "'.(date("U")-86400).'"';
 engine::mysql($query);
-//------------------------------------------------------------------------------
 /*
 * Milestones a performance once a 20 minute.
 */
@@ -59,7 +55,6 @@ if (empty($data)) {
         engine::mysql($query);
     }
 }
-//------------------------------------------------------------------------------
 /*
 * Generates site daily report to admin email once a day.
 */
@@ -81,7 +76,6 @@ if (!$flag) {
         }
     }
 }
-//------------------------------------------------------------------------------
 /*
 * Unlinks temp images once a day.
 */
@@ -183,7 +177,20 @@ if (!$flag) {
         engine::mysql($query);
     }
 }
-//------------------------------------------------------------------------------
+/*
+ * Deletes an expired sessions once a day
+ */
+if (!$flag) {
+    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_sessions"';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    if ($data["value"] < date("U") - 86400) {
+        $query = 'DELETE FROM nodes_session WHERE expire_at < NOW()';
+        engine::mysql($query);
+        $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_sessions"';
+        engine::mysql($query);
+    }
+}
 /*
 * Updates a cache info for "cached" pages.
 */
@@ -211,7 +218,6 @@ if (!$flag) {
         }
     }
 }
-//------------------------------------------------------------------------------
 /*
 * Updates a cache info for new pages.
 */
@@ -231,7 +237,7 @@ if (!$flag) {
         }
     }
 }
-//------------------------------------------------------------------------------
+
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_done"';
 engine::mysql($query);
 echo $flag;

@@ -13,7 +13,6 @@ date_default_timezone_set('UTC');
 $GLOBALS["time"] = doubleval(microtime(1));
 $_SERVER["PROTOCOL"] = "https";
 if(!isset($_SERVER["SCRIPT_URI"])) $_SERVER["SCRIPT_URI"] = '';
-if(!isset($_SERVER["CRON"])) $_SERVER["CRON"] = 0;
 if(!isset($_SERVER["HTTP_REFERER"])) $_SERVER["HTTP_REFERER"] = '';
 if(!is_array($_GET)) $_GET = array();
 if(!isset($_GET[0])) $_GET[0] = '';

@@ -17,7 +17,6 @@ php_value client_max_body_size 512M;
     Header unset Pragma
     Header unset Expires
     Header unset Last-Modified
-    Header set Keep-Alive timeout=60
     Header set Cache-Control "max-age=0, pre-check=0, no-cache, no-store, must-revalidate"
     Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
     <FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf|ttf|svg|woff2|FLV|GIF|JPG|JPEG|PNG|ICO|SWF|JS|CSS|PDF|TTF|SVG|WOFF2)$">
@@ -27,6 +26,10 @@ php_value client_max_body_size 512M;
     </FilesMatch>
     <FilesMatch "\.(obj|mtl|ply|dae|jpg|jpeg|gif|png|avi|mp4|webm|mss|json|OBJ|MTL|PLY|DAE|JPG|JPEG|GIF|PNG|AVI|MP4|WEBM|MSS|JSON)$">
         Header set Access-Control-Allow-Origin *
+    </FilesMatch>
+    <FilesMatch "^(cron|hook)\.php$">
+        Header set Keep-Alive timeout=60
+        php_value max_execution_time 60
     </FilesMatch>
 </ifModule>
 RewriteRule ^apps/(.*)$ apps/$1 [L]

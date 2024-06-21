@@ -40,8 +40,6 @@ if (empty($_SESSION["user"]["id"])) {
             unset($data[5]);
             $_SESSION["user"] = $data;
         }
-    } else {
-
     }
 }
 if (!empty($_POST["template"])) {
