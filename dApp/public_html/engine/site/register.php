@@ -46,7 +46,7 @@ if ($_SESSION["Lang"] == "en") {
     );
     $this->description = "Регистрация в качестве участника Web 3.0 сообщества";
 }
-if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
+if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram"])) {
     if ($_POST["captcha"] != $_SESSION["captcha"]) {
         $this->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Invalid conformation code").'."); ';
     } else {
@@ -63,17 +63,22 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
             $this->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Email").' '.engine::lang("already exist").'."); ';
             unset($_POST["email"]);
         } else if(strpos($email, "@")) {
-            $query = 'INSERT INTO `nodes_user` (`name`, `photo`, `url`, `email`, `pass`, `lang`, `online`, `confirm`, `code`) 
-                VALUES ("'.$name.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$password.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
+            $query = 'INSERT INTO `nodes_user` (`name`, `photo`, `url`, `email`, `pass`, `lang`, `online`, `confirm`, `code`) '
+                    . 'VALUES ("'.$name.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$password.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
             engine::mysql($query);
             $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             unset($_SESSION["user"]);
-            $_SESSION["user"] = $data;
             $query = 'INSERT INTO nodes_session(user_id, token, ip, create_at, expire_at) '
-                .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
+                    .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
             engine::mysql($query);
+            $query = 'SELECT id FROM nodes_session WHERE token LIKE "'.session_id().'" '
+                    . 'AND user_id = "'.$_SESSION["user"]["id"].'" ORDER BY id DESC LIMIT 0, 1';
+            $r = engine::mysql($query);
+            $d = mysqli_fetch_array($r);
+            $data["session_id"] = $d["id"];
+            $_SESSION["user"] = $data;
             if ($this->configs["confirm_signup_email"]) {
                 email::confirmation($email, $name, $code);
             } else if($this->configs["send_registration_email"]) {
@@ -96,29 +101,42 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
     $this->content = '<script>
     function next() {
         let flag = true;
-        if (!document.getElementById("input-email").value.length) {
+        if (!$id("input-email").value.length) {
             window.alert("'.engine::lang("Email is required").'");
             flag = false;
-        } else if (!document.getElementById("pass1").value.length) {
+        } else if (!$id("pass1").value.length) {
             window.alert("'.engine::lang("Password is required").'");
             flag = false;
-        } else if (!document.getElementById("pass2").value.length) {
+        } else if (!$id("pass2").value.length) {
             window.alert("'.engine::lang("Password confirmation is required").'");
             flag = false;
-        } else if (document.getElementById("pass1").value != document.getElementById("pass2").value) {
+        } else if ($id("pass1").value != $id("pass2").value) {
             window.alert("'.engine::lang("Passwords do not match").'");
             flag = false;
-        }
         if (flag) {
-            document.getElementById("step1").style.display = "none";
-            document.getElementById("step2").style.display = "block";
+            $id("step1").style.display = "none";
+            $id("step2").style.display = "block";
+        }
+    }
+    function submit() {
+        if ($id("pass1").value == $id("pass2").value) {
+            if (!$id("input-telegram").value.length) {
+                window.alert("'.engine::lang("Telegram id is required").'");
+                $id("input-telegram").focus();
+            } else {
+                $id("reg_form").submit();
+            }
+        } else {
+            alert("'.engine::lang("Passwords do not match").'");
+            $id("pass2").value = "";
+            $id("pass2").focus();
         }
     }
     </script>
     <div class="w320 pt20 m0a">
     <h1>'.engine::lang("Sign Up").'</h1>
     <a id="link-login" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'">'.engine::lang("Already have an account?").'</a><br/>
-    <form method="POST"  style="line-height:2.0; padding-top: 10px;" id="reg_form" onSubmit=\'event.preventDefault(); if($id("pass1").value==$id("pass2").value){$id("reg_form").submit();}else{alert("'.engine::lang("Passwords do not match").'"); $id("pass2").value="";}\'>
+    <form method="POST" style="line-height:2.0; padding-top: 10px;" id="reg_form" onSubmit=\'event.preventDefault(); submit();\'>
         <div id="step1">
             <div class="input-caption">'.engine::lang("Email").'</div>
             <input id="input-email" autofocus required type="email" name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Email").'" title="'.engine::lang("Email").'" /><br/>
@@ -136,7 +154,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
             <input id="input-name" required type="text" name="name" value="'.$_POST["name"].'" class="input reg_email" placeHolder="'.engine::lang("Name").'" title="'.engine::lang("Name").'" /><br/>
             <div class="input-caption">'.engine::lang("Telegram").'</div>
             <input id="input-telegram" required type="text" name="telegram" value="'.$_POST["telegram"].'" class="input reg_email" title="'.engine::lang("Telegram").'" /><br/>
-            <br/><center><img src="'.$_SERVER["DIR"].'/captcha.php?'.md5(date("U")).'" /></center>
+            <br/><center><img src="'.$_SERVER["DIR"].'/captcha.php?rand='.md5(date("U")).'" /></center>
             <input id="input-captcha" required type="text" name="captcha" class="input reg_captcha" placeHolder="'.engine::lang("Confirmation code").'" title="'.engine::lang("Confirmation code").'" />
             <input id="input-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Submit").'" />
         </div>

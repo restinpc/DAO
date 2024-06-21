@@ -56,10 +56,15 @@ if(empty($_GET[1])){
             if ($data["ban"] == "1") {
                 $this->onload .= 'alert("'.engine::lang("Access denied").'");';
             } else {
-                $_SESSION["user"] = $data;
                 $query = 'INSERT INTO nodes_session(user_id, token, ip, create_at, expire_at) '
-                       .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
+                        . 'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
                 engine::mysql($query);
+                $query = 'SELECT id FROM nodes_session WHERE token LIKE "'.session_id().'" '
+                        . 'AND user_id = "'.$_SESSION["user"]["id"].'" ORDER BY id DESC LIMIT 0, 1';
+                $r = engine::mysql($query);
+                $d = mysqli_fetch_array($r);
+                $data["session_id"] = $d["id"];
+                $_SESSION["user"] = $data;
                 if(!empty($_SESSION["redirect"])) {
                     $this->content .= '<script language="JavaScript">setTimeout(function(){ window.location = "'.($_SESSION["redirect"]).'"; }, 1);</script>';
                     unset($_SESSION["redirect"]);

@@ -19,8 +19,8 @@ $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cr
 engine::mysql($query);
 $server = doubleval(microtime(1)-$GLOBALS["time"]);
 /*
-* Sends bulk mail messages every minute if exists.
-*/
+ * Sends bulk mail messages every minute if exists.
+ */
 $query = 'SELECT `value` FROM `nodes_config` WHERE `name` = "outbox_limit"';
 $r = engine::mysql($query);
 $d = mysqli_fetch_array($r);
@@ -31,13 +31,13 @@ while ($data = mysqli_fetch_array($res)) {
     email::bulk_mail($data);
 }
 /*
-* Clean-up temp BTC transactions.
-*/
+ * Clean-up temp BTC transactions.
+ */
 $query = 'DELETE FROM `nodes_transaction` WHERE `comment` = "Temp" AND `date` < "'.(date("U")-86400).'"';
 engine::mysql($query);
 /*
-* Milestones a performance once a 20 minute.
-*/
+ * Milestones a performance once a 20 minute.
+ */
 $query = 'SELECT `date` FROM `nodes_perfomance` WHERE `date` > "'.(date("U")-1200).'"';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
@@ -56,8 +56,8 @@ if (empty($data)) {
     }
 }
 /*
-* Generates site daily report to admin email once a day.
-*/
+ * Generates site daily report to admin email once a day.
+ */
 if (!$flag) {
     if (date("H") >= 23) {
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "daily_report"';
@@ -77,8 +77,8 @@ if (!$flag) {
     }
 }
 /*
-* Unlinks temp images once a day.
-*/
+ * Unlinks temp images once a day.
+ */
 if (!$flag) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_images"';
     $res = engine::mysql($query);
@@ -193,8 +193,8 @@ if (!$flag) {
     }
 }
 /*
-* Updates a cache info for "cached" pages.
-*/
+ * Updates a cache info for "cached" pages.
+ */
 if (!$flag) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
     $res = engine::mysql($query);
@@ -220,8 +220,8 @@ if (!$flag) {
     }
 }
 /*
-* Updates a cache info for new pages.
-*/
+ * Updates a cache info for new pages.
+ */
 if (!$flag) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
     $res = engine::mysql($query);

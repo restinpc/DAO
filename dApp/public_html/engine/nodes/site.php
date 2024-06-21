@@ -268,9 +268,6 @@ if (!isset($_POST["jQuery"])) {
                 parent.window.location = "'.$_SERVER["DIR"].'/";
                 </script>');
         } else {
-            $query = 'UPDATE `nodes_user` SET `online`='.date("U").', `ip` = "'.$_SERVER["REMOTE_ADDR"].'" '
-                    . 'WHERE `id` = '.intval($_SESSION["user"]["id"]);
-            engine::mysql($query);
             $fout .= engine::print_new_message($this);
         }
     }

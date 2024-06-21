@@ -228,10 +228,11 @@ INSERT INTO `nodes_config` (`id`, `name`, `value`, `text`, `type`) VALUES
 (33, 'payment_description', '', 'Payment description', 'string'),
 (51, 'outbox_limit', '1', 'Max outbox  minute', 'int'),
 (52, 'version', '8', 'System', 'int'),
-(55, 'cron_images', '1703692501', 'System', 'int'),
-(56, 'cron_exec', '1703700721', 'System', 'int'),
-(57, 'cron_done', '1703700721', 'System', 'int'),
-(58, 'lastreport', '1703631602', 'System', 'int');
+(55, 'cron_images', '0', 'System', 'int'),
+(56, 'cron_exec', '0', 'System', 'int'),
+(57, 'cron_done', '0', 'System', 'int'),
+(58, 'cron_sessions', '0', 'System', 'int'),
+(59, 'lastreport', '0', 'System', 'int');
 
 -- --------------------------------------------------------
 

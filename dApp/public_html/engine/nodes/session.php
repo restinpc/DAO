@@ -31,6 +31,7 @@ if (empty($_SESSION["user"]["id"])) {
     $query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_COOKIE["token"].'" AND expire_at > NOW()';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
+    $session_id = $data["id"];
     if (!empty($data)) {
         $query = 'SELECT * FROM nodes_user WHERE id = '.$data["user_id"];
         $res = engine::mysql($query);
@@ -38,9 +39,14 @@ if (empty($_SESSION["user"]["id"])) {
         if (!empty($data)) {
             unset($data["pass"]);
             unset($data[5]);
+            $data["session_id"] = $session_id;
             $_SESSION["user"] = $data;
         }
     }
+}
+if (!empty($_SESSION["user"]["id"])) {
+    $query = 'UPDATE `nodes_user` SET `online`='.date("U").' WHERE `id` = '.intval($_SESSION["user"]["id"]);
+    engine::mysql($query);
 }
 if (!empty($_POST["template"])) {
     $_SESSION["template"] = $_POST["template"];
