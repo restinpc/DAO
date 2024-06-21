@@ -84,7 +84,7 @@ if (!$flag) {
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if ($data["value"] < date("U") - 86400) {
-        $flag = 5;
+        $flag = 3;
         $images = array();
         $query = 'SELECT * FROM  `nodes_product`';
         $res = engine::mysql($query);
@@ -151,7 +151,7 @@ if (!$flag) {
         }
         closedir($hdl);
         $images = array();
-        $query = 'SELECT * FROM  `nodes_user`';
+        $query = 'SELECT * FROM `nodes_user`';
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
             $img = trim($data["photo"]);
@@ -185,6 +185,7 @@ if (!$flag) {
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if ($data["value"] < date("U") - 86400) {
+        $flag = 4;
         $query = 'DELETE FROM nodes_session WHERE expire_at < NOW()';
         engine::mysql($query);
         $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_sessions"';
@@ -211,7 +212,7 @@ if (!$flag) {
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
-                $flag = 7;
+                $flag = 5;
                 $url = $data["url"];
                 cache::update_cache($url,0,$data["lang"]);
             }
@@ -230,7 +231,7 @@ if (!$flag) {
         $query = 'SELECT * FROM `nodes_cache` WHERE `title` = "" AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY `date` ASC LIMIT 0, 1';
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
-            $flag = 8;
+            $flag = 6;
             $url = $data["url"];
             $lang = $data["lang"];
             cache::update_cache($url,0,$lang);

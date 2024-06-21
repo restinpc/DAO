@@ -2279,24 +2279,6 @@ CREATE TABLE `nodes_outbox` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `nodes_pattern`
---
-
-CREATE TABLE `nodes_pattern` (
-  `id` int(11) NOT NULL,
-  `attendance_id` int(11) NOT NULL DEFAULT '0',
-  `action` int(1) NOT NULL,
-  `x` int(11) NOT NULL DEFAULT '0',
-  `y` int(11) NOT NULL DEFAULT '0',
-  `top` int(11) NOT NULL DEFAULT '0',
-  `width` int(11) NOT NULL DEFAULT '0',
-  `height` int(11) NOT NULL DEFAULT '0',
-  `date` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `nodes_perfomance`
 --
 
@@ -2736,13 +2718,6 @@ ALTER TABLE `nodes_outbox`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `nodes_pattern`
---
-ALTER TABLE `nodes_pattern`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `attendance_id` (`attendance_id`);
-
---
 -- Индексы таблицы `nodes_perfomance`
 --
 ALTER TABLE `nodes_perfomance`
@@ -2954,12 +2929,6 @@ ALTER TABLE `nodes_order`
 -- AUTO_INCREMENT для таблицы `nodes_outbox`
 --
 ALTER TABLE `nodes_outbox`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `nodes_pattern`
---
-ALTER TABLE `nodes_pattern`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
