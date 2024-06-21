@@ -29,8 +29,12 @@ function print_new_message($site){
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$data["from"].'"';
         $res = engine::mysql($query);
         $user = mysqli_fetch_array($res);
-        if(strlen($data["text"])>100) $data["text"] = mb_substr($data["text"], 0, 100)."..";
-        if($user["online"] > date("U")-300) $online = '<span class="fs11">'.engine::lang("online").'</span>';
+        if (strlen($data["text"]) > 100) {
+            $data["text"] = mb_substr($data["text"], 0, 100)."..";
+        }
+        if ($user["online"] > date("U")-600) {
+            $online = '<span class="fs11">'.engine::lang("online").'</span>';
+        }
         $fout .= '
             <div id="nodes_message">
                 <div  id="new_msg_img" class="new_msg_img" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>

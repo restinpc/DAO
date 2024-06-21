@@ -108,7 +108,7 @@ function print_admin_users($cms){
     $res = engine::mysql($query);
     while ($data = mysqli_fetch_array($res)) {
         $arr_count++;
-        if ($data["online"] > date("U")-300) {
+        if ($data["online"] > date("U")-600) {
             $online = '<center>'.engine::lang("Online").'</center>';
         } else {
             $online = date("d/m/Y", $data["online"]);

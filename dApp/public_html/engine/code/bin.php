@@ -107,7 +107,7 @@ if(!empty($_POST["id"])){
                 $r_sign = engine::mysql($query);
                 $d_sign = mysqli_fetch_array($r_sign);
                 if($d_conf["value"]){
-                    if($target["online"] < date("U")-300){
+                    if($target["online"] < date("U")-600){
                         email::new_message($target["id"], $_SESSION["user"]["id"]);
                     }
                 }

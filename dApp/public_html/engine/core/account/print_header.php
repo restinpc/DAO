@@ -24,7 +24,7 @@ function print_header($site, $id){
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    if($user["online"]>date("U")-300){
+    if($user["online"]>date("U")-600){
         $online = '<b>'.engine::lang("Online").'</b><br/>';
     }else{
         $date = date("d/m/Y H:i", $user["online"]);

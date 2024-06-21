@@ -55,7 +55,7 @@ function print_inbox($site, $target_id){
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.$_SESSION["user"]["id"];
         $res = engine::mysql($query);
         $u = mysqli_fetch_array($res);
-        if ($target["online"] > date("U")-300) {
+        if ($target["online"] > date("U")-600) {
             $online = '<br/><font class="chat_font">'.engine::lang("online").'</font>';
         } else {
             $online = '<br/><font class="chat_font">'.engine::lang("offline").'</font>';
@@ -121,7 +121,7 @@ function print_inbox($site, $target_id){
                 } else {
                     $new = '';
                 }
-                if ($u["online"] > date("U")-300) {
+                if ($u["online"] > date("U")-600) {
                     $online = '<font class="chat_font">'.engine::lang("online").'</font>';
                 } else {
                     $online = '<font class="chat_font">'.engine::lang("offline").'</font>';

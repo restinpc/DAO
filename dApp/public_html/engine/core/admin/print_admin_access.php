@@ -177,7 +177,7 @@ function print_admin_access($cms){
         $res = engine::mysql($query);
         while($data = mysqli_fetch_array($res)){
             $arr_count++;
-            if($data["online"] > date("U")-300) $online = '<center>'.engine::lang("Online").'</center>';
+            if($data["online"] > date("U")-600) $online = '<center>'.engine::lang("Online").'</center>';
             else $online = date("d/m/Y", $data["online"]);
             if($data["id"] != 1 && $admin_access == 2){
                 if($data["id"] != $_SESSION["user"]["id"]){
