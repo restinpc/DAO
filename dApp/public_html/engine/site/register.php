@@ -66,12 +66,12 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
             $query = 'INSERT INTO `nodes_user` (`name`, `photo`, `url`, `email`, `pass`, `lang`, `online`, `confirm`, `code`) '
                     . 'VALUES ("'.$name.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$password.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
             engine::mysql($query);
-            $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
+            $query = 'SELECT * FROM `nodes_user` WHERE `email` LIKE "'.$email.'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             unset($_SESSION["user"]);
             $query = 'INSERT INTO nodes_session(user_id, token, ip, create_at, expire_at) '
-                    .'VALUES("'.$_SESSION["user"]["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
+                    .'VALUES("'.$data["id"].'", "'.session_id().'", "'.$_SERVER["REMOTE_ADDR"].'", NOW(), (NOW() + INTERVAL 30 DAY))';
             engine::mysql($query);
             $query = 'SELECT id FROM nodes_session WHERE token LIKE "'.session_id().'" '
                     . 'AND user_id = "'.$_SESSION["user"]["id"].'" ORDER BY id DESC LIMIT 0, 1';
@@ -99,7 +99,14 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
 } else {
     $this->onload .= '$("input-email").focus();';
     $this->content = '<script>
-    function next() {
+    if (!document.framework) {
+        document.framework = {};
+        document.framework.register = {};
+    }
+    if (!document.framework.register) {
+        document.framework.register = {};
+    }
+    document.framework.register.next = () => {
         let flag = true;
         if (!$id("input-email").value.length) {
             window.alert("'.engine::lang("Email is required").'");
@@ -113,12 +120,13 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
         } else if ($id("pass1").value != $id("pass2").value) {
             window.alert("'.engine::lang("Passwords do not match").'");
             flag = false;
+        }
         if (flag) {
             $id("step1").style.display = "none";
             $id("step2").style.display = "block";
         }
     }
-    function submit() {
+    document.framework.register.submit = () => {
         if ($id("pass1").value == $id("pass2").value) {
             if (!$id("input-telegram").value.length) {
                 window.alert("'.engine::lang("Telegram id is required").'");
@@ -127,7 +135,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
                 $id("reg_form").submit();
             }
         } else {
-            alert("'.engine::lang("Passwords do not match").'");
+            window.alert("'.engine::lang("Passwords do not match").'");
             $id("pass2").value = "";
             $id("pass2").focus();
         }
@@ -136,7 +144,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
     <div class="w320 pt20 m0a">
     <h1>'.engine::lang("Sign Up").'</h1>
     <a id="link-login" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'">'.engine::lang("Already have an account?").'</a><br/>
-    <form method="POST" style="line-height:2.0; padding-top: 10px;" id="reg_form" onSubmit=\'event.preventDefault(); submit();\'>
+    <form method="POST" style="line-height:2.0; padding-top: 10px;" id="reg_form" onSubmit=\'event.preventDefault(); document.framework.register.submit();\'>
         <div id="step1">
             <div class="input-caption">'.engine::lang("Email").'</div>
             <input id="input-email" autofocus required type="email" name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Email").'" title="'.engine::lang("Email").'" /><br/>
@@ -147,7 +155,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
             <div style="padding: 10px; padding-bottom: 5px; line-height: 1.5;">' .
             engine::lang("By registering on the site, you accept the").'<br/> <a id="link-terms" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/content/terms_and_conditions').'" target="_blank">'.engine::lang("Terms and Conditions").'</a> <br/>' .
             engine::lang("and are familiar with the").' <a id="link-privacy" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/content/privacy_policy').'" target="_blank">'.engine::lang("Privacy Policy").'</a>'.'</div>
-            <input id="input-next" type="button" class="btn reg_submit" value="'.engine::lang("Next").'" onClick="next();" />
+            <input id="input-next" type="button" class="btn reg_submit" value="'.engine::lang("Next").'" onClick="document.framework.register.next();" />
         </div>
         <div id="step2" style="display: none;">
             <div class="input-caption">'.engine::lang("Name").'</div>

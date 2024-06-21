@@ -162,7 +162,6 @@ static function confirmation($email, $name, $code){
     .engine::lang('We are glad to confirm successful registration at').' '
     . '<a href="'.$_SERVER["PUBLIC_URL"].'/">'.$_SERVER["HTTP_HOST"].'</a>
     '.engine::lang("To confirm your email, please enter or click on the following code").':<br/>
-    <br/>
     <a href="'.$_SERVER["PUBLIC_URL"].'/account/'.$code.'" target="_blank" style="font-size: 24px;"><b>'.$code.'</b></a><br/>';
     engine::send_mail($email, $site_name."<no-reply".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
 }

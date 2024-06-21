@@ -14,7 +14,6 @@ $session_lifetime = 2592000;
 session_set_cookie_params($session_lifetime, '/', '.'.$_SERVER["HTTP_HOST"]);
 session_name('token');
 session_start();
-$_SESSION["display"] = 0;
 $_SESSION["user"] = array();
 $query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0,1';
 $res = engine::mysql($query);
@@ -27,7 +26,7 @@ foreach ($data as $key => $value) {
 if (empty($_COOKIE["token"])) {
     $_COOKIE["token"] = session_id();
 }
-if (empty($_SESSION["user"]["id"])) {
+if (empty($_SESSION["user"]) || !intval($_SESSION["user"]["id"])) {
     $query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_COOKIE["token"].'" AND expire_at > NOW()';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -39,9 +38,9 @@ if (empty($_SESSION["user"]["id"])) {
         if (!empty($data)) {
             unset($data["pass"]);
             unset($data[5]);
-            $data["session_id"] = $session_id;
             $_SESSION["user"] = $data;
-        }
+            $_SESSION["user"]["session_id"] = $session_id;
+        } 
     }
 }
 if (!empty($_SESSION["user"]["id"])) {

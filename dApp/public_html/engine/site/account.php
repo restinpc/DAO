@@ -25,7 +25,7 @@ if (!empty($_SESSION["user"]["id"])) {
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
     if (!$user["confirm"]) {
-        $this->title = engine::lang("Account confirmation");
+        $this->title = engine::lang("Email confirmation");
         $this->content .= engine::print_email_confirm($this);
         return;
     } else if(!empty($_GET[1])) {
@@ -85,7 +85,7 @@ if (!empty($_SESSION["user"]["id"])) {
         $this->content .= engine::print_navigation($this, $title);
         $this->content .= '<div class="document">'
         . '<div class="clear_block">'
-        . '<p>'.engine::lang("Member of").' <b>Web 3.0 </b> '.engine::lang("community").'.</p>'
+        . '<p>'.engine::lang("Member of").' <b>Web 3.0 </b> '.engine::lang("community").'</p>'
         . '</div>'
         . '</div>';
     }
