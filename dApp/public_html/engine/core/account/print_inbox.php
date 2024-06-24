@@ -48,7 +48,9 @@ function print_inbox($site, $target_id){
         $site->onload .= '
             $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
             window.addEventListener("resize", () => {
-                $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
+                try {
+                    $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
+                } catch(E) {}
             });
             refresh_chat("'.$target_id.'");
             setInterval(refresh_chat, 10000, "'.$target_id.'");
