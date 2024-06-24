@@ -115,7 +115,9 @@ h1,h2,h3,h4,h5,h6{
 
 /* -------------------------------------------------------------------------- */
 
-
+#header-app .material-icons {
+    visibility: visible;
+}
 #nodes_login{
     position: absolute;
     left: 50%;
@@ -1035,7 +1037,7 @@ h1,h2,h3,h4,h5,h6{
     overflow: hidden;
 }
 .nodes .chat_user_name_font{
-    font-size: 11px;
+    font-size: 12px;
     color: #c0c0c0;
 }
 .nodes .chat_font{
@@ -3409,7 +3411,6 @@ a.pswp__share--download:hover {
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
-  display: none;
   word-wrap: normal;
   -moz-font-feature-settings: 'liga';
        font-feature-settings: 'liga';
@@ -3498,13 +3499,6 @@ a.pswp__share--download:hover {
 
 /* -------------------------------------------------------------------------- */
 
-/* Connect font "MaterialIcons"; */
-@font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../../font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
-}
 @font-face {
     font-family: 'Roboto';
     font-weight: 400;

@@ -204,7 +204,7 @@ function __construct(){
 <meta name="apple-mobile-web-app-title" content="'.$this->configs["name"].'" />
 <meta name="application-name" content="'.$this->configs["name"].'" />
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">';
+<style>.material-icons{visibility:hidden;}</style>';
 require_once("template/meta.php");
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
@@ -239,6 +239,14 @@ if (!isset($_POST["jQuery"])) {
 $fout .= '
 <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
 <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'loading_site();\' />
+<style>
+@font-face {
+    font-family: "Material Icons";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
+}
+</style>
 </head>
 <body style="opacity: 0; display: contents !important;" class="nodes">
 <img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" onLoad=\'loading_site();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
@@ -254,9 +262,10 @@ if (!isset($_POST["jQuery"])) {
 }
     $fout .= '
 </script>
-<script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'loading_site();\'></script>';
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
+<script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'loading_site();\'></script>
+<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" onLoad=\'material_icons();\' />';
     if (!empty($_SESSION["user"]["id"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
         $res = engine::mysql($query);
@@ -279,13 +288,13 @@ if (!isset($_POST["jQuery"])) {
     $data = mysqli_fetch_array($res);
     if ($data["value"] == "1") {
         $fout .= '<script type="text/javascript">
-            if (window.jQuery) {
-                jQuery.ajax({
-                    url: "'.$_SERVER["DIR"].'/cron.php",
-                    async: true,
-                    type: "GET"
-                });
-            }
+                if (window.jQuery) {
+                    jQuery.ajax({
+                        url: "'.$_SERVER["DIR"].'/cron.php",
+                        async: true,
+                        type: "GET"
+                    });
+                }
             </script>';
     }
     if (!isset($_POST["jQuery"])) {

@@ -1,9 +1,7 @@
 /**
 * Nodes Framework JavaScript library source file.
-* Do not edit directly.
-* @path /script/script.js
 *
-* @name    DAO Mansion    @version 1.0.1
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -757,8 +755,15 @@ function refresh_chat(id){
         type: "GET",
         url: root_dir+'/bin.php?message='+id,
         success: function(data){
-            jQuery("#nodes_chat").html(data);
-            jQuery("#nodes_chat").scrollTop(jQuery("#nodes_chat")[0].scrollHeight);
+            let chat = $id("nodes_chat");
+            let flag = chat.innerHTML.length == 0;
+            if (chat.scrollHeight - chat.scrollTop - chat.clientHeight == 0) {
+                flag = true;
+            }
+            chat.innerHTML = data;
+            if (flag) {
+                chat.scrollTop = chat.scrollHeight;
+            }
         }
     });
 }
@@ -845,9 +850,10 @@ function show_rotator(obj){
 }
 //------------------------------------------------------------------------------
 function material_icons(){
-    try{
-        // jQuery('.material-icons').css('display', 'inline-block');
-    }catch(e){}
+    try {
+        jQuery('.material-icons').css('display', 'inline-block');
+        jQuery('.material-icons').css('visibility', 'visible');
+    } catch(e){}
 }
 //------------------------------------------------------------------------------
 /**
@@ -952,7 +958,6 @@ function level_show_plan(){
 /**
 * Enabling handlers
 */
-addHandler(window, "load", material_icons);
 addHandler(window, "load", () => {
     try {
         loading_site();
