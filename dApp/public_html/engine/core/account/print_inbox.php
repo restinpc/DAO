@@ -21,8 +21,8 @@
 */
 
 function print_inbox($site, $target_id){
-    $fout = '<div style="height: 70px;"></div>
-        <div class="document980">';
+    $fout = '<div style="height: 65px;"></div>
+        <div style="width: calc(100% - 10px); margin: 0px auto;">';
     if (!empty($_GET[2]) || $target_id!=0){
         if(!$target_id) {
             $target_id = $_GET[2];
@@ -46,6 +46,10 @@ function print_inbox($site, $target_id){
             return '<div class="clear_block">'.engine::lang("User banned").'</div>';
         }
         $site->onload .= '
+            $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
+            window.addEventListener("resize", () => {
+                $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
+            });
             refresh_chat("'.$target_id.'");
             setInterval(refresh_chat, 10000, "'.$target_id.'");
         ';

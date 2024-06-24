@@ -198,11 +198,11 @@ h1,h2,h3,h4,h5,h6{
     height: 320px;
     overflow-y: scroll;
     overflow-x: none;
-    margin-right: 7px;
-    margin-left: 5px;
-    padding-left:10px;
-    padding-right:12px;
-    margin-bottom:10px;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-left: 10px;
+    padding-right: 12px;
+    margin-bottom: 5px;
     background: #eaeaea;
     border: #dadada 1px solid;
     border-radius: 5px;
@@ -222,11 +222,13 @@ h1,h2,h3,h4,h5,h6{
 }
 #nodes_message_text{
     height: 45px;
-    width: 98%;
+    width: calc(100% - 10px);
     border: #e5e5e5 1px solid;
     margin-top: 0px;
     background: #efefef;
     line-height: 1.2;
+    resize: vertical;
+    max-height: 75px;
 }
 #nodes_cart{
     position:fixed;
@@ -1013,8 +1015,8 @@ h1,h2,h3,h4,h5,h6{
     border-radius: 4px;
 }
 .nodes .chat_center{
-    margin-left:55px;
-    margin-right:55px;
+    margin-left:52px;
+    margin-right:52px;
 }
 .nodes .chat_center .btn{
     margin-top: -37px;
@@ -1033,7 +1035,7 @@ h1,h2,h3,h4,h5,h6{
     overflow: hidden;
 }
 .nodes .chat_user_name_font{
-    font-size: 12px;
+    font-size: 11px;
     color: #c0c0c0;
 }
 .nodes .chat_font{
