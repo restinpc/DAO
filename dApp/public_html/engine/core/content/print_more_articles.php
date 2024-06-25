@@ -35,7 +35,9 @@ function print_more_articles($site, $url){
     $res = engine::mysql($query);
     while ($d = mysqli_fetch_array($res)) {
         if (!in_array($d["id"], $urls)) {
-            if($count > 11) break;
+            if ($count > 11) {
+                break;
+            }
             $count++;
             $fout .= engine::print_preview($site, $d);
             array_push($urls, $d["id"]);
@@ -49,7 +51,9 @@ function print_more_articles($site, $url){
         $res = engine::mysql($query);
         while ($d = mysqli_fetch_array($res)) {
             if (!in_array($d["id"], $urls)) {
-                if($count > 11) break;
+                if ($count > 11) {
+                    break;
+                }
                 $count++;
                 $fout .= engine::print_preview($site, $d);
                 array_push($urls, $d["id"]);
