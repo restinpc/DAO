@@ -77,7 +77,7 @@ $this->content = '<style>
 </style>
 <script>
     document.panorama = {};
-    let screen_state = 0;
+    document.panorama.screen_state = 0;
     document.panorama.requestFullScreen = (element) => {
         // Supports most browsers and their versions.
         var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
@@ -98,8 +98,8 @@ $this->content = '<style>
             iframe.style.height = "100%";
             iframe.style.position = "fixed";
             iframe.style.zIndex = 2;
-            screen_state = 1;
-            document.getElementById("fullscreen_icon").src = "/img/vr/normalscreen.png";
+            document.panorama.screen_state = 1;
+            document.getElementById("fullscreen_icon").setAttribute("src","/img/vr/normalscreen.png");
         }
     }
     document.panorama.hideFullScreen = () => {
@@ -109,8 +109,8 @@ $this->content = '<style>
             iframe.style.height = "calc(100% - 40px)";
             iframe.style.position = "fixed";
             iframe.style.zIndex = 0;
-            screen_state = 0;
-            document.getElementById("fullscreen_icon").src = "/img/vr/fullscreen.png";
+            document.panorama.screen_state = 0;
+            document.getElementById("fullscreen_icon").setAttribute("src","/img/vr/fullscreen.png");
         }
         try {
             if (document.exitFullscreen) {
@@ -125,7 +125,7 @@ $this->content = '<style>
         } catch (e) {}
     }
     document.panorama.toggleScreen = () => {
-        if (screen_state) {
+        if (document.panorama.screen_state) {
             document.panorama.hideFullScreen();
         } else {
             document.panorama.fullScreen();
@@ -216,7 +216,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     } else {
         $this->description = 'Приложение для панорамного просмотра 3D Mansion с поддержкой VR режима, вдохновленное Google Maps';
     }
-    $this->content .= engine::print_webvr_navigation(engine::lang("Panorama viewer")).
+    $this->content .= engine::print_webvr_navigation(engine::lang("Panorama viewer"));
     $this->content .= engine::print_panorama();
 } else if (!empty($_GET[1]) && $_GET[1] == "free-look") {
     $this->title = engine::lang("Free look mode");

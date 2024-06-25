@@ -3,7 +3,7 @@
 * Print admin panoramas page.
 * @path /engine/core/admin/print_admin_panoramas.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -18,6 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_panoramas($cms); </code>
 */
+
 function print_admin_panoramas($cms){
     $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
@@ -215,11 +216,13 @@ function print_admin_panoramas($cms){
             $requery = 'SELECT COUNT(*) FROM `vr_level` WHERE `project_id` = "'.$project["id"].'"';
             $fout .= '<div class="tal"><a href="/admin/?mode=panoramas">Panoramas</a> / <b>'.$project["name"].'</b> / </div>
                 <h1>Project details</h1>
+                <script src="'.$_SERVER["DIR"].'/script/aframe/aframe-master.js"></script>
+                <script src="'.$_SERVER["DIR"].'/script/aframe/panorama.js"></script>
                 ';
 
             if($_GET["action"] == "scheme"){
                 $fout .= '
-                    <a-scene vr-mode-ui="enabled: false;" background="color: #000;" width=600 height=600 style="width:600px; height:600px;" >
+                    <a-scene vr-mode-ui="enabled: false;" background="color: #000;" width=100% height=600 style="width:100%; height:600px;" >
                     <a-sky id="sky_back" src="/img/vr/pano.jpg"  position="0 0 0 rotation="0 0 0" radius="100" opacity="1">
                     <a-circle position="0 -10 0" rotation="-90 0 0" color="white" radius="100" opacity="0.7"></a-circle>';
 
@@ -293,7 +296,7 @@ function print_admin_panoramas($cms){
                         </tr>';
                             }$table .= '
                     </table></div><br/>';
-                if($arr_count){
+                if ($arr_count) {
                     $fout .= $table.'
                     <form method="POST"  id="query_form"  onSubmit="submit_search();">
                     <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
@@ -305,15 +308,18 @@ function print_admin_panoramas($cms){
                     $res = engine::mysql($requery);
                     $data = mysqli_fetch_array($res);
                     $count = $data[0];
-                    if($to > $count) $to = $count;
-                    if($data[0]>0){
+                    if ($to > $count) {
+                        $to = $count;
+                    }
+                    if ($data[0]>0) {
                         $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                             <nobr><select id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
                              <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                              <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                              <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
                             </select> '.engine::lang("per page").'.</nobr></p>';
-                    }$fout .= '</div><div class="cr"></div>';
+                    }
+                    $fout .= '</div><div class="cr"></div>';
                     if($count>$_SESSION["count"]){
                         $fout .= '<div class="pagination" >';
                         $pages = ceil($count/$_SESSION["count"]);
@@ -387,14 +393,16 @@ function print_admin_panoramas($cms){
                     </form>
                 </div>';
             }
-        }else{
+        } else {
             $level_id = $_GET["level_id"];
             $query = 'SELECT * FROM `vr_level` WHERE `id` = "'.$level_id.'"';
             $res = engine::mysql($query);
             $level = mysqli_fetch_array($res);
-            if(empty($level)) engine::error();
-            $fout .= '<div class="tal"><a href="/admin/?mode=panoramas">Panoramas</a> / <a href="/admin/?mode=panoramas&project_id='.$project_id.'">'.$project["name"].'</a> / <b>'.$level["name"].'</b></div>';
-            if($_POST["action"]=="new_scene"){
+            if (empty($level)) {
+                engine::error();
+            }
+            $fout .= '<div class="tal"><a href="'.$_SERVER["DIR"].'/admin/?mode=panoramas">'.engine::lang("Panoramas").'</a> / <a href="/admin/?mode=panoramas&project_id='.$project_id.'">'.$project["name"].'</a> / <b>'.$level["name"].'</b></div>';
+            if ($_POST["action"]=="new_scene") {
                 $name = trim(htmlspecialchars($_POST["name"]));
                 $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
                 $position = engine::escape_string($_POST["position"]);
@@ -411,39 +419,36 @@ function print_admin_panoramas($cms){
                 $cubemap = '{';
                 $folderPath = "img/cubemap/";
                 $sides = Array("pz", "nz", "px", "nx", "py", "ny");
-                foreach($sides as $side){
-
-                    for($i = 0; $i < 1; $i++){
-                        for($j = 0; $j < 1; $j++){
+                foreach ($sides as $side) {
+                    for ($i = 0; $i < 1; $i++){
+                        for ($j = 0; $j < 1; $j++){
                             $id = ($i*1+$j);
                             $cubemap .= '"'.$side.'_1_'.($id).'":"'.$scene_id.'xf_1_'.$side.'_'.$id.'.png", ';
                         }
                     }
-                    for($i = 0; $i < 2; $i++){
-                        for($j = 0; $j < 2; $j++){
+                    for ($i = 0; $i < 2; $i++){
+                        for ($j = 0; $j < 2; $j++){
                             $id = ($i*2+$j);
                             $cubemap .= '"'.$side.'_2_'.($id).'":"'.$scene_id.'xf_2_'.$side.'_'.$id.'.png", ';
                         }
                     }
-                    for($i = 0; $i < 4; $i++){
-                        for($j = 0; $j < 4; $j++){
+                    for ($i = 0; $i < 4; $i++){
+                        for ($j = 0; $j < 4; $j++){
                             $id = ($i*4+$j);
                             $cubemap .= '"'.$side.'_3_'.($id).'":"'.$scene_id.'xf_3_'.$side.'_'.$id.'.png", ';
                         }
                     }
-                    for($i = 0; $i < 8; $i++){
-                        for($j = 0; $j < 8; $j++){
+                    for ($i = 0; $i < 8; $i++) {
+                        for ($j = 0; $j < 8; $j++){
                             $id = ($i*8+$j);
                             $cubemap .= '"'.$side.'_4_'.($id).'":"'.$scene_id.'xf_4_'.$side.'_'.$id.'.png", ';
                         }
                     }
-
-
                 }
                 $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
                 $query = 'UPDATE `vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
                 engine::mysql($query);
-                if(!empty($_FILES)){
+                if (!empty($_FILES)) {
                     $query = 'SELECT MAX(`id`) FROM `vr_scene`';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);

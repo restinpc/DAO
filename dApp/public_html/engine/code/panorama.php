@@ -141,8 +141,7 @@ if(!empty($_GET["id"])){
         engine::mysql($query);
     }
     $onload = '';
-    $fout = '<script src="'.$_SERVER["DIR"].'/script/aframe/panorama.js" type="text/javascript"></script>
-    <div id="nodes_vr_scene">
+    $fout = '<div id="nodes_vr_scene">
     <a-scene id="nodes_scene" scene-id="'.$data["id"].'" vr-mode-ui="enabled: true;" device-orientation-permission-ui background="color: #fff;" >
         <a-assets>
             <img id="logo" src="'.$_SERVER["PUBLIC_URL"].'/img/vr_logo.png" crossorigin="anonymous" />

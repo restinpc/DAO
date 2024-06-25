@@ -237,7 +237,7 @@ function apply_changes_object(id){
 function resize_scene(){
     try{
         $id("nodes_vr_scene").style.height=(getViewportHeight()-parseInt($id("sectionsNav").clientHeight))+"px";
-    }catch(e){}
+    } catch(e){}
 }
 //------------------------------------------------------------------------------
 function apply_scene_changes(){
@@ -283,21 +283,18 @@ function navigate(){
 }
 //------------------------------------------------------------------------------
 function zoom_scene(e){
-    try{
+    try {
         e = e || window.event;
         var delta = e.deltaY || e.detail || e.wheelDelta;
         var y = 0;
-        if(delta > 1 && zoom > 1){
+        if (delta > 1 && zoom > 1) {
             zoom-=1;
-        }else if(delta < 1 && zoom <= 3.5){
+        } else if (delta < 1 && zoom <= 3.5) {
             zoom+=1;
         }
-    }catch(e){}
-    //console.log("zoom - "+zoom);
+    } catch(e) {}
     camera.setAttribute("zoom", zoom);
-    if(zoom == 1){
-        //console.log("cubemap_0");
-
+    if (zoom == 1) {
         $id("cubemap_0").setAttribute("scale", '1 1 1');
         $id("cubemap_1").setAttribute("scale", '1.01 1.01 1.01');
         $id("cubemap_2").setAttribute("scale", '1.01 1.01 1.01');
@@ -589,7 +586,6 @@ function mouse_listner(event){
         move_point.setAttribute("material", "opacity", "0");
     }
     try{
-        //console.log(ray.components.raycaster.intersections[h].object.el.id);
         if(ray.components.raycaster.intersections[h].object.el.id != "cursor_img" &&
             ray.components.raycaster.intersections[h].object.el.id != "move_point"){
             var pos = ray.components.raycaster.intersections[h].point;

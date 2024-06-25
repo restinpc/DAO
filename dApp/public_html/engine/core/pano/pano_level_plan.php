@@ -63,9 +63,9 @@ function pano_level_plan($level_id){
         <input type="file"  class="input w280" id="level_plan_file" name="image"  /><br/>
         <br/>
         <input type="button" onClick=\'level_apply_chages();\' class="btn w280" value="'.engine::lang("Apply changes").'" />
-        <br/>
+        <br/><br/>
         <input type="submit" class="btn w280" value="'.engine::lang("Save changes").'" />
-        <br/>
+        <br/><br/>
         <a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/admin/?mode=panoramas&project_id='.$level["project_id"].'&level_id='.$level_id).'">
             <input type="button" class="btn w280" value="'.engine::lang("Cancel").'" />
         </a>

@@ -32,7 +32,7 @@ function print_header($site, $id){
         $online .= $date;
         $online .= '<br/>';
     }
-    $fout = '<div class="profile_header" style="background:#1e5056;">
+    $fout = '<div class="profile_header" style="background-image:url(/img/profile.jpg);background-color:#1e5056;background-size:cover;">
         <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" /><br/>
         <h1>'.$user["name"].'</h1>
         '.$online.'

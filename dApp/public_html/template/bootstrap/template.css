@@ -15190,9 +15190,6 @@ body{
     color: #333;
     opacity: 1;
 }
-#nodes_window{
-    top: 90px;
-}
 #scene_editor{
     display:none;
     position:fixed;
@@ -15220,7 +15217,7 @@ body{
 #level_plan_container{
     width: 600px;
     height: 600px;
-    position:fixed;
+    position:absolute;
     margin: 0px auto;
     border: #aaa 1px dotted;
     background: url(/img/plan_background.jpg) top left;

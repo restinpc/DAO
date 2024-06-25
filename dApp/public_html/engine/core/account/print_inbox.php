@@ -89,6 +89,7 @@ function print_inbox($site, $target_id){
             </div>
             <div class="clear"></div><br/>';
     } else {
+        $fout .= '<div class="document980">';
         $query = 'SELECT * FROM `nodes_user` WHERE `id` <> "'.$_SESSION["user"]["id"].'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
@@ -150,6 +151,7 @@ function print_inbox($site, $target_id){
         }
         $fout .= '<br/>';
     }
-    $fout .= '</div>';
+    $fout .= '</div>'
+        . '</div>';
     return $fout;
 }
