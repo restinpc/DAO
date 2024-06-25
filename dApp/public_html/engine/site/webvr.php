@@ -56,11 +56,11 @@ $this->content = '<style>
         border: none;
     }
     #map_frame {
-        position: absolute;
+        position: fixed;
         text-align: center;
         margin: 0px auto;
         width: 100%;
-        top: 10px;
+        top: 30px;
         display: none;
     }
     #map_frame iframe {
