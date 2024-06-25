@@ -756,12 +756,13 @@ function refresh_chat(id){
         url: root_dir+'/bin.php?message='+id,
         success: function(data){
             let chat = $id("nodes_chat");
+            let height = chat.scrollHeight;
             let flag = chat.innerHTML.length == 0;
-            if (chat.scrollHeight - chat.scrollTop - chat.clientHeight == 0) {
+            if (height - chat.scrollTop - chat.clientHeight < 2) {
                 flag = true;
             }
             chat.innerHTML = data;
-            if (flag) {
+            if (flag || (!flag && chat.scrollHeight > height)) {
                 chat.scrollTop = chat.scrollHeight;
             }
         }
