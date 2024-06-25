@@ -13,17 +13,16 @@ function print_level_plan($level_id){
     $query = 'SELECT * FROM `vr_scene` WHERE `level_id` = "'.$level_id.'"';
     $res = engine::mysql($query);
     $scenes = array();
-    $left = null;
     $top = null;
     $left = null;
     $right = null;
     $bottom = null;
     while ($data = mysqli_fetch_array($res)) {
         array_push($scenes, $data);
-        if ($data["lat"] < $left || $left == null) $left = $data["lat"];
-        if ($data["lat"] > $right || $right == null) $right = $data["lat"];
-        if ($data["lng"] < $top || $top == null) $top = $data["lng"];
-        if ($data["lng"] > $bottom || $bottom == null) $bottom = $data["lng"];
+        if ($left == null || $data["lat"] < $left) $left = $data["lat"];
+        if ($right == null || $data["lat"] > $right) $right = $data["lat"];
+        if ($top == null || $data["lng"] < $top) $top = $data["lng"];
+        if ($bottom == null || $data["lng"] > $bottom) $bottom = $data["lng"];
     }
     $bt = 550/($bottom-$top);
     $rl = 550/($right-$left);
@@ -37,10 +36,10 @@ function print_level_plan($level_id){
         $l = (5+($right-$scene["lat"])*($rl));
         $fout .= '
             <img id="camera_icon_'.$scene["id"].'"
-                src="/img/hotpoint.png"
+                src="'.$_SERVER["DIR"].'/img/hotpoint.png"
                 width=30
                 style="
-                    position:fixed;
+                    position:absolute;
                     top:'.($t+$scene["top"]).'px;
                     left:'.($l+$scene["left"]).'px;
                     cursor:pointer;
