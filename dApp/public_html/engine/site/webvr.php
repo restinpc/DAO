@@ -56,27 +56,18 @@ $this->content = '<style>
         border: none;
     }
     #map_frame {
-        position: fixed;
-        text-align: center;
-        margin: 0px auto;
-        width: 100%;
-        top: 30px;
         display: none;
     }
     #map_frame iframe {
-        display: block;
-        margin: 0px auto;
-    }
-    @media (max-width: 600px) {
-        #map_frame iframe {
-            width: 300px;
-            position: absolute;
-            left: calc(50% - 150px);
-        }
+        left: calc(50% - 300px);
+        position: fixed;
+        top: calc(50% - 250px);
     }
 </style>
 <script>
-    document.panorama = {};
+    if (!document.panorama) {
+        document.panorama = {};
+    }
     document.panorama.screen_state = 0;
     document.panorama.requestFullScreen = (element) => {
         // Supports most browsers and their versions.
