@@ -105,22 +105,24 @@ public static function __callStatic($name, $arguments) {
 }
 
 static function lang($key) {
-    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "'.$_SESSION["Lang"].'"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if (!empty($data["value"])) {
-        return $data["value"];
-    } else {
-        $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$key.'" AND `lang` = "en" AND `value` <> ""';
+    if ($_SESSION["Lang"] &&$_SESSION["Lang"] == "en") {
+        return $key;
+    }
+    if (!$GLOBALS["_LANG"] || !is_array($GLOBALS["_LANG"])) {
+        $GLOBALS["_LANG"] = array();
+        $query = 'SELECT * FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        if (!empty($d)) {
-            return $d["value"];
-        } else {
-            $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$key.'", "en", "'.$key.'")';
-            engine::mysql($query);
-            return $key;
+        while($data = mysqli_fetch_array($res)) {
+            $GLOBALS["_LANG"][$data["name"]] = $data["value"];
         }
+    }
+    if ($GLOBALS["_LANG"][$key]) {
+        return $GLOBALS["_LANG"][$key];
+    } else {
+        $GLOBALS["_LANG"][$key] = $key;
+        $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$key.'", "en", "'.$key.'")';
+        engine::mysql($query);
+        return $key;
     }
 }
 

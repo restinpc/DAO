@@ -316,5 +316,5 @@ if (!isset($_POST["jQuery"])) {
         $replace = array('> <', '> $1', '$1 <');
         $fout = preg_replace($search, $replace, $fout);
     }
-    die($fout);
+    echo $fout;
 }}
