@@ -24,8 +24,8 @@ function print_level_plan($level_id){
         if ($top == null || $data["lng"] < $top) $top = $data["lng"];
         if ($bottom == null || $data["lng"] > $bottom) $bottom = $data["lng"];
     }
-    $bt = 550/($bottom-$top);
-    $rl = 550/($right-$left);
+    $bt = 550/($bottom-$top != 0 ? $bottom-$top : 1);
+    $rl = 550/($right-$left != 0 ? $right-$left : 1);
     if ($bt > $rl) {
         $rl *= ($rl/$bt);
     } else {
