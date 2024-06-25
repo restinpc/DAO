@@ -29,9 +29,22 @@ function print_more_articles($site, $url){
     $fout = '';
     $urls = Array();
     // print articles same catalog
-    do {
+    $query = 'SELECT * FROM `nodes_content` WHERE `id` <> "'.$data["id"].'" '
+            . 'AND `cat_id` = "'.$data["cat_id"].'" '
+            . 'AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY RAND() DESC';
+    $res = engine::mysql($query);
+    while ($d = mysqli_fetch_array($res)) {
+        if (!in_array($d["id"], $urls)) {
+            if($count > 11) break;
+            $count++;
+            $fout .= engine::print_preview($site, $d);
+            array_push($urls, $d["id"]);
+        }
+    }
+    // print articles other catalog if required
+    if ($count < 12) {
         $query = 'SELECT * FROM `nodes_content` WHERE `id` <> "'.$data["id"].'" '
-                . 'AND `cat_id` = "'.$data["cat_id"].'" '
+                . 'AND `cat_id` <> "'.$data["cat_id"].'" '
                 . 'AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY RAND() DESC';
         $res = engine::mysql($query);
         while ($d = mysqli_fetch_array($res)) {
@@ -42,23 +55,6 @@ function print_more_articles($site, $url){
                 array_push($urls, $d["id"]);
             }
         }
-    } while ($count < 12);
-    // print articles other catalog if required
-    if ($count < 12) {
-        do {
-            $query = 'SELECT * FROM `nodes_content` WHERE `id` <> "'.$data["id"].'" '
-                    . 'AND `cat_id` <> "'.$data["cat_id"].'" '
-                    . 'AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY RAND() DESC';
-            $res = engine::mysql($query);
-            while ($d = mysqli_fetch_array($res)) {
-                if (!in_array($d["id"], $urls)) {
-                    if($count > 11) break;
-                    $count++;
-                    $fout .= engine::print_preview($site, $d);
-                    array_push($urls, $d["id"]);
-                }
-            }
-        } while ($count < 12);
     }
     return $fout;
 }
