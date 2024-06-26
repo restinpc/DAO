@@ -204,11 +204,11 @@ function __construct(){
 <meta name="apple-mobile-web-app-title" content="'.$this->configs["name"].'" />
 <meta name="application-name" content="'.$this->configs["name"].'" />
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />
-<style>.material-icons{visibility:hidden;}</style>';
+<style>.material-icons{ visibility:hidden; }</style>';
 require_once("template/meta.php");
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
-    let loading_stages = 3;'
+    let loading_stages = 6;'
     . 'let loading_state = 0; '
     . 'let preloaded = 0;'
     . 'function display(){ '
@@ -226,9 +226,11 @@ if (!isset($_POST["jQuery"])) {
     . 'window.onload = loading_site; '
     . 'function loading_site(){ '
         . 'loading_state++; '
-        . 'if(loading_state!=loading_stages){ return; } '
-        . 'try{ '
-            . 'preload(); loading_state=2; '
+        . 'if (loading_state!=loading_stages){ return; } '
+        . 'try{'
+            . 'material_icons();'
+            . 'preload();'
+            . 'loading_state=5; '
             . 'setTimeout(() => (display()), 1000);'
         . '}catch(e){};'
         . 'clearTimeout(tm);
@@ -262,10 +264,10 @@ if (!isset($_POST["jQuery"])) {
 }
     $fout .= '
 </script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" onLoad=\'loading_site();\'></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" onLoad=\'loading_site();\'></script>
 <script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'loading_site();\'></script>
-<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" onLoad=\'material_icons();\' />';
+<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'loading_site();\' />';
     if (!empty($_SESSION["user"]["id"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
         $res = engine::mysql($query);

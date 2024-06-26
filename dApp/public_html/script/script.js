@@ -99,9 +99,9 @@ function addHandler(object, event, handler, useCapture) {
 * @usage <code> in_array('1', ['1','2','3'], false); </code>
 */
 function in_array(needle, haystack, strict) {
-    var found = false, key, strict = !!strict;
+    var found = false, key, isStrict = !!strict;
     for (key in haystack) {
-        if ((strict && haystack[key] === needle) || (!strict && haystack[key] == needle)) {
+        if ((isStrict && haystack[key] === needle) || (!isStrict && haystack[key] == needle)) {
             found = true;
             break;
         }

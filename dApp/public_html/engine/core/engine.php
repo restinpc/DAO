@@ -120,7 +120,7 @@ static function lang($key) {
         return $GLOBALS["_LANG"][$key];
     } else {
         $GLOBALS["_LANG"][$key] = $key;
-        $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$key.'", "en", "'.$key.'")';
+        $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$key.'", "'.$_SESSION["Lang"].'", "'.$key.'")';
         engine::mysql($query);
         return $key;
     }
