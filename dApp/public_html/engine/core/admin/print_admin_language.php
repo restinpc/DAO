@@ -31,9 +31,6 @@ function print_admin_language($cms){
         engine::error(401);
         return;
     }
-    if (empty($_GET["l"])) {
-        $_GET["l"] = 'en';
-    }
     if (!empty($_POST)) {
         $name = trim(str_replace('"', '\"', $_POST["name"]));
         if (!empty($name)) {
@@ -74,36 +71,21 @@ function print_admin_language($cms){
                     $id!="language" &&
                     $id!=""
                 ){
-                    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_GET["l"].'"';
+                    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                     $res = engine::mysql($query);
                     $data = mysqli_fetch_array($res);
                     if (!empty($data)) {
-                        $query = 'UPDATE `nodes_language` SET `value` = "'.$value.'" WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_GET["l"].'"';
+                        $query = 'UPDATE `nodes_language` SET `value` = "'.$value.'" WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                         engine::mysql($query);
                     } else {
-                        $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$id.'", "'.$_GET["l"].'", "'.$value.'")';
+                        $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$id.'", "'.$_SESSION["Lang"].'", "'.$value.'")';
                         engine::mysql($query);
                     }
                 }
             }
         }
     }
-    $fout = '<div class="document980">'.
-            engine::lang("Select your language").': <select  id="select-lang" class="input" onChange="window.location = \''.$_SERVER["DIR"].'/admin/?mode=language&l=\'+this.value;">';
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $arr = explode(";", $data["value"]);
-    foreach ($arr as $value) {
-        if (!empty($value)) {
-            if (!empty($_GET["l"]) && $_GET["l"] == $value) {
-                $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'" selected>'.$value.'</option>';
-            } else {
-                $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'">'.$value.'</option>';
-            }
-        }
-    }
-    $fout .= '</select><br/><br/>';
+    $fout = '<div class="document980">';
     $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
     $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
@@ -134,7 +116,7 @@ function print_admin_language($cms){
     while ($data = mysqli_fetch_array($res)) {
         $arr_count++;
         $table .= '<tr><td width=50% align=left>'.$data["name"].'</td>';
-        if ($_GET["l"]=="en" && $admin_access == 2) {
+        if ($_SESSION["Lang"] == "en" && $admin_access == 2) {
             $table .= '<td width=50% align=left><input id="input-lang-'.$arr_count.'" name="'.  base64_encode($data["name"]).'" type="text" value="'.$data["value"].'" class="input w100p" />'
                 . '</td><td width=20><div  id="div-delete-'.$arr_count.'" class="close_image"'
                 . 'onClick=\'if(confirm("'.engine::lang("Delete").' \"'.$data["name"].'\"?")){document.getElementById("delete_value").value="'.base64_encode($data["name"]).'";'
@@ -145,15 +127,15 @@ function print_admin_language($cms){
         }
         $table .= '</tr>';
     }
-$table .= '</table>
-</div>';
-if ($admin_access == 2) {
-    $table .= '
-    <br/>
-    <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" />';
-}
+    $table .= '</table>
+    </div>';
+    if ($admin_access == 2) {
         $table .= '
-</form><br/>';
+        <br/>
+        <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" />';
+    }
+            $table .= '
+    </form><br/>';
     if ($arr_count) {
         $fout .= $table.'
         <form method="POST"  id="query_form"  onSubmit="submit_search();">
@@ -207,7 +189,7 @@ if ($admin_access == 2) {
                 } else if ((!$c||!$b) && !$f && $i < $pages) {
                     $f = 1;
                     $e = 0;
-                    if(!$b) {
+                    if (!$b) {
                         $b = 1;
                     } else if (!$c) {
                         $c = 1;
@@ -227,7 +209,7 @@ if ($admin_access == 2) {
     } else {
         $fout = '<div class="clear_block">'.engine::lang("Data not found").'</div>';
     }
-    if ($_GET["l"]=="en" && $admin_access == 2) {
+    if ($_SESSION["Lang"] == "en" && $admin_access == 2) {
         $fout .= '<br/><input id="input-new-value" type="button" class="btn w280" '
             . 'onClick=\'result = prompt("New value", ""); if(result != ""){document.getElementById("new_value").value=result;'
             . 'document.getElementById("new_form").submit();}\' value="'.engine::lang("Add new value").'" /><br/>';
