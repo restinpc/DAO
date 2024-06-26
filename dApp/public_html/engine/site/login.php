@@ -19,6 +19,9 @@
 if(!empty($_GET[4])){
     $this->content = engine::error();
     return;
+} else if (!empty($_SESSION["user"]["id"])) {
+    die('<script language="JavaScript">window.location = "'.$_SERVER["DIR"].'/account";</script>');
+    return;
 }
 $this->content .= '<div class="w320 pt20 m0a">';
 if(empty($_GET[1])){
