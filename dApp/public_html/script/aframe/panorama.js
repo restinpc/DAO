@@ -620,7 +620,7 @@ function reset_scene_object(id){
         jQuery.ajax({
             type: "POST",
             data: {	"scene_reset" : id },
-            url: root_dir+"/bin.php",
+            url: document.framework.root_dir+"/bin.php",
             success: function(data){
                 window.location.reload();
             }
@@ -715,7 +715,7 @@ function load_scene(id, object_id){
     jQuery.ajax({
         type: "POST",
         data: {	"scene" : id },
-        url: root_dir+"/bin.php",
+        url: document.framework.root_dir+"/bin.php",
         success: function(data){
             var json = JSON.parse(data);
             var new_scene = json.children[0].children[0];

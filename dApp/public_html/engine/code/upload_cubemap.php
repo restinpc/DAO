@@ -6,7 +6,7 @@ $image_parts = explode(";base64,", $_POST["url"]);
 if(intval($_GET["img_id"])>0){
     $img_id = intval($_GET["img_id"]);
 }else{
-    $query = 'SELECT MAX(`id`) FROM `vr_scene` WHERE `cubemap` <> ""';
+    $query = 'SELECT MAX(`id`) FROM `nodes_vr_scene` WHERE `cubemap` <> ""';
     $r = engine::mysql($query);
     $d = mysqli_fetch_array($r);
     $img_id = $d[0]+1;

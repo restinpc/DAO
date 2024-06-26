@@ -26,7 +26,7 @@ function edit_seo(id) {
             "keywords":keywords,
             "mode":mode
         },
-        url: root_dir+"/bin.php",
+        url: document.framework.root_dir+"/bin.php",
         success:function(data){
             jQuery('#button_'+id).css("opacity","1");
             jQuery('#button_'+id).css("display","none");
@@ -50,18 +50,18 @@ function confirm_order(id, text, shipment, soldout){
                     jQuery.ajax({
                         type: "POST",
                         data: {	"order_id" : id, "status" : "0", "track" : str },
-                        url: root_dir+"/bin.php",
+                        url: document.framework.root_dir+"/bin.php",
                         success: function(data){
-                            window.location = root_dir+"/admin/?mode=orders";
+                            window.location = document.framework.root_dir+"/admin/?mode=orders";
                         }
                     });
                 }else{
                     jQuery.ajax({
                         type: "POST",
                         data: {	"order_id" : id, "status" : "1", "track" : str },
-                        url: root_dir+"/bin.php",
+                        url: document.framework.root_dir+"/bin.php",
                         success: function(data){
-                            window.location = root_dir+"/admin/?mode=orders";
+                            window.location = document.framework.root_dir+"/admin/?mode=orders";
                         }
                     });
                 }
@@ -79,7 +79,7 @@ function delete_image(id, pos){
     jQuery.ajax({
         type: "POST",
         data: {	"product_id" : id, "pos" : pos },
-        url: root_dir+"/bin.php",
+        url: document.framework.root_dir+"/bin.php",
         success: function(data){
             console.log("delete_image: "+data);
             document.getElementById("edit_product_form").submit();
@@ -98,7 +98,7 @@ function new_transaction(id, text){
         jQuery.ajax({
             type: "POST",
             data: {"user_id": id, "transaction" : str },
-            url: root_dir+"/bin.php",
+            url: document.framework.root_dir+"/bin.php",
             success: function(data){
                 console.log("transaction: "+data);
                 alertify.alert(data);
@@ -121,9 +121,9 @@ function archive_order(id, text){
                 jQuery.ajax({
                     type: "POST",
                     data: {	"archive_id" : id },
-                    url: root_dir+"/bin.php",
+                    url: document.framework.root_dir+"/bin.php",
                     success: function(data){
-                        window.location = root_dir+"/admin/?mode=orders";
+                        window.location = document.framework.root_dir+"/admin/?mode=orders";
                     }
                 });
             }

@@ -29,21 +29,21 @@ function print_admin_panoramas($cms){
             $name = trim(htmlspecialchars($_POST["name"]));
             $text = trim(engine::escape_string($_POST["text"]));
             $url = trim(htmlspecialchars($_POST["url"]));
-            $query = 'INSERT INTO `vr_project`(`name`, `url`, `text`) VALUES("'.$name.'", "'.$url.'", "'.$text.'")';
+            $query = 'INSERT INTO `nodes_vr_project`(`name`, `url`, `text`) VALUES("'.$name.'", "'.$url.'", "'.$text.'")';
             engine::mysql($query);
         }else if(!empty($_POST) && $_POST["action"] == "delete" && !empty($_POST["id"])){
             $id = intval($_POST["id"]);
-            $query = 'DELETE FROM `vr_scene` WHERE `project_id` = "'.$id.'"';
+            $query = 'DELETE FROM `nodes_vr_scene` WHERE `project_id` = "'.$id.'"';
             engine::mysql($query);
-            $query = 'DELETE FROM `vr_level` WHERE `project_id` = "'.$id.'"';
+            $query = 'DELETE FROM `nodes_vr_level` WHERE `project_id` = "'.$id.'"';
             engine::mysql($query);
-            $query = 'DELETE FROM `vr_object` WHERE `project_id` = "'.$id.'"';
+            $query = 'DELETE FROM `nodes_vr_object` WHERE `project_id` = "'.$id.'"';
             engine::mysql($query);
-            $query = 'DELETE FROM `vr_project` WHERE `id` = "'.$id.'"';
+            $query = 'DELETE FROM `nodes_vr_project` WHERE `id` = "'.$id.'"';
             engine::mysql($query);
         }
-        $query = 'SELECT * FROM `vr_project` ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
-        $requery = 'SELECT COUNT(*) FROM `vr_project`';
+        $query = 'SELECT * FROM `nodes_vr_project` ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
+        $requery = 'SELECT COUNT(*) FROM `nodes_vr_project`';
         $fout .= '<h1>VR Projects</h1>';
         $table = '
             <form method="POST" id="act-form">
@@ -66,23 +66,23 @@ function print_admin_panoramas($cms){
             </thead>';
         $res = engine::mysql($query);
         while($data = mysqli_fetch_array($res)){
-            $query = 'SELECT COUNT(`id`) FROM `vr_level` WHERE `project_id` = "'.$data["id"].'"';
+            $query = 'SELECT COUNT(`id`) FROM `nodes_vr_level` WHERE `project_id` = "'.$data["id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $levels = $d[0];
-            $query = 'SELECT COUNT(`id`) FROM `vr_scene` WHERE `project_id` = "'.$data["id"].'"';
+            $query = 'SELECT COUNT(`id`) FROM `nodes_vr_scene` WHERE `project_id` = "'.$data["id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $scenes = $d[0];
-            $query = 'SELECT COUNT(`id`) FROM `vr_object` WHERE `project_id` = "'.$data["id"].'"';
+            $query = 'SELECT COUNT(`id`) FROM `nodes_vr_object` WHERE `project_id` = "'.$data["id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $objects = $d[0];
-            $query = 'SELECT COUNT(`id`) FROM `vr_navigation` WHERE `project_id` = "'.$data["id"].'"';
+            $query = 'SELECT COUNT(`id`) FROM `nodes_vr_navigation` WHERE `project_id` = "'.$data["id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $points = $d[0];
-            $query = 'SELECT COUNT(`id`) FROM `vr_link` WHERE `project_id` = "'.$data["id"].'"';
+            $query = 'SELECT COUNT(`id`) FROM `nodes_vr_link` WHERE `project_id` = "'.$data["id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $links = $d[0];
@@ -180,7 +180,7 @@ function print_admin_panoramas($cms){
         </div>';
     }else{
         $project_id = intval($_GET["project_id"]);
-        $query = 'SELECT * FROM `vr_project` WHERE `id` = "'.$project_id.'"';
+        $query = 'SELECT * FROM `nodes_vr_project` WHERE `id` = "'.$project_id.'"';
         $res = engine::mysql($query);
         $project = mysqli_fetch_array($res);
         if(empty($project)) engine::error();
@@ -189,31 +189,31 @@ function print_admin_panoramas($cms){
                 $name = trim(htmlspecialchars($_POST["name"]));
                 $text = trim(engine::escape_string($_POST["text"]));
                 //$image = "/img/plans/".file::upload("image", "img/plans", 1);
-                $query = 'INSERT INTO `vr_level`(`project_id`, `name`, `text`, `image`, `scale`) '
+                $query = 'INSERT INTO `nodes_vr_level`(`project_id`, `name`, `text`, `image`, `scale`) '
                         . 'VALUES("'.$project_id.'", "'.$name.'", "'.$text.'", "", "1")';
                 engine::mysql($query);
                 $ext = explode('.', $_FILES["image"]["name"]);
                 $file = "img/plans/".  mysqli_insert_id($_SERVER["sql_connection"]).'.'.$ext[count($ext)-1];
                 $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext)-1]);
-                $query = 'UPDATE `vr_level` SET `image` = "/'.$file.'" WHERE `id` = "'.mysqli_insert_id($_SERVER["sql_connection"]).'"';
+                $query = 'UPDATE `nodes_vr_level` SET `image` = "/'.$file.'" WHERE `id` = "'.mysqli_insert_id($_SERVER["sql_connection"]).'"';
                 engine::mysql($query);
             }else if($_POST["action"]=="edit_project"){
                 $name = trim(htmlspecialchars($_POST["name"]));
                 $text = trim(engine::escape_string($_POST["text"]));
                 $url = trim(htmlspecialchars($_POST["url"]));
-                $query = 'UPDATE `vr_project` SET `name` = "'.$name.'", `text` = "'.$text.'", `url` = "'.$url.'" WHERE `id` = "'.$project_id.'"';
+                $query = 'UPDATE `nodes_vr_project` SET `name` = "'.$name.'", `text` = "'.$text.'", `url` = "'.$url.'" WHERE `id` = "'.$project_id.'"';
                 engine::mysql($query);
             }else if(!empty($_POST) && $_POST["action"] == "delete" && !empty($_POST["id"])){
                 $id = intval($_POST["id"]);
-                $query = 'DELETE FROM `vr_level` WHERE `id` = "'.$id.'"';
+                $query = 'DELETE FROM `nodes_vr_level` WHERE `id` = "'.$id.'"';
                 engine::mysql($query);
-                $query = 'DELETE FROM `vr_scene` WHERE `level_id` = "'.$id.'"';
+                $query = 'DELETE FROM `nodes_vr_scene` WHERE `level_id` = "'.$id.'"';
                 engine::mysql($query);
-                $query = 'DELETE FROM `vr_object` WHERE `level_id` = "'.$id.'"';
+                $query = 'DELETE FROM `nodes_vr_object` WHERE `level_id` = "'.$id.'"';
                 engine::mysql($query);
             }
-            $query = 'SELECT * FROM `vr_level` WHERE `project_id` = "'.$project["id"].'" ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
-            $requery = 'SELECT COUNT(*) FROM `vr_level` WHERE `project_id` = "'.$project["id"].'"';
+            $query = 'SELECT * FROM `nodes_vr_level` WHERE `project_id` = "'.$project["id"].'" ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
+            $requery = 'SELECT COUNT(*) FROM `nodes_vr_level` WHERE `project_id` = "'.$project["id"].'"';
             $fout .= '<div class="tal"><a href="/admin/?mode=panoramas">Panoramas</a> / <b>'.$project["name"].'</b> / </div>
                 <h1>Project details</h1>
                 <script src="'.$_SERVER["DIR"].'/script/aframe/aframe-master.js"></script>
@@ -226,7 +226,7 @@ function print_admin_panoramas($cms){
                     <a-sky id="sky_back" src="/img/vr/pano.jpg"  position="0 0 0 rotation="0 0 0" radius="100" opacity="1">
                     <a-circle position="0 -10 0" rotation="-90 0 0" color="white" radius="100" opacity="0.7"></a-circle>';
 
-                $query = 'SELECT * FROM `vr_scene` WHERE `project_id` = "'.$project_id.'"';
+                $query = 'SELECT * FROM `nodes_vr_scene` WHERE `project_id` = "'.$project_id.'"';
                 $r = engine::mysql($query);
                 while($object = mysqli_fetch_array($r)){
                     $fout .= '<a-box  id="object_'.$object["id"].'" 
@@ -260,19 +260,19 @@ function print_admin_panoramas($cms){
                 $res = engine::mysql($query);
                 $aframe = '';
                 while($data = mysqli_fetch_array($res)){
-                    $query = 'SELECT COUNT(`id`) FROM `vr_scene` WHERE `level_id` = "'.$data["id"].'"';
+                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_scene` WHERE `level_id` = "'.$data["id"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $scenes = $d[0];
-                    $query = 'SELECT COUNT(`id`) FROM `vr_object` WHERE `level_id` = "'.$data["id"].'"';
+                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_object` WHERE `level_id` = "'.$data["id"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $objects = $d[0];
-                    $query = 'SELECT COUNT(`id`) FROM `vr_navigation` WHERE `level_id` = "'.$data["id"].'"';
+                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_navigation` WHERE `level_id` = "'.$data["id"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $points = $d[0];
-                    $query = 'SELECT COUNT(`id`) FROM `vr_link` WHERE `level_id` = "'.$data["id"].'"';
+                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_link` WHERE `level_id` = "'.$data["id"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $links = $d[0];
@@ -395,7 +395,7 @@ function print_admin_panoramas($cms){
             }
         } else {
             $level_id = $_GET["level_id"];
-            $query = 'SELECT * FROM `vr_level` WHERE `id` = "'.$level_id.'"';
+            $query = 'SELECT * FROM `nodes_vr_level` WHERE `id` = "'.$level_id.'"';
             $res = engine::mysql($query);
             $level = mysqli_fetch_array($res);
             if (empty($level)) {
@@ -412,7 +412,7 @@ function print_admin_panoramas($cms){
                 $floor_position = engine::escape_string($_POST["floor_position"]);
                 $floor_radius = floatval($_POST["floor_radius"]);
                 $logo_size = floatval($_POST["logo_size"]);
-                $query = 'INSERT INTO `vr_scene`(`project_id`, `level_id`, `name`, `image`, `cubemap`, `position`, `rotation`, `lat`, `lng`, `floor_position`, `floor_radius`, `logo_size`) '
+                $query = 'INSERT INTO `nodes_vr_scene`(`project_id`, `level_id`, `name`, `image`, `cubemap`, `position`, `rotation`, `lat`, `lng`, `floor_position`, `floor_radius`, `logo_size`) '
                         . 'VALUES("'.$project_id.'", "'.$level_id.'", "'.$name.'", "", "'.str_replace('"', '\"', $cubemap).'", "'.$position.'", "'.$rotation.'", "'.$lat.'", "'.$lng.'", "'.$floor_position.'", "'.$floor_radius.'", "'.$logo_size.'")';
                 engine::mysql($query);
                 $scene_id = mysqli_insert_id($_SERVER["sql_connection"]);
@@ -446,10 +446,10 @@ function print_admin_panoramas($cms){
                     }
                 }
                 $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
-                $query = 'UPDATE `vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
+                $query = 'UPDATE `nodes_vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
                 engine::mysql($query);
                 if (!empty($_FILES)) {
-                    $query = 'SELECT MAX(`id`) FROM `vr_scene`';
+                    $query = 'SELECT MAX(`id`) FROM `nodes_vr_scene`';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $img_size = getimagesize($file);
@@ -594,13 +594,13 @@ function print_admin_panoramas($cms){
             }else if($_POST["action"] == "edit_level"){
                 $name = trim(htmlspecialchars($_POST["name"]));
                 $text = trim(engine::escape_string($_POST["text"]));
-                $query = 'UPDATE `vr_level` SET `name` = "'.$name.'", `text` = "'.$text.'"  WHERE `id` = "'.$level_id.'"';
+                $query = 'UPDATE `nodes_vr_level` SET `name` = "'.$name.'", `text` = "'.$text.'"  WHERE `id` = "'.$level_id.'"';
                 engine::mysql($query);
             }else if(!empty($_POST) && $_POST["action"] == "delete" && !empty($_POST["id"])){
                 $id = intval($_POST["id"]);
-                $query = 'DELETE FROM `vr_scene` WHERE `id` = "'.$id.'"';
+                $query = 'DELETE FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
                 engine::mysql($query);
-                $query = 'DELETE FROM `vr_object` WHERE `scene_id` = "'.$id.'"';
+                $query = 'DELETE FROM `nodes_vr_object` WHERE `scene_id` = "'.$id.'"';
                 engine::mysql($query);
             }else if($_POST["action"] == "upload_scene"){
                 $json = file_get_contents($_FILES["json"]["tmp_name"]);
@@ -641,17 +641,17 @@ function print_admin_panoramas($cms){
                 return $fout;
             }else if($_POST["action"] == "build_navigation"){
                 $scene_id = intval($_POST["id"]);
-                $query = 'SELECT * FROM `vr_scene` WHERE `id` = "'.$scene_id.'"';
+                $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$scene_id.'"';
                 $res = engine::mysql($query);
                 $data = mysqli_fetch_array($res);
-                $query = 'SELECT * FROM `vr_scene` WHERE `level_id` = "'.$data["level_id"].'" AND `id` != "'.$data["id"].'"';
+                $query = 'SELECT * FROM `nodes_vr_scene` WHERE `level_id` = "'.$data["level_id"].'" AND `id` != "'.$data["id"].'"';
                 $res = engine::mysql($query);
                 while($d = mysqli_fetch_array($res)){
                     $lat = $d["lat"]-$data["lat"];
                     $lng = $d["lng"]-$data["lng"];
                     // $position = ($lat).' 5 '.($lng);
                     $position = '0 -100 0';
-                    $query = 'INSERT INTO `vr_navigation`(`project_id`, `level_id`, `scene_id`, `target`, `position`, `scale`) '
+                    $query = 'INSERT INTO `nodes_vr_navigation`(`project_id`, `level_id`, `scene_id`, `target`, `position`, `scale`) '
                             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$d["id"].'", "'.$position.'", "1 1 1")';
                     engine::mysql($query);
                 }
@@ -685,7 +685,7 @@ function print_admin_panoramas($cms){
                     }
                      *
                      */
-                    $query = 'INSERT INTO `vr_scene`(`project_id`, `level_id`, `name`, `image`, `position`, `rotation`, `lat`, `lng`, `floor_position`, `floor_radius`, `logo_size`) '
+                    $query = 'INSERT INTO `nodes_vr_scene`(`project_id`, `level_id`, `name`, `image`, `position`, `rotation`, `lat`, `lng`, `floor_position`, `floor_radius`, `logo_size`) '
                         . 'VALUES("'.$project_id.'", "'.$level_id.'", "'.$name.'", "'.$image.'", "'.$position.'", "'.$rotation.'", "'.$lat.'", "'.$lng.'", "'.$floor_position.'", "'.$floor_radius.'", "'.$logo_size.'")';
                     engine::mysql($query);
                 }
@@ -695,7 +695,7 @@ function print_admin_panoramas($cms){
                 return $fout;
             }else if($_POST["action"] == "upload_data"){
                 if(!empty($_FILES) && !empty($_POST["name"])){
-                    $query = 'SELECT `id` FROM `vr_scene` WHERE `name` = "'.$_POST["name"].'"';
+                    $query = 'SELECT `id` FROM `nodes_vr_scene` WHERE `name` = "'.$_POST["name"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $img_size = getimagesize($file);
@@ -733,7 +733,7 @@ function print_admin_panoramas($cms){
 
                     }
                     $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
-                    $query = 'UPDATE `vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
+                    $query = 'UPDATE `nodes_vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
                     engine::mysql($query);
                     mkdir($_SERVER["DOCUMENT_ROOT"].'/img/scenes/'.  $scene_id);
                     for($k = 0; $k < count($_FILES["images"]["name"]); $k++){
@@ -874,9 +874,9 @@ function print_admin_panoramas($cms){
                     }
                 }
                 if(empty($_POST["id"])){
-                    $query = 'SELECT * FROM `vr_scene` WHERE `cubemap` = "" AND `level_id` = "'.$level_id.'" ORDER BY `id` DESC LIMIT 0, 1';
+                    $query = 'SELECT * FROM `nodes_vr_scene` WHERE `cubemap` = "" AND `level_id` = "'.$level_id.'" ORDER BY `id` DESC LIMIT 0, 1';
                 }else{
-                    $query = 'SELECT * FROM `vr_scene` WHERE `id` = "'.$_POST["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
+                    $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$_POST["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
                 }
                 $r = engine::mysql($query);
                 $flag = 0;
@@ -899,7 +899,7 @@ function print_admin_panoramas($cms){
                 if(!empty($_POST["json"])){
                     $json = json_decode($_POST["json"]);
                     foreach($json->points as $key=>$value){
-                        $query = 'UPDATE `vr_scene` SET `top` = "'.intval($value->t).'", `left` = "'.intval($value->l).'" WHERE `id` = "'.intval($value->id).'"';
+                        $query = 'UPDATE `nodes_vr_scene` SET `top` = "'.intval($value->t).'", `left` = "'.intval($value->l).'" WHERE `id` = "'.intval($value->id).'"';
                         engine::mysql($query);
                     }
                 }
@@ -908,19 +908,19 @@ function print_admin_panoramas($cms){
                     $file = "img/plans/".$id.'.'.$ext[count($ext)-1];
                     $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext)-1]);
                     if($image){
-                        $query = 'UPDATE `vr_level` SET `rotation` = "0", `scale` = "1", `image` = "/'.$file.'" WHERE `id` = "'.$id.'"';
+                        $query = 'UPDATE `nodes_vr_level` SET `rotation` = "0", `scale` = "1", `image` = "/'.$file.'" WHERE `id` = "'.$id.'"';
                         engine::mysql($query);
                     }else{
-                        $query = 'UPDATE `vr_level` SET `rotation` = "'.$rotation.'", `scale` = "'.$scale.'" WHERE `id` = "'.$id.'"';
+                        $query = 'UPDATE `nodes_vr_level` SET `rotation` = "'.$rotation.'", `scale` = "'.$scale.'" WHERE `id` = "'.$id.'"';
                         engine::mysql($query);
                     }
                 }else{
-                    $query = 'UPDATE `vr_level` SET `rotation` = "'.$rotation.'", `scale` = "'.$scale.'" WHERE `id` = "'.$id.'"';
+                    $query = 'UPDATE `nodes_vr_level` SET `rotation` = "'.$rotation.'", `scale` = "'.$scale.'" WHERE `id` = "'.$id.'"';
                     engine::mysql($query);
                 }
             }
-            $query = 'SELECT * FROM `vr_scene` WHERE `project_id` = "'.$project["id"].'" AND `level_id` = "'.$level["id"].'" ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
-            $requery = 'SELECT COUNT(*) FROM `vr_scene` WHERE `project_id` = "'.$project["id"].'" AND `level_id` = "'.$level["id"].'"';
+            $query = 'SELECT * FROM `nodes_vr_scene` WHERE `project_id` = "'.$project["id"].'" AND `level_id` = "'.$level["id"].'" ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
+            $requery = 'SELECT COUNT(*) FROM `nodes_vr_scene` WHERE `project_id` = "'.$project["id"].'" AND `level_id` = "'.$level["id"].'"';
             $fout .= '<h1>Level details</h1>';
             $table = '<div id="listing">
                 <form method="POST" id="act-form">
@@ -940,15 +940,15 @@ function print_admin_panoramas($cms){
                 </thead>';
             $res = engine::mysql($query);
             while($data = mysqli_fetch_array($res)){
-                $query = 'SELECT COUNT(`id`) FROM `vr_object` WHERE `scene_id` = "'.$data["id"].'"';
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_object` WHERE `scene_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 $objects = $d[0];
-                $query = 'SELECT COUNT(`id`) FROM `vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 $points = $d[0];
-                $query = 'SELECT COUNT(`id`) FROM `vr_link` WHERE `level_id` = "'.$data["id"].'"';
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_link` WHERE `level_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 $links = $d[0];
@@ -966,7 +966,7 @@ function print_admin_panoramas($cms){
                         }
                     \' />';
 
-                $query = 'SELECT COUNT(*) FROM `vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
+                $query = 'SELECT COUNT(*) FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 if($d[0]==0){

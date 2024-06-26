@@ -1,10 +1,10 @@
 <?php
 
 function pano_scene_editor($data){
-    $query = 'SELECT * FROM `vr_project` WHERE `id` = "'.$data["project_id"].'"';
+    $query = 'SELECT * FROM `nodes_vr_project` WHERE `id` = "'.$data["project_id"].'"';
     $res = engine::mysql($query);
     $project = mysqli_fetch_array($res);
-    $query = 'SELECT * FROM `vr_level` WHERE `id` = "'.$data["level_id"].'"';
+    $query = 'SELECT * FROM `nodes_vr_level` WHERE `id` = "'.$data["level_id"].'"';
     $res = engine::mysql($query);
     $level = mysqli_fetch_array($res);
     $fout = '

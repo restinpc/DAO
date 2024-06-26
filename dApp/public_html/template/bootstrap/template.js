@@ -6666,7 +6666,6 @@ function atvImg(){
 
 }
 
-
 /*! =========================================================
  *
  * Material Kit PRO - v1.1.1
@@ -6751,62 +6750,6 @@ var big_image;
          $rotating_card_container.addClass('hover');
      }
  });
-
-function hide_menu(){
-    $toggle = $(this);
-    $('html').removeClass('nav-open');
-    materialKit.misc.navbar_menu_visible = 0;
-    $('#bodyClick').remove();
-     setTimeout(function(){
-        jQuery("#b1").addClass("btn");
-        jQuery("#b2").addClass("btn");
-        jQuery("#b3").addClass("btn");
-        jQuery("#b1").addClass("btn-round");
-        jQuery("#b2").addClass("btn-round");
-        jQuery("#b3").addClass("btn-round");
-        $toggle.removeClass('toggled');
-     }, 550);
-    $('html').removeClass('nav-open-absolute');
-}
-
-function show_menu(){
-     $toggle = $(this);
-     if(materialKit.misc.navbar_menu_visible == 1) {
-         hide_menu();
-     } else {
-         jQuery("#b1").removeClass("btn");
-         jQuery("#b2").removeClass("btn");
-         jQuery("#b3").removeClass("btn");
-         jQuery("#b1").removeClass("btn-round");
-         jQuery("#b2").removeClass("btn-round");
-         jQuery("#b3").removeClass("btn-round");
-         setTimeout(function(){
-             $toggle.addClass('toggled');
-         }, 580);
-
-
-         div = '<div id="bodyClick"></div>';
-         $(div).appendTo("body").click(function() {
-             $('html').removeClass('nav-open');
-
-             if($('nav').hasClass('navbar-absolute')){
-                 $('html').removeClass('nav-open-absolute');
-             }
-             materialKit.misc.navbar_menu_visible = 0;
-             $('#bodyClick').remove();
-              setTimeout(function(){
-                 $toggle.removeClass('toggled');
-              }, 550);
-         });
-
-         if($('nav').hasClass('navbar-absolute')){
-             $('html').addClass('nav-open-absolute');
-         }
-
-         $('html').addClass('nav-open');
-         materialKit.misc.navbar_menu_visible = 1;
-     }
- }
 
  $(window).on('resize', function(){
      materialKit.initRotateCard();
@@ -7043,34 +6986,19 @@ function show_menu(){
          marker.setMap(map);
      }
  }
- // Returns a function, that, as long as it continues to be invoked, will not
- // be triggered. The function will be called after it stops being called for
- // N milliseconds. If `immediate` is passed, trigger the function on the
- // leading edge, instead of the trailing.
-
- function dropdown_menu(id){
-    jQuery(".dropdown").not("#menu_"+id).removeClass("open");
-    jQuery("#menu_"+id).toggleClass("open");
-}
-
-function hide_dropdown_menu(){
-    jQuery(".dropdown").removeClass("open");
-    hide_menu();
-}
-
+ 
  function debounce(func, wait, immediate) {
- 	var timeout;
- 	return function() {
- 		var context = this, args = arguments;
- 		clearTimeout(timeout);
- 		timeout = setTimeout(function() {
- 			timeout = null;
- 			if (!immediate) func.apply(context, args);
- 		}, wait);
- 		if (immediate && !timeout) func.apply(context, args);
- 	};
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+        }, wait);
+        if (immediate && !timeout) func.apply(context, args);
+    };
  };
-
 
 function isElementInViewport(elem) {
     var $elem = $(elem);
@@ -7080,6 +7008,74 @@ function isElementInViewport(elem) {
     var elemTop = Math.round( $elem.offset().top );
     var elemBottom = elemTop + $elem.height();
     return ((elemTop < viewportBottom) && (elemBottom > viewportTop));
+}
+
+//------------------------------------------------------------------------------
+
+function hide_menu(){
+    $toggle = $(this);
+    $('html').removeClass('nav-open');
+    materialKit.misc.navbar_menu_visible = 0;
+    $('#bodyClick').remove();
+     setTimeout(function(){
+        jQuery("#b1").addClass("btn");
+        jQuery("#b2").addClass("btn");
+        jQuery("#b3").addClass("btn");
+        jQuery("#b1").addClass("btn-round");
+        jQuery("#b2").addClass("btn-round");
+        jQuery("#b3").addClass("btn-round");
+        $toggle.removeClass('toggled');
+     }, 550);
+    $('html').removeClass('nav-open-absolute');
+}
+
+function show_menu(){
+     $toggle = $(this);
+     if(materialKit.misc.navbar_menu_visible == 1) {
+         hide_menu();
+     } else {
+         jQuery("#b1").removeClass("btn");
+         jQuery("#b2").removeClass("btn");
+         jQuery("#b3").removeClass("btn");
+         jQuery("#b1").removeClass("btn-round");
+         jQuery("#b2").removeClass("btn-round");
+         jQuery("#b3").removeClass("btn-round");
+         setTimeout(function(){
+             $toggle.addClass('toggled');
+         }, 580);
+
+
+         div = '<div id="bodyClick"></div>';
+         $(div).appendTo("body").click(function() {
+             $('html').removeClass('nav-open');
+
+             if($('nav').hasClass('navbar-absolute')){
+                 $('html').removeClass('nav-open-absolute');
+             }
+             materialKit.misc.navbar_menu_visible = 0;
+             $('#bodyClick').remove();
+              setTimeout(function(){
+                 $toggle.removeClass('toggled');
+              }, 550);
+         });
+
+         if($('nav').hasClass('navbar-absolute')){
+             $('html').addClass('nav-open-absolute');
+         }
+
+         $('html').addClass('nav-open');
+         materialKit.misc.navbar_menu_visible = 1;
+     }
+ }
+ 
+ function dropdown_menu(id){
+    jQuery(".dropdown").not("#menu_"+id).removeClass("open");
+    jQuery("#menu_"+id).toggleClass("open");
+}
+
+function hide_dropdown_menu(){
+    jQuery(".dropdown").removeClass("open");
+    hide_menu();
 }
 
 var lastPos = 0;
@@ -7115,7 +7111,7 @@ function navScroll() {
 function search(event){
     var result = document.getElementById("search_text").value;
     if(result!=""){
-        window.location=root_dir+"/search/"+encodeURIComponent(result);
+        window.location=document.framework.root_dir+"/search/"+encodeURIComponent(result);
     }
     if(event.preventDefault){
         event.preventDefault();
@@ -7141,13 +7137,12 @@ function show_search_form(){
     $id("search_text").focus();
 }
 
-
 (function() {
 "use strict";
-    if(window.jQuery){
-        jQuery(function() {
+    if (window.jQuery) {
+        jQuery(() => {
             navScroll();
-            if(load_events){
+            if (document.framework.load_events) {
                 jQuery(window).scroll(navScroll).resize(navScroll);
                 jQuery('.navbar-toggle').click(show_menu);
                 jQuery('#sectionsNav a').not('.dropdown_item').click(hide_dropdown_menu);

@@ -64,9 +64,9 @@ if(!empty($_POST["id"])){
     die();
 }else if(intval($_POST["scene_reset"])>0){
     $id = intval($_POST["scene_reset"]);
-    $query = 'DELETE FROM `vr_object` WHERE `scene_id` = "'.$id.'"';
+    $query = 'DELETE FROM `nodes_vr_object` WHERE `scene_id` = "'.$id.'"';
     engine::mysql($query);
-    $query = 'DELETE FROM `vr_navigation` WHERE `scene_id` = "'.$id.'"';
+    $query = 'DELETE FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$id.'"';
     engine::mysql($query);
 }else if(!empty($_SESSION["user"]["id"])){
     if(!empty($_POST["check_message"])){

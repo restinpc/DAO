@@ -6,7 +6,7 @@ class site { public $content; }
 $_SESSION["redirect"] = $_SERVER["SCRIPT_URI"];
 if(!empty($_GET["id"])){
     $id = intval($_GET["id"]);
-    $query = 'SELECT * FROM `vr_scene` WHERE `id` = "'.$id.'"';
+    $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if(empty($data)) engine::error();
@@ -22,7 +22,7 @@ if(!empty($_GET["id"])){
         $floor_position = engine::escape_string($_POST["floor_position"]);
         $floor_radius = floatval($_POST["floor_radius"]);
         $logo_size = floatval($_POST["logo_size"]);
-        $query = 'UPDATE `vr_scene` SET '
+        $query = 'UPDATE `nodes_vr_scene` SET '
             . '`name` = "'.$name.'", '
             . '`position` = "'.$position.'", '
             . '`rotation` = "'.$rotation.'", '
@@ -35,12 +35,12 @@ if(!empty($_GET["id"])){
             . '`logo_size` = "'.$logo_size.'" '
             . 'WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-        $query = 'SELECT * FROM `vr_scene` WHERE `id` = "'.$id.'"';
+        $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
     }else if(!empty($_POST["default"]) && $_SESSION["user"]["id"] == 1){
         $id = intval($_POST["default"]);
-        $query = 'UPDATE `vr_scene` SET '
+        $query = 'UPDATE `nodes_vr_scene` SET '
             . '`position` = "0 3 0", '
             . '`rotation` = "0 0 0", '
             . '`degmet` = "1", '
@@ -49,7 +49,7 @@ if(!empty($_GET["id"])){
             . '`logo_size` = "3" '
             . 'WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-        $query = 'SELECT * FROM `vr_scene` WHERE `id` = "'.$id.'"';
+        $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
     }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "edit_object"){
@@ -65,7 +65,7 @@ if(!empty($_GET["id"])){
         $width = $image[0];
         $height = $image[1];
         $base64 = base64_encode($img);
-        $query = 'UPDATE `vr_object` SET'
+        $query = 'UPDATE `nodes_vr_object` SET'
             . '`text` = "'.$text.'", '
             . '`color` = "'.$color.'", '
             . '`position` = "'.$position.'", '
@@ -78,7 +78,7 @@ if(!empty($_GET["id"])){
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_object"){
         $id = intval($_POST["id"]);
-        $query = 'DELETE FROM `vr_object` WHERE `id` = "'.$id.'"';
+        $query = 'DELETE FROM `nodes_vr_object` WHERE `id` = "'.$id.'"';
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && $_POST["action"] == "new_object"){
         $text = $_POST["text"];
@@ -92,14 +92,14 @@ if(!empty($_GET["id"])){
         $width = $image[0];
         $height = $image[1];
         $base64 = base64_encode($img);
-        $query = 'INSERT INTO `vr_object`(`project_id`, `level_id`, `scene_id`, `text`, `width`, `height`, `color`, `base64`, `position`, `rotation`, `scale`) '
+        $query = 'INSERT INTO `nodes_vr_object`(`project_id`, `level_id`, `scene_id`, `text`, `width`, `height`, `color`, `base64`, `position`, `rotation`, `scale`) '
             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$text.'", "'.$width.'", "'.$height.'", "'.$color.'", "'.$base64.'", "'.$position.'", "'.$rotation.'", "'.$scale.'")';
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && $_POST["action"] == "new_point"){
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
         $target = intval($_POST["target"]);
-        $query = 'INSERT INTO `vr_navigation`(`project_id`, `level_id`, `scene_id`, `target`, `position`, `scale`) '
+        $query = 'INSERT INTO `nodes_vr_navigation`(`project_id`, `level_id`, `scene_id`, `target`, `position`, `scale`) '
             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$target.'", "'.$position.'", "'.$scale.'")';
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && $_POST["action"] == "edit_point" && !empty($_POST["id"])){
@@ -107,7 +107,7 @@ if(!empty($_GET["id"])){
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
         $target = intval($_POST["target"]);
-        $query = 'UPDATE `vr_navigation` SET '
+        $query = 'UPDATE `nodes_vr_navigation` SET '
             . '`position` = "'.$position.'", '
             . '`scale` = "'.$scale.'", '
             . '`target` = "'.$target.'" '
@@ -115,13 +115,13 @@ if(!empty($_GET["id"])){
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_point"){
         $id = intval($_POST["id"]);
-        $query = 'DELETE FROM `vr_navigation` WHERE `id` = "'.$id.'"';
+        $query = 'DELETE FROM `nodes_vr_navigation` WHERE `id` = "'.$id.'"';
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && $_POST["action"] == "new_url"){
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
         $url = engine::escape_string($_POST["url"]);
-        $query = 'INSERT INTO `vr_link`(`project_id`, `level_id`, `scene_id`, `url`, `position`, `scale`) '
+        $query = 'INSERT INTO `nodes_vr_link`(`project_id`, `level_id`, `scene_id`, `url`, `position`, `scale`) '
             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$url.'", "'.$position.'", "'.$scale.'")';
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && $_POST["action"] == "edit_url" && !empty($_POST["id"])){
@@ -129,7 +129,7 @@ if(!empty($_GET["id"])){
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
         $url = engine::escape_string($_POST["url"]);
-        $query = 'UPDATE `vr_link` SET '
+        $query = 'UPDATE `nodes_vr_link` SET '
             . '`position` = "'.$position.'", '
             . '`scale` = "'.$scale.'", '
             . '`url` = "'.$url.'" '
@@ -137,7 +137,7 @@ if(!empty($_GET["id"])){
         engine::mysql($query);
     }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_url"){
         $id = intval($_POST["id"]);
-        $query = 'DELETE FROM `vr_link` WHERE `id` = "'.$id.'"';
+        $query = 'DELETE FROM `nodes_vr_link` WHERE `id` = "'.$id.'"';
         engine::mysql($query);
     }
     $onload = '';
@@ -148,7 +148,7 @@ if(!empty($_GET["id"])){
             <img id="hotspot" src="'.$_SERVER["PUBLIC_URL"].'/img/hotpoint.png" crossorigin="anonymous" />
             <img id="google" src="'.$_SERVER["PUBLIC_URL"].'/img/gsv.png" crossorigin="anonymous" />
             <img id="pixel" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />';
-    $query = 'SELECT * FROM `vr_scene` WHERE `id` = "'.$data["id"].'"';
+    $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$data["id"].'"';
     $r = engine::mysql($query);
 
     while($dd = mysqli_fetch_array($r)){
@@ -367,7 +367,7 @@ if(!empty($_GET["id"])){
     $objects = '';
     $navigation = '';
     $gsv = '';
-    $query = 'SELECT * FROM `vr_object` WHERE `scene_id` = "'.$data["id"].'"';
+    $query = 'SELECT * FROM `nodes_vr_object` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
     while($d = mysqli_fetch_array($res)){
         $objects .= engine::pano_print_object($this, $d);
@@ -382,7 +382,7 @@ if(!empty($_GET["id"])){
     $new_obj["text"] = "";
     $objects .= engine::pano_print_object($this, $new_obj, 1);
     //---------------
-    $query = 'SELECT * FROM `vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
+    $query = 'SELECT * FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
     while($d = mysqli_fetch_array($res)){
         $site = new site();
@@ -396,7 +396,7 @@ if(!empty($_GET["id"])){
     $new_nav["scale"] = "10 10 10";
     $navigation .= engine::pano_navigation($this, $new_nav, 1);
     //---------------
-    $query = 'SELECT * FROM `vr_link` WHERE `scene_id` = "'.$data["id"].'"';
+    $query = 'SELECT * FROM `nodes_vr_link` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
     while($d = mysqli_fetch_array($res)){
         $gsv .= engine::pano_link($this, $d);
@@ -414,7 +414,7 @@ if(!empty($_GET["id"])){
         <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
         <a-circle id="move_point" action=\'navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
         <a-image id="cursor_img" transparent="true" position="0 0 0"  look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
-        <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo" src=""></a-image>
+        <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
     </a-scene>
     <audio id="vr-sound" preload autoplay><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
         ';
@@ -438,6 +438,12 @@ echo '<!DOCTYPE html>
 <script src="'.$_SERVER["DIR"].'/script/aframe/aframe-master.js"></script>
 <script src="'.$_SERVER["DIR"].'/script/aframe/panorama.js"></script>
 <script>
+    if (!document.framework) {
+        document.framework = {};
+    }
+    document.framework.loading_site = () => {};
+    document.framework.root_dir = "'.$_SERVER["DIR"].'";
+    // todo remove legacy 4 july
     const loading_site = () => {};
     const root_dir = "'.$_SERVER["DIR"].'";
 </script>

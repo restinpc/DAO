@@ -87,11 +87,11 @@ function __construct(){
     if (!isset($_POST["jQuery"])) {
         unset($_SESSION["redirect"]);
     }
-    if (!empty($_SESSION["user"]["id"])&&
-        empty($_SESSION["user"]["email"])&&
-            ($_GET[0]!="account"||
-            $_GET[1]!="settings")) {
-            $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
+    if (!empty($_SESSION["user"]["id"])
+        && empty($_SESSION["user"]["email"]) 
+        && ($_GET[0]!="account" || $_GET[1]!="settings")
+    ) {
+        $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
     } else {
         if ($_GET[0]=="admin") {
             $_SERVER["CORE_PATH"] = $_GET[0];
@@ -204,43 +204,63 @@ function __construct(){
 <meta name="apple-mobile-web-app-title" content="'.$this->configs["name"].'" />
 <meta name="application-name" content="'.$this->configs["name"].'" />
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />
-<style>.material-icons{ visibility:hidden; }</style>';
-require_once("template/meta.php");
+<meta name="copyright" content="Copyright '.$_SERVER["HTTP_HOST"].', '.date("Y").'" />
+<link rel="apple-touch-icon" sizes="180x180" href="'.$_SERVER["DIR"].'/apple-touch-icon.png" />
+<link rel="manifest" href="'.$_SERVER["DIR"].'/favicon/manifest.json" />
+<link rel="mask-icon" href="'.$_SERVER["DIR"].'/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+<link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
+<meta name="msapplication-config" content="'.$_SERVER["DIR"].'/favicon/browserconfig.xml" />
+<meta name="theme-color" content="#ffffff" />
+<style>.material-icons{ visibility:hidden; }</style>
+';
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
-    let loading_stages = 6;'
-    . 'let loading_state = 0; '
-    . 'let preloaded = 0;'
-    . 'function display(){ '
-        . 'if(!window.jQuery){ setTimeout(() => { '
-            . 'document.body.style.opacity = "1";'
-            . 'document.body.style.display = "contents";'
-        . '}, 1000); '
-        . '}else{ '
-            . 'jQuery("html, body").animate({opacity: 1}, 1000); '
-            . 'document.body.style.display = "contents";'
-        .'}'
-    . '}'
-    . 'var tm = setTimeout(display, 5000); '
-    . 'function preload(){ if(!preloaded){ '.$this->onload.'; preloaded = 1; }  return 0;  } '
-    . 'window.onload = loading_site; '
-    . 'function loading_site(){ '
-        . 'loading_state++; '
-        . 'if (loading_state!=loading_stages){ return; } '
-        . 'try{'
-            . 'material_icons();'
-            . 'preload();'
-            . 'loading_state=5; '
-            . 'setTimeout(() => (display()), 1000);'
-        . '}catch(e){};'
-        . 'clearTimeout(tm);
-        '
-    . '};'
-    . '</script>';
+    if (!document.framework) {
+        document.framework = {};
+    }
+    document.framework.loading_stages = 6;
+    document.framework.loading_state = 0;
+    document.framework.preloaded = 0;
+    document.framework.display = () => {
+        if (!window.jQuery) { 
+            setTimeout(() => {
+                document.body.style.opacity = "1";
+                document.body.style.display = "contents";
+            }, 1000);
+        } else {
+            jQuery("html, body").animate({ opacity: 1 }, 1000);
+            document.body.style.display = "contents";
+        }
+    }
+    document.framework.timeout = setTimeout(document.framework.display, 5000);
+    document.framework.preload = () => {
+        if (!document.framework.preloaded) {
+            '.$this->onload.';
+            document.framework.preloaded = 1;
+        }
+        return 0;
+    }
+    document.framework.loading_site = () => {
+        document.framework.loading_state++;
+        if (document.framework.loading_state != document.framework.loading_stages){
+            return;
+        }
+        try {
+            material_icons();
+            document.framework.preload();
+            document.framework.loading_state=5;
+            setTimeout(document.framework.display, 1000);
+        } catch(e){};
+        clearTimeout(document.framework.timeout);
+    }
+    window.onload = document.framework.loading_site;
+    // todo remove legacy 4 july
+    const loading_site = document.framework.loading_site();
+</script>';
 }
 $fout .= '
 <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
-<link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'loading_site();\' />
+<link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'document.framework.loading_site();\' />
 <style>
 @font-face {
     font-family: "Material Icons";
@@ -251,23 +271,31 @@ $fout .= '
 </style>
 </head>
 <body style="opacity: 0; display: contents !important;" class="nodes">
-<img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" onLoad=\'loading_site();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+<img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" onLoad=\'document.framework.loading_site();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
     } else {
         $fout = '<title>'.$this->title.'</title>
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
     }
     $fout .= $this->content.'
 <script type="text/javascript">
-    var root_dir = "'.$_SERVER["DIR"].'";';
+    if (!document.framework) {
+        document.framework = {};
+    }
+    // todo remove legacy 4 july
+    document.framework.root_dir = "'.$_SERVER["DIR"].'";
+    let root_dir = "'.$_SERVER["DIR"].'";';
 if (!isset($_POST["jQuery"])) {
-    $fout .= '  var load_events = true;';
+    $fout .= '
+        document.framework.load_events = true;
+        // todo remove legacy 4 july
+        let load_events = true;';
 }
     $fout .= '
 </script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" onLoad=\'loading_site();\'></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" onLoad=\'loading_site();\'></script>
-<script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'loading_site();\'></script>
-<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'loading_site();\' />';
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
+<script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
+<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loading_site();\' />';
     if (!empty($_SESSION["user"]["id"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
         $res = engine::mysql($query);
@@ -277,34 +305,39 @@ if (!isset($_POST["jQuery"])) {
             die('<script type="text/javascript">
                 window.alert("'.engine::lang("Your account was banned").'");
                 parent.window.location = "'.$_SERVER["DIR"].'/";
-                </script>');
+            </script>');
         } else {
             $fout .= engine::print_new_message($this);
         }
     }
     if (!empty($_POST["jQuery"])) {
-        $fout .= '<script>loading_site();</script>';
+        $fout .= '<script>document.framework.loading_site();</script>';
     }
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if ($data["value"] == "1") {
         $fout .= '<script type="text/javascript">
-                if (window.jQuery) {
-                    jQuery.ajax({
-                        url: "'.$_SERVER["DIR"].'/cron.php",
-                        async: true,
-                        type: "GET"
-                    });
-                }
-            </script>';
+            if (window.jQuery) {
+                jQuery.ajax({
+                    url: "'.$_SERVER["DIR"].'/cron.php",
+                    async: true,
+                    type: "GET"
+                });
+            }
+        </script>';
     }
     if (!isset($_POST["jQuery"])) {
         $fout .= '
 </body>
 </html>';
     } else {
-        $fout .= '<script type="text/javascript">load_events = false; '.$this->onload.'</script>';
+        $fout .= '<script type="text/javascript">
+            document.framework.load_events = false;
+            // todo remove legacy 4 july
+            load_events = false;
+            '.$this->onload.'
+        </script>';
     }
     if ($this->configs["debug"]) {
         $fout .= '<script type="text/javascript">';

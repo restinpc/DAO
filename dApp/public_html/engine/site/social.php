@@ -32,7 +32,7 @@ if (!empty($_GET[2])) {
         $this->keywords = Array("Общество", "Telegram", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Telegram group"));
-    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/telegram.php" onLoad="loading_site();" width="100%" class="app"></iframe>';
+    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/telegram.php" onLoad="document.framework.loading_site();" width="100%" class="app"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "constitution") {
     $this->title = engine::lang("Digital constitution");
     if ($_SESSION["Lang"] == "en") {
@@ -106,7 +106,7 @@ if (!empty($_GET[2])) {
         $this->keywords = Array("Общество", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Social graph"));
-    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/graph/index.html" onLoad="loading_site();" width="100%" class="app"></iframe>';
+    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/graph/index.html" onLoad="document.framework.loading_site();" width="100%" class="app"></iframe>';
 } else {
     $this->content = engine::error();
     return;

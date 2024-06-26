@@ -37,7 +37,7 @@ function pano_navigation($site, $object, $new=0){
                     <br/>   
                 Target:<br/>
                 <select required id="point_'.$object["id"].'_target" name="target"  class="input w100p lh2">';
-        $query = 'SELECT * FROM `vr_scene` WHERE `level_id` = "'.$object["level_id"].'" AND `id` <> "'.$object["scene_id"].'"';
+        $query = 'SELECT * FROM `nodes_vr_scene` WHERE `level_id` = "'.$object["level_id"].'" AND `id` <> "'.$object["scene_id"].'"';
         $res = engine::mysql($query);
         while($data = mysqli_fetch_array($res)){
             if($object["target"] == $data["id"]){

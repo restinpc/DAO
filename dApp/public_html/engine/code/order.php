@@ -209,7 +209,11 @@ if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
 }
 $fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
 <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript">var root_dir = "'.$_SERVER["DIR"].'";</script>
+<script type="text/javascript">
+    document.framework.root_dir = "'.$_SERVER["DIR"].'";
+    // todo remove legacy 4 july
+    const root_dir = "'.$_SERVER["DIR"].'";
+</script>
 <script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
 <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
 <script src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript"></script>

@@ -196,7 +196,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
         $this->description = 'Приложение для орбитального просмотра 3D Mansion, вдохновленное Autodesk Forge Viewer';
     }
     $this->content .= engine::print_webvr_navigation(engine::lang("Orbital preview"));
-    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/orbital/" onLoad="loading_site();" class="app" width="100%"></iframe>';
+    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/orbital/" onLoad="document.framework.loading_site();" class="app" width="100%"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "panorama") {
     $this->title = engine::lang("Panorama viewer");
     $this->keywords = Array("WebVR", engine::lang("Panorama"), "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");

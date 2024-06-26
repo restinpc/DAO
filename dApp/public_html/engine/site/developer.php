@@ -41,4 +41,4 @@ if ($_SESSION["Lang"] == "en") {
     $this->description = "Создано опытным разработчиком с высоким уровнем квалификации";
 }
 $this->content .= engine::print_site_navigation(engine::lang("Developed by"));
-$this->content .= '<iframe src="https://cv.nodes-tech.ru/'.$_SESSION["Lang"].'.html" onLoad="loading_site();" width="100%" class="app"></iframe>';
+$this->content .= '<iframe src="https://cv.nodes-tech.ru/'.$_SESSION["Lang"].'.html" onLoad="document.framework.loading_site();" width="100%" class="app"></iframe>';

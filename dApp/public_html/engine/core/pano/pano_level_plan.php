@@ -1,7 +1,7 @@
 <?php
 
 function pano_level_plan($level_id){
-    $query = 'SELECT * FROM `vr_level` WHERE `id` = "'.$level_id.'"';
+    $query = 'SELECT * FROM `nodes_vr_level` WHERE `id` = "'.$level_id.'"';
     $res = engine::mysql($query);
     $level = mysqli_fetch_array($res);
     $fout = '<div style="height:100px;" class="center">Drag-n-drop points to locate scenes on level.<br/>
@@ -12,7 +12,7 @@ function pano_level_plan($level_id){
         -ms-transform     : rotate('.$level["rotation"].'deg) scale('.$level["scale"].'); 
         transform         : rotate('.$level["rotation"].'deg) scale('.$level["scale"].');
     " />';
-    $query = 'SELECT * FROM `vr_scene` WHERE `level_id` = "'.$level_id.'"';
+    $query = 'SELECT * FROM `nodes_vr_scene` WHERE `level_id` = "'.$level_id.'"';
     $res = engine::mysql($query);
     $scenes = array();
     $left = null;

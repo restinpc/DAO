@@ -101,7 +101,6 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
     $this->content = '<script>
     if (!document.framework) {
         document.framework = {};
-        document.framework.register = {};
     }
     if (!document.framework.register) {
         document.framework.register = {};
