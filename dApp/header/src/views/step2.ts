@@ -1,7 +1,7 @@
 /**
  * TypeScript Application - Secondary view factory function.
  *
- * 1.0.1 # Aleksandr Vorkunov <devbyzero@yandex.ru>
+ * 1.0.3 # Aleksandr Vorkunov <devbyzero@yandex.ru>
  */
 
 import DOMElement from "../components/element";
@@ -61,7 +61,7 @@ const Step2View = (app:App, parent:DOMElement):DOMElement => {
                         </a>
                     </li>
                     <li>
-                        <a target="_parent" id="b2" onclick="hide_menu(); logout();" class="btn btn-round">
+                        <a target="_parent" id="b2" onclick="hide_menu(); document.framework.logout();" class="btn btn-round">
                             <noindex class="material-icons">directions_run</noindex> ${logout[app.lang]}
                         </a>
                     </li>

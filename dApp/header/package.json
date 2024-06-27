@@ -1,6 +1,6 @@
 {
   "name": "header-application",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "devDependencies": {
     "@types/node": "^17.0.45",
     "@types/webpack-dev-server": "^4.7.2",

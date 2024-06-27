@@ -63,8 +63,12 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
             $this->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Email").' '.engine::lang("already exist").'."); ';
             unset($_POST["email"]);
         } else if(strpos($email, "@")) {
-            $query = 'INSERT INTO `nodes_user` (`name`, `photo`, `url`, `email`, `pass`, `lang`, `online`, `confirm`, `code`) '
-                    . 'VALUES ("'.$name.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$password.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
+            $query = 'SELECT COUNT(*) as count FROM nodes_user';
+            $res = engine::mysql($query);
+            $data = mysqli_fetch_array($res);
+            $admin = intval($data["count"]) == 0 ? 1 : 0;
+            $query = 'INSERT INTO `nodes_user` (`name`, `admin`, `photo`, `url`, `email`, `pass`, `lang`, `online`, `confirm`, `code`) '
+                    . 'VALUES ("'.$name.'", "'.$admin.'", "anon.jpg", "'.$telegram.'", "'.$email.'", "'.$password.'", "'.$_SESSION["Lang"].'", "'.date("U").'", "'.$confirm.'", "'.$code.'")';
             engine::mysql($query);
             $query = 'SELECT * FROM `nodes_user` WHERE `email` LIKE "'.$email.'"';
             $res = engine::mysql($query);

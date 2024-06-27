@@ -1,3 +1,3 @@
 # DAO
 
-https://nodes-tech.ru
+https://dao-mansion.ru
