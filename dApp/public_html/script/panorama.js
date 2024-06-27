@@ -36,6 +36,7 @@ document.panorama.mouseControlState = 0;
 document.panorama.mouseListnerFlag = 0;
 document.panorama.sceneState = 0;
 document.panorama.levelId = 0;
+var INTERSECTED;
 
 document.panorama.pcMode = () => {
     document.panorama.sceneState = 1;
