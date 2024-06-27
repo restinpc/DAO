@@ -11,7 +11,7 @@ function pano_navigation($site, $object, $new=0){
                         document.panorama.objectId = "'.$object["id"].'";
                     }
                 }else{
-                    '.($object["target"]?'load_scene("'.$object["target"].'", "point_'.$object["id"].'")':'').'
+                    '.($object["target"]?'document.panorama.loadScene("'.$object["target"].'", "point_'.$object["id"].'")':'').'
                 }
             }, 500, "'.$object["id"].'"); 
                 \' '
