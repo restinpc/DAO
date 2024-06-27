@@ -467,8 +467,8 @@ echo '<!DOCTYPE html>
 </head>
 <body class="nodes">
     '.$fout.'
-    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
+    <script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
+    <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
     <script src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript"></script>
     <script>window.addEventListener("load", () => {
         const scene = $id("nodes_scene");
