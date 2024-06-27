@@ -1,25 +1,10 @@
 /**
-* Nodes Framework JavaScript library source file.
+* JavaScript library.
 *
 * @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
-
-let ua = navigator.userAgent.toLowerCase();         // Navigator
-let isOpera = (ua.indexOf('opera')  > -1);          // is Opera browser
-let isIE = (!isOpera && ua.indexOf('msie') > -1);   // is IE browser
-let keys = {37: 1, 38: 1, 39: 1, 40: 1};            // Keyboard "arrows"
-let window_state = 0;                               // is page loading
-let image_rotator;                                  // Image rotator
-let error;                                          // Gateway Timeout HTML data
-let pattern = new Array();                          // Array of patterns to swap
-let pattern_catch = 0;                              // Pattern flag
-let pattern_size = 0;                               // Count of patterns
-let seconds;                                        // Timer of session
-let session_start = false;                          // Flag of submitting pattern
-window.stateChangeIsLocal = true;
-History.enabled = true;
 
 /**
 * Gets an DOM element using id.
@@ -32,46 +17,54 @@ function $id(id) {
     return document.getElementById(id);
 }
 
-/**
-* Gets height of hidden top part of page after scrolling in px.
-*/
-function getBodyScrollTop(){
-    return self.pageYOffset || (document.documentElement && document.documentElement.scrollTop)
-        || (document.body && document.body.scrollTop);
+if (!document.framework) {
+    document.framework = {};
 }
+if (!document.panorama) {
+    document.panorama = {
+        screen_state: 0
+    };
+}
+document.framework.ua = navigator.userAgent.toLowerCase();
+document.framework.isOpera = (document.framework.ua.indexOf('opera') > -1);
+document.framework.isIE = (document.framework.ua.indexOf('msie') > -1);
+document.framework.arrowKeys = {37: 1, 38: 1, 39: 1, 40: 1}; 
+document.framework.window_state = 0;
 
 /**
 * Gets a document height in px.
 */
-function getDocumentHeight(){
-    return Math.max(document.compatMode!='CSS1Compat'?document.body.scrollHeight:
-        document.documentElement.scrollHeight,getViewportHeight());
+document.framework.getDocumentHeight = () => {
+    return Math.max(document.compatMode != 'CSS1Compat' ? document.body.scrollHeight:
+        document.documentElement.scrollHeight,document.framework.getViewportHeight());
 }
 
 /**
 * Gets a document width in px.
 */
-function getDocumentWidth(){
-    return Math.max(document.compatMode!='CSS1Compat'?document.body.scrollWidth:
-        document.documentElement.scrollWidth,getViewportWidth());
+document.framework.getDocumentWidth = () => {
+    return Math.max(document.compatMode != 'CSS1Compat' ? document.body.scrollWidth:
+        document.documentElement.scrollWidth,document.framework.getViewportWidth());
 }
 
 /**
 * Gets a viewport height in px.
 */
-function getViewportHeight(){
-    return ((document.compatMode||isIE)&&!isOpera)?(document.compatMode=='CSS1Compat')?
-        document.documentElement.clientHeight:document.body.clientHeight:
-        (document.parentWindow||document.defaultView).innerHeight;
+document.framework.getViewportHeight = () => {
+    return ((document.compatMode || document.framework.isIE) && !document.framework.isOpera)
+        ? (document.compatMode == 'CSS1Compat')
+            ? document.documentElement.clientHeight : document.body.clientHeight
+        : (document.parentWindow || document.defaultView).innerHeight;
 }
 
 /**
 * Gets a viewport width in px.
 */
-function getViewportWidth(){
-    return ((document.compatMode||isIE)&&!isOpera)?(document.compatMode=='CSS1Compat')?
-        document.documentElement.clientWidth:document.body.clientWidth:
-        (document.parentWindow||document.defaultView).innerWidth;
+document.framework.getViewportWidth = () => {
+    return ((document.compatMode || document.framework.isIE) && !document.framework.isOpera)
+        ? (document.compatMode == 'CSS1Compat')
+            ? document.documentElement.clientWidth : document.body.clientWidth
+        : (document.parentWindow || document.defaultView).innerWidth;
 }
 
 /**
@@ -81,9 +74,9 @@ function getViewportWidth(){
 * @param {string} event A String that specifies the name of the event.
 * @param {function} handler Callback function.
 * @param {bool} useCapture Flag to execute in the capturing or in the bubbling phase.
-* @usage <code> addHandler(window, "resize", resize_footer); </code>
+* @usage <code> document.framework.addHandler(window, "resize", resize_footer); </code>
 */
-function addHandler(object, event, handler, useCapture) {
+document.framework.addHandler = (object, event, handler, useCapture) => {
      if (object.addEventListener) {
          object.addEventListener(event, handler, useCapture ? useCapture : false);
      } else if (object.attachEvent) {
@@ -91,97 +84,85 @@ function addHandler(object, event, handler, useCapture) {
      } else alert("Add handler is not supported");
 }
 
-/*
-* Check is element exist in array.
-*
-* @param {mixed} needle
-* @param {array} haystack
-* @param {bool} strict
-* @usage <code> in_array('1', ['1','2','3'], false); </code>
-*/
-function in_array(needle, haystack, strict) {
-    let found = false, key, isStrict = !!strict;
-    for (key in haystack) {
-        if ((isStrict && haystack[key] === needle) || (!isStrict && haystack[key] == needle)) {
-            found = true;
-            break;
-        }
-    } return found;
-}
-
-function insertAfter( node, referenceNode ) {
-    if ( !node || !referenceNode ) return;
+document.framework.insertAfter = (node, referenceNode) => {
+    if (!node || !referenceNode) {
+        return;
+    }
     let parent = referenceNode.parentNode, nextSibling = referenceNode.nextSibling;
-    if ( nextSibling && parent ) {
+    if (nextSibling && parent) {
         parent.insertBefore(node, referenceNode.nextSibling);
-    } else if ( parent ) {
-        parent.appendChild( node );
+    } else if (parent) {
+        parent.appendChild(node);
     }
 }
 
 /**
 * Positions any popup windows.
 */
-function js_pos_wnd(){
+document.framework.positionWindow = () => {
     try{
-        let wnd_height = document.getElementById("nodes_login").clientHeight;
-        let top = ((getViewportHeight()-wnd_height)/3);
-        if(top<0) top = 0;
-        document.getElementById("nodes_login").style.top = top+"px";
-    }catch(e){}
-    try{
-        let wnd_height = document.getElementById("nodes_popup").clientHeight;
-        let wnd_width = document.getElementById("nodes_popup").clientWidth;
-        if(getViewportWidth()>600){
-            document.getElementById("nodes_popup").style.marginLeft = "-"+(wnd_width/2)+"px";
-        }else{
-            document.getElementById("nodes_popup").style.marginLeft = "0px";
+        let wnd_height = $id("nodes_login").clientHeight;
+        let top = ((document.framework.getViewportHeight() - wnd_height) / 3);
+        if (top < 0) {
+            top = 0;
         }
-        let top = ((getViewportHeight()-wnd_height)/3);
-        if(top<90) top = 90;
-        document.getElementById("nodes_popup").style.top = top+"px";
-    }catch(e){}
+        $id("nodes_login").style.top = top + "px";
+    } catch(e){}
+    try {
+        let wnd_height = $id("nodes_popup").clientHeight;
+        let wnd_width = $id("nodes_popup").clientWidth;
+        if (document.framework.getViewportWidth() > 600) {
+            $id("nodes_popup").style.marginLeft = "-" + (wnd_width / 2) + "px";
+        } else {
+            $id("nodes_popup").style.marginLeft = "0px";
+        }
+        let top = ((document.framework.getViewportHeight()-wnd_height)/3);
+        if (top < 90) {
+            top = 90;
+        }
+        $id("nodes_popup").style.top = top+"px";
+    } catch(e){}
 }
 
 /**
 * Hides any popup windows.
 */
-function js_hide_wnd(){
-    enableScroll();
+document.framework.hideWindow = () => {
+    document.framework.enableScroll();
     document.body.style.overflow = "auto";
     try{
-        document.body.removeChild(document.getElementById("nodes_window"));
+        document.body.removeChild($id("nodes_window"));
     }catch(e){}
     try{
-        document.body.removeChild(document.getElementById("nodes_popup"));
+        document.body.removeChild($id("nodes_popup"));
     }catch(e){}
     try{
-        document.body.removeChild(document.getElementById("nodes_login"));
+        document.body.removeChild($id("nodes_login"));
     }catch(e){}
-    removeSiteFade();
+    document.framework.removeSiteFade();
 }
 
 /**
 * Displays a fullscreen window with specified content.
 */
-function show_window(content){
-    if(content&&content!="undefined"){
+document.framework.showWindow = (content) => {
+    if (content && content != "undefined") {
         window.scrollTo(0,0);
-        disableScroll();
+        document.framework.disableScroll();
         document.body.style.overflow = "hidden";
         let a = document.createElement("div");
         a.id = "nodes_window";
-        a.innerHTML='<div class="close_button close_wnd" onClick=\'js_hide_wnd();\'>&nbsp;</div>'+content;
+        a.innerHTML = '<div class="close_button close_wnd" onClick=\'document.framework.hideWindow();\'>&nbsp;</div>'+content;
         document.body.appendChild(a);
-        addSiteFade();
-    }else{
-        js_hide_wnd();
+        document.framework.addSiteFade();
+    } else {
+        document.framework.hideWindow();
     }
 }
 
-function chane_height() {
-    const val = document.getElementById('height').value;
-    let cam = window.frames[0].document.getElementById('camera');
+document.framework.changeHeight = () => {
+    const val = $id('height').value;
+    let cam = window.frames[0].$id('camera');
     let pos = cam.getAttribute('position');
     cam.setAttribute('position', pos.x + ' ' + (parseFloat(val)) + ' ' + pos.z);
 }
@@ -189,32 +170,31 @@ function chane_height() {
 /**
 * Displays a popup window with specified content.
 */
-function show_popup_window(content, showCloseBtn = true){
-    if(content&&content!="undefined"){
-        //window.scrollTo(0,0);
-        disableScroll();
+document.framework.showPopup = (content, showCloseBtn = true) => {
+    if (content && content != "undefined") {
+        document.framework.disableScroll();
         document.body.style.overflow = "hidden";
         let a = document.createElement("div");
         a.id = "nodes_popup";
         if (showCloseBtn) {
-            a.innerHTML = '<div class="close_button close_wnd" onClick=\'js_hide_wnd();\'>&nbsp;</div>';
+            a.innerHTML = '<div class="close_button close_wnd" onClick=\'document.framework.hideWindow();\'>&nbsp;</div>';
         }
         a.innerHTML += content;
         document.body.appendChild(a);
-        addSiteFade();
-        js_pos_wnd();
-        addHandler(window, "resize", js_pos_wnd);
-    }else{
-        js_hide_wnd();
+        document.framework.addSiteFade();
+        document.framework.positionWindow();
+        document.framework.addHandler(window, "resize", document.framework.positionWindow);
+    } else {
+        document.framework.hideWindow();
     }
 }
 
 /**
 * Displays file source code viewer.
 */
-function show_editor(file){
-    show_window('<div class="fl m5"><b>'+file+'</b></div><div class="clear"><br/></div><img src="'+document.framework.root_dir+'/img/load.gif" id="loader" class="mt18p">'+
-        '<iframe width=100% height=95% frameborder=0 src="'+document.framework.root_dir+'/edit.php?file='+file+'" onLoad=\'document.getElementById("loader").style.display="none";\' />');
+document.framework.showEditor = (file) => {
+    document.framework.showWindow('<div class="fl m5"><b>'+file+'</b></div><div class="clear"><br/></div><img src="'+document.framework.root_dir+'/img/load.gif" id="loader" class="mt18p">'+
+        '<iframe width=100% height=95% frameborder=0 src="'+document.framework.root_dir+'/edit.php?file='+file+'" onLoad=\'$id("loader").style.display="none";\' />');
 }
 
 /**
@@ -224,15 +204,15 @@ function show_editor(file){
 * @param {string} submit Button text.
 * @param {int} reply @mysql[nodes_comment]->id.
 */
-function add_comment(caption, submit, reply){
-    show_popup_window('<form method="POST">'+'\n'+
-            '<div id="new_comment">'+'\n'+
-            '<input type="hidden" name="reply" value="'+reply+'" />'+'\n'+
-                '<strong>'+caption+'</strong><br/><br/>'+'\n'+
-                '<textarea id="comment_textarea" name="comment" cols=50 class="comment_textarea"></textarea><br/><br/>'+'\n'+
-                '<center><input id="submit-comment" type="submit" class="btn w280" value="'+submit+'" /></center><br/>'+'\n'+
-            '</div>'+'\n'+
-        '</form>');
+document.framework.addComment = (caption, submit, reply) => {
+    document.framework.showPopup('<form method="POST">'+'\n'+
+        '<div id="new_comment">'+'\n'+
+        '<input type="hidden" name="reply" value="'+reply+'" />'+'\n'+
+            '<strong>'+caption+'</strong><br/><br/>'+'\n'+
+            '<textarea id="comment_textarea" name="comment" cols=50 class="comment_textarea"></textarea><br/><br/>'+'\n'+
+            '<center><input id="submit-comment" type="submit" class="btn w280" value="'+submit+'" /></center><br/>'+'\n'+
+        '</div>'+'\n'+
+    '</form>');
 }
 
 /**
@@ -241,14 +221,13 @@ function add_comment(caption, submit, reply){
 * @param {string} text Text of message.
 * @param {int} id @mysql[nodes_order]->id.
 */
-function delete_comment(text, id){
-    if(confirm(text)){
+document.framework.deleteComment = (text, id) => {
+    if (confirm(text)) {
         jQuery.ajax({
             type: "POST",
-            data: {	"comment_id" : id },
-            url: document.framework.root_dir+"/bin.php",
-            success: function(data){
-                console.log("comment deleted: "+data);
+            data: { "comment_id" : id },
+            url: document.framework.root_dir + "/bin.php",
+            success: (data) => {
                 window.location.reload();
             }
         });
@@ -258,59 +237,43 @@ function delete_comment(text, id){
 /**
 * Displays photo uploader.
 */
-function show_photo_uploader(){
-    show_popup_window('<iframe width=100% height=95% frameborder=0 src="'+document.framework.root_dir+'/images.php?editor=1" scrolling="yes" style="margin-top: 10px; min-height: 180px;"></iframe>');
+document.framework.showPhotoUploader = () => {
+    document.framework.showPopup('<iframe width=100% height=95% frameborder=0 src="'+document.framework.root_dir+'/images.php?editor=1" scrolling="yes" style="margin-top: 10px; min-height: 180px;"></iframe>');
 }
 
 /**
 * Displays photo editor.
 */
-function show_photo_editor(id, pos){
-    show_window('<iframe width=100% height=95% id="img_editor" frameborder=0 src="'+document.framework.root_dir+'/images.php?id='+id+'&pos='+pos+'" scrolling="yes" style="margin-top: 10px;" />');
+document.framework.showPhotoEditor = (id, pos) => {
+    document.framework.showWindow('<iframe width=100% height=95% id="img_editor" frameborder=0 src="'+document.framework.root_dir+'/images.php?id='+id+'&pos='+pos+'" scrolling="yes" style="margin-top: 10px;" />');
 }
 
 /**
 * Displays order window.
 */
-function show_order(){
-    show_window('<iframe width=100% height=95% frameborder=0 src="'+document.framework.root_dir+'/order.php" scrolling="yes" style="margin-top: 10px;" />');
+document.framework.showOrder = () => {
+    document.framework.showWindow('<iframe width=100% height=95% frameborder=0 src="'+document.framework.root_dir+'/order.php" scrolling="yes" style="margin-top: 10px;" />');
 }
 
 /**
 * Destorys current user http-session and resets cookie data.
 */
-function logout(){
-    try{ scrolltoTop(); }catch(e){};
+document.framework.logout = () => {
+    window.scrollTo(0, 0);
     let content = '<iframe frameborder=0 id="nodes_iframe" class="hidden" src="'+document.framework.root_dir+'/account.php?mode=logout"></iframe>';
-    disableScroll();
+    document.framework.disableScroll();
     document.body.style.overflow = "hidden";
     let a = document.createElement("div");
     a.id = "nodes_login";
     a.innerHTML= content;
     document.body.appendChild(a);
-    addSiteFade();
-}
-
-/**
-* Checking if variable an array.
-*/
-function is_array( mixed_var ) {
-    return ( mixed_var instanceof Array );
-}
-
-/**
-* Checking if variable is empty.
-*/
-function empty( mixed_var ) {
-    return( mixed_var === "" || mixed_var === 0 || mixed_var === "0"
-        || mixed_var === null || mixed_var === false
-        || (is_array(mixed_var) && mixed_var.length === 0 ));
+    document.framework.addSiteFade();
 }
 
 /**
 * Prevents default event-listener function.
 */
-function preventDefault(e) {
+document.framework.preventDefault = (e) => {
   e = e || window.event;
   if (e.preventDefault)
       e.preventDefault();
@@ -320,9 +283,9 @@ function preventDefault(e) {
 /**
 * Prevents scrolling by keys.
 */
-function preventDefaultForScrollKeys(e) {
-    if (keys[e.keyCode]) {
-        preventDefault(e);
+document.framework.preventDefaultForScrollKeys = (e) => {
+    if (document.framework.arrowKeys[e.keyCode]) {
+        document.framework.preventDefault(e);
         return false;
     }
 }
@@ -330,21 +293,21 @@ function preventDefaultForScrollKeys(e) {
 /**
 * Disables page scrolling.
 */
-function disableScroll() {
-  if (window.addEventListener)
-      window.addEventListener('DOMMouseScroll', preventDefault, false);
-  window.onwheel = preventDefault;
-  window.onmousewheel = document.onmousewheel = preventDefault;
-  window.ontouchmove  = preventDefault;
-  document.onkeydown  = preventDefaultForScrollKeys;
+document.framework.disableScroll = () => {
+  document.framework.addHandler(window, 'DOMMouseScroll', document.framework.preventDefault, false);
+  window.onwheel = document.framework.preventDefault;
+  window.onmousewheel = document.onmousewheel = document.framework.preventDefault;
+  window.ontouchmove  = document.framework.preventDefault;
+  document.onkeydown  = document.framework.preventDefaultForScrollKeys;
 }
 
 /**
 * Enables page scrolling.
 */
-function enableScroll() {
-    if (window.removeEventListener)
-        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+document.framework.enableScroll = () => {
+    if (window.removeEventListener) {
+        window.removeEventListener('DOMMouseScroll', document.framework.preventDefault, false);
+    }
     window.onmousewheel = document.onmousewheel = null;
     window.onwheel = null;
     window.ontouchmove = null;
@@ -354,7 +317,7 @@ function enableScroll() {
 /**
 * Decodes a string from base64-encode.
 */
-function base64_decode( data ) {
+document.framework.base64_decode = (data) => {
     let b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     let o1, o2, o3, h1, h2, h3, h4, bits, i=0, enc='';
     do {
@@ -366,87 +329,69 @@ function base64_decode( data ) {
         o1 = bits>>16 & 0xff;
         o2 = bits>>8 & 0xff;
         o3 = bits & 0xff;
-        if (h3 == 64) enc += String.fromCharCode(o1);
-        else if (h4 == 64) enc += String.fromCharCode(o1, o2);
-        else enc += String.fromCharCode(o1, o2, o3);
+        if (h3 == 64) {
+            enc += String.fromCharCode(o1);
+        } else if (h4 == 64) {
+            enc += String.fromCharCode(o1, o2); 
+        } else {
+            enc += String.fromCharCode(o1, o2, o3);
+        }
     } while (i < data.length);
     return enc;
 }
 
-/**
-* Prints human-readable information about a variable.
-*/
-function print_r(arr, level) {
-    let print_red_text = "";
-    if(!level) level = 0;
-    let level_padding = "";
-    for(let j=0; j<level+1; j++) level_padding += "    ";
-    if(typeof(arr) == 'object') {
-        for(let item in arr) {
-            let value = arr[item];
-            if(typeof(value) == 'object') {
-                print_red_text += level_padding + "'" + item + "' :\n";
-                print_red_text += print_r(value,level+1);
-            }else print_red_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-        }
-    }else print_red_text = "===>"+arr+"<===("+typeof(arr)+")";
-    return print_red_text;
-}
-
-/**
-* Requests and 504-error page and update alert function.
-*/
-if(window.jQuery){
+if (window.jQuery) {
 jQuery(function() {
-    if(!alertify){
+    if (!alertify) {
         alert = function alert(text){
-            show_popup_window('<br/><p>'+text+'</p><br/><br/><input id="input-ok-btn" type="button" value="OK" onClick=\'js_hide_wnd();\' class="btn w130" /><br/><br/>');
+            document.framework.showPopup('<br/><p>'+text+'</p><br/><br/><input id="input-ok-btn" type="button" value="OK" onClick=\'document.framework.hideWindow();\' class="btn w130" /><br/><br/>');
             return false;
         };
-    }else{
+    } else {
         alert = alertify.alert;
     }
-    window.onpopstate = function() {
-        goto(window.location.href);
+    window.onpopstate = () => {
+        document.framework.goto(window.location.href);
     }
-    ajaxing();
-    browser_time();
-    checkAnchors();
+    document.framework.ajaxing();
+    document.framework.browser_time();
+    document.framework.checkAnchors();
 });
 
 /**
 * Checks for an occurrence of a substring in a string.
 */
-function searchText( string, needle ) {
+document.framework.searchText = (string, needle) => {
    return !!(string.search( needle ) + 1);
 }
 
 /**
 * Updates <a> tag onclick event with async jquery page loading function.
 */
-function ajaxing(){
-    window_state = 0;
-    jQuery('a').on('click', function(e) {
-        if(jQuery(this).attr('href')){
-            if(jQuery(this).attr('target') != "_blank" && jQuery(this).attr('target') != "_parent" && jQuery(this).attr('target') != "_top"){
-                try{
-                    if(jQuery('.mdl-layout__drawer').attr('aria-hidden')=="false"){
+document.framework.ajaxing = () => {
+    document.framework.window_state = 0;
+    jQuery('a').on('click', (e) => {
+        if (jQuery(this).attr('href')){
+            if (jQuery(this).attr('target') != "_blank" && jQuery(this).attr('target') != "_parent" && jQuery(this).attr('target') != "_top"){
+                try {
+                    if (jQuery('.mdl-layout__drawer').attr('aria-hidden') == "false") {
                         jQuery('.mdl-layout__obfuscator').click();
-                    }jQuery('.android-content').scrollTop(0);
+                    }
+                    jQuery('.android-content').scrollTop(0);
                     jQuery('.android-header').removeClass("is-casting-shadow");
-                }catch(err){};
+                } catch(err) {}
                 try{
                     hideMenu();
                     jQuery('body,html').scrollTop(0);
-                }catch(err){};
-                if(searchText(jQuery(this).attr('href'), location.hostname)){
+                } catch(err){}
+                if (document.framework.searchText(jQuery(this).attr('href'), location.hostname)){
                     e.preventDefault();
                     history.pushState('', '', jQuery(this).attr('href'));
-                    goto(jQuery(this).attr('href'));
-                }else if(!searchText(jQuery(this).attr('href'), "http")){
+                    document.framework.goto(jQuery(this).attr('href'));
+                } else if(!document.framework.searchText(jQuery(this).attr('href'), "http")) {
                     e.preventDefault();
                     history.pushState('', '', jQuery(this).attr('href'));
-                    goto(jQuery(this).attr('href'));
+                    document.framework.goto(jQuery(this).attr('href'));
                 }
             }
         }
@@ -456,29 +401,29 @@ function ajaxing(){
 /**
 * Submits a search results details form.
 */
-function refresh_page(){
+document.framework.refreshPage = () => {
     jQuery("#content").animate({opacity: 0}, 300);
-    document.getElementById("query_form").submit();
+    $id("query_form").submit();
 }
 
 /**
 * Async page loading using AJAX.
 */
-function goto(href) {
-    if(!window_state){
-        if( href[0] != "#"){
+document.framework.goto = (href) => {
+    if (!document.framework.window_state) {
+        if (href[0] != "#") {
+            window.scrollTo(0, 0);
             document.documentElement.style.background = "#1a1d1d url(/img/load.gif) no-repeat center center fixed";
             document.documentElement.style.backgroundSize = "45px";
-            window_state = 1;
+            document.framework.window_state = 1;
             jQuery("#content").animate({opacity: 0}, 100);
-            try{ scrolltoTop(); }catch(e){}
-            let to = setTimeout(function(){
+            let to = setTimeout(() => {
                 jQuery("#content").html(error);
                 jQuery("#content").animate({opacity: 1}, 300);
             }, 30000);
             let anchor = '';
             let details = href.split('#');
-            if(details[1]){
+            if (details[1]) {
                 href = details[0];
                 anchor = details[1];
             }
@@ -487,9 +432,9 @@ function goto(href) {
                 async: true,
                 type: "POST",
                 data: {'jQuery': 'true'},
-                success: function (data) {
-                    setTimeout(ajaxing, 1);
-                    setTimeout(checkAnchors, 1);
+                success: (data) => {
+                    setTimeout(document.framework.ajaxing, 1);
+                    setTimeout(document.framework.checkAnchors, 1);
                     let title = jQuery(data).filter('title').text();
                     document.title = title;
                     try {
@@ -498,7 +443,7 @@ function goto(href) {
                     try {
                         history.replaceState({}, null, jQuery(data).filter('link[itemprop="url"]')[0].getAttribute("href"));
                     } catch(e){}
-                    setTimeout(function() {
+                    setTimeout(() => {
                         $id("content").innerHTML = data;
                         jQuery("#content").animate({opacity: 1}, 300);
                         clearTimeout(to);
@@ -506,7 +451,7 @@ function goto(href) {
                             document.documentElement.style.background = "#1a1d1d";
                         } catch(e){}
                         if (anchor != '') {
-                            showAnchor(anchor);
+                            document.framework.showAnchor(anchor);
                         }
                         try {
                             document.framework.loading_site();
@@ -520,61 +465,54 @@ function goto(href) {
                         }
                     }, 1);
                 },
-                error: function() {
+                error: () => {
                     $id("content").innerHTML = error;
                     jQuery("#content").animate({opacity: 1}, 300);
                 }
             });
-        }else{
+        } else {
             let hash = href.split("#");
-            showAnchor(hash[1]);
+            document.framework.showAnchor(hash[1]);
         }
     }
 }
 
 /**
-* Scrolls page to top.
-*/
-function scrolltoTop(){
-    jQuery('body,html').scrollTop(0);
-}
-
-/**
 * Scrolls a page to specified anchor.
 */
-function showAnchor(anchor){
-    if(!empty(anchor)){
+document.framework.showAnchor = (anchor) => {
+    if(anchor){
         try{
             jQuery('.android-content').animate({scrollTop:parseInt(jQuery("a[name='"+anchor+"']").offset().top-80)}, 200,'swing');
-        }catch(e){};
-        try{
+        } catch(e){};
+        try {
             jQuery('html, body').animate({scrollTop:parseInt(jQuery("a[name='"+anchor+"']").offset().top-80)}, 200,'swing');
-        }catch(e){};
+        } catch(e){};
     }
 }
 
 /**
 * Checking for # in URL and scroll page to anchor if exists.
 */
-function checkAnchors(){
+document.framework.checkAnchors = () => {
     let hash = window.location.href.split("#");
-    if(hash[1]!=""){
-        showAnchor(hash[1]);
+    if (hash[1] != "") {
+        document.framework.showAnchor(hash[1]);
     }
 }
 
 /**
 * Loading specified table's page.
 */
-function goto_page(page){
-    document.getElementById("page_field").value=page;
-    refresh_page();
+document.framework.goto_page = (page) => {
+    $id("page_field").value = page;
+    document.framework.refreshPage();
 }
 
 /**
 * Initialize admin functions.
 */
-function admin_init(){
+document.framework.admin_init = () => {
     let js = document.createElement("script");
     js.type = "text/javascript";
     js.src = document.framework.root_dir+"/script/admin.js";
@@ -584,32 +522,32 @@ function admin_init(){
             document.getElementsByClassName("admin_content")[0].style.minHeight = (window.innerHeight - 51) + "px";
         } catch (e) {}
     }
-    window.addEventListener("resize", (e) => func(), true);
+    document.framework.addHandler(window, "resize", (e) => func(), true);
     func();
 }
 
 /**
 * Initialize event tinymce library.
 */
-function tinymce_init(){
+document.framework.tinymce_init = () => {
     let script = document.createElement('script');
     script.src = document.framework.root_dir+"/script/tinymce/tinymce.js"
     document.body.appendChild(script);
-    script.onload = function() {
+    script.onload = () => {
         tinymce.init({ selector:'textarea#editable,textarea#editable_2',
             plugins: [
             'advlist autolink lists link image charmap print preview anchor',
             'searchreplace visualblocks code fullscreen',
             'insertdatetime media table contextmenu paste code'
             ],
-            setup: function (ed) {
-                ed.on('init', function(args) {
+            setup: (ed) => {
+                ed.on('init', (args) => {
                     let a = document.createElement("div");
                     a.id = "mceu_91";
                     a.className = "mce-widget mce-btn";
                     a.title = "Upload photo"
-                    a.innerHTML='<button id="tiny_button_'+parseInt(Math.random()*10000)+'"  tabindex="-1" id="mceu_91-button" role="presentation" type="button" onClick="show_photo_uploader();"><i class="mce-ico mce-i-image"></i></button>';
-                    insertAfter(a, $id("mceu_9"));
+                    a.innerHTML='<button id="tiny_button_'+parseInt(Math.random()*10000)+'"  tabindex="-1" id="mceu_91-button" role="presentation" type="button" onClick="document.framework.showPhotoUploader();"><i class="mce-ico mce-i-image"></i></button>';
+                    document.framework.insertAfter(a, $id("mceu_9"));
                 });
             },
           toolbar1: 'insertfile undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist link  image media preview | forecolor backcolor emoticons | codesample'
@@ -620,15 +558,15 @@ function tinymce_init(){
 /**
 * Submits search form.
 */
-function submit_search_form(){
-    document.getElementById("page_field").value=1;
-    refresh_page();
+document.framework.submit_search_form = () => {
+    $id("page_field").value = 1;
+    document.framework.refreshPage();
 }
 
 /**
 * Displays screen fade.
 */
-function addSiteFade() {
+document.framework.addSiteFade = () => {
     if (jQuery('#nodes_fade').length == 0) {
         return jQuery("<div id='nodes_fade'></div>").appendTo('body').fadeIn(500);
     }
@@ -637,8 +575,8 @@ function addSiteFade() {
 /**
 * Removes screen fade.
 */
-function removeSiteFade() {
-    jQuery('#nodes_fade').fadeOut(function() {
+document.framework.removeSiteFade = () => {
+    jQuery('#nodes_fade').fadeOut(() => {
         jQuery(this).remove()
     });
 }
@@ -646,8 +584,8 @@ function removeSiteFade() {
 /**
 * Converts dates in Unixtime format to current Local time format.
 */
-function browser_time(){
-    jQuery('.utc_date').each(function (i) {
+document.framework.browser_time = () => {
+    jQuery('.utc_date').each((i) => {
         let utc = new Date(jQuery(this).attr("alt")*1000);
         jQuery(this).html(utc.toLocaleString());
     });
@@ -656,12 +594,12 @@ function browser_time(){
 /**
 * Removes a product from cart.
 */
-function remove_from_bin(id){
+document.framework.removeFromCart = (id) => {
     jQuery.ajax({
         type: "POST",
         data: {	"remove" : id },
         url: document.framework.root_dir+"/bin.php",
-        success: function(data){
+        success: (data) => {
             window.location = document.framework.root_dir+"/order.php";
         }
     });
@@ -670,63 +608,62 @@ function remove_from_bin(id){
 /**
 * Displays Add-To-Cart message.
 */
-function buy_now(id, t0, t1, t2){
+document.framework.buyNow = (id, t0, t1, t2) => {
     jQuery.ajax({
         type: "POST",
         data: {	"id" : id },
         url: document.framework.root_dir+"/bin.php",
-        success: function (data) {
+        success: (data) => {
             try{ show_bin(); }catch(e){ }
         }
     });
-    show_popup_window('<br/><p>'+t0+'</p><br/><br/><input id="input-card-1" type="button" value="'+t1+'" onClick=\'js_hide_wnd();\' class="btn w130" /> &nbsp; <input id="input-card-2" value="'+t2+'" class="btn w130" type="button" onClick=\'js_hide_wnd(); setTimeout(show_order, 500);\' /><br/><br/>');
+    document.framework.showPopup('<br/><p>'+t0+'</p><br/><br/><input id="input-card-1" type="button" value="'+t1+'" onClick=\'document.framework.hideWindow();\' class="btn w130" /> &nbsp; <input id="input-card-2" value="'+t2+'" class="btn w130" type="button" onClick=\'document.framework.hideWindow(); setTimeout(document.framework.showOrder, 500);\' /><br/><br/>');
 }
 
 /**
 * Displays money withdrawal form.
 */
-function withdrawal(text){
+document.framework.withdrawal = (text) => {
     alertify.prompt('', '<h3>'+text+'</h3><br/>', '',
-        function(evt, value) {
+        (evt, value) => {
             jQuery.ajax({
                 type: "POST",
                 data: {"paypal" : value },
                 url: document.framework.root_dir+"/bin.php",
-                success: function(data){
+                success: (data) => {
                     jQuery('.alertify').remove();
                     alert(data);
                 }
             });
         },
-        function() { jQuery('.alertify').remove(); }
+        () => { jQuery('.alertify').remove(); }
     ).set('closable', true);
 }
 
 /**
 * Displays money deposit form.
 */
-function deposit(text){
+document.framework.deposit = (text) => {
     alertify.prompt('', '<h3>'+text+'</h3><br/>', '',
-        function(evt, value) {
+        (evt, value) => {
             try{
-                document.getElementById("paypal_price").value = value;
+                $id("paypal_price").value = value;
             }catch(err){}
-            document.getElementById("pay_button").click();
+            $id("pay_button").click();
         },
-        function() { jQuery('.alertify').remove(); }
+        () => { jQuery('.alertify').remove(); }
     );
 }
 
 /**
 * Redirects to PayPal payment page.
 */
-function process_payment(id, price){
+document.framework.processPayment = (id, price) => {
     jQuery.ajax({
         type: "POST",
         data: {	"price" : price },
         url: document.framework.root_dir+"/paypal.php?order_id="+id,
-        success: function(data){
-            console.log("process_payment: "+data);
+        success: (data) => {
             window.location = document.framework.root_dir+"/account/purchases";
         }
     });
@@ -735,17 +672,17 @@ function process_payment(id, price){
 /**
 * Submits a new message to chat.
 */
-function post_message(id){
+document.framework.postMessage = (id) => {
     let txt = jQuery("#nodes_message_text").val();
     jQuery("#nodes_message_text").val("");
-    jQuery("#nodes_chat").html(document.getElementById("nodes_chat").innerHTML+
-            '<br/><div class="chat_loader"><img src="/img/white_load.gif" /></div>');
+    jQuery("#nodes_chat").html($id("nodes_chat").innerHTML+
+            '<br/><div class="chat_loader"><img src="'+document.framework.root_dir+'/img/white_load.gif" /></div>');
     jQuery("#nodes_chat").scrollTop(jQuery("#nodes_chat")[0].scrollHeight);
     jQuery.ajax({
         type: "POST",
         data: { "text" : txt },
         url: document.framework.root_dir+'/bin.php?message='+id,
-        success: function(data){
+        success: (data) => {
             jQuery("#nodes_chat").html(data);
             jQuery("#nodes_chat").scrollTop(jQuery("#nodes_chat")[0].scrollHeight);
         }
@@ -755,11 +692,11 @@ function post_message(id){
 /**
 * Refreshes chat window.
 */
-function refresh_chat(id){
+document.framework.refreshChat = (id) => {
     jQuery.ajax({
         type: "GET",
         url: document.framework.root_dir+'/bin.php?message='+id,
-        success: function(data){
+        success: (data) => {
             let chat = $id("nodes_chat");
             let height = chat.scrollHeight;
             let flag = chat.innerHTML.length == 0;
@@ -777,47 +714,50 @@ function refresh_chat(id){
 /**
 * Displays 1-to-5 stars vote form.
 */
-function star_rating(total_rating){
+document.framework.starRating = (total_rating) => {
     let star_widht = total_rating * 17 ;
     jQuery('.rating_votes').width(star_widht);
-    jQuery('.rating_stars').hover(function() {
-      jQuery('.rating_votes, .rating_hover').toggle();
-    },
-    function() {
-      jQuery('.rating_votes, .rating_hover').toggle();
-    });
+    jQuery('.rating_stars').hover(() => {
+        jQuery('.rating_votes, .rating_hover').toggle();
+      },
+      () => {
+        jQuery('.rating_votes, .rating_hover').toggle();
+      }
+    );
     let margin_doc = jQuery(".rating_stars").offset();
-    jQuery(".rating_stars").mousemove(function(e){
+    jQuery(".rating_stars").mousemove((e) => {
         let widht_votes = e.pageX - margin_doc.left;
-        if (widht_votes == 0) widht_votes = 1 ;
+        if (widht_votes == 0) {
+            widht_votes = 1 ;
+        }
         user_votes = Math.ceil(widht_votes/17);
         jQuery('.rating_hover').width(user_votes*17);
     });
-    jQuery('.rating_stars').click(function(){
+    jQuery('.rating_stars').click(() => {
         jQuery('.rating_votes').width((user_votes)*17);
-        document.getElementById("nodes_rating").value = user_votes;
+        $id("nodes_rating").value = user_votes;
     });
 }
 
 /**
 * Scales an image rotator.
 */
-function ScaleSlider() {
-    let refSize = image_rotator.$Elmt.parentNode.clientWidth;
+document.framework.scaleSlider = () => {
+    let refSize = document.framework.image_rotator.$Elmt.parentNode.clientWidth;
     if (refSize) {
         refSize = Math.min(refSize, 600);
-        image_rotator.$ScaleWidth(refSize);
+        document.framework.image_rotator.$ScaleWidth(refSize);
     }else {
-        window.setTimeout(ScaleSlider, 30);
+        window.setTimeout(document.framework.scaleSlider, 30);
     }
 }
 
 /**
 * Displays an image rotator.
 */
-function show_rotator(obj){
+document.framework.showRotator = (obj) => {
     try{
-        image_rotator = new $JssorSlider$("jssor_1", {
+        document.framework.image_rotator = new $JssorSlider$("jssor_1", {
             $AutoPlay: true,
             $FillMode: 5,
             $SlideshowOptions: {
@@ -847,15 +787,18 @@ function show_rotator(obj){
               $Class: $JssorBulletNavigator$
             }
         });
-        ScaleSlider();
-        addHandler(window, "load", ScaleSlider);
-        addHandler(window, "resize", ScaleSlider);
-        addHandler(window, "orientationchange", ScaleSlider);
+        document.framework.scaleSlider();
+        document.framework.addHandler(window, "load", document.framework.scaleSlider);
+        document.framework.addHandler(window, "resize", document.framework.scaleSlider);
+        document.framework.addHandler(window, "orientationchange", document.framework.scaleSlider);
     }catch(e){}
     initPhotoSwipeFromDOM(obj);
 }
 
-function material_icons(){
+/**
+* Displays an icons.
+*/
+document.framework.materialIcons = () => {
     try {
         jQuery('.material-icons').css('display', 'inline-block');
         jQuery('.material-icons').css('visibility', 'visible');
@@ -865,90 +808,124 @@ function material_icons(){
 /**
 * Displays an image viewer.
 */
-function nodes_galery(src){
-    onpop_state = 1;
-    for(let i = 0; i<20; i++){
-        try{
-            if(document.getElementById('nodes_galery_'+i).alt == src){
-                document.getElementById('nodes_galery_'+i).click();
+document.framework.nodesGallery = (src) => {
+    for (let i = 0; i < 20; i++) {
+        try {
+            if ($id('nodes_gallery_'+i).alt == src) {
+                $id('nodes_gallery_'+i).click();
             }
-        }catch(e){}
+        } catch(e){}
     }
 }
 
-function level_apply_chages(){
-    let transform = "rotate("+parseInt($id("level_plan_rotation").value)+"deg) scale("+$id("level_plan_scale").value+")";
-    $id("level_plan_img").style.transform = transform;
-}
-
-
-let js_camera = null;
-function handleDragStart(e) {
-    console.log("handleDragStart");
-    e.dataTransfer.effectAllowed = 'move';
-    let dragIcon = new Image();
-    try{
-        dragIcon.src = e.srcElement.src;
-        js_camera = e.srcElement.id;
-    }catch(x){
-        dragIcon.src = e.target.src;
-        js_camera = e.target.id;
-    }
-    $id(js_camera).style.opacity = "0.1";
-    dragIcon.width = 20;
-    dragIcon.height = 20;
-    try{
-        e.dataTransfer.setDragImage(dragIcon, 10, 10);
-    }catch(x){}
-    console.log(js_camera);
-}
-
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function handleDragDrop(e) {
-    let camera = $id(js_camera);
-    camera.style.opacity = "1";
-    camera.style.top = parseInt(camera.style.top)+parseInt(e.layerY)+"px";
-    camera.style.left = parseInt(camera.style.left)+parseInt(e.layerX)+"px";
-    let elems = document.getElementsByClassName("dragable");
-    let fout = '';
-    for(let i = 0; i < elems.length; i++){
-        let elem = elems[i];
-        if(fout != '') fout += ',';
-        fout += '{ "id": "'+elem.getAttribute("g")+'", "t": "'+(parseInt(elem.style.top)-elem.getAttribute("t"))+'", "l": "'+(parseInt(elem.style.left)-elem.getAttribute("l"))+'" }';
-    }
-    fout = '{"points":['+fout+"]}";
-    $id("points_json").value = fout;
-    s_camera = null;
-}
-
-function handleDragOver(e){
-    e.preventDefault();
-}
-
-function handleDrop(e) {
-    e.preventDefault();
-    console.log("handleDrop");
-    console.log(e.target);
-}
-
-function handleDragEnter(e) {
-    e.preventDefault();
-    console.log("handleDragEnter");
-}
-
-function handleDragLeave(e) {
-    e.preventDefault();
-    console.log("handleDragLeave");
-}
-
-function level_show_plan(){
-    let data = document.getElementsByClassName("dragable");
-    for(let i = 0; i < data.length; i++){
-        data[i].addEventListener('dragstart', handleDragStart, false);
-        data[i].addEventListener('dragend', handleDragDrop, false);
+document.panorama.requestFullScreen = (element) => {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
     }
 }
+
+document.panorama.fullScreen = () => {
+    document.panorama.permission();
+    const iframe = document.getElementsByTagName("iframe")[0];
+    if (iframe) {
+        iframe.style.top = "0px";
+        iframe.style.height = "100%";
+        iframe.style.position = "fixed";
+        iframe.style.zIndex = 2;
+        document.panorama.screen_state = 1;
+        $id("fullscreen_icon").setAttribute("src","/img/vr/normalscreen.png");
+    }
+}
+
+document.panorama.hideFullScreen = () => {
+    const iframe = document.getElementsByTagName("iframe")[0];
+    if (iframe) {
+        iframe.style.top = "40px";
+        iframe.style.height = "calc(100% - 40px)";
+        iframe.style.position = "fixed";
+        iframe.style.zIndex = 0;
+        document.panorama.screen_state = 0;
+        $id("fullscreen_icon").setAttribute("src","/img/vr/fullscreen.png");
+    }
+    try {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    } catch (e) {}
+}
+
+document.panorama.toggleScreen = () => {
+    if (document.panorama.screen_state) {
+        document.panorama.hideFullScreen();
+    } else {
+        document.panorama.fullScreen();
+    }
+}
+
+document.panorama.permission = () => {
+    if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
+        // (optional) Do something before API request prompt.
+        DeviceMotionEvent.requestPermission()
+            .then( response => {
+            // (optional) Do something after API prompt dismissed.
+            if ( response == "granted" ) {
+                window.addEventListener( "devicemotion", (e) => {
+                    // do something for \'e\' here.
+                })
+            }
+        }).catch( console.error )
+    } else {
+        console.error( "DeviceMotionEvent is not defined" );
+    }
+}
+
+document.panorama.vrMode = () => {
+    document.panorama.permission();
+    document.panorama.fullScreen();
+    const iframe = document.getElementsByTagName("iframe")[0];
+    const innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+    innerDoc.getElementsByTagName("a-scene")[0].enterVR();
+    jQuery(".icon").css("display", "none");
+    try {
+        innerDoc.getElementById("np").style.display = "none";
+    } catch(e) {}
+    innerDoc.getElementsByTagName("a-scene")[0].addEventListener("exit-vr", () => {
+        try {
+            innerDoc.getElementById("np").style.display = "block";
+        } catch(e) {}
+        document.panorama.hideFullScreen();
+        jQuery(".icon").css("display", "block");
+    })
+}
+
+document.panorama.showMap = () => {
+    const frame = $id("map_frame");
+    frame.style.display = "block";
+}
+
+document.panorama.hideMap = () => {
+    const frame = $id("map_frame");
+    frame.style.display = "none";
+}
+
+document.panorama.scaleMap = () => {
+    let width = $id("panorama").clientWidth;
+    let height = $id("panorama").clientHeight;
+    let size = width > height ? height : width;
+    let scale = size / 650;
+    $id("map_iframe").style.scale = scale;
+}       
 }

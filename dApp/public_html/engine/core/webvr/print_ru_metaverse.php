@@ -4,11 +4,6 @@
  * @path /engine/core/webvr/print_ru_metaverse.php
  *
  * @name    DAO Mansion    @version 1.0.2
- * @param object $site Site class object.
- * @return string Returns content of metaverse whitepaper.
- * @usage <code>
- *   engine::print_ru_metaverse($site);
- * </code>
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,6 +14,12 @@
  * @var $site->img - Page meta image.
  * @var $site->onload - Page executable JavaScript code.
  * @var $site->configs - Array MySQL configs.
+ * 
+ * @param object $site Site class object.
+ * @return string Returns content of metaverse whitepaper.
+ * @usage <code>
+ *   engine::print_ru_metaverse($site);
+ * </code>
  */
 
 function print_ru_metaverse($site) {

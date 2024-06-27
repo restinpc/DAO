@@ -8,53 +8,52 @@ function pano_scene_editor($data){
     $res = engine::mysql($query);
     $level = mysqli_fetch_array($res);
     $fout = '
-    <input id="scene_show_editor" type="button" class="btn" value="Show editor" onClick=\'show_scene_editor();\' />
+    <input id="scene_show_editor" type="button" class="btn" value="Show editor" onClick=\'document.panorama.showSceneEditor();\' />
     <div id="scene_editor">
         <form method="POST" id="scene_form">
             <input id="act" type="hidden" name="update" value="'.$data["id"].'" />
             <div><b>'.$project["name"].'</b> / <b>'.$level["name"].'</b></div>
                 <br/>
-            Scene name:<br/>
+            '.engine::lang("Scene name").':<br/>
             <input required name="name" type="text" class="input w100p" value="'.$data["name"].'" /><br/>
                 <br/>
-            Default camera position:<br/>
+            '.engine::lang("Default camera position").':<br/>
             <input required id="camera_position" name="position" type="text" class="input w100p" value="'.$data["position"].'" /><br/>
                 <br/>
-            Default camera rotation:<br/>
+            '.engine::lang("Default camera rotation").':<br/>
             <input required id="camera_rotation" name="rotation" type="text" class="input w100p" value="'.$data["rotation"].'" /><br/>
                 <br/>
-            DegMet:<br/>
+            '.engine::lang("DegMet").':<br/>
             <input required id="degmet" name="degmet" type="number" class="input w100p" value="'.$data["degmet"].'" /><br/>
                 <br/>
-            Height:<br/>
+            '.engine::lang("Height").':<br/>
             <input required id="height" name="height" type="number" class="input w100p" value="'.$data["height"].'" /><br/>
                 <br/>
-            Latitude:<br/>
+            '.engine::lang("Latitude").':<br/>
             <input required id="scene_lat" name="lat" type="number" class="input w100p" value="'.$data["lat"].'" /><br/>
                 <br/>
-            Longitude:<br/>
+            '.engine::lang("Longitude").':<br/>
             <input required id="scene_lng" name="lng" type="number" class="input w100p" value="'.$data["lng"].'" /><br/>
                 <br/>
-            Floor position:<br/>
+            '.engine::lang("Floor position").':<br/>
             <input required id="floor_position" name="floor_position" type="text" class="input w100p" value="'.$data["floor_position"].'" /><br/>
                 <br/>
-            Floor radius:<br/>
+            '.engine::lang("Floor radius").':<br/>
             <input required id="floor_radius" name="floor_radius" type="number" class="input w100p" value="'.$data["floor_radius"].'" /><br/>
                 <br/>
-            Logo size:<br/>
+            '.engine::lang("Logo size").':<br/>
             <input required id="logo_size" name="logo_size" type="number" class="input w100p" value="'.$data["logo_size"].'" /><br/>
                 <br/>
-
-            <input type="button" class="btn w100p" value="Apply changes" onClick=\'apply_scene_changes();\' />
-            <input type="button" class="btn w100p" value="Load default setting" onClick=\'default_settings();\' />
-            <input type="submit" class="btn w100p" value="Save scene settings" /><br/>
+            <input type="button" class="btn w100p" value="'.engine::lang("Apply changes").'" onClick=\'document.panorama.applySceneChanges();\' />
+            <input type="button" class="btn w100p" value="'.engine::lang("Load default setting").'" onClick=\'document.panorama.defaultSettings();\' />
+            <input type="submit" class="btn w100p" value="'.engine::lang("Save scene settings").'" /><br/>
         </form>
     </div>
     <div style="position:absolute; top:10px; right: 10px; width: 180px; display:none;" id="add_area">        
-        <input type="button" class="btn w100p" value="Add new object" onClick=\'add_object();\' />
-        <input type="button" class="btn w100p" value="Add new navigation" onClick=\'add_navigation();\' />
-        <input type="button" class="btn w100p" value="Add new link" onClick=\'add_url();\' />
-        <input type="button" class="btn w100p" value="Reset scene objects" onClick=\'reset_scene_object('.$data["id"].');\' />
+        <input type="button" class="btn w100p" value="'.engine::lang("Add object").'" onClick=\'document.panorama.addObject();\' />
+        <input type="button" class="btn w100p" value="'.engine::lang("Add navigation").'" onClick=\'document.panorama.addNavigation();\' />
+        <input type="button" class="btn w100p" value="'.engine::lang("Add link").'" onClick=\'document.panorama.addURL();\' />
+        <input type="button" class="btn w100p" value="'.engine::lang("Reset scene objects").'" onClick=\'document.panorama.resetSceneObjects('.$data["id"].');\' />
     </div>';
     return $fout;
 }

@@ -66,11 +66,11 @@ function print_order($site, $order_id){
                 $status = engine::lang('Sended');
             }else if($d["status"]==0){
                 $buttons = '
-                <input id="input-confirm-shipment" type="button" class="btn shipment" value="'.engine::lang('Confirm Shipment').'" onClick=\'confirm_order("'.$d["id"].'", "'.engine::lang("Post track number").'", "'.engine::lang("Shipment is confirmed").'", "'.engine::lang("This item is sold out now?").'");\' />
+                <input id="input-confirm-shipment" type="button" class="btn shipment" value="'.engine::lang('Confirm Shipment').'" onClick=\'document.framework.admin.confirmOrder("'.$d["id"].'", "'.engine::lang("Post track number").'", "'.engine::lang("Shipment is confirmed").'", "'.engine::lang("This item is sold out now?").'");\' />
                 ';
                 $status = engine::lang('New order');
             }else{
-                $buttons = '<input id="input-archive" type="button" class="btn shipment" value="'.engine::lang('Archive order').'" onClick=\'archive_order("'.$d["id"].'", "'.engine::lang("Archive order").'");\' />';
+                $buttons = '<input id="input-archive" type="button" class="btn shipment" value="'.engine::lang('Archive order').'" onClick=\'document.framework.admin.archiveOrder("'.$d["id"].'", "'.engine::lang("Archive order").'");\' />';
                 $status = engine::lang('Finished');
             }
             $fout = '<div class="print_order">

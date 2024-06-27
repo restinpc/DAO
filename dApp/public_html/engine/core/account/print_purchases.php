@@ -28,8 +28,8 @@ function print_purchases($site){
         if($data["status"]=="1"){
             $site->onload .= '
                 alert("'.engine::lang("Thank you for your order! Shipment in process now.").'");
-                document.getElementById("purcases_count").innerHTML = "";
-                document.getElementById("purcases").style.display = "none";
+                $id("purcases_count").innerHTML = "";
+                $id("purcases").style.display = "none";
                 ';
             $query = 'UPDATE `nodes_order` SET `status` = "2" WHERE `id` = "'.$data["id"].'"';
             engine::mysql($query);

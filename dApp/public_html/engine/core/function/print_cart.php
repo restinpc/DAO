@@ -14,7 +14,7 @@
 require_once("engine/nodes/session.php");
 function print_cart($count){
     $fout = '<div class="buy_cart">
-        <div  id="nodes_cart" class="'.($count>0?'':'hidden').'" onClick=\'show_order();\'>
+        <div  id="nodes_cart" class="'.($count>0?'':'hidden').'" onClick=\'document.framework.showOrder();\'>
             <div class="cart_labels">
                 <div class="label_1"><a id="cart_link">'.engine::lang("Your Shopping Cart").'</a></div> 
                 <div class="label_2 cart_img">&nbsp;</div> 

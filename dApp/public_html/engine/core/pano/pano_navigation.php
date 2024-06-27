@@ -5,10 +5,10 @@ function pano_navigation($site, $object, $new=0){
         action=\' 
             setTimeout(function(id){
                 if('.($_SESSION["user"]["id"]==1?'1':'0').' && $id("scene_editor").style.display=="block"){
-                    if(!object_id){
+                    if(!document.panorama.objectId){
                         jQuery(".vr_object_window").css("display", "none");
                         $id("point_'.$object["id"].'_window").style.display = "block";
-                        object_id = "'.$object["id"].'";
+                        document.panorama.objectId = "'.$object["id"].'";
                     }
                 }else{
                     '.($object["target"]?'load_scene("'.$object["target"].'", "point_'.$object["id"].'")':'').'
@@ -22,7 +22,7 @@ function pano_navigation($site, $object, $new=0){
             . 'opacity="0" '
             . 'width="1" height="1" '
             . 'src="#hotspot"></a-image>';
-    if($_SESSION["user"]["id"] == "1"){
+    if ($_SESSION["user"]["id"] == "1"){
         $fout .= '
         <div id="point_'.$object["id"].'_window"  class="vr_object_window">
             <div style="padding-top:10px; padding-bottom:10px; text-align:center; font-weight:bold;">Point properties</div><br/>
@@ -49,12 +49,12 @@ function pano_navigation($site, $object, $new=0){
         $fout .= '</select>
                     <br/>
                     <br/>
-                <input type="button" class="btn w100p" value="Apply chages" onClick=\'apply_changes_navigation("'.$object["id"].'");\' />';
+                <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesNavigation("'.$object["id"].'");\' />';
         if(!$new){
-            $fout .= '<input type="button" class="btn w100p" value="Delete point" onClick=\'delete_navigation("'.$object["id"].'")\' />';
+            $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete point").'" onClick=\'document.panorama.deleteNavigation("'.$object["id"].'")\' />';
         }
         $fout .= '        
-                <input type="submit" class="btn w100p" value="Submit" /><br/><br/>
+                <input type="submit" class="btn w100p" value="'.engine::lang("Submit").'" /><br/><br/>
             </form>
         </div>';
         return $fout;

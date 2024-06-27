@@ -41,7 +41,7 @@ function print_new_message($site){
                     <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" width=50 /><br/>'.$online.'
                 </div>
                 <div class="new_msg_close">
-                    <div  id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'" onClick=\'document.getElementById("nodes_message").style.display="none";\'> </div>
+                    <div  id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'" onClick=\'$id("nodes_message").style.display="none";\'> </div>
                 </div>
                 <div  id="new_msg_name"  class="pointer" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <div class="new_msg_name">'.$user["name"].'</div>'

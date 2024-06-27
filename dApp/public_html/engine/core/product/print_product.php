@@ -66,7 +66,7 @@ function print_product($site, $data){
         if($data["user_id"]==$_SESSION["user"]["id"]){
             $fout .= ' onClick=\'alert("'.engine::lang("Unable to purchase your own product").'")\' ';
         }else{
-            $fout .= ' onClick=\'buy_now('.$data["id"].', '
+            $fout .= ' onClick=\'document.framework.buyNow('.$data["id"].', '
                     . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
                     . '"'.engine::lang("Continue").'", '
                     . '"'.engine::lang("Checkout").'");\' ';
@@ -77,7 +77,7 @@ function print_product($site, $data){
                         <div class="label_2 cart_img">&nbsp;</div>
                         <div class="label_3">&nbsp;$'.intval($data["price"]).'</div>    
                     </div>
-                </div><a id="show_comments" href="#comments" onClick=\'document.getElementById("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.engine::lang("Show comments").'</button></a>';
+                </div><a id="show_comments" href="#comments" onClick=\'$id("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.engine::lang("Show comments").'</button></a>';
     if($_SESSION["user"]["id"]=="1"){
         $fout .= '<br/><br/>
                 <a id="edit-product" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=products&action=edit&id='.$data["id"]).'"><button class="btn w280">'.engine::lang("Edit product").'</button></a>';

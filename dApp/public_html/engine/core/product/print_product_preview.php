@@ -46,7 +46,7 @@ function print_product_preview($site, $data, $right=0){
         }else{
             //TODO selector propertis and count
 
-            $fout .= ' onClick=\'buy_now('.$data["id"].', '
+            $fout .= ' onClick=\'document.framework.buyNow('.$data["id"].', '
                     . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
                     . '"'.engine::lang("Continue").'", '
                     . '"'.engine::lang("Checkout").'");\' ';

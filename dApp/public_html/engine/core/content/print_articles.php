@@ -48,7 +48,7 @@ function print_articles($site, $data=array()){
     $table .= '</div><div class="clear"></div><br/>';
     if ($flag) {
         $fout .= $table.'
-        <form method="POST"  id="query_form"  onSubmit="submit_search();">
+        <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -60,7 +60,7 @@ function print_articles($site, $data=array()){
         }
         if ($data[0]>0) {
             $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                <nobr><select  id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
+                <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
                  <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                  <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                  <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
@@ -71,7 +71,7 @@ function print_articles($site, $data=array()){
             $fout .= '<div class="pagination" >';
             $pages = ceil($count/$_SESSION["count"]);
             if ($_SESSION["page"]>1) {
-                $fout .= '<span  id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).')\'>
+                $fout .= '<span  id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).')\'>
                     <a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a>
                 </span>';
             }
@@ -87,7 +87,7 @@ function print_articles($site, $data=array()){
                        $b = 1; $e = 0;
                       $fout .= '<li class="active-page">'.$i.'</li>';
                    } else {
-                       $fout .= '<li  id="page-'.$i.'" onClick=\'goto_page('.($i).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                       $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                    }
                } else if ((!$c||!$b) && !$f && $i<$pages) {
                    $f = 1; $e = 0;
@@ -97,7 +97,7 @@ function print_articles($site, $data=array()){
                }
             }
                 if($_SESSION["page"]<$pages){
-                   $fout .= '<li  id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                   $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }
                 $fout .= '
          </ul>

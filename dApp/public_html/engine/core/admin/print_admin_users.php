@@ -92,12 +92,12 @@ function print_admin_users($cms){
                 $table .= '<th>';
                 if ($_SESSION["order"]==$order) {
                     if ($_SESSION["method"]=="ASC") {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "DESC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
                     } else {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
+                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
                     }
                 } else {
-                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'</a>';
+                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
                 }
                 $table .= '</th>';
             }
@@ -120,21 +120,21 @@ function print_admin_users($cms){
             . '<form method="POST" id="confirm_form"><input type="hidden" name="confirm"  id="confirm_value" value="0" /></form>'
             . '<select  id="select-user-'.$i.'" class="input" onChange=\'
                 if(confirm("'.engine::lang("Are you sure?").'")){if(this.value=="1"){
-                    document.getElementById("unban_value").value="'.$data["id"].'";
-                    document.getElementById("unban_form").submit();
+                    $id("unban_value").value="'.$data["id"].'";
+                    $id("unban_form").submit();
                 } else if(this.value=="2") {
                     if (confirm("'.engine::lang("Confirm deleting banned user").'")) {
-                        document.getElementById("die_value").value="'.$data["id"].'";
-                        document.getElementById("die_form").submit();
+                        $id("die_value").value="'.$data["id"].'";
+                        $id("die_form").submit();
                     }
                 } else if(this.value=="3") {
-                    document.getElementById("ban_value").value="'.$data["id"].'"; 
-                    document.getElementById("ban_form").submit();
+                    $id("ban_value").value="'.$data["id"].'"; 
+                    $id("ban_form").submit();
                 } else if(this.value=="4") {
-                    document.getElementById("delete_value").value="'.$data["id"].'";
-                    document.getElementById("delete_form").submit();
+                    $id("delete_value").value="'.$data["id"].'";
+                    $id("delete_form").submit();
                 } else if(this.value=="5") {
-                    new_transaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
+                    document.framework.admin.newTransaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
                 }
             } else{
                 this.selectedIndex=0;
@@ -154,8 +154,8 @@ function print_admin_users($cms){
             $flag = '<input type="checkbox" checked disabled />';
         } else {
             $flag = '<input id="input-checkbox-'.$arr_count.'" type="checkbox" title="'.engine::lang("Code").': '.$data["code"].'" '
-                . 'onClick=\'document.getElementById("confirm_value").value="'.$data["id"].'"; '
-                . 'document.getElementById("confirm_form").submit();\' />';
+                . 'onClick=\'$id("confirm_value").value="'.$data["id"].'"; '
+                . '$id("confirm_form").submit();\' />';
         }
         $table .= '<tr><td align=left class="nowrap">'.$flag.'&nbsp;<a id="user-'.$data["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$data["id"].'">'.$data["name"].'</a></td>'
                 . '<td align=left><a href="mailto:'.$data["email"].'">'.$data["email"].'</a></td>'
@@ -172,7 +172,7 @@ function print_admin_users($cms){
 <br/>';
     if ($arr_count) {
         $fout .= $table.'
-    <form method="POST"  id="query_form"  onSubmit="submit_search();">
+    <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
     <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
     <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
     <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -187,7 +187,7 @@ function print_admin_users($cms){
     }
     if ($data[0]>0) {
         $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-            <nobr><select  id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
+            <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
              <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
              <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
              <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
@@ -198,7 +198,7 @@ function print_admin_users($cms){
        $fout .= '<div class="pagination" >';
             $pages = ceil($count/$_SESSION["count"]);
            if($_SESSION["page"]>1){
-                $fout .= '<span  id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                $fout .= '<span  id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
             }$fout .= '<ul>';
            $a = $b = $c = $d = $e = $f = 0;
            for($i = 1; $i <= $pages; $i++){
@@ -211,7 +211,7 @@ function print_admin_users($cms){
                        $b = 1; $e = 0;
                       $fout .= '<li class="active-page">'.$i.'</li>';
                    }else{
-                       $fout .= '<li  id="page-'.$i.'" onClick=\'goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                       $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                    }
                }else if((!$c||!$b) && !$f && $i<$pages){
                    $f = 1; $e = 0;
@@ -220,7 +220,7 @@ function print_admin_users($cms){
                    $fout .= '<li class="dots">. . .</li>';
                }
            }if($_SESSION["page"]<$pages){
-               $fout .= '<li  id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+               $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
            }$fout .= '
      </ul>
     </div>';

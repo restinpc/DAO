@@ -87,7 +87,7 @@ function print_order_confirm($site){
                 </div>
             </div>
         </div>';
-        $site->onload .= ' star_rating(5); ';
+        $site->onload .= ' document.framework.starRating(5); ';
     }
     return $fout;
 }

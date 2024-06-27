@@ -9,31 +9,34 @@
 */
 
 require_once("engine/nodes/session.php");
-if(empty($_SESSION["user"]["id"])) die(engine::error(401));
+
+if(empty($_SESSION["user"]["id"])) {
+    die(engine::error(401));
+}
 $fout = '<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css">
-<link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css">
+    <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body_images nodes">';
-if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
-    if(!empty($_FILES) && !empty($_POST["name"])){
+if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
+    if (!empty($_FILES) && !empty($_POST["name"])) {
         $name = engine::escape_string($_POST["name"]);
         $file = file::upload('tiny_image', 'img/data', 1);
-        if($file == "error"){
-            $fout .= '<script>alert("'.engine::lang("Error").'");parent.js_hide_wnd();</script>';
-        }else{
+        if ($file == "error") {
+            $fout .= '<script>alert("'.engine::lang("Error").'"); parent.document.framework.hideWindow();</script>';
+        } else {
             $image_size = getimagesize($_SERVER["DOCUMENT_ROOT"].'/img/data/'.$file);
             $fout .= '
             <script>
                 parent.tinymce.EditorManager.get("editable").execCommand(\'mceInsertContent\', false, "<p><img src=\"'.$_SERVER["PUBLIC_URL"].'/img/data/'.$file.'\" style=\"width: 100%; max-width: '.$image_size[0].'px; max-height: '.$image_size[1].'px; margin-left: auto; margin-right: auto; display: block;\" alt=\"'.$name.'\"  title=\"'.$name.'\"  /></p>");
-                parent.js_hide_wnd(); 
+                parent.document.framework.hideWindow(); 
             </script>';
         }
-    }else{
+    } else {
         $fout .= '<p>'.engine::lang("Select an image to upload").'</p><br/>
         <div class="w100p center">
             <form method="POST" ENCTYPE="multipart/form-data" id="form" >
@@ -89,7 +92,7 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
             </center>
         </form>';
     }
-}else{
+} else {
     if (!empty($_POST)) {
         $fout .= '<script>
             try{ 
@@ -99,7 +102,7 @@ if(!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1){
                 parent.document.getElementById("new_profile_picture").value="'.$_POST["file1"].'"; 
                 parent.document.getElementById("edit_profile_form").submit();
             }catch(e){ };
-            top.js_hide_wnd();
+            top.document.framework.hideWindow();
             </script>';
     } else {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';

@@ -29,13 +29,13 @@ function print_navigation($site, $title){
                 <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>    
             </span>';
         $fout .= '
-        <span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == engine::lang("Products")?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_'.$i.'").click();\'>'
+        <span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == engine::lang("Products")?'selected':'').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
         . '<a id="profile_menu_link_'.$i++.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/product').'">'.engine::lang("Products").'</a></span>';
     $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "1" AND `url` <> "" ORDER BY `order` DESC';
     $res = engine::mysql($query);
     while($data = mysqli_fetch_array($res)){
         $fout .= '
-        <span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == $data["value"]?'selected':'').'" onClick=\'document.getElementById("profile_menu_link_'.$i.'").click();\'>'
+        <span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == $data["value"]?'selected':'').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
         . '<a id="profile_menu_link_'.$i++.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/product/'.$data["url"]).'">'.$data["value"].'</a></span>';
     }
         $fout .= '</div>'

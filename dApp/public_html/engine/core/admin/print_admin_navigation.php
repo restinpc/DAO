@@ -23,7 +23,7 @@ function print_admin_navigation($cms){
     $fout = '<span class="profile_menu_item show_all selected" ><a>'.$cms->title.'</a>
             <div  id="profile_menu_show_nav" class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>     
         </span><span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($cms->title == engine::lang("Admin")?'selected':'').'" '
-        . 'onClick=\'document.getElementById("profile_menu_link_0").click();\'>'
+        . 'onClick=\'$id("profile_menu_link_0").click();\'>'
         . '<a id="profile_menu_link_0" href="'.$_SERVER["DIR"].'/admin">'.engine::lang("Admin").'</a></span>';
     $query = 'SELECT `admin`.*, `access`.`access` FROM `nodes_access` AS `access` '
             . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`id` = `access`.`admin_id` '
@@ -33,7 +33,7 @@ function print_admin_navigation($cms){
     while($data = mysqli_fetch_array($res)){
         if($data["access"]){
             $fout .= '<span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($cms->title == engine::lang($data["name"])?'selected':'').'" '
-            . 'onClick=\'document.getElementById("profile_menu_link_'.$i.'").click();\'>'
+            . 'onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
             . '<a id="profile_menu_link_'.$i++.'" href="'.$_SERVER["DIR"].'/admin/?mode='.$data["url"].'">'.engine::lang($data["name"]).'</a></span>';
         }
     }

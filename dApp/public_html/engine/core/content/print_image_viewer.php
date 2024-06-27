@@ -36,7 +36,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
             $image = $images[$i];
             $image = str_replace('../img', '/img', $image);
             $size = getimagesize($image);
-            $text = str_replace($images[$i].'"', $image.'"  id="viewer-image-'.$i.'" alt="'.$image.'" onClick=\'nodes_galery("'.$image.'");\' class="img pointer"', $text);
+            $text = str_replace($images[$i].'"', $image.'"  id="viewer-image-'.$i.'" alt="'.$image.'" onClick=\'document.framework.nodesGallery("'.$image.'");\' class="img pointer"', $text);
             if (!$size[0]) {
                 $size = getimagesize($_SERVER["PUBLIC_URL"].$image);
             }
@@ -48,7 +48,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
                 }
                 $galery .= '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
                     <a id="image-'.$i.'" target="_blank" href="'.$image.'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
-                        <img id="nodes_galery_'.$i.'" src="'.$image.'" itemprop="thumbnail" alt="'.$image.'" title="'.$title.'" />
+                        <img id="nodes_gallery_'.$i.'" src="'.$image.'" itemprop="thumbnail" alt="'.$image.'" title="'.$title.'" />
                     </a>
                     <figcaption itemprop="caption description">'.$title.'</figcaption>                                 
                 </figure>';
@@ -57,7 +57,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
     }
     if (!empty($galery)) {
         $fout = $text.'
-        <div class="nodes_galery hidden" itemscope itemtype="http://schema.org/ImageGallery">
+        <div class="nodes_gallery hidden" itemscope itemtype="http://schema.org/ImageGallery">
             '.$galery.'
         </div>
         <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -95,7 +95,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
                 </div>
             </div>
         </div>';
-        $site->onload .= '; show_rotator(\'.nodes_galery\'); ';
+        $site->onload .= '; document.framework.showRotator(".nodes_gallery"); ';
         return $fout;
     } else return $text;
 }

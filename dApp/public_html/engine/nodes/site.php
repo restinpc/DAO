@@ -1,6 +1,6 @@
 <?php
 /**
-* Framework site primary class.
+* DAO Mansion site primary class.
 * @path /engine/nodes/site.php
 *
 * @name    DAO Mansion    @version 1.0.3
@@ -182,7 +182,7 @@ function __construct(){
         if (strlen($keywords) > 300) {
             $keywords = mb_substr($keywords, 0, 300) . '..';
         }
-        $loader = "/img/load.gif";
+        $loader = $_SERVER["DIR"]."/img/load.gif";
         $fout = '<!DOCTYPE html>
 <html itemscope itemtype="http://schema.org/WebSite" lang="'.$_SESSION["Lang"].'" style="background: #1a1d1d url('.$_SERVER["DIR"].$loader.') no-repeat center center fixed; min-height: 400px; background-size: 45px;">
 <head>
@@ -215,6 +215,8 @@ function __construct(){
 ';
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
+    window.stateChangeIsLocal = true;
+    History.enabled = true;
     if (!document.framework) {
         document.framework = {};
     }
@@ -246,7 +248,7 @@ if (!isset($_POST["jQuery"])) {
             return;
         }
         try {
-            material_icons();
+            document.framework.materialIcons();
             document.framework.preload();
             document.framework.loading_state=5;
             setTimeout(document.framework.display, 1000);
@@ -254,8 +256,12 @@ if (!isset($_POST["jQuery"])) {
         clearTimeout(document.framework.timeout);
     }
     window.onload = document.framework.loading_site;
+    document.framework.root_dir = "'.$_SERVER["DIR"].'";
+    document.framework.load_events = true;
     // todo remove legacy 4 july
     const loading_site = document.framework.loading_site();
+    let root_dir = "'.$_SERVER["DIR"].'";
+    let load_events = true;
 </script>';
 }
 $fout .= '
@@ -271,27 +277,12 @@ $fout .= '
 </style>
 </head>
 <body style="opacity: 0; display: contents !important;" class="nodes">
-<img src="'.$_SERVER["DIR"].'/img/load.gif" style="display:none;" onLoad=\'document.framework.loading_site();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+<img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loading_site();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
     } else {
         $fout = '<title>'.$this->title.'</title>
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
     }
     $fout .= $this->content.'
-<script type="text/javascript">
-    if (!document.framework) {
-        document.framework = {};
-    }
-    // todo remove legacy 4 july
-    document.framework.root_dir = "'.$_SERVER["DIR"].'";
-    let root_dir = "'.$_SERVER["DIR"].'";';
-if (!isset($_POST["jQuery"])) {
-    $fout .= '
-        document.framework.load_events = true;
-        // todo remove legacy 4 july
-        let load_events = true;';
-}
-    $fout .= '
-</script>
 <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
 <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
 <script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>

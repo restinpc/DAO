@@ -29,7 +29,7 @@ function print_product_filter($site){
     $res = engine::mysql($query);
     $flag = 0;
     while($data = mysqli_fetch_array($res)){
-        $filter .= '<select  id="select-product-filter" class="input" name="'.$data["id"].'" onChange=\'document.getElementById("filer_form").submit();\'>
+        $filter .= '<select  id="select-product-filter" class="input" name="'.$data["id"].'" onChange=\'$id("filer_form").submit();\'>
         <option value="0">'.engine::lang("Any").' '.engine::lang($data["value"]).'</option>';
         $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "'.$data["id"].'"';
         $r = engine::mysql($query);

@@ -67,6 +67,6 @@ function print_chat($user_id){
         }
     }
     $fout .= '<tr><td> </td></tr></table>
-    <script>browser_time();</script>';
+    <script>document.framework.browser_time();</script>';
     return $fout;
 }

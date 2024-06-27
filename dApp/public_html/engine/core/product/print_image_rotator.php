@@ -29,7 +29,7 @@ function print_image_rotator($site, $caption, $images){
     $fout = '
     <div id="jssor_1" style="position: relative; margin: 0 auto; left: 0px; width: 600px; height: 500px; overflow: hidden; visibility: hidden;">
         <div data-u="slides" id="slider_block" style="cursor: default; position: relative; width: 600px; top: 0px; left: 0px; height: 500px; overflow: hidden;">
-            <div><a id="link-g0" onClick=\'onpop_state = 1; document.getElementById("g0").click();\'><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'"  /></a> </div>';
+            <div><a id="link-g0" onClick=\'$id("g0").click();\'><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'"  /></a> </div>';
     $size = getimagesize($_SERVER["DIR"].'/img/data/big/'.$images[0]);
     if(!$size[0]){
         $size = getimagesize($images[0]);
@@ -59,7 +59,7 @@ function print_image_rotator($site, $caption, $images){
                     }
                 }
                 $fout .= '<div style="display:none;"> '
-                    . '<a id="link-'.$i.'" onClick=\'onpop_state = 1; document.getElementById("g'.$i.'").click();\'>'
+                    . '<a id="link-'.$i.'" onClick=\'$id("g'.$i.'").click();\'>'
                     . '<img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'"  />'
                     . '</a></div>';
                 $galery .= '
@@ -80,7 +80,7 @@ function print_image_rotator($site, $caption, $images){
             <div data-u="prototype" style="width:21px;height:21px;"></div>
         </div>
     </div>
-    <div class="nodes_galery" itemscope itemtype="http://schema.org/ImageGallery">'.$galery.'</div>
+    <div class="nodes_gallery" itemscope itemtype="http://schema.org/ImageGallery">'.$galery.'</div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
         <div class="pswp__scroll-wrap">
@@ -117,6 +117,6 @@ function print_image_rotator($site, $caption, $images){
         </div>
     </div>';
 
-    $site->onload .= '; show_rotator(\'.nodes_galery\');';
+    $site->onload .= '; document.framework.showRotator(".nodes_gallery");';
     return $fout;
 }

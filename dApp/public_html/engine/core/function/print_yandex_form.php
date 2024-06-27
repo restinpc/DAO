@@ -55,7 +55,7 @@ function print_yandex_form($invoice_id, $sum, $return, $autopay=0){
             <button id="yandex-button-payment" type="submit" class="btn w280">'.engine::lang("Make a payment").'</button>
         </form>';
     if($autopay){
-        $fout.= '<script>document.getElementById("yandex_form").submit();</script>';
+        $fout.= '<script>$id("yandex_form").submit();</script>';
     }
     return $fout;
 }

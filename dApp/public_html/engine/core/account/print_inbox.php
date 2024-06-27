@@ -52,8 +52,8 @@ function print_inbox($site, $target_id){
                     $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
                 } catch(E) {}
             });
-            refresh_chat("'.$target_id.'");
-            setInterval(refresh_chat, 10000, "'.$target_id.'");
+            document.framework.refreshChat("'.$target_id.'");
+            setInterval(document.framework.refreshChat, 10000, "'.$target_id.'");
         ';
         $fout .= '<div id="nodes_chat"></div>';
         $query = 'UPDATE `nodes_inbox` SET `readed` = "'.date("U").'" WHERE `to` = "'.$_SESSION["user"]["id"].'" AND `readed` = 0';
@@ -73,7 +73,7 @@ function print_inbox($site, $target_id){
                     <font class="chat_font">'.engine::lang("online").'</font>
                 </div>
             </div>
-            <div id="div-user-'.$target["id"].'" class="chat_user_right" onClick=\'document.getElementById("target").click();\'>
+            <div id="div-user-'.$target["id"].'" class="chat_user_right" onClick=\'$id("target").click();\'>
                 <img src="'.$_SERVER["DIR"].'/img/pic/'.$target["photo"].'" width=50 /><br/>
                 <div class="chat_user_name">
                     <a href="'.$_SERVER["DIR"].'/'.$target["url"].'" id="target" class="chat_user_name_font">'.$target["name"].'</a>
@@ -82,10 +82,10 @@ function print_inbox($site, $target_id){
             </div>
             <div class="chat_center">
                 <textarea name="text" id="nodes_message_text" class="input" placeHolder="'.engine::lang("Your message here").'"
-                    onkeypress=\'if(event.keyCode==13&&!event.shiftKey){ event.preventDefault(); post_message("'.$target_id.'"); } \'
+                    onkeypress=\'if(event.keyCode==13&&!event.shiftKey){ event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
                 ></textarea>
                 <br/>
-                <input id="send-message" type="button" onClick=\'post_message("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'"  />
+                <input id="send-message" type="button" onClick=\'document.framework.postMessage("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'"  />
             </div>
             <div class="clear"></div><br/>';
     } else {

@@ -10,7 +10,7 @@
 */
 
 if(isset($argv[1])) $_SERVER["HTTP_HOST"] = $argv[1];
-else $_SERVER["HTTP_HOST"] = "nodes-tech.ru";
+else $_SERVER["HTTP_HOST"] = "dao-mansion.ru";
 $_SERVER["DOCUMENT_ROOT"] = "/home/n/nodestecru/DAO/dApp/public_html";
 $_SERVER["REQUEST_URI"] = "/cron.php";
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"]);

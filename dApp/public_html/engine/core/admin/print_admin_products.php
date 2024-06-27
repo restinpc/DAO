@@ -31,7 +31,7 @@ function print_admin_products($cms){
         engine::error(401);
         return;
     }
-    $cms->onload .= '; tinymce_init(); ';
+    $cms->onload .= '; document.framework.tinymce_init(); ';
     if($_GET["action"]=="add"){
         if($admin_access != 2){
             engine::error(401);
@@ -146,7 +146,7 @@ function print_admin_products($cms){
                         </div>';
                     }$fout .= '
                         <div class="clear"><br/></div>
-                    <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'show_photo_editor(0,0);\' /><br/><br/><br/>
+                    <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/><br/>
                     <input type="hidden" name="product" value="1" />
                 <div class="add_product_left">
                     '.engine::lang("Please, describe this item").'<br/><br/>
@@ -157,7 +157,7 @@ function print_admin_products($cms){
                 $res = engine::mysql($query);
                 while($data=  mysqli_fetch_array($res)){
                     $flag = 0;
-                    $select = '<select id="select-product-data-'.$data["id"].'" class="input w280" style="margin-bottom: 15px;" name="property_'.$data["id"].'" onChange=\'if(this.value=="-1"){document.getElementById("new_value_'.$data["id"].'").style.display="block"; jQuery("#new_value_'.$data["id"].'").removeClass("hidden"); this.style.display="none";}\'>'
+                    $select = '<select id="select-product-data-'.$data["id"].'" class="input w280" style="margin-bottom: 15px;" name="property_'.$data["id"].'" onChange=\'if(this.value=="-1"){$id("new_value_'.$data["id"].'").style.display="block"; jQuery("#new_value_'.$data["id"].'").removeClass("hidden"); this.style.display="none";}\'>'
                     . '<option id="option-product-data-'.$data["id"].'-0" disabled selected>'.$data["value"].'</option>';
                     $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "'.$data["id"].'"';
                     $r = engine::mysql($query);
@@ -178,7 +178,7 @@ function print_admin_products($cms){
                         <input id="product-new-value" type="text" name="new_value" class="input w280" placeHolder="'.engine::lang("Value").'" /><br/>
                     </div>
                     <input id="product-add-property" type="button" value="'.engine::lang("Add new property").'" class="btn small w280" 
-                        onClick=\'document.getElementById("nodes_new_properties").style.display="block";
+                        onClick=\'$id("nodes_new_properties").style.display="block";
                         jQuery("#nodes_new_properties").removeClass("hidden");
                         this.style.display="none";\' 
                     /><br/><br/>';
@@ -312,24 +312,26 @@ function print_admin_products($cms){
                 $images = explode(";", $product["img"]);
                 $fout .= '<table align=center><tr>';
                     $i=0;
-                    foreach($images as $img){
+                    foreach ($images as $img) {
                         $img = trim($img);
-                        if(!empty($img)){
+                        if (!empty($img)) {
                             $i++;    
-                            if($i>5) break;
+                            if ($i > 5) {
+                                break;
+                            }
                             $fout .= '<td id="block_'.$i.'" class="product_preview_image_small">'
                             . '<img id="img-product-'.$i.'" class="img" src="'.$_SERVER["DIR"].'/img/data/thumb/'.$img.'" onClick=\'select_image("'.$i.'", "'.$img.'");\'/><br/>
-                                <div id="div-product-'.$i.'" class="new_small_photo" onClick=\'show_photo_editor('.$product["id"].', '.$i.');\' > </div>';
-                            if($i>1){
-                                $fout .= '<input id="product-delete-'.$product["id"].'"  class="btn small del_button" type="button" value="'.engine::lang("Delete").'" onClick=\'delete_image("'.$product["id"].'", "'.$i.'");\' />';
+                                <div id="div-product-'.$i.'" class="new_small_photo" onClick=\'document.framework.showPhotoEditor('.$product["id"].', '.$i.');\' > </div>';
+                            if ($i > 1){
+                                $fout .= '<input id="product-delete-'.$product["id"].'" class="btn small del_button" type="button" value="'.engine::lang("Delete").'" onClick=\'document.framework.admin.deleteImage("'.$product["id"].'", "'.$i.'");\' />';
                             }
                             $fout .= '</td>';
                         }
                     }
-                    if($i<4){
+                    if ($i < 4){
                         $fout .= '<td class="add_td">'
-                                . '<div id="div-add-photo-'.$i.'" class="new_add_photo" onClick=\'show_photo_editor('.$product["id"].', '.(++$i).');\' > </div>
-                                </td>';
+                            . '<div id="div-add-photo-'.$i.'" class="new_add_photo" onClick=\'document.framework.showPhotoEditor('.$product["id"].', '.(++$i).');\' > </div>
+                            </td>';
                     }
                 $fout .= '</tr>
                 </table>
@@ -344,21 +346,21 @@ function print_admin_products($cms){
                         <br/>';
                     $query = 'SELECT * FROM `nodes_product_property` ORDER BY `id` ASC';
                     $res = engine::mysql($query);
-                    while($fdata=  mysqli_fetch_array($res)){
+                    while ($fdata = mysqli_fetch_array($res)) {
                         $flag = 0;
-                        $fout .= '<select id="select-product-data-'.$fdata["id"].'" class="input w280" name="property_'.$fdata["id"].'" title="'.$fdata["value"].'" onChange=\'if(this.value=="-1"){document.getElementById("new_value_'.$fdata["id"].'").style.display="block"; jQuery("#new_value_'.$fdata["id"].'").removeClass("hidden"); this.style.display="none";}\' >'
+                        $fout .= '<select id="select-product-data-'.$fdata["id"].'" class="input w280" name="property_'.$fdata["id"].'" title="'.$fdata["value"].'" onChange=\'if(this.value=="-1"){$id("new_value_'.$fdata["id"].'").style.display="block"; jQuery("#new_value_'.$fdata["id"].'").removeClass("hidden"); this.style.display="none";}\' >'
                                 . '<option value="0">'.$fdata["value"].'</option>';
                         $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "'.$fdata["id"].'"';
                         $r = engine::mysql($query);
-                        while($d = mysqli_fetch_array($r)){
+                        while ($d = mysqli_fetch_array($r)) {
                             $flag = 1;
                             $query = 'SELECT * FROM `nodes_property_data` WHERE `product_id` = "'.$product["id"].'" '
                                     . 'AND `property_id` = "'.$fdata["id"].'" and `data_id` = "'.$d["id"].'"';
                             $rr = engine::mysql($query);
                             $dd = mysqli_fetch_array($rr);
-                            if(!empty($dd)){
+                            if (!empty($dd)) {
                                 $fout .= '<option id="option-product-data-'.$fdata["id"].'-'.$d["id"].'" selected value="'.$d["id"].'">'.$d["value"].'</option>'; 
-                            }else{
+                            } else {
                                 $fout .= '<option id="option-product-data-'.$fdata["id"].'-'.$d["id"].'" value="'.$d["id"].'">'.$d["value"].'</option>';
                             }
                         }$fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engine::lang("New value").'</option>
@@ -371,7 +373,7 @@ function print_admin_products($cms){
                             <input id="product-add-new-value" type="text" name="new_value" class="input w280" placeHolder="'.engine::lang("Value").'" /><br/>
                         </div>
                         <input id="product-new-property-button"  type="button" value="'.engine::lang("Add new property").'" class="btn small w280" 
-                            onClick=\'document.getElementById("nodes_new_properties").style.display="block";
+                            onClick=\'$id("nodes_new_properties").style.display="block";
                             jQuery("#nodes_new_properties").removeClass("hidden");
                             this.style.display="none";\' 
                         /><br/><br/>
@@ -472,26 +474,26 @@ function print_admin_products($cms){
                         . '<span id="input_'.$data["id"].'" class="hidden">'
                         . ' <input type="text" class="input" id="save_value_'.$data["id"].'" value="'.$data["value"].'" />
                             <input  id="button_save_value_'.$data["id"].'" type="button" class="btn small" value="'.engine::lang("Save").'" onClick=\'
-                        document.getElementById("category_id_'.$data["id"].'").value = "'.$data["id"].'";
-                        document.getElementById("category_action_'.$data["id"].'").value = "save_property";
-                        document.getElementById("category_value_'.$data["id"].'").value = document.getElementById("save_value_'.$data["id"].'").value;
-                        document.getElementById("category_'.$data["id"].'").submit();
+                        $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
+                        $id("category_action_'.$data["id"].'").value = "save_property";
+                        $id("category_value_'.$data["id"].'").value = $id("save_value_'.$data["id"].'").value;
+                        $id("category_'.$data["id"].'").submit();
                         \' /> 
                             </span>'
                         . '<select id="select_'.$data["id"].'" class="input" name="action" onChange=\'
                             if(this.value=="1"){
-                                document.getElementById("li_'.$data["id"].'").style.display = "block"; 
+                                $id("li_'.$data["id"].'").style.display = "block"; 
                                     jQuery("#li_'.$data["id"].'").removeClass("hidden");
                             }else if(this.value=="2"){
-                                document.getElementById("input_'.$data["id"].'").style.display = "block";
+                                $id("input_'.$data["id"].'").style.display = "block";
                                     jQuery("#input_'.$data["id"].'").removeClass("hidden");
-                                document.getElementById("value_'.$data["id"].'").style.display = "none";
-                                document.getElementById("select_'.$data["id"].'").style.display = "none";    
+                                $id("value_'.$data["id"].'").style.display = "none";
+                                $id("select_'.$data["id"].'").style.display = "none";    
                             }else if(this.value=="3"){
                                 if(confirm("'.engine::lang("Are you sure?").'")){
-                                    document.getElementById("category_id_'.$data["id"].'").value = "'.$data["id"].'";
-                                    document.getElementById("category_action_'.$data["id"].'").value = "delete";
-                                    document.getElementById("category_'.$data["id"].'").submit();
+                                    $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
+                                    $id("category_action_'.$data["id"].'").value = "delete";
+                                    $id("category_'.$data["id"].'").submit();
                                 }
                             }
                             \'>'
@@ -511,32 +513,32 @@ function print_admin_products($cms){
                             $fout .= '<input type="text" id="cat_url_'.$d["id"].'" name="value" class="input" placeHolder="URL" />';
                         }
                         $fout .= '<input id="cat_btn_'.$d["id"].'" type="button" class="btn small" value="'.engine::lang("Add").'" onClick=\'
-                        document.getElementById("category_id_'.$data["id"].'").value = "'.$data["id"].'";
-                        document.getElementById("category_action_'.$data["id"].'").value = "add";';
+                        $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
+                        $id("category_action_'.$data["id"].'").value = "add";';
                         if($data["id"]=="1"){
                             $fout .= '
                         try{
-                            document.getElementById("category_url_'.$data["id"].'").value = document.getElementById("cat_url_'.$d["id"].'").value;
+                            $id("category_url_'.$data["id"].'").value = $id("cat_url_'.$d["id"].'").value;
                         }catch(err){;};';
                         }
                         $fout .= '
-                        document.getElementById("category_value_'.$data["id"].'").value = document.getElementById("xcv_'.$d["id"].'").value;
-                        document.getElementById("category_'.$data["id"].'").submit();
+                        $id("category_value_'.$data["id"].'").value = $id("xcv_'.$d["id"].'").value;
+                        $id("category_'.$data["id"].'").submit();
                         \' /></li>';
                     }
                     $flag = 1;
                     $fout .= '<li>
                             <span id="category_public_'.$d["id"].'">'.$d["value"].' '.
                             '<input id="cat_btn_edit_'.$d["id"].'" type="button" class="btn small" value="'.engine::lang("Edit").'" onClick=\'
-                                document.getElementById("category_edit_'.$d["id"].'").style.display = "block";
+                                $id("category_edit_'.$d["id"].'").style.display = "block";
                                     jQuery("#category_edit_'.$d["id"].'").removeClass("hidden");
-                                document.getElementById("category_public_'.$d["id"].'").style.display = "none";
+                                $id("category_public_'.$d["id"].'").style.display = "none";
                                 \' /> ';
 
                     $fout .= '<input id="cat_btn_delete_'.$d["id"].'" type="button" class="btn small" value="'.engine::lang("Delete").'" onClick=\'if(confirm("'.engine::lang("Are you sure?").'")){
-                                document.getElementById("category_id_'.$data["id"].'").value = "'.$d["id"].'";
-                                document.getElementById("category_action_'.$data["id"].'").value = "cat_delete";
-                                document.getElementById("category_'.$data["id"].'").submit();
+                                $id("category_id_'.$data["id"].'").value = "'.$d["id"].'";
+                                $id("category_action_'.$data["id"].'").value = "cat_delete";
+                                $id("category_'.$data["id"].'").submit();
                             }\' />';
 
                     $fout .= '</span>'
@@ -546,17 +548,17 @@ function print_admin_products($cms){
                             $fout .= '<input type="text" id="edit_cat_url_'.$d["id"].'" name="value" value="'.$d["url"].'" class="input" placeHolder="URL" />';
                         }
                         $fout .= '<input id="cat_btn_save_'.$d["id"].'" type="button" class="btn small" value="'.engine::lang("Save").'"  onClick=\'
-                        document.getElementById("category_id_'.$data["id"].'").value = "'.$d["id"].'";
-                        document.getElementById("category_action_'.$data["id"].'").value = "edit_cat";
-                        document.getElementById("category_value_'.$data["id"].'").value = document.getElementById("cat_val_'.$d["id"].'").value;';
+                        $id("category_id_'.$data["id"].'").value = "'.$d["id"].'";
+                        $id("category_action_'.$data["id"].'").value = "edit_cat";
+                        $id("category_value_'.$data["id"].'").value = $id("cat_val_'.$d["id"].'").value;';
                         if($data["id"]=="1"){
                             $fout .= '
                         try{
-                            document.getElementById("category_url_'.$data["id"].'").value = document.getElementById("edit_cat_url_'.$d["id"].'").value;
+                            $id("category_url_'.$data["id"].'").value = $id("edit_cat_url_'.$d["id"].'").value;
                         }catch(err){;};
                         ';
                         }
-                        $fout .= 'document.getElementById("category_'.$data["id"].'").submit();
+                        $fout .= '$id("category_'.$data["id"].'").submit();
                                 \' />'
                             . '</span></li>';
                 }if(!$flag){
@@ -570,10 +572,10 @@ function print_admin_products($cms){
                             $fout .= '<input type="text" id="cat_urlx_'.$data["id"].'" name="value" class="input" placeHolder="URL" />';
                         }
                         $fout .= '<input  id="cat_add_f_'.$data["id"].'" type="button" class="btn small" value="'.engine::lang("Add").'" onClick=\'
-                        document.getElementById("category_id_'.$data["id"].'").value = "'.$data["id"].'";
-                        document.getElementById("category_action_'.$data["id"].'").value = "add";
-                        document.getElementById("category_value_'.$data["id"].'").value = document.getElementById("cv_'.$data["id"].'").value;
-                        document.getElementById("category_'.$data["id"].'").submit();
+                        $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
+                        $id("category_action_'.$data["id"].'").value = "add";
+                        $id("category_value_'.$data["id"].'").value = $id("cv_'.$data["id"].'").value;
+                        $id("category_'.$data["id"].'").submit();
                         \' /></li></ul>';
                 }else{
                     $fout .= '</ul>';
@@ -581,7 +583,7 @@ function print_admin_products($cms){
             }
             $fout .= '<br/></div>
                 <input  id="cat_add_new_prop" type="button" class="btn w280 mb10" value="'.engine::lang("Add new property").'" 
-                    onClick=\'document.getElementById("new_prop").style.display = "block"; jQuery("#new_prop").removeClass("hidden"); this.style.display = "none";\' 
+                    onClick=\'$id("new_prop").style.display = "block"; jQuery("#new_prop").removeClass("hidden"); this.style.display = "none";\' 
                 />';
             $fout .= '
                 <form method="POST" class="hidden" id="new_prop">
@@ -614,9 +616,9 @@ function print_admin_products($cms){
                 ); foreach($array as $order=>$value){
                     $table .= '<th>';
                     if($_SESSION["order"]==$order){
-                        if($_SESSION["method"]=="ASC") $table .= '<a id="table-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "DESC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
-                        else $table .= '<a id="table-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
-                    }else $table .= '<a id="table-'.$order.'" class="link" href="#" onClick=\'document.getElementById("order").value = "'.$order.'"; document.getElementById("method").value = "ASC"; submit_search_form();\'>'.engine::lang($value).'</a>';
+                        if($_SESSION["method"]=="ASC") $table .= '<a id="table-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+                        else $table .= '<a id="table-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
+                    }else $table .= '<a id="table-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
                     $table .= '</th>';
                 }
                 $table .= '
@@ -640,7 +642,7 @@ function print_admin_products($cms){
                 $table .= '
                         <form method="POST" id="edit_product_form_'.$data["id"].'" action="'.$_SERVER["DIR"].'/admin/?mode=products&action=edit&id='.$data["id"].'" >
                             <input type="hidden" name="edit" value="1" />
-                            <select id="select-act-'.$id.'" name="act" class="input" onChange=\'document.getElementById("edit_product_form_'.$data["id"].'").submit();\'>
+                            <select id="select-act-'.$id.'" name="act" class="input" onChange=\'$id("edit_product_form_'.$data["id"].'").submit();\'>
                                 <option id="option-act-'.$id.'-0">'.engine::lang("Choose action").'</option>
                                 <option id="option-act-'.$id.'-1" value="1">'.engine::lang("Edit item").'</option>';
 
@@ -660,7 +662,7 @@ function print_admin_products($cms){
 
         if($arr_count){
             $fout .= $table.'
-        <form method="POST"  id="query_form"  onSubmit="submit_search();">
+        <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -674,7 +676,7 @@ function print_admin_products($cms){
         if($to > $count) $to = $count;
         if($data[0]>0){
             $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                <nobr><select id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
+                <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
                  <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                  <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                  <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
@@ -685,7 +687,7 @@ function print_admin_products($cms){
            $fout .= '<div class="pagination" >';
                 $pages = ceil($count/$_SESSION["count"]);
                if($_SESSION["page"]>1){
-                    $fout .= '<span id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                    $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                 }$fout .= '<ul>';
                $a = $b = $c = $d = $e = $f = 0;
                for($i = 1; $i <= $pages; $i++){
@@ -698,7 +700,7 @@ function print_admin_products($cms){
                            $b = 1; $e = 0;
                           $fout .= '<li class="active-page">'.$i.'</li>';
                        }else{
-                           $fout .= '<li id="page-'.$i.'" onClick=\'goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                           $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                        }
                    }else if((!$c||!$b) && !$f && $i<$pages){
                        $f = 1; $e = 0;
@@ -708,7 +710,7 @@ function print_admin_products($cms){
                    }
                }
                if ($_SESSION["page"]<$pages) {
-                   $fout .= '<li id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                   $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                }
                $fout .= '
          </ul>

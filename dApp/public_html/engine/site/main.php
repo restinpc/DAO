@@ -325,7 +325,7 @@ if ($_SESSION["Lang"] == "ru") {
 $this->onload .= '
     try {
         window.addEventListener("click", () => {
-            document.getElementById("outro").addEventListener("ended", () => {
+            $id("outro").addEventListener("ended", () => {
                 window.location = "'.$_SERVER["DIR"].'/webvr/panorama";
             }, false);
         });

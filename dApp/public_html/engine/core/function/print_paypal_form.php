@@ -56,7 +56,7 @@ function print_paypal_form($invoice_id, $sum, $return, $autopay=0){
         <button id="paypal-button-payment" type="submit" class="btn w280">'.engine::lang("Make a payment").'</button>
     </form>';
     if($autopay){
-        $fout.= '<script>document.getElementById("paypal_form").submit();</script>';
+        $fout.= '<script>$id("paypal_form").submit();</script>';
     }
     return $fout;
 }

@@ -12,10 +12,10 @@ function pano_print_object($site, $object, $new=0){
         action=\'
             setTimeout(function(id){
                 if($id("scene_editor") && $id("scene_editor").style.display=="block"){
-                    if(!object_id){
+                    if(!document.panorama.objectId){
                         jQuery(".vr_object_window").css("display", "none");
                         $id("object_'.$object["id"].'_window").style.display = "block";
-                        object_id = "'.$object["id"].'";
+                        document.panorama.objectId = "'.$object["id"].'";
                     }
                 }else{
                     $id("object_"+id+"_text").setAttribute("opacity", "1");
@@ -39,29 +39,29 @@ function pano_print_object($site, $object, $new=0){
         <div id="object_'.$object["id"].'_window"  class="vr_object_window">
             <div style="padding-top:10px; padding-bottom:10px; text-align:center; font-weight:bold;">Object properties</div><br/>
             <form method="POST" id="object_'.$object["id"].'_form">
-                <input id="action_'.$object["id"].'" type="hidden" name="action" value="'.($new?'new_object':'edit_object').'" />
+                <input id="action_'.$object["id"].'" type="hidden" name="action" value="'.($new ? 'new_object' : 'edit_object').'" />
                 <input type="hidden" name="id" value="'.$object["id"].'" />
-                Text:<br/>
+                '.engine::lang("Text").':<br/>
                 <textarea required name="text"  class="input w100p">'.$object["text"].'</textarea><br/>
                     <br/>
-                Color:<br/>
+                '.engine::lang("Color").':<br/>
                 <input required id="object_'.$object["id"].'_color" name="color" type="text" class="input w100p" value="'.$object["color"].'" /><br/>
                     <br/>
-                Position:<br/>
+                '.engine::lang("Position").':<br/>
                 <input required id="object_'.$object["id"].'_position" name="position" type="text" class="input w100p" value="'.$object["position"].'" /><br/>
                     <br/>
-                Rotation:<br/>
+                '.engine::lang("Rotation").':<br/>
                 <input required id="object_'.$object["id"].'_rotation" name="rotation" type="text" class="input w100p" value="'.$object["rotation"].'" /><br/>
                     <br/>
-                Scale:<br/>
+                '.engine::lang("Scale").':<br/>
                 <input required id="object_'.$object["id"].'_scale" name="scale" type="text" class="input w100p" value="'.$object["scale"].'" /><br/>
                     <br/>   
-                <input type="button" class="btn w100p" value="Apply chages" onClick=\'apply_changes_object("'.$object["id"].'");\' />';
+                <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesObject("'.$object["id"].'");\' />';
         if(!$new){
-            $fout .= '<input type="button" class="btn w100p" value="Delete object" onClick=\'delete_object("'.$object["id"].'")\' />';
+            $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete object").'" onClick=\'document.panorama.deleteObject("'.$object["id"].'")\' />';
         }
         $fout .= '        
-                <input type="submit" class="btn w100p" value="Submit" /><br/><br/>
+                <input type="submit" class="btn w100p" value="'.engine::lang("Submit").'" /><br/><br/>
             </form>
         </div>';
         return $fout;

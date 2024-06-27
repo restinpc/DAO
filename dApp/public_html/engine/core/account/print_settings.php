@@ -76,7 +76,7 @@ function print_settings($site){
                         '.engine::lang("Profile image").'
                         <br/>
                         <br/>
-                        <input id="change-picture" type="button" class="btn w280" value="'.engine::lang("Change picture").'" onClick=\'show_photo_editor(0, 0);\' /><br/>
+                        <input id="change-picture" type="button" class="btn w280" value="'.engine::lang("Change picture").'" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/>
                     </div>
                 </td>
             </tr>

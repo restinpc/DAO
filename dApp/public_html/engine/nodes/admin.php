@@ -8,7 +8,7 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-class admin{
+class admin {
 public $site;           // Primary Site object.
 public $title;          // Page title.
 public $content;        // Page HTML data.
@@ -28,7 +28,7 @@ function admin($site){
             $_SERVER["SCRIPT_URI"] .= '?lang='.$_SESSION["Lang"];
         }
     }
-    if(!empty($_SESSION["user"]["email"]) && $_SESSION["user"]["admin"]=="1"){
+    if (!empty($_SESSION["user"]["email"]) && $_SESSION["user"]["admin"] == "1") {
         $this->statistic = array();
         $this->statistic["version"] = "2.0.".$site->configs["version"];
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `title` <> ""';
@@ -82,8 +82,8 @@ function admin($site){
         <div class="admin_content">
             '.$this->content.'
         </div>';
-        $site->onload .= 'admin_init(); '.$this->onload;
-    }else{
+        $site->onload .= 'document.framework.admin_init(); '.$this->onload;
+    } else {
         $this->content = engine::error(401);
     }
 }}

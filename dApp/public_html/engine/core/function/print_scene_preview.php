@@ -28,7 +28,7 @@ function print_scene_preview($site, $caption, $url, $img, $text){
     $fout = '
         <div class="content_block">
         <div  id="content_'.md5($url).'" class="content_img" style="background-image: url(\''.$_SERVER["DIR"].$img.'\');"
-            onClick=\'document.getElementById("'.md5($url).'").click();\'>
+            onClick=\'$id("'.md5($url).'").click();\'>
         </div>
             <a id="'.md5($url).'" target="_top" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].$url).'"><h3>'.$caption.'</h3></a>
             <p class="content_block_text">

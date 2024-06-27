@@ -105,7 +105,7 @@ if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
                 <font class="fs18">$ '.$product["price"].'</font><br/><br/>
                 '.engine::lang("Shipping from").': <a id="link-shipping" onClick=\'alert("'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'");\' title="'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'">'.$shipping["country"].'</a><br/>
                 <div class="order_detail_button">
-                    <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if(confirm("'.engine::lang("Are you sure?").'"))remove_from_bin("'.$key.'");\' />
+                    <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if(confirm("'.engine::lang("Are you sure?").'")){ document.framework.removeFromCart("'.$key.'"); }\' />
                 </div>
             <div class="clear"></div>
             </div>';

@@ -55,7 +55,7 @@ function print_admin_files($cms){
             $i++;
             $fout .= '<form method="POST" id="form_'.$i.'"><input type="hidden" name="name" value="'.$file_name.'" /></form><a id="file-'.$i.'" href="'.$_SERVER["DIR"].'/file/'.$file_name.'" target="_blank">'.$file_name.'</a> ';
             if($admin_access == 2){
-                $fout .= '<div  id="delete-button-'.$i.'" class="close_image ml3 fl" onClick=\'document.getElementById("form_'.$i.'").submit();\' title="'.engine::lang("Delete").'"> </div>';
+                $fout .= '<div  id="delete-button-'.$i.'" class="close_image ml3 fl" onClick=\'$id("form_'.$i.'").submit();\' title="'.engine::lang("Delete").'"> </div>';
             }
             $fout .= '<br/><br/>';
         }
@@ -69,9 +69,9 @@ function print_admin_files($cms){
 </div>';
      }
      if($admin_access == 2){
-        $fout .= '<input id="button" type="button" name="load" value="'.engine::lang("Upload files").'" class="btn w280" onClick=\'this.style.display="none";document.getElementById("form").style.display="block"; jQuery("#form").removeClass("hidden");\' /><br/>
+        $fout .= '<input id="button" type="button" name="load" value="'.engine::lang("Upload files").'" class="btn w280" onClick=\'this.style.display="none";$id("form").style.display="block"; jQuery("#form").removeClass("hidden");\' /><br/>
        <form method="POST" ENCTYPE="multipart/form-data" id="form" class="w280 m0a hidden">
-           <input id="file" type="file" onChange=\'document.getElementById("form").submit();\' required placeHolder="'.engine::lang("File").'" title="'.engine::lang("File").'" name="photo[]" multiple class="input pointer w280" /><br/><br/>
+           <input id="file" type="file" onChange=\'$id("form").submit();\' required placeHolder="'.engine::lang("File").'" title="'.engine::lang("File").'" name="photo[]" multiple class="input pointer w280" /><br/><br/>
        </form>
        ';
      }

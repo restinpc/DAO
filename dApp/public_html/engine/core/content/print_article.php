@@ -43,7 +43,7 @@ function print_article($site, $data){
     $fout .= '
     </div>
     <div class="clear"><br/></div>
-    <a id="show-comments" onClick=\'document.getElementById("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.engine::lang("Show comments").'</button><br/><br/></a>';
+    <a id="show-comments" onClick=\'$id("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.engine::lang("Show comments").'</button><br/><br/></a>';
     $fout .= '<div id="comments_block">
         <a name="comments"></a>
         <div class="tal pl10 fs21"><b>'.engine::lang("Latest comments").'</b><br/><br/></div>

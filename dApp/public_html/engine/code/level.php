@@ -1,6 +1,16 @@
 <?php
+/**
+* Prints interactive map of level
+* @path /engine/code/level.php
+*
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
+* @license http://www.apache.org/licenses/LICENSE-2.0
+*/
+
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
+
 $fout = '<!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +22,7 @@ $fout = '<!DOCTYPE html>
         document.framework.load_events = false;
         document.framework.loading_site = () => {};
         document.framework.root_dir = "'.$_SERVER["DIR"].'";
-        // todo remove legacy 4 july
+        // todo remove legacy
         const load_events = false;
         const loading_site = () => {};
         const root_dir = "'.$_SERVER["DIR"].'";

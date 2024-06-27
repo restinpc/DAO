@@ -1,4 +1,13 @@
 <?php
+/**
+* A-Frame based panorama viewer.
+* @path /engine/code/panorama.php
+*
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
+* @license http://www.apache.org/licenses/LICENSE-2.0
+*/
+
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 
@@ -412,11 +421,11 @@ if(!empty($_GET["id"])){
         </a-entity>
         <a-entity id="line" trigger="none" line="color: white; opacity:0;"></a-entity>
         <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
-        <a-circle id="move_point" action=\'navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
+        <a-circle id="move_point" action=\'document.panorama.navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
         <a-image id="cursor_img" transparent="true" position="0 0 0"  look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
         <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
     </a-scene>
-    <audio id="vr-sound" preload autoplay><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
+    <audio id="vr-sound" preload><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
         ';
     if($_SESSION["user"]["id"] == "1"){
         $fout .= engine::pano_scene_editor($data);
@@ -428,15 +437,14 @@ if(!empty($_GET["id"])){
     $fout .= $gsv;
     $fout .= '</div>'
         . '<div id="vr-block"></div>';
-    $onload .= 'vr_load('.$data["level_id"].');';
+    $onload .= ' document.panorama.loadVR('.$data["level_id"].');';
 }else engine::error();
 
 echo '<!DOCTYPE html>
 <html style="background-color:#fff;">
 <head>
 <meta charset="UTF-8" />
-<script src="'.$_SERVER["DIR"].'/script/aframe/aframe-master.js"></script>
-<script src="'.$_SERVER["DIR"].'/script/aframe/panorama.js"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/aframe-master.js" type="text/javascript"></script>
 <script>
     if (!document.framework) {
         document.framework = {};
@@ -459,10 +467,11 @@ echo '<!DOCTYPE html>
 </head>
 <body class="nodes">
     '.$fout.'
-    <script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-    <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript"></script>
     <script>window.addEventListener("load", () => {
-        const scene = document.getElementById("nodes_scene");
+        const scene = $id("nodes_scene");
         scene.addEventListener("enter-vr", () => {
             try {
                 parent.document.panorama.permission();

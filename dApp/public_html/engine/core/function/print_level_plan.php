@@ -47,7 +47,7 @@ function print_level_plan($level_id){
                 title="'.$scene["name"].'" 
                 onClick=\'
                     parent.document.panorama.hideMap();
-                    parent.document.getElementById("panorama").src="/panorama.php?id='.$scene["id"].'";
+                    parent.$id("panorama").src="'.$_SERVER["DIR"].'/panorama.php?id='.$scene["id"].'";
                 \'
             />
         ';

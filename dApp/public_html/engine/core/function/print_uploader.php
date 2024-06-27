@@ -24,8 +24,8 @@ function print_uploader($count=1){
     $fout .= '
     <div class="clear"></div><br/>
     <input id="input-upload-new" type="button" class="btn w280" id="uploading_button1" value="'.engine::lang("Upload new image").'" onClick=\' try{  
-        parent.document.getElementById("uploading_button1").style.display="none"; 
-        parent.document.getElementById("new_img1").style.display="block"; 
+        parent.$id("uploading_button1").style.display="none"; 
+        parent.$id("new_img1").style.display="block"; 
     }catch(e){ } \' />
     ';
     return $fout;

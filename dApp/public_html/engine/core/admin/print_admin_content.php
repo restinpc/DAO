@@ -34,7 +34,7 @@ function print_admin_content($cms){
     $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
     $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
-    $cms->onload = ' tinymce_init(); ';
+    $cms->onload = ' document.framework.tinymce_init(); ';
     if(!empty($_POST["caption"])&&!empty($_POST["text"]) ){
         if($admin_access != 2){
             engine::error(401);
@@ -154,7 +154,7 @@ function print_admin_content($cms){
     }
     $fout .= '<div class="document640">
         <form method="POST" action="'.$_SERVER["DIR"].'/admin/?mode=content" id="admin_lang_select">'.engine::lang("Select your language").': 
-        <select  id="select-lang" class="input" name="lang" onChange=\'document.getElementById("admin_lang_select").submit();\'>';
+        <select  id="select-lang" class="input" name="lang" onChange=\'$id("admin_lang_select").submit();\'>';
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -253,8 +253,8 @@ function print_admin_content($cms){
             if(!empty($data["img"])){
                 $fout .= '<div id="delete_image_block"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'" /><br/><br/>'
                         . '<input type="hidden" id="noimg" name="noimg" value="0" />'
-                        . '<input id="input-delete-image" type="button" onClick=\'  document.getElementById("noimg").value="1"; '
-                        . '                                 document.getElementById("edit_form").submit();\' '
+                        . '<input id="input-delete-image" type="button" onClick=\'  $id("noimg").value="1"; '
+                        . '                                 $id("edit_form").submit();\' '
                         . 'class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
             }
             for($i = 1; $i<2; $i++){
@@ -263,7 +263,7 @@ function print_admin_content($cms){
                 </div>';
             }$fout .= '
             <div class="clear"><br/></div>
-            <input id="input-upload-image" type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'show_photo_editor(0,0);\' /><br/><br/>
+            <input id="input-upload-image" type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>
             <div class="w600">
             <textarea class="input w600" height="600" id="editable" name="text" >'.$data["text"].'</textarea>
             </div>
@@ -349,8 +349,8 @@ function print_admin_content($cms){
             if(!empty($data["img"])){
                 $fout .= '<div id="delete_image_block"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'" /><br/><br/>'
                 . '<input type="hidden" id="noimg" name="noimg" value="0" />'
-                . '<input id="input-delete-image" type="button" onClick=\'  document.getElementById("noimg").value="1"; '
-                . '                                 document.getElementById("edit_form").submit();\' '
+                . '<input id="input-delete-image" type="button" onClick=\'  $id("noimg").value="1"; '
+                . '                                 $id("edit_form").submit();\' '
                 . 'class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
             }
             for($i = 1; $i<2; $i++){
@@ -359,7 +359,7 @@ function print_admin_content($cms){
                 </div>';
             }$fout .= '
                 <div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'show_photo_editor(0,0);\' /><br/><br/>
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>
             <div class="w600">
             <textarea class="input w600" id="editable" name="text">'.$data["text"].'</textarea>
             </div><br/>
@@ -424,7 +424,7 @@ function print_admin_content($cms){
             }$table .= '</table></div>';
             if($arr_count){
                 $fout .= $table.'
-                <form method="POST"  id="query_form"  onSubmit="submit_search();">
+                <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
                 <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
                 <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -437,7 +437,7 @@ function print_admin_content($cms){
                 if($to > $count) $to = $count;
                 if($data[0]>0){
                     $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                        <nobr><select  id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
+                        <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
                          <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                          <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                          <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
@@ -447,7 +447,7 @@ function print_admin_content($cms){
                     $fout .= '<div class="pagination" >';
                     $pages = ceil($count/$_SESSION["count"]);
                     if($_SESSION["page"]>1){
-                        $fout .= '<span  id="page-pref"  onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                        $fout .= '<span id="page-pref" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                     }$fout .= '<ul>';
                     $a = $b = $c = $d = $e = $f = 0;
                     for($i = 1; $i <= $pages; $i++){
@@ -460,7 +460,7 @@ function print_admin_content($cms){
                                $b = 1; $e = 0;
                               $fout .= '<li class="active-page">'.$i.'</li>';
                            }else{
-                               $fout .= '<li  id="page-'.$i.'" onClick=\'goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                               $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                            }
                        }else if((!$c||!$b) && !$f && $i<$pages){
                            $f = 1; $e = 0;
@@ -469,7 +469,7 @@ function print_admin_content($cms){
                            $fout .= '<li class="dots">. . .</li>';
                        }
                     }if($_SESSION["page"]<$pages){
-                       $fout .= '<li  id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                       $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                     }$fout .= '</ul>
                     </div>';
                  }$fout .= '</form>
@@ -521,7 +521,7 @@ function print_admin_content($cms){
                 </div>';
             }$fout .= '
                 <div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'show_photo_editor(0,0);\' /><br/><br/>
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>
                 <div class="w600">
                 <textarea class="input w600" id="editable" name="text">'.$_POST["text"].'</textarea>
                 </div><br/><br/>
@@ -585,7 +585,7 @@ function print_admin_content($cms){
             </table></div><br/>';
         if($arr_count){
             $fout .= $table.'
-            <form method="POST"  id="query_form"  onSubmit="submit_search();">
+            <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
             <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
             <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
             <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -598,7 +598,7 @@ function print_admin_content($cms){
             if($to > $count) $to = $count;
             if($data[0]>0){
                 $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                    <nobr><select  id="select-pagination" class="input" onChange=\'document.getElementById("count_field").value = this.value; submit_search_form();\' >
+                    <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
                      <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
                      <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
                      <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
@@ -608,7 +608,7 @@ function print_admin_content($cms){
                 $fout .= '<div class="pagination" >';
                 $pages = ceil($count/$_SESSION["count"]);
                 if($_SESSION["page"]>1){
-                    $fout .= '<span  id="page-prev" onClick=\'goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                    $fout .= '<span  id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                 }$fout .= '<ul>';
                 $a = $b = $c = $d = $e = $f = 0;
                 for($i = 1; $i <= $pages; $i++){
@@ -621,7 +621,7 @@ function print_admin_content($cms){
                            $b = 1; $e = 0;
                           $fout .= '<li class="active-page">'.$i.'</li>';
                        }else{
-                           $fout .= '<li  id="page-'.$i.'" onClick=\'goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                           $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                        }
                    }else if((!$c||!$b) && !$f && $i<$pages){
                        $f = 1; $e = 0;
@@ -630,7 +630,7 @@ function print_admin_content($cms){
                        $fout .= '<li class="dots">. . .</li>';
                    }
                 }if($_SESSION["page"]<$pages){
-                   $fout .= '<li  id="page-next" class="next" onClick=\'goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                   $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }$fout .= '</ul>
                 </div>
                 ';
@@ -641,7 +641,7 @@ function print_admin_content($cms){
         }
         if($admin_access == 2){
             $fout .= '<br/>
-            <input id="input-add-dir" type="button" onClick=\'document.getElementById("new_directory").style.display="block"; jQuery("#new_directory").removeClass("hidden"); this.style.display="none";\' value="'.engine::lang("Add a new directory").'" class="btn w280" />
+            <input id="input-add-dir" type="button" onClick=\'$id("new_directory").style.display="block"; jQuery("#new_directory").removeClass("hidden"); this.style.display="none";\' value="'.engine::lang("Add a new directory").'" class="btn w280" />
             <div id="new_directory" class="hidden document" >
             <form method="POST"  ENCTYPE="multipart/form-data">
             <center>
@@ -659,7 +659,7 @@ function print_admin_content($cms){
                 </div>';
             }$fout .= '
                 <div class="clear"><br/></div>
-            <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'show_photo_editor(0,0);\' /><br/><br/>';
+            <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>';
 
             $fout .= '
             <div class="w600">

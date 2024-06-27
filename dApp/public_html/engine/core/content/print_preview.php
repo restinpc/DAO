@@ -29,13 +29,13 @@ function print_preview($site, $data){
     if(!empty($data["img"])){
         $fout .= '
         <div  id="content_'.md5($data["url"]).'" class="content_img" style="background-image: url(\''.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'\');"
-            onClick=\'document.getElementById("'.$data["url"].'").click();\'>
+            onClick=\'$id("'.$data["url"].'").click();\'>
             &nbsp;
         </div>';
     }else{
         $fout .= '
         <div  id="content_'.md5($data["url"]).'" class="content_img" style="background-image: url(\''.$_SERVER["DIR"].'/img/no-image.jpg\');"
-            onClick=\'document.getElementById("'.$data["url"].'").click();\'>
+            onClick=\'$id("'.$data["url"].'").click();\'>
             &nbsp;
         </div>';
     }
