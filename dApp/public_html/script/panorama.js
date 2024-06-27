@@ -437,6 +437,126 @@ document.panorama.addURL = () => {
     document.panorama.objectId = "new_google";
 }
 
+//------------------------------------------------------------------------------
+delete AFRAME.components['nodes-camera'];
+AFRAME.registerComponent("nodes-camera", {
+    tick: function () {
+        if (!document.panorama.vrLoadState) return;
+        try {
+            document.panorama.logo.object3D.rotation.y = document.panorama.camera.object3D.rotation.y+document.panorama.rig.object3D.rotation.y;
+            let rotation = (document.panorama.camera.getAttribute("rotation").x
+                    + document.panorama.rig.getAttribute("rotation").x) + ";"
+                    + (document.panorama.camera.getAttribute("rotation").y + document.panorama.rig.getAttribute("rotation").y);
+            if (rotation != document.panorama.cameraDegree){
+                document.panorama.cameraDegree = rotation;
+                window.history.replaceState( {} , 'Panorama Viewer', '/panorama.php?id='+document.panorama.scene.getAttribute("scene-id")+"#"+rotation);
+            }
+        } catch(e) { console.log("error 1"); }
+        //raycaster objects
+        try {
+            if (document.panorama.sceneState > 0) {
+                let raycaster = AFRAME.scenes[0].querySelector('[raycaster]').components.raycaster;
+                let func_flag = 0;
+                let hidden_flag = 0;
+                let move_flag = 0;
+                for (let i = 0; i < document.panorama.ray.components.raycaster.intersectedEls.length; i++) {
+                    let t = document.panorama.ray.components.raycaster.intersectedEls[i];
+                    if (t.className == "mesh load_later"){
+                        let pos1 = t.object3D.getWorldPosition(new THREE.Vector3);
+                        if (t.getAttribute("zoom") == document.panorama.zoom){
+                            t.className = "mesh";
+                            t.setAttribute("src", t.getAttribute("xsrc"));
+                            t.setAttribute("is_load", "true");
+                            let meshed = document.getElementsByClassName("mesh load_later");
+                            for (let y = 0; y < meshed.length; y++){
+                                let tt = meshed[y];
+                                if (tt.getAttribute("zoom") == document.panorama.zoom){
+                                    let pos2 = tt.object3D.getWorldPosition(new THREE.Vector3());
+                                    let dist =  Math.sqrt( (pos1.x-pos2.x)*(pos1.x-pos2.x) + (pos1.y-pos2.y)*(pos1.y-pos2.y) + (pos1.z-pos2.z)*(pos1.z-pos2.z) );
+                                    if ( (document.panorama.zoom < 3) || (dist < 500 && document.panorama.zoom == 3) || dist < 300 ){
+                                        setTimeout(function(tt){ tt.className = "mesh"; }, 1000, tt);
+                                        tt.setAttribute("src", tt.getAttribute("xsrc"));
+                                        tt.setAttribute("is_load", "true");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                for (let i = 0; i < raycaster.intersectedEls.length; i++){
+                    //display popup window
+                    if (raycaster.intersectedEls[i].getAttribute("popup") == "true"){
+                        document.panorama.popupState = 1;
+                        hidden_flag = 1;
+                        break;
+                    }
+                    //disable fusing on logo
+                    if (raycaster.intersectedEls[i].id == "vr_logo"){
+                        break;
+                    }
+                    //display navigation at floor
+                    if (raycaster.intersectedEls[i].id == "floor"){
+                        if (!document.panorama.mouseListnerFlag){
+                            let point = raycaster.intersections[i].point;
+                            document.panorama.movePoint.object3D.position.set(point.x, point.y+0.1, point.z);
+                            document.panorama.movePoint.setAttribute("material", "opacity", "0.5");
+                            document.panorama.mouseImg.setAttribute("material", "opacity", "0");
+                            move_flag = 1;
+                        }else{
+
+                        }
+                    }
+                    //checking to fusing
+                    let func = raycaster.intersectedEls[i].getAttribute("action");
+                    if (func) {
+                        func_flag = 1;
+                        document.panorama.startFuse(raycaster.intersectedEls[i]);
+                    } else if (raycaster.intersectedEls[i].id == "sky_back"){
+                        document.panorama.coordinatesVR = raycaster.intersections[i].point;
+                        if (document.panorama.coordinatesFrom != null) {
+                            let c = $id("marker").object3D.getWorldPosition(new THREE.Vector3());
+                            $id("line").setAttribute("line", "end", c.x+' '+c.y+' '+c.z);
+                            $id("line").setAttribute("line", "opacity", "1");
+                        }
+                    }
+                }
+                if (!move_flag && !document.panorama.mouseListnerFlag){
+                   document.panorama.movePoint.setAttribute("material", "opacity", "0.01");
+                }
+                if (!func_flag){
+                    document.panorama.currentObject = null;
+                    document.panorama.endFuse();
+                }
+                if (!hidden_flag && document.panorama.popupState){
+                    jQuery(".hidden_layer").attr("opacity", "0");
+                    document.panorama.popupState = 0;
+                }
+            }
+        } catch(e) {console.log("error 2");}
+        let rotation = document.panorama.camera.getAttribute("rotation");
+        let position = $id("vr_point").object3D.getWorldPosition(new THREE.Vector3());
+        //Moving objects to cursor
+        if (document.panorama.objectId != 0) {
+            try {
+                console.log($id("point_"+document.panorama.objectId+"_position"));
+                $id("point_"+document.panorama.objectId+"_position").value = position.x+" "+position.y+" "+position.z;
+                $id("point_"+document.panorama.objectId).object3D.position.set( position.x, position.y, position.z );
+            } catch(e) {
+                console.error(e);
+            };
+            try {
+                $id("object_"+document.panorama.objectId+"_position").value = position.x+" "+position.y+" "+position.z;
+                $id("object_"+document.panorama.objectId).object3D.position.set( position.x, position.y, position.z );
+            } catch(e) {};
+            try {
+                $id("url_"+document.panorama.objectId+"_position").value = position.x+" "+position.y+" "+position.z;
+                $id("url_"+document.panorama.objectId).object3D.position.set( position.x, position.y, position.z );
+            } catch(e) {};
+        }
+    }
+});
+//------------------------------------------------------------------------------
+
 document.panorama.mouseListner = (event) => {
     document.panorama.mouseListnerFlag = 1;
     const rect = document.panorama.canvas.getBoundingClientRect();
@@ -652,124 +772,6 @@ document.panorama.loadScene = (id, object_id) => {
         }
     });
 }
-//------------------------------------------------------------------------------
-delete AFRAME.components['nodes-camera'];
-AFRAME.registerComponent("nodes-camera", {
-    tick: function () {
-        if (!document.panorama.vrLoadState) return;
-        try {
-            document.panorama.logo.object3D.rotation.y = document.panorama.camera.object3D.rotation.y+document.panorama.rig.object3D.rotation.y;
-            let rotation = (document.panorama.camera.getAttribute("rotation").x
-                    + document.panorama.rig.getAttribute("rotation").x) + ";"
-                    + (document.panorama.camera.getAttribute("rotation").y + document.panorama.rig.getAttribute("rotation").y);
-            if (rotation != document.panorama.cameraDegree){
-                document.panorama.cameraDegree = rotation;
-                window.history.replaceState( {} , 'Panorama Viewer', '/panorama.php?id='+document.panorama.scene.getAttribute("scene-id")+"#"+rotation);
-            }
-        } catch(e) { console.log("error 1"); }
-        //raycaster objects
-        try {
-            if (document.panorama.sceneState > 0) {
-                let raycaster = AFRAME.scenes[0].querySelector('[raycaster]').components.raycaster;
-                let func_flag = 0;
-                let hidden_flag = 0;
-                let move_flag = 0;
-                for (let i = 0; i < document.panorama.ray.components.raycaster.intersectedEls.length; i++) {
-                    let t = document.panorama.ray.components.raycaster.intersectedEls[i];
-                    if (t.className == "mesh load_later"){
-                        let pos1 = t.object3D.getWorldPosition(new THREE.Vector3);
-                        if (t.getAttribute("zoom") == document.panorama.zoom){
-                            t.className = "mesh";
-                            t.setAttribute("src", t.getAttribute("xsrc"));
-                            t.setAttribute("is_load", "true");
-                            let meshed = document.getElementsByClassName("mesh load_later");
-                            for (let y = 0; y < meshed.length; y++){
-                                let tt = meshed[y];
-                                if (tt.getAttribute("zoom") == document.panorama.zoom){
-                                    let pos2 = tt.object3D.getWorldPosition(new THREE.Vector3());
-                                    let dist =  Math.sqrt( (pos1.x-pos2.x)*(pos1.x-pos2.x) + (pos1.y-pos2.y)*(pos1.y-pos2.y) + (pos1.z-pos2.z)*(pos1.z-pos2.z) );
-                                    if ( (document.panorama.zoom < 3) || (dist < 500 && document.panorama.zoom == 3) || dist < 300 ){
-                                        setTimeout(function(tt){ tt.className = "mesh"; }, 1000, tt);
-                                        tt.setAttribute("src", tt.getAttribute("xsrc"));
-                                        tt.setAttribute("is_load", "true");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                for (let i = 0; i < raycaster.intersectedEls.length; i++){
-                    //display popup window
-                    if (raycaster.intersectedEls[i].getAttribute("popup") == "true"){
-                        document.panorama.popupState = 1;
-                        hidden_flag = 1;
-                        break;
-                    }
-                    //disable fusing on logo
-                    if (raycaster.intersectedEls[i].id == "vr_logo"){
-                        break;
-                    }
-                    //display navigation at floor
-                    if (raycaster.intersectedEls[i].id == "floor"){
-                        if (!document.panorama.mouseListnerFlag){
-                            let point = raycaster.intersections[i].point;
-                            document.panorama.movePoint.object3D.position.set(point.x, point.y+0.1, point.z);
-                            document.panorama.movePoint.setAttribute("material", "opacity", "0.5");
-                            document.panorama.mouseImg.setAttribute("material", "opacity", "0");
-                            move_flag = 1;
-                        }else{
-
-                        }
-                    }
-                    //checking to fusing
-                    let func = raycaster.intersectedEls[i].getAttribute("action");
-                    if (func) {
-                        func_flag = 1;
-                        document.panorama.startFuse(raycaster.intersectedEls[i]);
-                    } else if (raycaster.intersectedEls[i].id == "sky_back"){
-                        document.panorama.coordinatesVR = raycaster.intersections[i].point;
-                        if (document.panorama.coordinatesFrom != null) {
-                            let c = $id("marker").object3D.getWorldPosition(new THREE.Vector3());
-                            $id("line").setAttribute("line", "end", c.x+' '+c.y+' '+c.z);
-                            $id("line").setAttribute("line", "opacity", "1");
-                        }
-                    }
-                }
-                if (!move_flag && !document.panorama.mouseListnerFlag){
-                   document.panorama.movePoint.setAttribute("material", "opacity", "0.01");
-                }
-                if (!func_flag){
-                    document.panorama.currentObject = null;
-                    document.panorama.endFuse();
-                }
-                if (!hidden_flag && document.panorama.popupState){
-                    jQuery(".hidden_layer").attr("opacity", "0");
-                    document.panorama.popupState = 0;
-                }
-            }
-        } catch(e) {console.log("error 2");}
-        let rotation = document.panorama.camera.getAttribute("rotation");
-        let position = $id("vr_point").object3D.getWorldPosition(new THREE.Vector3());
-        //Moving objects to cursor
-        if (document.panorama.objectId != 0) {
-            try {
-                console.log($id("point_"+document.panorama.objectId+"_position"));
-                $id("point_"+document.panorama.objectId+"_position").value = position.x+" "+position.y+" "+position.z;
-                $id("point_"+document.panorama.objectId).object3D.position.set( position.x, position.y, position.z );
-            } catch(e) {
-                console.error(e);
-            };
-            try {
-                $id("object_"+document.panorama.objectId+"_position").value = position.x+" "+position.y+" "+position.z;
-                $id("object_"+document.panorama.objectId).object3D.position.set( position.x, position.y, position.z );
-            } catch(e) {};
-            try {
-                $id("url_"+document.panorama.objectId+"_position").value = position.x+" "+position.y+" "+position.z;
-                $id("url_"+document.panorama.objectId).object3D.position.set( position.x, position.y, position.z );
-            } catch(e) {};
-        }
-    }
-});
 //------------------------------------------------------------------------------
 delete AFRAME.components['look-at'];
 AFRAME.registerComponent('look-at', {
