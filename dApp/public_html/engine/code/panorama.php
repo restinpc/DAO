@@ -444,7 +444,7 @@ echo '<!DOCTYPE html>
 <html style="background-color:#fff;">
 <head>
 <meta charset="UTF-8" />
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/aframe-master.js" type="text/javascript"></script>
+<script src="'.$_SERVER["DIR"].'/script/aframe-master.js" type="text/javascript"></script>
 <script>
     if (!document.framework) {
         document.framework = {};
@@ -469,7 +469,7 @@ echo '<!DOCTYPE html>
     '.$fout.'
     <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
     <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
-    <script rel="preload" src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript"></script>
+    <script src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript"></script>
     <script>window.addEventListener("load", () => {
         const scene = $id("nodes_scene");
         scene.addEventListener("enter-vr", () => {
