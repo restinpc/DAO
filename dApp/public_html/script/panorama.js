@@ -7,7 +7,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-let INTERSECTED;
 if (!document.panorama) {
     document.panorama = {};
 }
@@ -656,8 +655,6 @@ document.panorama.loadScene = (id, object_id) => {
 delete AFRAME.components['nodes-camera'];
 AFRAME.registerComponent("nodes-camera", {
     tick: function () {
-        
-        console.error("a");
         if (!document.panorama.vrLoadState) return;
         try {
             document.panorama.logo.object3D.rotation.y = document.panorama.camera.object3D.rotation.y+document.panorama.rig.object3D.rotation.y;
