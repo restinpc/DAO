@@ -4,8 +4,6 @@ RewriteCond %{HTTP_HOST} ^www\.(.*)
 RewriteRule ^(.*)$ https://dao-mansion.ru/$1 [R=301,L]
 RewriteCond %{HTTP_HOST} ^nodes-tech\.ru(.*)
 RewriteRule ^(.*)$ https://dao-mansion.ru/$1 [R=301,L]
-RewriteCond %{HTTP:HTTPS} !=on [NC]
-RewriteRule ^(.*)$ https://dao-mansion.ru/$1 [R=301,L]
 php_value upload_max_filesize 512M
 php_value post_max_size 512M
 php_value max_file_uploads 30
