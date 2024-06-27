@@ -422,7 +422,7 @@ if(!empty($_GET["id"])){
         <a-entity id="line" trigger="none" line="color: white; opacity:0;"></a-entity>
         <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
         <a-circle id="move_point" action=\'document.panorama.navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
-        <a-image id="cursor_img" transparent="true" position="0 0 0"  look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
+        <a-image id="cursor_img" transparent="true" position="0 0 0" look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
         <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
     </a-scene>
     <audio id="vr-sound" preload><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
