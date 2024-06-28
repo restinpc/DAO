@@ -21,7 +21,7 @@
 * @usage <code> engine::print_more_products($site, 1); </code>
 */
 
-function print_more_products($site, $id){
+function print_more_products($site, $id) {
     $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $product = mysqli_fetch_array($res);
@@ -31,9 +31,9 @@ function print_more_products($site, $id){
     do {
         $query = 'SELECT * FROM `nodes_product` WHERE `id` <> "'.$product["id"].'" ORDER BY RAND() DESC';
         $res = engine::mysql($query);
-        while($d = mysqli_fetch_array($res)){
-            if(!in_array($d["id"], $urls)){
-                if($count>5) break;
+        while ($d = mysqli_fetch_array($res)) {
+            if (!in_array($d["id"], $urls)) {
+                if ($count>5) break;
                 $count++;
                 $fout .= engine::print_product_preview($site, $d);
                 array_push($urls, $d["id"]);

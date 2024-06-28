@@ -48,7 +48,7 @@ if (empty($data)) {
     if (!empty($data)) {
         $flag = 1;
         $current = doubleval(microtime(1));
-        $html = engine::curl_post_query($data["url"], "nocache=1");
+        $html = engine::curl_get_query($data["url"]);
         $now = doubleval(microtime(1)-$current);
         $query = 'INSERT INTO `nodes_perfomance`(`cache_id`, `server_time`, `script_time`, `date`) '
                 . 'VALUES("'.$data["id"].'", "'.$server.'", "'.$now.'", "'.date("U").'")';

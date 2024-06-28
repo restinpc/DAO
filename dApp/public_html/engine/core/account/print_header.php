@@ -20,13 +20,13 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_header($site, 1); </code>
 */
-function print_header($site, $id){
+function print_header($site, $id) {
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
-    if($user["online"]>date("U")-600){
+    if ($user["online"]>date("U")-600) {
         $online = '<b>'.engine::lang("Online").'</b><br/>';
-    }else{
+    } else {
         $date = date("d/m/Y H:i", $user["online"]);
         $online = engine::lang("Last visit").' ';
         $online .= $date;

@@ -20,7 +20,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_product($site, $data); </code>
 */
-function print_product($site, $data){
+function print_product($site, $data) {
     $images = explode(";", $data["img"]);
     $rating = number_format(($data["rating"]/$data["votes"]),2);
     $fout = '<div class="document980">
@@ -56,16 +56,16 @@ function print_product($site, $data){
             . 'ORDER BY `product_property`.`id` ASC';
     $res = engine::mysql($query);
     $flag = 0;
-    while($d = mysqli_fetch_array($res)){
+    while ($d = mysqli_fetch_array($res)) {
         $flag = 1;
         $list .= '<li>'.engine::lang($d["name"]).': <b>'.engine::lang($d["value"]).'</b></li>';
     }
     $list .= '</ul><br/>';
-    if($flag) $fout .= $list;
+    if ($flag) $fout .= $list;
     $fout .= '<div  id="buy-now-'.$data["id"].'" class="btn w280" ';
-        if($data["user_id"]==$_SESSION["user"]["id"]){
+        if ($data["user_id"] == $_SESSION["user"]["id"]) {
             $fout .= ' onClick=\'alert("'.engine::lang("Unable to purchase your own product").'")\' ';
-        }else{
+        } else {
             $fout .= ' onClick=\'document.framework.buyNow('.$data["id"].', '
                     . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
                     . '"'.engine::lang("Continue").'", '
@@ -78,7 +78,7 @@ function print_product($site, $data){
                         <div class="label_3">&nbsp;$'.intval($data["price"]).'</div>    
                     </div>
                 </div><a id="show_comments" href="#comments" onClick=\'$id("comments_block").style.display="block"; this.style.display="none";\'><button class="btn w280 mt15" >'.engine::lang("Show comments").'</button></a>';
-    if($_SESSION["user"]["id"]=="1"){
+    if ($_SESSION["user"]["id"] == "1") {
         $fout .= '<br/><br/>
                 <a id="edit-product" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=products&action=edit&id='.$data["id"]).'"><button class="btn w280">'.engine::lang("Edit product").'</button></a>';
     }
@@ -86,7 +86,7 @@ function print_product($site, $data){
             <div class="clear"><br/></div>
         </section>
         <div class="clear"><br/></div>';
-        if(!empty($data["description"])){ $fout .= $data["description"].'<br/>'; }
+        if (!empty($data["description"])) { $fout .= $data["description"].'<br/>'; }
     $fout .= '<div id="comments_block">
         <a name="comments"></a>
         <div class="tal pl10 fs21"><b>'.engine::lang("Latest comments").'</b><br/><br/></div>
@@ -94,7 +94,7 @@ function print_product($site, $data){
         </div>
     </div>';
     $blocks = engine::print_more_products($site, $data["id"]);
-    if(!empty($blocks)){
+    if (!empty($blocks)) {
         $new_fout .= '<div class="clear"></div><br/>'
             . '<div class="tal pl10 fs21"><b>'.engine::lang("You might also be interested in").'</b></div>
                 <br/><br/>

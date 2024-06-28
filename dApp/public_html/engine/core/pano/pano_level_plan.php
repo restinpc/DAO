@@ -1,6 +1,6 @@
 <?php
 
-function pano_level_plan($level_id){
+function pano_level_plan($level_id) {
     $query = 'SELECT * FROM `nodes_vr_level` WHERE `id` = "'.$level_id.'"';
     $res = engine::mysql($query);
     $level = mysqli_fetch_array($res);

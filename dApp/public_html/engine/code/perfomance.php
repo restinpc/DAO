@@ -7,13 +7,16 @@
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
-$W=600;     // Width
-$H=300;     // Height
-$MB=20;     // Padding bottom
-$ML=8;      // Padding left
-$M=5;       // Padding right & top
-$county=10; // Lines count
-//------------------------------------------------------------------------------
+
+require_once("engine/nodes/session.php");
+
+$W = 600;     // Width
+$H = 300;     // Height
+$MB = 20;     // Padding bottom
+$ML = 8;      // Padding left
+$M = 5;       // Padding right & top
+$county = 10; // Lines count
+
 /**
 * Draws a wide canvas line.
 *
@@ -27,7 +30,7 @@ $county=10; // Lines count
 * @return bool Returns TRUE on success or FALSE on failure.
 * @usage <code> draw_line($image, 0, 0, 100, 100, 0xf00, 20); </code>
 */
-function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1){
+function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1) {
     array_push($_SERVER["CONSOLE"], "draw_line(..)");
     $t = $thick / 2 - 0.5;
     if ($x1 == $x2 || $y1 == $y2) {
@@ -50,39 +53,39 @@ function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1){
     imagefilledpolygon($image, $points, 4, $color);
     return imagepolygon($image, $points, 4, $color);
 }
-//------------------------------------------------------------------------------
-require_once("engine/nodes/session.php");
-if($_SESSION["user"]["id"]!=1){
+
+
+if ($_SESSION["user"]["id"] != 1) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "lastreport"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if($data["value"]>=date("U")-26000){
+    if ($data["value"] >= date("U") - 26000) {
         die(engine::error(401));
     }
 }
-$DATA=Array();
-for ($i=0;$i<10;$i++) {
-    if(!empty($_GET["date"])){
+$DATA = array();
+for ($i = 0; $i < 10; $i++) {
+    if (!empty($_GET["date"])) {
         $date = $_GET["date"];
-    }else{
+    } else {
         $date = date("Y-m-d");
     }
-    if($_GET["interval"]=="day"){
+    if ($_GET["interval"] == "day") {
         $from = strtotime($date." 23:59:59 - ".(10-$i)." days");
         $to = strtotime($date." 23:59:59 - ".(9-$i)." days");
         $DATA["x"][]=date("d/m", $to);
         $step = 2;
-    }else if($_GET["interval"]=="week"){
+    } else if ($_GET["interval"] == "week") {
         $from = strtotime($date." 23:59:59 - ".((10-$i)*7)." days");
         $to = strtotime($date." 23:59:59 - ".((9-$i)*7)." days");
         $DATA["x"][]=date("d/m", $to);
         $step = 1.5;
-    }else if($_GET["interval"]=="month"){
+    } else if ($_GET["interval"] == "month") {
         $from = strtotime($date." 23:59:59 - ".(10-$i)." month");
         $to = strtotime($date." 23:59:59 - ".(9-$i)." month");
         $DATA["x"][]=date("m/Y", $to);
         $step = 3;
-    }else{
+    } else {
         $step = 2.5;
         $from = strtotime($date." ".date("H:i:s")." - ".((10-$i)*120)." minutes");
         $to = strtotime($date." ".date("H:i:s")." - ".((9-$i)*120)." minutes");
@@ -93,7 +96,7 @@ for ($i=0;$i<10;$i++) {
     $script = 0;
     $server = 0;
     $count=0;
-    while($data = mysqli_fetch_array($res)){
+    while ($data = mysqli_fetch_array($res)) {
         $script += $data["script_time"];
         $server += $data["server_time"];
         $count++;
@@ -104,14 +107,14 @@ for ($i=0;$i<10;$i++) {
     $query = 'SELECT AVG(`server_time`) FROM `nodes_perfomance` WHERE `server_time` > 0';
     $res = engine::mysql($query);
     $mid_server = mysqli_fetch_array($res);
-    if($script>0){
+    if ($script>0) {
         $script_time = $script/$count;
-    }else{
+    } else {
         $script_time = 0;
     }
-    if($server>0){
+    if ($server>0) {
         $server_time = $server/$count;
-    }else{
+    } else {
         $server_time = 0;
     }
     $DATA[0][] = $script_time;
@@ -123,7 +126,7 @@ if (count($DATA[1])>$count) $count=count($DATA[1]);
 if (count($DATA[2])>$count) $count=count($DATA[2]);
 if ($count==0) $count=1;
 $max=0;
-for ($i=0;$i<$count;$i++) {
+for ($i=0; $i < $count; $i++) {
     $max=$max<$DATA[0][$i]?$DATA[0][$i]:$max;
     $max=$max<$DATA[1][$i]?$DATA[1][$i]:$max;
     $max=$max<$DATA[2][$i]?$DATA[2][$i]:$max;
@@ -140,7 +143,7 @@ $bar[1]=imagecolorallocate($im,68,115,186);
 $bar[2]=imagecolorallocate($im,20,180,180);
 $bar[3]=imagecolorallocate($im,220,0,0);
 $text_width=0;
-for ($i=1;$i<=$county;$i++) {
+for ($i=1; $i <=$county; $i++) {
     $strl=strlen(($max/$county)*$i)*$LW;
     if ($strl>$text_width) $text_width=$strl;
 }
@@ -152,12 +155,12 @@ $Y0=$H-$MB;
 $step=$RH/$county;
 imagefilledrectangle($im, $X0, $Y0-$RH, $X0+$RW, $Y0, $bg[1]);
 imagerectangle($im, $X0, $Y0, $X0+$RW, $Y0-$RH, $c);
-for ($i=1;$i<=$county;$i++) {
+for ($i=1; $i <=$county; $i++) {
     $y=$Y0-$step*$i;
     imageline($im,$X0,$y,$X0+$RW,$y,$c);
     imageline($im,$X0,$y,$X0-($ML-$text_width)/4,$y,$text);
 }
-for ($i=0;$i<$count;$i++) {
+for ($i=0; $i < $count; $i++) {
     imageline($im,$X0+$i*($RW/$count),$Y0,$X0+$i*($RW/$count),$Y0,$c);
     imageline($im,$X0+$i*($RW/$count),$Y0,$X0+$i*($RW/$count),$Y0-$RH,$c);
 }
@@ -166,39 +169,39 @@ $pi=$Y0-($RH/$max*$DATA[0][0]);
 $po=$Y0-($RH/$max*$DATA[1][0]);
 $pf=$Y0-($RH/$max*$DATA[2][0]);
 $px=intval($X0+$dx);
-for ($i=1;$i<$count;$i++) {
+for ($i=1; $i < $count; $i++) {
     $x=intval($X0+$i*($RW/$count)+$dx);
-    if($DATA[0][$i]>=$DATA[1][$i]){
+    if ($DATA[0][$i]>=$DATA[1][$i]) {
         $y=$Y0-($RH/$max*$DATA[0][$i]);
-        if($DATA[0][$i]>0){
-            if($mid_script[0]<$DATA[0][$i]){
+        if ($DATA[0][$i]>0) {
+            if ($mid_script[0]<$DATA[0][$i]) {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[0],10);
-            }else{
+            } else {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[2],10);
             }
         }
         $y=$Y0-($RH/$max*$DATA[1][$i]);
-        if($DATA[1][$i]>0){
-            if($mid_script[0]<$DATA[0][$i]){
+        if ($DATA[1][$i]>0) {
+            if ($mid_script[0]<$DATA[0][$i]) {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[3],10);
-            }else{
+            } else {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[1],10);
             }
         }
-    }else{
+    } else {
         $y=$Y0-($RH/$max*$DATA[1][$i]);
-        if($DATA[1][$i]>0){
-            if($mid_script[0]<$DATA[0][$i]){
+        if ($DATA[1][$i]>0) {
+            if ($mid_script[0]<$DATA[0][$i]) {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[3],10);
-            }else{
+            } else {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[1],10);
             }
         }
         $y=$Y0-($RH/$max*$DATA[0][$i]);
-        if($DATA[0][$i]>0){
-            if($mid_script[0]<$DATA[0][$i]){
+        if ($DATA[0][$i]>0) {
+            if ($mid_script[0]<$DATA[0][$i]) {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[0],10);
-            }else{
+            } else {
                 draw_line($im,$x,$Y0-5,$x,$y+5,$bar[2],10);
             }
         }
@@ -209,7 +212,7 @@ for ($i=1;$i<$count;$i++) {
     $px=$x;
 }
 $ML-=$text_width;
-for ($i=1;$i<=$county;$i++) {
+for ($i=1; $i <=$county; $i++) {
     $str=  round(($max/$county)*$i, 2);
     imagestring($im,2, $X0-strlen($str)*$LW-$ML/4-2,$Y0-$step*$i-
                        imagefontheight(2)/2,$str,$text);

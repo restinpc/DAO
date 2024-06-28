@@ -9,11 +9,11 @@
 */
 require_once("engine/nodes/session.php");
 $validate = $_POST["notification_type"].'&'.$_POST["operation_id"].'&'.$_POST["amount"].'&'.$_POST["currency"].'&'.$_POST["datetime"].'&'.$_POST["sender"].'&'.$_POST["codepro"].'&0rpDbwhcMPf+lRF4sqY+Z+TJ&'.$_POST["label"];
-if( !empty($_POST["withdraw_amount"]) &&
+if ( !empty($_POST["withdraw_amount"]) &&
     $_POST["sha1_hash"] == sha1($validate) &&
     $_POST["currency"] == 643 &&
     $_POST["unaccepted"] == "false"
-){
+) {
     $invoice_id = intval($_POST["label"]);
     $query = 'SELECT * FROM `nodes_invoice` WHERE `id` = "'.$invoice_id.'"';
     $res = engine::mysql($query);
@@ -31,4 +31,4 @@ if( !empty($_POST["withdraw_amount"]) &&
     $query = 'UPDATE `nodes_user` SET `balance` = "'.$balance.'" WHERE `id` = "'.$user["id"].'"';
     engine::mysql($query);
     email::new_transaction($_POST["label"], $amount);
-}else engine::error();
+} else engine::error();

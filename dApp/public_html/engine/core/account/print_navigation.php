@@ -21,7 +21,7 @@
 * @usage <code> engine::print_navigation($site, engine::lang("Profile")); </code>
 */
 
-function print_navigation($site, $title){
+function print_navigation($site, $title) {
     $fout = '<div class="profile_menu">
         <div class="container">
             <span class="profile_menu_item show_all selected" ><a>'.$title.'</a>
@@ -34,7 +34,7 @@ function print_navigation($site, $title){
     if ($data[0]>0) {
         $count = ' ('.$data[0].')';
     }
-    if ($_SESSION["user"]["admin"]=="1") {
+    if ($_SESSION["user"]["admin"] == "1") {
         $fout .= '<span  id="profile_menu_span_3" class="profile_menu_item" onClick=\'$id("profile_menu_link_3").click();\'>'
             . '<a id="profile_menu_link_3" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin').'">'.engine::lang("Admin").'</a></span>';
     }

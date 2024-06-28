@@ -16,7 +16,7 @@
 * @var $this->configs - Array MySQL configs.
 */
 
-if(!empty($_GET[4])){
+if (!empty($_GET[4])) {
     $this->content = engine::error();
     return;
 } else if (!empty($_SESSION["user"]["id"])) {
@@ -24,7 +24,7 @@ if(!empty($_GET[4])){
     return;
 }
 $this->content .= '<div class="w320 pt20 m0a">';
-if(empty($_GET[1])){
+if (empty($_GET[1])) {
     $flag = 0;
     $this->title = engine::lang("Login");
     if ($_SESSION["Lang"] == "en") {
@@ -68,19 +68,19 @@ if(empty($_GET[1])){
                 $d = mysqli_fetch_array($r);
                 $_SESSION["user"] = $data;
                 $_SESSION["user"]["session_id"] = $d["id"];
-                if(!empty($_SESSION["redirect"])) {
-                    $this->content .= '<script language="JavaScript">setTimeout(function(){ window.location = "'.($_SESSION["redirect"]).'"; }, 1);</script>';
+                if (!empty($_SESSION["redirect"])) {
+                    $this->content .= '<script language="JavaScript">setTimeout(function() { window.location = "'.($_SESSION["redirect"]).'"; }, 1);</script>';
                     unset($_SESSION["redirect"]);
                 } else {
-                    $this->content .= '<script language="JavaScript">setTimeout(function(){ window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
+                    $this->content .= '<script language="JavaScript">setTimeout(function() { window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
                 }
                 $flag = 1;
             }
-        }else{
+        } else {
             $this->onload .= 'alert("'.engine::lang("Incorrect email of password").'");';
         }
     }
-    if(!$flag){
+    if (!$flag) {
         $this->content .= '<h1>'.engine::lang("Login").'</h1>
         <form method="POST" action="'.$_SERVER["DIR"].'/login" id="login_form" class="lh2">
             <div class="input-caption">'.engine::lang("Email").'</div>
@@ -98,7 +98,7 @@ if(empty($_GET[1])){
             </div>
         </form>';
     }
-} else if($_GET[1] == "restore") {
+} else if ($_GET[1] == "restore") {
     if ($_SESSION["Lang"] == "en") {
         $this->keywords = Array(
             "Access recovery",
@@ -128,16 +128,16 @@ if(empty($_GET[1])){
         $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
         $res = engine::mysql($query);
         $data = mysqli_num_rows($res);
-        if($data){
+        if ($data) {
             $code = mb_substr(md5($email.date("Y-m-d")), 0, 8);
-            if($code == $_GET[3]){
-                if(!empty($_POST["pass"])){
+            if ($code == $_GET[3]) {
+                if (!empty($_POST["pass"])) {
                     $password = engine::encode_password(trim(strtolower($_POST["pass"])));
                     $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `email` = "'.$email.'"';
                     engine::mysql($query);
                     $this->content .= '<div class="clear_block">'.engine::lang("Your password has been updated").'!</div>'
-                    .'<script>function redirect(){ window.location="'.$_SERVER["DIR"].'/login"; }setTimeout(redirect, 3000);</script>';
-                }else{
+                    .'<script>function redirect() { window.location="'.$_SERVER["DIR"].'/login"; }setTimeout(redirect, 3000);</script>';
+                } else {
                     $this->content .= '<h1>'.engine::lang("Setup new password").'</h1><br/>'
                         . '<form method="POST" class="lh2">'
                         . ' <input id="input-login-password" type="password" required name="pass" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Password").'" /><br/>'
@@ -145,30 +145,30 @@ if(empty($_GET[1])){
                         . '</form>';
                 }
                 $flag = 1;
-            }else{
+            } else {
                 $this->onload .= 'alert("'.engine::lang("Invalid confirmation code").'");';
             }
-        }else{
+        } else {
             $this->onload .= 'alert("Email '.engine::lang("not found").'");';
         }
     }
-    if(!empty($_POST["email"])){
+    if (!empty($_POST["email"])) {
         $this->title = 'Reset password';
         $email = str_replace('"', "'", $_POST["email"]);
         $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        if(!empty($data)){
+        if (!empty($data)) {
             $code = mb_substr(md5($email.date("Y-m-d")), 0, 4);
             $new_pass = mb_substr(md5($email.date("Y-m-d")), 0, 8);
             email::restore_password($data["email"], $new_pass, $code);
             $this->content .= '<div class="clear_block">'.engine::lang("To process restore, please check your email").'.</div>'
                 . '<script>'
-                . ' function redirect(){ this.location = "'.$_SERVER["DIR"].'/login"; } '
+                . ' function redirect() { this.location = "'.$_SERVER["DIR"].'/login"; } '
                 . ' setTimeout(redirect, 3000);'
                 . '</script>';
             $flag = 1;
-        }else{
+        } else {
             $this->onload .= 'alert("Email '.engine::lang("not found").'");';
         }
     }

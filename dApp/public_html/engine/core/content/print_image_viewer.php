@@ -32,7 +32,7 @@
 function print_image_viewer($site, $text, $caption, $images, $captions) {
     $galery = '';
     if (!empty($images)) {
-        for ($i = 0; $i<count($images); $i++) {
+        for ($i = 0; $i < count($images); $i++) {
             $image = $images[$i];
             $image = str_replace('../img', '/img', $image);
             $size = getimagesize($image);

@@ -103,7 +103,7 @@ ORDER BY data.id ASC';
 @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
 $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error(500));
 $fout = Array();
-while($data = mysqli_fetch_array($res)) {
+while ($data = mysqli_fetch_array($res)) {
     array_push($fout, $data);
 }
 $json = json_encode($fout);

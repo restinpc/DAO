@@ -9,7 +9,7 @@
 */
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
-if(!empty($_GET["file"])&&$_SESSION["user"]["admin"]=="1"){
+if (!empty($_GET["file"])&& $_SESSION["user"]["admin"] == "1") {
     echo '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,15 +26,15 @@ if(!empty($_GET["file"])&&$_SESSION["user"]["admin"]=="1"){
     $name = explode('.', $_GET["file"]);
     $ext = $name[count($name)-1];
     $source = str_replace($ext, 'source.'.$ext, $_GET["file"]);
-    if(file_exists($source)){
+    if (file_exists($source)) {
         $file = $source;
-    }else{
+    } else {
         $file = $_GET["file"];
     }
     $file = file_get_contents($file);
-    if($ext == "js") $ace_mode = 'javascript';
-    if($ext == "css") $ace_mode = 'css';
-    if($ext == "php"){
+    if ($ext == "js") $ace_mode = 'javascript';
+    if ($ext == "css") $ace_mode = 'css';
+    if ($ext == "php") {
         $ace_mode = 'php';
         $file = htmlspecialchars($file);
     }
@@ -42,4 +42,4 @@ if(!empty($_GET["file"])&&$_SESSION["user"]["admin"]=="1"){
 </pre>
 </body>
 </html>';
-}else engine::error();
+} else engine::error();

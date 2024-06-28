@@ -10,7 +10,7 @@
 
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
-if(!strpos($_SERVER["REQUEST_URI"], ".xml")){
+if (!strpos($_SERVER["REQUEST_URI"], ".xml")) {
     header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html>
 <html>
@@ -33,12 +33,12 @@ echo '
     $data = mysqli_fetch_array($res);
     $arr = explode(";", $data["value"]);
     $fout = '';
-    foreach($arr as $value){
+    foreach ($arr as $value) {
         $value = trim($value);
-        if(!empty($value)){
-            if(!empty($_SESSION["Lang"])&&$_SESSION["Lang"]==$value){
+        if (!empty($value)) {
+            if (!empty($_SESSION["Lang"])&& $_SESSION["Lang"] == $value) {
                 echo '<option id="option-lang-'.$value.'" value="'.$value.'" selected>'.$value.'</option>';
-            }else{
+            } else {
                 $fout .= '<li class="hidden"><a id="sitemap-'.$value.'" href="'.$_SERVER["DIR"].'/sitemap.php?lang='.$value.'" hreflang="'.  strtolower($value).'" class="white" >'.engine::lang("Sitemap").' ('.  strtoupper($value).')</a></li>
 ';
                 echo '<option id="option-lang-'.$value.'"  value="'.$value.'">'.$value.'</option>';
@@ -50,26 +50,26 @@ echo '
 ';
 $query = 'SELECT * FROM `nodes_cache` WHERE `interval` > -2 AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY `url` ASC';
 $res = engine::mysql($query);
-while($data = mysqli_fetch_array($res)){
-    if(empty($data["url"])) $data["url"] = "/";
-    if(!empty($data["title"])){
+while ($data = mysqli_fetch_array($res)) {
+    if (empty($data["url"])) $data["url"] = "/";
+    if (!empty($data["title"])) {
         $title = $data["title"];
     }
-    if(!empty($data["content"])){
+    if (!empty($data["content"])) {
         $html = preg_replace('#<script>.*?</script>#', '', $data["content"]);
         $html = preg_replace('#<[^>]+>#', " ", $html);
         $html = trim(preg_replace('#[\s]+#', ' ', $html));
         $desc = mb_substr($html,0,50)."..";
-    }else $title = $data["url"];
-    if(!strpos(" ".$data["url"], "/img/")&&
+    } else $title = $data["url"];
+    if (!strpos(" ".$data["url"], "/img/")&&
             !strpos(" ".$data["url"], "/register")&&
             !strpos(" ".$data["url"], "/account")&&
             !strpos(" ".$data["url"], "/admin")&&
-            !strpos(" ".$data["url"], "/search")){
-        if($data["lang"] == "ru" || empty($data["lang"])){
+            !strpos(" ".$data["url"], "/search")) {
+        if ($data["lang"] == "ru" || empty($data["lang"])) {
     echo '<li><a id="href-'.$data["url"].'" href="'.$data["url"].'" target="_blank" hreflang="'.$data["lang"].'" title="'.$desc.'">'.$title.'</a></li>
         ';
-        }else{
+        } else {
     echo '<li><a id="href-'.$data["url"].'-'.$data["lang"].'" href="'.$data["url"].'?lang='.$data["lang"].'" hreflang="'.$data["lang"].'" target="_blank" title="'.$desc.'">'.$title.'</a></li>
         ';
         }
@@ -97,12 +97,12 @@ echo '
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 ';
 
-while($data = mysqli_fetch_array($res)) {
+while ($data = mysqli_fetch_array($res)) {
     if (!strpos(" ".$data["url"], "/img/") &&
         !strpos(" ".$data["url"], "/register") &&
         !strpos(" ".$data["url"], "/account") &&
         !strpos(" ".$data["url"], "/admin") &&
-        !strpos(" ".$data["url"], "/search")){
+        !strpos(" ".$data["url"], "/search")) {
         if ($data["lang"] == "ru" || empty($data["lang"])) {
     echo '<url> 
   <loc>'.$data["url"].'</loc>

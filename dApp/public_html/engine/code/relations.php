@@ -19,7 +19,7 @@ $types = Array(
     "1" => "Partner",
     "2" => "Sexual"
 );
-while($data = mysqli_fetch_array($res)) {
+while ($data = mysqli_fetch_array($res)) {
     array_push($relations, $data);
     if (!in_array($data["user1"], $users)) {
         array_push($users, $data["user1"]);
@@ -29,7 +29,7 @@ while($data = mysqli_fetch_array($res)) {
     }
 }
 $query = 'SELECT * FROM nodes_user WHERE id = 0';
-for($i = 0; $i < count($users); $i++) {
+for ($i = 0; $i < count($users); $i++) {
     $query .= ' OR id = '.$users[$i];
 }
 $res = engine::mysql($query);
@@ -40,7 +40,7 @@ $fout = '{
             "graph": {
                 "nodes": [';
 $flag = 0;
-while($data = mysqli_fetch_array($res)) {
+while ($data = mysqli_fetch_array($res)) {
     if ($flag) {
         $fout .= ',';
     } else {
@@ -58,7 +58,7 @@ while($data = mysqli_fetch_array($res)) {
 $fout .= '],
                 "relationships": [';
 $flag = 0;
-foreach($relations as $rel) {
+foreach ($relations as $rel) {
     if ($flag) {
         $fout .= ',';
     } else {

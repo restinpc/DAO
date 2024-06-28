@@ -18,7 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_content($cms); </code>
 */
-function print_admin_content($cms){
+function print_admin_content($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
             . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "content" '
             . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
@@ -26,17 +26,17 @@ function print_admin_content($cms){
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
-    if(!$admin_access){
+    if (!$admin_access) {
         engine::error(401);
         return;
     }
-    if($_SESSION["order"]=="id") $_SESSION["order"] = "caption";
+    if ($_SESSION["order"] == "id") $_SESSION["order"] = "caption";
     $arr_count = 0;
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
     $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
     $cms->onload = ' document.framework.tinymce_init(); ';
-    if(!empty($_POST["caption"])&&!empty($_POST["text"]) ){
-        if($admin_access != 2){
+    if (!empty($_POST["caption"])&&!empty($_POST["text"]) ) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
@@ -44,75 +44,75 @@ function print_admin_content($cms){
         $text = trim(engine::escape_string($_POST["text"]));
         $img = $_POST["file1"];
         $visible = $_POST["visible"];
-        if(empty($img)) $img = $_POST["file"];
-        if(!empty($_POST["url"]))
+        if (empty($img)) $img = $_POST["file"];
+        if (!empty($_POST["url"]))
             $url = trim(htmlspecialchars($_POST["url"]));
         else
             $url = engine::url_translit(mb_strtolower($caption));
-        if(!empty($_GET["id"])){
+        if (!empty($_GET["id"])) {
             // checking url before updating content
             $query = 'SELECT * FROM `nodes_content` WHERE `url` = "'.$url.'" AND `id` <> "'.$_GET["id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $i = 0;
-            while(!empty($d)){
+            while (!empty($d)) {
                 $newurl = $url."-".(++$i);
                 $query = 'SELECT * FROM `nodes_content` WHERE `url` = "'.$newurl.'" AND `id` <> "'.$_GET["id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
-                if(empty($d)){
+                if (empty($d)) {
                     $url = $newurl;
                 }
             }
-            if($_POST["noimg"]){
+            if ($_POST["noimg"]) {
                 $query = 'UPDATE `nodes_content` SET `img` = "" WHERE `id` = "'.$_GET["id"].'"';
                 engine::mysql($query);
             }
             $query = 'UPDATE `nodes_content` SET `caption` = "'.$caption.'", `text` = "'.$text.'", `url` = "'.$url.'", `date` = "'.date("U").'" WHERE `id` = "'.$_GET["id"].'"';
             engine::mysql($query);
-            if(!empty($img)){
+            if (!empty($img)) {
                 $query = 'UPDATE `nodes_content` SET `img` = "'.$img.'" WHERE `id` = "'.$_GET["id"].'"';
                 engine::mysql($query);
             }
-        }else if(!empty($_GET["cat_id"])){
-            if($_GET["act"] == "edit"){
+        } else if (!empty($_GET["cat_id"])) {
+            if ($_GET["act"] == "edit") {
                 // checking url before updating catalog
                 $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$url.'" AND `id` <> "'.$_GET["cat_id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 $i = 0;
-                while(!empty($d)){
+                while (!empty($d)) {
                     $newurl = $url."-".(++$i);
                     $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$newurl.'" AND `id` <> "'.$_GET["cat_id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
-                    if(empty($d)){
+                    if (empty($d)) {
                         $url = $newurl;
                     }
                 }
 
                 $query = 'UPDATE `nodes_catalog` SET `caption` = "'.$caption.'", `text` = "'.$text.'", `url` = "'.$url.'", `visible` = "'.$visible.'" WHERE `id` = "'.$_GET["cat_id"].'"';
                 engine::mysql($query);
-                if($_POST["noimg"]){
+                if ($_POST["noimg"]) {
                     $query = 'UPDATE `nodes_catalog` SET `img` = "" WHERE `id` = "'.$_GET["cat_id"].'"';
                     engine::mysql($query);
                 }
-                if(!empty($img)){
+                if (!empty($img)) {
                     $query = 'UPDATE `nodes_catalog` SET `img` = "'.$img.'" WHERE `id` = "'.$_GET["cat_id"].'"';
                     engine::mysql($query);
                 }
-            }else{
+            } else {
                 // checking url before adding content
                 $query = 'SELECT * FROM `nodes_content` WHERE `url` = "'.$url.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 $i = 0;
-                while(!empty($d)){
+                while (!empty($d)) {
                     $newurl = $url."-".(++$i);
                     $query = 'SELECT * FROM `nodes_content` WHERE `url` = "'.$newurl.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
-                    if(empty($d)){
+                    if (empty($d)) {
                         $url = $newurl;
                     }
                 }
@@ -125,28 +125,28 @@ function print_admin_content($cms){
                 $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content&cat_id='.$_GET["cat_id"].'&act=list";</script>';
                 return $fout;
             }
-        }else{
+        } else {
             // checking url before adding catalog
             $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$url.'" AND `lang` = "'.$_SESSION["Lang"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $i = 0;
-            while(!empty($d)){
+            while (!empty($d)) {
                 $newurl = $url."-".(++$i);
                 $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$newurl.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
-                if(empty($d)){
+                if (empty($d)) {
                     $url = $newurl;
                 }
             }$visible = $_POST["visible"];
             $query = 'SELECT MAX(`order`) AS `order` FROM `nodes_catalog` WHERE `lang` = "'.$_SESSION["Lang"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
-            if(!empty($img)){
+            if (!empty($img)) {
                 $query = 'INSERT INTO `nodes_catalog`(caption, text, url, lang, `order`, img, visible, date, public_date) '
                         . 'VALUES("'.$caption.'", "'.$text.'", "'.$url.'", "'.$_SESSION["Lang"].'", "'.($d["order"]+1).'", "'.$img.'", "'.$visible.'", "'.date("U").'", "'.date("U").'")';
-            }else{
+            } else {
                 $query = 'INSERT INTO `nodes_catalog`(caption, text, url, lang, `order`, visible, date, public_date) '
                         . 'VALUES("'.$caption.'", "'.$text.'", "'.$url.'", "'.$_SESSION["Lang"].'", "'.($d["order"]+1).'", "'.$visible.'", "'.date("U").'", "'.date("U").'")';
             }engine::mysql($query);
@@ -159,18 +159,18 @@ function print_admin_content($cms){
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     $arr = explode(";", $data["value"]);
-    foreach($arr as $value){
-        if(!empty($value)){
-            if(!empty($_SESSION["Lang"])&&$_SESSION["Lang"]==$value){
+    foreach ($arr as $value) {
+        if (!empty($value)) {
+            if (!empty($_SESSION["Lang"])&& $_SESSION["Lang"] == $value) {
                 $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'" selected>'.$value.'</option>';
-            }else{
+            } else {
                 $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'">'.$value.'</option>';
             }
         }
     }$fout .= '</select></form><br/>';
-    if(!empty($_GET["id"])){
-        if($_GET["act"] == "remove"){
-            if($admin_access != 2){
+    if (!empty($_GET["id"])) {
+        if ($_GET["act"] == "remove") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -178,8 +178,8 @@ function print_admin_content($cms){
             engine::mysql($query);
             $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>';
             return $fout;
-        }else if($_GET["act"] == "up"){
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "up") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -191,8 +191,8 @@ function print_admin_content($cms){
             engine::mysql($query);
             $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content&cat_id='.intval($_GET["cat_id"]).'&act=list";</script>';
             return $fout;
-        }else if($_GET["act"] == "down"){
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "down") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -204,19 +204,19 @@ function print_admin_content($cms){
             engine::mysql($query);
             $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content&cat_id='.intval($_GET["cat_id"]).'&act=list";</script>';
             return $fout;
-        }else if($_GET["act"] == "copy" && !empty($_GET["target"])){
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "copy" && !empty($_GET["target"])) {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
             $query = 'SELECT `url` FROM `nodes_catalog` WHERE `id` = "'.$_GET["cat_id"].'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
-            if(!empty($data)){
+            if (!empty($data)) {
                 $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$data["url"].'" AND `lang` = "'.$_GET["target"].'"';
                 $res = engine::mysql($query);
                 $data = mysqli_fetch_array($res);
-                if(!empty($data)){
+                if (!empty($data)) {
                     $cat_id = $data["id"];
                     $query = 'SELECT * FROM `nodes_content` WHERE `id` = "'.$_GET["id"].'"';
                     $res = engine::mysql($query);
@@ -224,21 +224,21 @@ function print_admin_content($cms){
                     $query = 'SELECT `id` FROM `nodes_content` WHERE `url` = "'.$data["url"].'" AND `lang` = "'.$_GET["target"].'"';
                     $res = engine::mysql($query);
                     $d = mysqli_fetch_array($res);
-                    if(!empty($d)){
+                    if (!empty($d)) {
                         die('<script>alert("'.engine::lang("This article already exist in").' '.$_GET["target"].' '.engine::lang("translation").'"); window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>');
-                    }else{
+                    } else {
                         $text = str_replace('"', '\"', $data["text"]);
                         $query = 'INSERT INTO `nodes_content`(cat_id, url, lang, caption, text, img, date, public_date) '
                                 . 'VALUES("'.$cat_id.'", "'.$data["url"].'", "'.$_GET["target"].'", "'.$data["caption"].'", "'.$text.'", "'.$data["img"].'", "'.date("U").'", "'.date("U").'")';
                         engine::mysql($query);
                         die('<script>window.location = "'.$_SERVER["DIR"].'/admin/?mode=content&cat_id='.$cat_id.'&act=list&lang='.$_GET["target"].'";</script>');
                     }
-                }else{
+                } else {
                     die('<script>alert("'.engine::lang("This catalog is not exist in").' '.$_GET["target"].' '.engine::lang("translation").'"); window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>');
                 }
             }
-        }else{
-            if($admin_access != 2){
+        } else {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -250,14 +250,14 @@ function print_admin_content($cms){
             <h2 class="fs21">'.engine::lang("Edit article").'</h2><br/>
             <input id="input-article-caption" type="text" required class="input w600" name="caption" placeHolder="'.engine::lang("Caption").'" value="'.$data["caption"].'" /><br/><br/>
             <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" value="'.$data["url"].'" /><br/><br/>';
-            if(!empty($data["img"])){
+            if (!empty($data["img"])) {
                 $fout .= '<div id="delete_image_block"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'" /><br/><br/>'
                         . '<input type="hidden" id="noimg" name="noimg" value="0" />'
                         . '<input id="input-delete-image" type="button" onClick=\'  $id("noimg").value="1"; '
                         . '                                 $id("edit_form").submit();\' '
                         . 'class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
             }
-            for($i = 1; $i<2; $i++){
+            for ($i = 1; $i <2; $i++) {
                 $fout .= '<div class="new_photo" id="new_photo_'.$i.'" title="none">
                 <input type="hidden" name="file'.$i.'" id="file'.$i.'" value="" />
                 </div>';
@@ -268,19 +268,19 @@ function print_admin_content($cms){
             <textarea class="input w600" height="600" id="editable" name="text" >'.$data["text"].'</textarea>
             </div>
             <div class="clear"><br/></div>';
-            if(!empty($_POST["comment"])){
+            if (!empty($_POST["comment"])) {
                 $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
                 $text = str_replace("\n", "<br/>", $text);
                 $query = 'SELECT * FROM `nodes_comment` WHERE `text` LIKE "'.$text.'" AND `url` LIKE "'.$data["url"].'" AND `user_id` = "1"';
                 $res = engine::mysql($query);
                 $d = mysqli_fetch_array($res);
-                if(empty($d)){
+                if (empty($d)) {
                     $query = 'INSERT INTO `nodes_comment` (`url`, `reply`, `user_id`, `text`, `date`) '
                     . 'VALUES("'.$data["url"].'", "'.intval($_POST["reply"]).'", "1", "'.$text.'", "'.date("U").'")';
                     engine::mysql($query);
                 }
             }
-            if(!empty($_POST["delete_comment"])){
+            if (!empty($_POST["delete_comment"])) {
                $query = 'DELETE FROM `nodes_comment` WHERE `id` = "'.$_POST["delete_comment"].'"';
                engine::mysql($query);
             }
@@ -288,9 +288,9 @@ function print_admin_content($cms){
             <a id="back-to-list" href="'.$_SERVER["DIR"].'/admin/?mode=content&cat_id='.$_GET["cat_id"].'&act=list"><input type="button" class="btn w280" value="'.engine::lang("Back to list").'" /></a><br/>
             </form>';
         }
-    }else if(!empty($_GET["cat_id"])){
-        if($_GET["act"] == "remove"){
-            if($admin_access != 2){
+    } else if (!empty($_GET["cat_id"])) {
+        if ($_GET["act"] == "remove") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -300,8 +300,8 @@ function print_admin_content($cms){
             engine::mysql($query);
             $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>';
             return $fout;
-        }else if($_GET["act"] == "up"){
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "up") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -313,8 +313,8 @@ function print_admin_content($cms){
             engine::mysql($query);
             $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>';
             return $fout;
-        }else if($_GET["act"] == "down"){
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "down") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -326,8 +326,8 @@ function print_admin_content($cms){
             engine::mysql($query);
             $fout = '<script type="text/javascript">window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>';
             return $fout;
-        }else if($_GET["act"] == "edit"){
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "edit") {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -340,20 +340,20 @@ function print_admin_content($cms){
             <input id="input-dir-caption" required type="text" name="caption" title="'.engine::lang("Caption").'" placeHolder="'.engine::lang("Caption").'" class="input w600" value="'.$data["caption"].'" /><br/><br/>
             <input id="input-dir-url" type="text" name="url" class="input w600" value="'.$data["url"].'" title="URL" placeHolder="URL" /><br/><br/>
             '.engine::lang("Show in navigation").' <select  id="select-visible" name="visible" class="input">';
-            if($data["visible"]){
+            if ($data["visible"]) {
                 $fout .= '<option id="option-edit-no" value="0">'.engine::lang("No").'</option><option id="option-edit-yes" value="1" selected>'.engine::lang("Yes").'</option>';
-            }else{
+            } else {
                 $fout .= '<option id="option-edit-no" value="0" selected>'.engine::lang("No").'</option><option id="option-edit-yes" value="1">'.engine::lang("Yes").'</option>';
             }
             $fout .= '</select><br/><br/>';
-            if(!empty($data["img"])){
+            if (!empty($data["img"])) {
                 $fout .= '<div id="delete_image_block"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'" /><br/><br/>'
                 . '<input type="hidden" id="noimg" name="noimg" value="0" />'
                 . '<input id="input-delete-image" type="button" onClick=\'  $id("noimg").value="1"; '
                 . '                                 $id("edit_form").submit();\' '
                 . 'class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
             }
-            for($i = 1; $i<2; $i++){
+            for ($i = 1; $i <2; $i++) {
                 $fout .= '<div class="new_photo" id="new_photo_'.$i.'" title="none">
                 <input type="hidden" name="file'.$i.'" id="file'.$i.'" value="" />
                 </div>';
@@ -365,19 +365,19 @@ function print_admin_content($cms){
             </div><br/>
             <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" />
             </form>';
-            if(!empty($_POST["comment"])){
+            if (!empty($_POST["comment"])) {
                 $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
                 $text = str_replace("\n", "<br/>", $text);
                 $query = 'SELECT * FROM `nodes_comment` WHERE `text` LIKE "'.$text.'" AND `url` LIKE "'.$url.'" AND `user_id` = "1"';
                 $res = engine::mysql($query);
                 $data = mysqli_fetch_array($res);
-                if(empty($data)){
+                if (empty($data)) {
                     $query = 'INSERT INTO `nodes_comment` (`url`, `reply`, `user_id`, `text`, `date`) '
                     . 'VALUES("'.$url.'", "'.intval($_POST["reply"]).'", "1", "'.$text.'", "'.date("U").'")';
                     engine::mysql($query);
                 }
             }
-        }else if($_GET["act"] == "list"){
+        } else if ($_GET["act"] == "list") {
             $query = 'SELECT * FROM `nodes_catalog` WHERE `id` = "'.$_GET["cat_id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
@@ -393,22 +393,22 @@ function print_admin_content($cms){
                 <th align=center>'.engine::lang("Action").'</th>
             </tr>';
             $res = engine::mysql($query);
-            while($data = mysqli_fetch_array($res)){
+            while ($data = mysqli_fetch_array($res)) {
                 $arr_count++;
                 $table .= '<tr><td align=left><a id="link-'.$data["url"].'" href="'.$_SERVER["DIR"].'/content/'.$data["url"].'" target="_blank">'.$data["caption"].'</a></td>';
                 $table .= '<td align=left>'.date("d/m/Y H:i", $data["date"]).'</td>';
                 $table .= '<td align=left>';
-                if($admin_access == 2){
-                    $table .= '<select  id="select-action-'.$arr_count.'" class="input" onChange=\'if(confirm("'.engine::lang("Are you sure?").'")){window.location=this.value;}else{this.selectedIndex=0;}\'>
+                if ($admin_access == 2) {
+                    $table .= '<select  id="select-action-'.$arr_count.'" class="input" onChange=\'if (confirm("'.engine::lang("Are you sure?").'")) {window.location=this.value;} else {this.selectedIndex=0;}\'>
                         <option id="option-action-0" disabled selected>'.engine::lang("Select an action").'</option>
                         <option id="option-action-1" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'&id='.$data["id"].'&act=edit">'.engine::lang("Edit article").'</option>';
                     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
                     $rr = engine::mysql($query);
                     $dd = mysqli_fetch_array($rr);
                     $arr = explode(";", $dd["value"]);
-                    foreach($arr as $value){
-                        if(!empty($value)){
-                            if($_SESSION["Lang"]!=$value){
+                    foreach ($arr as $value) {
+                        if (!empty($value)) {
+                            if ($_SESSION["Lang"]!=$value) {
                                 $table .= '<option id="option-action-2-'.$value.'" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'&id='.$data["id"].'&act=copy&target='.$value.'">'.engine::lang("Copy to").' '.$value.' '.engine::lang("translation").'</option>';
                             }
                         }
@@ -417,12 +417,12 @@ function print_admin_content($cms){
                         <option id="option-action-4" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'&id='.$data["id"].'&act=down">'.engine::lang("Down to bottom").'</option>
                         <option id="option-action-5" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'&id='.$data["id"].'&act=remove">'.engine::lang("Delete article").'</option>
                         </select>';
-                }else{
+                } else {
                     $table .= '-';
                 }
                 $table .= '</td></tr>';
             }$table .= '</table></div>';
-            if($arr_count){
+            if ($arr_count) {
                 $fout .= $table.'
                 <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
@@ -434,55 +434,55 @@ function print_admin_content($cms){
                 $res = engine::mysql($requery);
                 $data = mysqli_fetch_array($res);
                 $count = $data[0];
-                if($to > $count) $to = $count;
-                if($data[0]>0){
+                if ($to > $count) $to = $count;
+                if ($data[0]>0) {
                     $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                         <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                         <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-                         <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-                         <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+                         <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
+                         <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
+                         <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
                         </select> '.engine::lang("per page").'.</nobr></p>';
                 }$fout .= '</div><div class="cr"></div>';
-                if($count>$_SESSION["count"]){
+                if ($count>$_SESSION["count"]) {
                     $fout .= '<div class="pagination" >';
                     $pages = ceil($count/$_SESSION["count"]);
-                    if($_SESSION["page"]>1){
+                    if ($_SESSION["page"]>1) {
                         $fout .= '<span id="page-pref" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                     }$fout .= '<ul>';
                     $a = $b = $c = $d = $e = $f = 0;
-                    for($i = 1; $i <= $pages; $i++){
-                       if(($a<2 && !$b && $e<2)||
+                    for ($i = 1; $i <= $pages; $i++) {
+                       if (($a<2 && !$b && $e<2)||
                            ($i >=( $_SESSION["page"]-2) && $i <=( $_SESSION["page"]+2) && $e<5)||
-                       ($i>$pages-2 && $e<2)){
-                           if($a<2) $a++;
+                       ($i>$pages-2 && $e<2)) {
+                           if ($a<2) $a++;
                            $e++; $f = 0;
-                           if($i == $_SESSION["page"]){
+                           if ($i == $_SESSION["page"]) {
                                $b = 1; $e = 0;
                               $fout .= '<li class="active-page">'.$i.'</li>';
-                           }else{
+                           } else {
                                $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                            }
-                       }else if((!$c||!$b) && !$f && $i<$pages){
+                       } else if ((!$c||!$b) && !$f && $i < $pages) {
                            $f = 1; $e = 0;
-                           if(!$b) $b = 1;
-                           else if(!$c) $c = 1;
+                           if (!$b) $b = 1;
+                           else if (!$c) $c = 1;
                            $fout .= '<li class="dots">. . .</li>';
                        }
-                    }if($_SESSION["page"]<$pages){
+                    }if ($_SESSION["page"]<$pages) {
                        $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                     }$fout .= '</ul>
                     </div>';
                  }$fout .= '</form>
                      <div class="clear"></div>';
-            }else{
+            } else {
                 $fout .= '<div class="clear_block">'.engine::lang("There is no articles").'</div>';
             }
-            if($admin_access == 2){
+            if ($admin_access == 2) {
                 $fout .= '<br/><a id="new-article-link" href="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'">'
                 . '<input id="input-add-article" type="button" class="btn w280" value="'.engine::lang("Add new article").'" /></a><br/>';
             }
-        } else if($_GET["act"] == "copy" && !empty($_GET["target"])) {
-            if($admin_access != 2){
+        } else if ($_GET["act"] == "copy" && !empty($_GET["target"])) {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -492,16 +492,16 @@ function print_admin_content($cms){
             $query = 'SELECT `id` FROM `nodes_catalog` WHERE `url` = "'.$data["url"].'" AND `lang` = "'.$_GET["target"].'"';
             $res = engine::mysql($query);
             $d = mysqli_fetch_array($res);
-            if(!empty($d)){
+            if (!empty($d)) {
                 die('<script>alert("'.engine::lang("This catalog already exist in").' '.$_GET["target"].' '.engine::lang("translation").'"); window.location = "'.$_SERVER["DIR"].'/admin/?mode=content";</script>');
-            }else{
+            } else {
                 $query = 'INSERT INTO `nodes_catalog`(caption, text, url, img, visible, lang, date, public_date) '
                         . 'VALUES("'.$data["caption"].'", "'.$data["text"].'", "'.$data["url"].'", "'.$data["img"].'", "'.$data["visible"].'", "'.$_GET["target"].'", "'.date("U").'", "'.date("U").'")';
                 engine::mysql($query);
                 die('<script>window.location = "'.$_SERVER["DIR"].'/admin/?mode=content&lang='.$_GET["target"].'";</script>');
             }
-        }else{
-            if($admin_access != 2){
+        } else {
+            if ($admin_access != 2) {
                 engine::error(401);
                 return;
             }
@@ -515,7 +515,7 @@ function print_admin_content($cms){
                 <center>
                 <input id="input-article-caption" type="text" class="input w600" name="caption" required placeHolder="'.engine::lang("Caption").'" value="'.$_POST["caption"].'" /><br/><br/>
                 <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" value="'.$_POST["url"].'" /><br/><br/>';
-            for($i = 1; $i<2; $i++){
+            for ($i = 1; $i <2; $i++) {
                 $fout .= '<div class="new_photo" id="new_photo_'.$i.'" title="none">
                 <input type="hidden" name="file'.$i.'" id="file'.$i.'" value="" />
                 </div>';
@@ -531,7 +531,7 @@ function print_admin_content($cms){
                 </form>
             </div>';
         }
-    }else{
+    } else {
         // print base directory
         $query = 'SELECT * FROM `nodes_catalog` WHERE `lang` = "'.$_SESSION["Lang"].'"'
                 . ' ORDER BY `order` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
@@ -547,7 +547,7 @@ function print_admin_content($cms){
             </tr>
             </thead>';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)){
+        while ($data = mysqli_fetch_array($res)) {
             $query = 'SELECT COUNT(`id`) FROM `nodes_content` WHERE `cat_id` = "'.$data["id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
@@ -555,19 +555,19 @@ function print_admin_content($cms){
             $table .= '<tr><td align=left><a id="link-'.$data["url"].'" href="'.$_SERVER["DIR"].'/content/'.$data["url"].'" target="_blank">'.$data["caption"].'</a></td>
             <td align=left>'.$d[0].'</td>
             <td align=left>
-            <select  id="select-action-'.$arr_count.'" class="input" onChange=\'if(this.value.indexOf("remove") <= 0 || confirm("'.engine::lang("Are you sure?").'")){window.location=this.value;}\'>
+            <select  id="select-action-'.$arr_count.'" class="input" onChange=\'if (this.value.indexOf("remove") <= 0 || confirm("'.engine::lang("Are you sure?").'")) {window.location=this.value;}\'>
                 <option id="option-action-0" disabled selected>'.engine::lang("Select an action").'</option>
                 <option id="option-action-1" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$data["id"].'&act=list">'.engine::lang("List articles").'</option>';
-                if($admin_access == 2){
+                if ($admin_access == 2) {
                     $table .= '
                     <option id="option-action-2" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$data["id"].'">'.engine::lang("Add article").'</option>';
                     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
                     $rr = engine::mysql($query);
                     $dd = mysqli_fetch_array($rr);
                     $arr = explode(";", $dd["value"]);
-                    foreach($arr as $value){
-                        if(!empty($value)){
-                            if($_SESSION["Lang"]!=$value){
+                    foreach ($arr as $value) {
+                        if (!empty($value)) {
+                            if ($_SESSION["Lang"]!=$value) {
                                 $table .= '<option id="option-action-3-'.$value.'" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$data["id"].'&act=copy&target='.$value.'">'.engine::lang("Copy to").' '.$value.' '.engine::lang("translation").'</option>';
                             }
                         }
@@ -583,7 +583,7 @@ function print_admin_content($cms){
             </td></tr>';
                     }$table .= '
             </table></div><br/>';
-        if($arr_count){
+        if ($arr_count) {
             $fout .= $table.'
             <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
             <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
@@ -595,51 +595,51 @@ function print_admin_content($cms){
             $res = engine::mysql($requery);
             $data = mysqli_fetch_array($res);
             $count = $data[0];
-            if($to > $count) $to = $count;
-            if($data[0]>0){
+            if ($to > $count) $to = $count;
+            if ($data[0]>0) {
                 $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                     <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                     <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-                     <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-                     <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+                     <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
+                     <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
+                     <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
                     </select> '.engine::lang("per page").'.</nobr></p>';
             }$fout .= '</div><div class="cr"></div>';
-            if($count>$_SESSION["count"]){
+            if ($count>$_SESSION["count"]) {
                 $fout .= '<div class="pagination" >';
                 $pages = ceil($count/$_SESSION["count"]);
-                if($_SESSION["page"]>1){
+                if ($_SESSION["page"]>1) {
                     $fout .= '<span  id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                 }$fout .= '<ul>';
                 $a = $b = $c = $d = $e = $f = 0;
-                for($i = 1; $i <= $pages; $i++){
-                   if(($a<2 && !$b && $e<2)||
+                for ($i = 1; $i <= $pages; $i++) {
+                   if (($a<2 && !$b && $e<2)||
                        ($i >=( $_SESSION["page"]-2) && $i <=( $_SESSION["page"]+2) && $e<5)||
-                   ($i>$pages-2 && $e<2)){
-                       if($a<2) $a++;
+                   ($i>$pages-2 && $e<2)) {
+                       if ($a<2) $a++;
                        $e++; $f = 0;
-                       if($i == $_SESSION["page"]){
+                       if ($i == $_SESSION["page"]) {
                            $b = 1; $e = 0;
                           $fout .= '<li class="active-page">'.$i.'</li>';
-                       }else{
+                       } else {
                            $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                        }
-                   }else if((!$c||!$b) && !$f && $i<$pages){
+                   } else if ((!$c||!$b) && !$f && $i < $pages) {
                        $f = 1; $e = 0;
-                       if(!$b) $b = 1;
-                       else if(!$c) $c = 1;
+                       if (!$b) $b = 1;
+                       else if (!$c) $c = 1;
                        $fout .= '<li class="dots">. . .</li>';
                    }
-                }if($_SESSION["page"]<$pages){
+                }if ($_SESSION["page"]<$pages) {
                    $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }$fout .= '</ul>
                 </div>
                 ';
              }$fout .= '
                 </form><div class="clear"></div>';
-        }else{
+        } else {
             $fout .= '<div class="clear_block">'.engine::lang("Content not found").'</div>';
         }
-        if($admin_access == 2){
+        if ($admin_access == 2) {
             $fout .= '<br/>
             <input id="input-add-dir" type="button" onClick=\'$id("new_directory").style.display="block"; jQuery("#new_directory").removeClass("hidden"); this.style.display="none";\' value="'.engine::lang("Add a new directory").'" class="btn w280" />
             <div id="new_directory" class="hidden document" >
@@ -653,7 +653,7 @@ function print_admin_content($cms){
             . '<option id="option-new-1" value="1" selected>'.engine::lang("Yes").'</option>'
             . '</select><br/><br/>';
 
-            for($i = 1; $i<2; $i++){
+            for ($i = 1; $i <2; $i++) {
                 $fout .= '<div class="new_photo" id="new_photo_'.$i.'" title="none">
                 <input type="hidden" name="file'.$i.'" id="file'.$i.'" value="" />
                 </div>';

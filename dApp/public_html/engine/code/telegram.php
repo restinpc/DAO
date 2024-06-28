@@ -130,7 +130,7 @@
     if (tme_bg) {
         TWallpaper.init(tme_bg);
         TWallpaper.animate(true);
-        window.onfocus = function(){ TWallpaper.update(); };
+        window.onfocus = function() { TWallpaper.update(); };
     }
     document.body.classList.remove('no_transition');
 

@@ -1,6 +1,6 @@
 <?php
 
-function pano_vr_cursor(){
+function pano_vr_cursor() {
     $fout = '<a-cursor id="cursor" position="0 0 0" ></a-cursor>
         <a-circle id="marker" position="0 0 -10" material="color: white; shader: flat; opacity: 0;" radius="0.1"></a-circle>
         <a-circle id="fuse" position="0 0 -10"

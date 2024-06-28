@@ -20,19 +20,19 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_preview($site, $data); </code>
 */
-function print_preview($site, $data){
+function print_preview($site, $data) {
     $text = strip_tags($data["text"]);
-    if(strlen($text)>70) $text = mb_substr($text, 0 ,70).'..';
+    if (strlen($text)>70) $text = mb_substr($text, 0 ,70).'..';
     $fout = '
         <div class="content_block" title="'.$text.'">
         ';
-    if(!empty($data["img"])){
+    if (!empty($data["img"])) {
         $fout .= '
         <div  id="content_'.md5($data["url"]).'" class="content_img" style="background-image: url(\''.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'\');"
             onClick=\'$id("'.$data["url"].'").click();\'>
             &nbsp;
         </div>';
-    }else{
+    } else {
         $fout .= '
         <div  id="content_'.md5($data["url"]).'" class="content_img" style="background-image: url(\''.$_SERVER["DIR"].'/img/no-image.jpg\');"
             onClick=\'$id("'.$data["url"].'").click();\'>

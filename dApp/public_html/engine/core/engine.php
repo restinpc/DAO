@@ -26,22 +26,22 @@ class engine {
 public static function __callStatic($name, $arguments) {
     array_push($_SERVER["CONSOLE"], "engine::".$name);
     $exec = function_exists($name);
-    if(!$exec && !empty($_SERVER["CORE_PATH"])){
-        if(is_file('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php')){
+    if (!$exec && !empty($_SERVER["CORE_PATH"])) {
+        if (is_file('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php')) {
             require_once('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php');
             $exec = 1;
         }
     }
-    if(!$exec && is_file('engine/core/function/'.$name.'.php')){
+    if (!$exec && is_file('engine/core/function/'.$name.'.php')) {
         require_once('engine/core/function/'.$name.'.php');
         $exec = 1;
     }
-    if(!$exec){
+    if (!$exec) {
         $skip = array('.', '..', 'function', $_SERVER["CORE_PATH"]);
         $files = scandir('engine/core/');
-        foreach($files as $file) {
-            if(!in_array($file, $skip)){
-                if(is_file('engine/core/'.$file.'/'.$name.'.php')){
+        foreach ($files as $file) {
+            if (!in_array($file, $skip)) {
+                if (is_file('engine/core/'.$file.'/'.$name.'.php')) {
                     require_once('engine/core/'.$file.'/'.$name.'.php');
                     $exec = 1;
                     break;
@@ -49,31 +49,31 @@ public static function __callStatic($name, $arguments) {
             }
         }
     }
-    if($exec){
+    if ($exec) {
         $count = count($arguments);
-        if(!$count){
+        if (!$count) {
             return $name();
-        }else if($count==1){
+        } else if ($count==1) {
             return $name($arguments[0]);
-        }else if($count==2){
+        } else if ($count==2) {
             return $name(
                 $arguments[0],
                 $arguments[1]
             );
-        }else if($count==3){
+        } else if ($count==3) {
             return $name(
                 $arguments[0],
                 $arguments[1],
                 $arguments[2]
             );
-        }else if($count==4){
+        } else if ($count==4) {
             return $name(
                 $arguments[0],
                 $arguments[1],
                 $arguments[2],
                 $arguments[3]
             );
-        }else if($count==5){
+        } else if ($count==5) {
             return $name(
                 $arguments[0],
                 $arguments[1],
@@ -81,7 +81,7 @@ public static function __callStatic($name, $arguments) {
                 $arguments[3],
                 $arguments[4]
             );
-        }else if($count==6){
+        } else if ($count==6) {
             return $name(
                 $arguments[0],
                 $arguments[1],
@@ -90,7 +90,7 @@ public static function __callStatic($name, $arguments) {
                 $arguments[4],
                 $arguments[5]
             );
-        }else if($count==7){
+        } else if ($count==7) {
             return $name(
                 $arguments[0],
                 $arguments[1],
@@ -101,18 +101,18 @@ public static function __callStatic($name, $arguments) {
                 $arguments[6]
             );
         }
-    }else self::error();
+    } else self::error();
 }
 
 static function lang($key) {
-    if ($_SESSION["Lang"] &&$_SESSION["Lang"] == "en") {
+    if ($_SESSION["Lang"] && $_SESSION["Lang"] == "en") {
         return $key;
     }
     if (!$GLOBALS["_LANG"] || !is_array($GLOBALS["_LANG"])) {
         $GLOBALS["_LANG"] = array();
         $query = 'SELECT * FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
-        while($data = mysqli_fetch_array($res)) {
+        while ($data = mysqli_fetch_array($res)) {
             $GLOBALS["_LANG"][$data["name"]] = $data["value"];
         }
     }
@@ -146,13 +146,13 @@ static function href($url) {
 * @param string $error_code HTTP code of error.
 * @usage <code> engine::error(401); </code>
 */
-static function error($error_code='0'){
+static function error($error_code='0') {
     array_push($_SERVER["CONSOLE"], "engine::error(".$error_code.")");
     $my_error = mysqli_error($_SERVER["sql_connection"]);
     $query = 'SELECT `value` FROM `nodes_config` WHERE `name` = "debug"';
     $res = self::mysql($query);
     $data = mysqli_fetch_array($res);
-    if(0){
+    if (0) {
         echo "PHP:"."\n";
         print_r(error_get_last());
         echo "\n"."----------------------------------------"."\n"."MySQL:"."\n";
@@ -160,14 +160,14 @@ static function error($error_code='0'){
         echo "\n"."----------------------------------------"."\n"."Console:"."\n";
         print_r($_SERVER["CONSOLE"]);
         echo "\n"."----------------------------------------"."\n";
-    }else{
-        if($error_code != 0) $_GET[$error_code] = 1;
-        if(!isset($_GET["204"]) && !isset($_GET["504"])){
+    } else {
+        if ($error_code != 0) $_GET[$error_code] = 1;
+        if (!isset($_GET["204"]) && !isset($_GET["504"])) {
             $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://","\$h", $_SERVER["SCRIPT_URI"]);
-            while($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"])-1]=="/"){
+            while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"])-1] == "/") {
                 $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"])-1);
             }$_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
-            if(empty($_SERVER["SCRIPT_URI"])) $_SERVER["SCRIPT_URI"]="/";
+            if (empty($_SERVER["SCRIPT_URI"])) $_SERVER["SCRIPT_URI"]="/";
             $get = $session = $post = '';
             $get = print_r($_GET, 1);
             $post = print_r($_POST, 1);
@@ -187,7 +187,7 @@ static function error($error_code='0'){
                     . '`session` = "'.$session.'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
-            if(empty($data)){
+            if (empty($data)) {
                 $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `ip`, `get`, `post`, `session`, `count`) '
                 . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", '
                         . '"'.$_SESSION["Lang"].'", '
@@ -197,12 +197,12 @@ static function error($error_code='0'){
                         . '"'.$post.'", '
                         . '"'.$session.'", '
                         . '"1")';
-            }else{
+            } else {
                $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"]+1).'" WHERE `id` = "'.$data["id"].'"';
             }
             self::mysql($query);
         }
-        if(empty($_POST["jQuery"])){ echo '<!DOCTYPE html>
+        if (empty($_POST["jQuery"])) { echo '<!DOCTYPE html>
         <html style="background: #1a1d1d; height: 100%; font-family: sans-serif;">
         <head><title>Error</title><meta charset="UTF-8" />
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -210,7 +210,7 @@ static function error($error_code='0'){
         </head><body>';
             require_once("engine/code/error.php");
             echo '</body></html>';
-        }else{
+        } else {
             require_once("engine/code/error.php");
         }
     }
@@ -227,7 +227,7 @@ static function error($error_code='0'){
 *  $data = mysqli_fetch_array($res);
 * </code>
 */
-static function mysql($query){
+static function mysql($query) {
     array_push($_SERVER["CONSOLE"], "engine::mysql(".  str_replace('"', '\"', $query).")");
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
@@ -235,7 +235,7 @@ static function mysql($query){
     return $res;
 }
 
-static function escape_string($string){
+static function escape_string($string) {
     return strip_tags(mysqli_real_escape_string($_SERVER["sql_connection"], trim($string)));
 }
 
@@ -251,7 +251,7 @@ static function escape_string($string){
 *  engine::send_mail("dev@null.com", "admin@server.com", "Hello", "Text");
 * </code>
 */
-static function send_mail($email, $header, $theme, $message){
+static function send_mail($email, $header, $theme, $message) {
     array_push($_SERVER["CONSOLE"], 'engine::send_mail("'.$email.'", "'.$header.'", "'.$theme.'")');
     $text = "To: ".$email."\n";
     $text .= "Theme: ".$theme."\n";
@@ -260,7 +260,7 @@ static function send_mail($email, $header, $theme, $message){
     $text = engine::escape_string(strip_tags($text, '<a><br/>'));
     $header = "From: {$header}\nContent-Type: text/html; charset=utf-8";
     $theme = '=?utf-8?B?' . base64_encode($theme) . '?=';
-    if(mail($email, "{$theme}\n", $message, $header)){
+    if (mail($email, "{$theme}\n", $message, $header)) {
         return true;
     } return false;
 }
@@ -272,7 +272,7 @@ static function send_mail($email, $header, $theme, $message){
 * @return string Returns the convetrted string.
 * @usage <code> engine::url_translit("Hello world!"); </code>
 */
-static function url_translit($str){
+static function url_translit($str) {
     array_push($_SERVER["CONSOLE"], 'engine::url_translit("'.$str.'")');
     $translit = array(
         "А"=>"A", "Б"=>"B", "В"=>"V", "Г"=>"G", "Д"=>"D", "Е"=>"E", "Ж"=>"J",
@@ -299,7 +299,7 @@ static function url_translit($str){
 * @return string Returns result of request.
 * @usage <code> engine::curl_get_query("http://google.com"); </code>
 */
-static function curl_get_query($url, $format=0){
+static function curl_get_query($url, $format=0) {
     array_push($_SERVER["CONSOLE"], "engine::curl_get_query(".$url.")");
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -315,9 +315,9 @@ static function curl_get_query($url, $format=0){
     $html = curl_exec($ch);
     $error = curl_error($ch);
     curl_close($ch);
-    if(empty($html)){
+    if (empty($html)) {
         return $error;
-    }if($format){
+    }if ($format) {
         $html = str_replace("\r", "", $html);
         $html = str_replace("\f", "", $html);
         $html = str_replace("\v", " ", $html);
@@ -335,7 +335,7 @@ static function curl_get_query($url, $format=0){
 * @return string Returns result of request.
 * @usage <code> engine::curl_post_query("http://google.com", 'foo=1&bar=2'); </code>
 */
-static function curl_post_query($url, $query, $format=0){
+static function curl_post_query($url, $query, $format=0) {
     array_push($_SERVER["CONSOLE"], "engine::curl_post_query(".$url.")");
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -353,9 +353,9 @@ static function curl_post_query($url, $query, $format=0){
     $html = curl_exec($ch);
     $error = curl_error($ch);
     curl_close($ch);
-    if(empty($html)){
+    if (empty($html)) {
         return $error;
-    }if($format){
+    }if ($format) {
         $html = str_replace("\r", "", $html);
         $html = str_replace("\f", "", $html);
         $html = str_replace("\v", " ", $html);
@@ -364,7 +364,7 @@ static function curl_post_query($url, $query, $format=0){
     }return $html;
 }
 
-static function redirect($url){
+static function redirect($url) {
     array_push($_SERVER["CONSOLE"], "engine::redirect");
     header( 'Location: '.$url );
     die('<script>window.location = "'.$url.'";</script>');

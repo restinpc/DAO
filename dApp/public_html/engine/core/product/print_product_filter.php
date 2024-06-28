@@ -19,7 +19,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_product_filter($site); </code>
 */
-function print_product_filter($site){
+function print_product_filter($site) {
     $filter = '<div class="product_filter">
     <form method="POST" id="filer_form">
     <input type="hidden" name="details" value="1" />
@@ -28,16 +28,16 @@ function print_product_filter($site){
     $query = 'SELECT * FROM `nodes_product_property` WHERE `id` > 1 ORDER BY `id` ASC';
     $res = engine::mysql($query);
     $flag = 0;
-    while($data = mysqli_fetch_array($res)){
+    while ($data = mysqli_fetch_array($res)) {
         $filter .= '<select  id="select-product-filter" class="input" name="'.$data["id"].'" onChange=\'$id("filer_form").submit();\'>
         <option value="0">'.engine::lang("Any").' '.engine::lang($data["value"]).'</option>';
         $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "'.$data["id"].'"';
         $r = engine::mysql($query);
-        while($cat = mysqli_fetch_array($r)){
+        while ($cat = mysqli_fetch_array($r)) {
             $flag=1;
-            if($_SESSION["details"][$data["id"]]==$cat["id"]){
+            if ($_SESSION["details"][$data["id"]] == $cat["id"]) {
                 $filter .= '<option id="option-filter-'.$cat["id"].'" value="'.$cat["id"].'" selected>'.engine::lang($cat["value"]).'</option>';
-            }else{
+            } else {
                 $filter .= '<option id="option-filter-'.$cat["id"].'" value="'.$cat["id"].'">'.engine::lang($cat["value"]).'</option>';
             }
         }$filter .= '
@@ -45,5 +45,5 @@ function print_product_filter($site){
     }$filter .= '
         </form>
     </div>';
-    if($flag) return $filter;
+    if ($flag) return $filter;
 }

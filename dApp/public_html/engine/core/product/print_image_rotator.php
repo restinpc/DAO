@@ -24,20 +24,20 @@
 *   engine::print_image_rotator($site, $caption, $images);
 * </code>
 */
-function print_image_rotator($site, $caption, $images){
+function print_image_rotator($site, $caption, $images) {
     $images = array_filter($images, function($element) { return !empty($element); });
     $fout = '
     <div id="jssor_1" style="position: relative; margin: 0 auto; left: 0px; width: 600px; height: 500px; overflow: hidden; visibility: hidden;">
         <div data-u="slides" id="slider_block" style="cursor: default; position: relative; width: 600px; top: 0px; left: 0px; height: 500px; overflow: hidden;">
             <div><a id="link-g0" onClick=\'$id("g0").click();\'><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'"  /></a> </div>';
     $size = getimagesize($_SERVER["DIR"].'/img/data/big/'.$images[0]);
-    if(!$size[0]){
+    if (!$size[0]) {
         $size = getimagesize($images[0]);
-        if(!$size[0]){
+        if (!$size[0]) {
             $size = getimagesize($_SERVER["PUBLIC_URL"].'/img/data/big/'.$images[0]);
         }
     }
-    if(count($images)==1){
+    if (count($images) == 1) {
         $class = 'class="hidden"';
     }
     $galery = '
@@ -48,13 +48,13 @@ function print_image_rotator($site, $caption, $images){
         <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
     </figure>';
 
-    for($i = 1; $i<count($images); $i++){
-        if(!empty($images[$i])){
-            if($i==count($images)-1){
+    for ($i = 1; $i < count($images); $i++) {
+        if (!empty($images[$i])) {
+            if ($i==count($images)-1) {
                 $size = getimagesize($_SERVER["DIR"].'/img/data/big/'.$images[$i]);
-                if(!$size[0]){
+                if (!$size[0]) {
                     $size = getimagesize($images[$i]);
-                    if(!$size[0]){
+                    if (!$size[0]) {
                         $size = getimagesize($_SERVER["PUBLIC_URL"].'/img/data/big/'.$images[$i]);
                     }
                 }
@@ -69,7 +69,7 @@ function print_image_rotator($site, $caption, $images){
                         </a>
                         <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
                     </figure>';
-            }else{
+            } else {
                 $fout .= '<div class="hidden"> <img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" /> </div>';
             }
         }

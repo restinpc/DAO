@@ -20,11 +20,11 @@
 * @usage <code> engine::print_inbox($site); </code>
 */
 
-function print_inbox($site, $target_id){
+function print_inbox($site, $target_id) {
     $fout = '<div style="height: 65px;"></div>
         <div style="width: calc(100% - 10px); margin: 0px auto;">';
-    if (!empty($_GET[2]) || $target_id!=0){
-        if(!$target_id) {
+    if (!empty($_GET[2]) || $target_id!=0) {
+        if (!$target_id) {
             $target_id = $_GET[2];
         }
         if (!$site->configs["free_message"]) {
@@ -82,7 +82,7 @@ function print_inbox($site, $target_id){
             </div>
             <div class="chat_center">
                 <textarea name="text" id="nodes_message_text" class="input" placeHolder="'.engine::lang("Your message here").'"
-                    onkeypress=\'if(event.keyCode==13&&!event.shiftKey){ event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
+                    onkeypress=\'if (event.keyCode==13&&!event.shiftKey) { event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
                 ></textarea>
                 <br/>
                 <input id="send-message" type="button" onClick=\'document.framework.postMessage("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'"  />
@@ -105,7 +105,7 @@ function print_inbox($site, $target_id){
                             . '(`from` = "'.intval($u["id"]).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
-                    if (!intval($d[0]) && $_SESSION["user"]["id"]!="1" && intval($u["id"]) != 1){
+                    if (!intval($d[0]) && $_SESSION["user"]["id"]!="1" && intval($u["id"]) != 1) {
                         continue;
                     }
                 }
@@ -114,7 +114,7 @@ function print_inbox($site, $target_id){
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
                 if ($d[0] > 0) {
-                    if($d[0] == 1) {
+                    if ($d[0] == 1) {
                         $new = '<span class="new_message">'
                             .engine::lang("New message")
                         . '</span>'

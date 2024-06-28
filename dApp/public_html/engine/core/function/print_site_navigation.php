@@ -21,7 +21,7 @@
 * @usage <code> engine::print_site_navigation("Whitepaper"); </code>
 */
 
-function print_site_navigation($current){
+function print_site_navigation($current) {
     $arr = Array(
         engine::lang("Booking rooms") => $_SERVER["DIR"]."/booking",
         engine::lang("Developed by") => $_SERVER["DIR"]."/developer",

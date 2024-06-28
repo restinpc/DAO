@@ -13,13 +13,13 @@ require_once("engine/nodes/session.php");
 
 class site { public $content; }
 $_SESSION["redirect"] = $_SERVER["SCRIPT_URI"];
-if(!empty($_GET["id"])){
+if (!empty($_GET["id"])) {
     $id = intval($_GET["id"]);
     $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if(empty($data)) engine::error();
-    if(!empty($_POST["update"]) && $_SESSION["user"]["id"] == 1){
+    if (empty($data)) engine::error();
+    if (!empty($_POST["update"]) && $_SESSION["user"]["id"] == 1) {
         $id = intval($_POST["update"]);
         $name = engine::escape_string($_POST["name"]);
         $position = engine::escape_string($_POST["position"]);
@@ -47,7 +47,7 @@ if(!empty($_GET["id"])){
         $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-    }else if(!empty($_POST["default"]) && $_SESSION["user"]["id"] == 1){
+    } else if (!empty($_POST["default"]) && $_SESSION["user"]["id"] == 1) {
         $id = intval($_POST["default"]);
         $query = 'UPDATE `nodes_vr_scene` SET '
             . '`position` = "0 3 0", '
@@ -61,7 +61,7 @@ if(!empty($_GET["id"])){
         $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-    }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "edit_object"){
+    } else if (!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "edit_object") {
         $id = intval($_POST["id"]);
         $text = $_POST["text"];
         $color = engine::escape_string($_POST["color"]);
@@ -85,11 +85,11 @@ if(!empty($_GET["id"])){
             . '`base64` = "'.$base64.'" '
             . 'WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_object"){
+    } else if (!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_object") {
         $id = intval($_POST["id"]);
         $query = 'DELETE FROM `nodes_vr_object` WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && $_POST["action"] == "new_object"){
+    } else if (!empty($_POST["action"]) && $_POST["action"] == "new_object") {
         $text = $_POST["text"];
         $color = engine::escape_string($_POST["color"]);
         $position = engine::escape_string($_POST["position"]);
@@ -104,14 +104,14 @@ if(!empty($_GET["id"])){
         $query = 'INSERT INTO `nodes_vr_object`(`project_id`, `level_id`, `scene_id`, `text`, `width`, `height`, `color`, `base64`, `position`, `rotation`, `scale`) '
             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$text.'", "'.$width.'", "'.$height.'", "'.$color.'", "'.$base64.'", "'.$position.'", "'.$rotation.'", "'.$scale.'")';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && $_POST["action"] == "new_point"){
+    } else if (!empty($_POST["action"]) && $_POST["action"] == "new_point") {
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
         $target = intval($_POST["target"]);
         $query = 'INSERT INTO `nodes_vr_navigation`(`project_id`, `level_id`, `scene_id`, `target`, `position`, `scale`) '
             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$target.'", "'.$position.'", "'.$scale.'")';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && $_POST["action"] == "edit_point" && !empty($_POST["id"])){
+    } else if (!empty($_POST["action"]) && $_POST["action"] == "edit_point" && !empty($_POST["id"])) {
         $id = intval($_POST["id"]);
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
@@ -122,18 +122,18 @@ if(!empty($_GET["id"])){
             . '`target` = "'.$target.'" '
             . 'WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_point"){
+    } else if (!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_point") {
         $id = intval($_POST["id"]);
         $query = 'DELETE FROM `nodes_vr_navigation` WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && $_POST["action"] == "new_url"){
+    } else if (!empty($_POST["action"]) && $_POST["action"] == "new_url") {
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
         $url = engine::escape_string($_POST["url"]);
         $query = 'INSERT INTO `nodes_vr_link`(`project_id`, `level_id`, `scene_id`, `url`, `position`, `scale`) '
             . 'VALUES("'.$data["project_id"].'", "'.$data["level_id"].'", "'.$data["id"].'", "'.$url.'", "'.$position.'", "'.$scale.'")';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && $_POST["action"] == "edit_url" && !empty($_POST["id"])){
+    } else if (!empty($_POST["action"]) && $_POST["action"] == "edit_url" && !empty($_POST["id"])) {
         $id = intval($_POST["id"]);
         $position = engine::escape_string($_POST["position"]);
         $scale = engine::escape_string($_POST["scale"]);
@@ -144,7 +144,7 @@ if(!empty($_GET["id"])){
             . '`url` = "'.$url.'" '
             . 'WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-    }else if(!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_url"){
+    } else if (!empty($_POST["action"]) && !empty($_POST["id"]) && $_POST["action"] == "delete_url") {
         $id = intval($_POST["id"]);
         $query = 'DELETE FROM `nodes_vr_link` WHERE `id` = "'.$id.'"';
         engine::mysql($query);
@@ -160,9 +160,9 @@ if(!empty($_GET["id"])){
     $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$data["id"].'"';
     $r = engine::mysql($query);
 
-    while($dd = mysqli_fetch_array($r)){
+    while ($dd = mysqli_fetch_array($r)) {
         $json = json_decode($dd["cubemap"]);
-        foreach($json as $key=>$value){
+        foreach ($json as $key => $value) {
             $id = str_replace($data["id"].'x', '', $value);
             $img = $data["id"].'/'.str_replace($data["id"].'x', '', $value);
             $id = str_replace('.png', '', $value);
@@ -192,28 +192,28 @@ if(!empty($_GET["id"])){
     $t = 1;
     $w = $s/2;
     $x = $q*$s/2;
-    for($l = 0; $l< count($sides); $l++){
+    for ($l = 0; $l< count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
-        for($i = 0; $i < $q; $i++){
-            for($j = 0; $j < $q; $j++){
+        for ($i = 0; $i < $q; $i++) {
+            for ($j = 0; $j < $q; $j++) {
                 $id = ($i*$q+$j);
-                if($side == "pz"){
+                if ($side == "pz") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "nz"){
+                } else if ($side == "nz") {
                     $i_1 = ($x-$i*$s-$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "px"){
+                } else if ($side == "px") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = (-$x+$i*$s+$w);
-                }else if($side == "nx"){
+                } else if ($side == "nx") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = ($x-$i*$s-$w);
-                }else if($side == "py"){
+                } else if ($side == "py") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "ny"){
+                } else if ($side == "ny") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = (-$x+$j*$s+$w);
                 }
@@ -237,28 +237,28 @@ if(!empty($_GET["id"])){
     $t = 2;
     $w = $s/2;
     $x = $q*$s/2;
-    for($l = 0; $l< count($sides); $l++){
+    for ($l = 0; $l< count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
-        for($i = 0; $i < $q; $i++){
-            for($j = 0; $j < $q; $j++){
+        for ($i = 0; $i < $q; $i++) {
+            for ($j = 0; $j < $q; $j++) {
                 $id = ($i*$q+$j);
-                if($side == "pz"){
+                if ($side == "pz") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "nz"){
+                } else if ($side == "nz") {
                     $i_1 = ($x-$i*$s-$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "px"){
+                } else if ($side == "px") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = (-$x+$i*$s+$w);
-                }else if($side == "nx"){
+                } else if ($side == "nx") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = ($x-$i*$s-$w);
-                }else if($side == "py"){
+                } else if ($side == "py") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "ny"){
+                } else if ($side == "ny") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = (-$x+$j*$s+$w);
                 }
@@ -284,28 +284,28 @@ if(!empty($_GET["id"])){
     $t = 3;
     $w = $s/2;
     $x = $q*$s/2;
-    for($l = 0; $l< count($sides); $l++){
+    for ($l = 0; $l< count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
-        for($i = 0; $i < $q; $i++){
-            for($j = 0; $j < $q; $j++){
+        for ($i = 0; $i < $q; $i++) {
+            for ($j = 0; $j < $q; $j++) {
                 $id = ($i*$q+$j);
-                if($side == "pz"){
+                if ($side == "pz") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "nz"){
+                } else if ($side == "nz") {
                     $i_1 = ($x-$i*$s-$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "px"){
+                } else if ($side == "px") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = (-$x+$i*$s+$w);
-                }else if($side == "nx"){
+                } else if ($side == "nx") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = ($x-$i*$s-$w);
-                }else if($side == "py"){
+                } else if ($side == "py") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "ny"){
+                } else if ($side == "ny") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = (-$x+$j*$s+$w);
                 }
@@ -331,28 +331,28 @@ if(!empty($_GET["id"])){
     $t = 4;
     $w = $s/2;
     $x = $q*$s/2;
-    for($l = 0; $l< count($sides); $l++){
+    for ($l = 0; $l< count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
-        for($i = 0; $i < $q; $i++){
-            for($j = 0; $j < $q; $j++){
+        for ($i = 0; $i < $q; $i++) {
+            for ($j = 0; $j < $q; $j++) {
                 $id = ($i*$q+$j);
-                if($side == "pz"){
+                if ($side == "pz") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "nz"){
+                } else if ($side == "nz") {
                     $i_1 = ($x-$i*$s-$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "px"){
+                } else if ($side == "px") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = (-$x+$i*$s+$w);
-                }else if($side == "nx"){
+                } else if ($side == "nx") {
                     $i_1 = ($x-$j*$s-$w);
                     $j_1 = ($x-$i*$s-$w);
-                }else if($side == "py"){
+                } else if ($side == "py") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = ($x-$j*$s-$w);
-                }else if($side == "ny"){
+                } else if ($side == "ny") {
                     $i_1 = (-$x+$i*$s+$w);
                     $j_1 = (-$x+$j*$s+$w);
                 }
@@ -378,7 +378,7 @@ if(!empty($_GET["id"])){
     $gsv = '';
     $query = 'SELECT * FROM `nodes_vr_object` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
-    while($d = mysqli_fetch_array($res)){
+    while ($d = mysqli_fetch_array($res)) {
         $objects .= engine::pano_print_object($this, $d);
     }
     $new_obj = array();
@@ -393,7 +393,7 @@ if(!empty($_GET["id"])){
     //---------------
     $query = 'SELECT * FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
-    while($d = mysqli_fetch_array($res)){
+    while ($d = mysqli_fetch_array($res)) {
         $site = new site();
         $navigation .= engine::pano_navigation($site, $d);
         $fout .= $site->content;
@@ -407,7 +407,7 @@ if(!empty($_GET["id"])){
     //---------------
     $query = 'SELECT * FROM `nodes_vr_link` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
-    while($d = mysqli_fetch_array($res)){
+    while ($d = mysqli_fetch_array($res)) {
         $gsv .= engine::pano_link($this, $d);
     }
     $new_nav = array();
@@ -427,7 +427,7 @@ if(!empty($_GET["id"])){
     </a-scene>
     <audio id="vr-sound" preload><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
         ';
-    if($_SESSION["user"]["id"] == "1"){
+    if ($_SESSION["user"]["id"] == "1") {
         $fout .= engine::pano_scene_editor($data);
     }
     $fout .= '</div>'
@@ -438,7 +438,7 @@ if(!empty($_GET["id"])){
     $fout .= '</div>'
         . '<div id="vr-block"></div>';
     $onload .= ' document.panorama.loadVR('.$data["level_id"].');';
-}else engine::error();
+} else engine::error();
 
 echo '<!DOCTYPE html>
 <html style="background-color:#fff;">

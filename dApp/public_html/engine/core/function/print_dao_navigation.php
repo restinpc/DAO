@@ -21,7 +21,7 @@
 * @usage <code> engine::print_dao_navigation("DAO Dashboard"); </code>
 */
 
-function print_dao_navigation($current){
+function print_dao_navigation($current) {
     $arr = Array(
         engine::lang("Git repository") => $_SERVER["DIR"]."/dao/git",
         engine::lang("Capitalization") => $_SERVER["DIR"]."/dao/capitalization",

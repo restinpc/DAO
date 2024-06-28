@@ -21,7 +21,7 @@
 * @usage <code> engine::print_articles($site, $data); </code>
 */
 
-function print_articles($site, $data=array()){
+function print_articles($site, $data=array()) {
     $fout = '';
     $cat_id = $data["id"];
     $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
@@ -61,9 +61,9 @@ function print_articles($site, $data=array()){
         if ($data[0]>0) {
             $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                 <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                 <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-                 <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-                 <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+                 <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
+                 <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
+                 <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
                 </select> '.engine::lang("per page").'.</nobr></p>';
         }
         $fout .= '</div><div class="cr 2"></div>';
@@ -79,7 +79,7 @@ function print_articles($site, $data=array()){
             $a = $b = $c = $d = $e = $f = 0;
             for ($i = 1; $i <= $pages; $i++) {
                 if (($a<2 && !$b && $e<2)
-                    || ($i>=($_SESSION["page"]-2) && $i<=($_SESSION["page"]+2) && $e<5)
+                    || ($i>=($_SESSION["page"]-2) && $i <=($_SESSION["page"]+2) && $e<5)
                     || ($i>$pages-2 && $e<2)) {
                    if ($a<2) $a++;
                    $e++; $f = 0;
@@ -89,14 +89,14 @@ function print_articles($site, $data=array()){
                    } else {
                        $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                    }
-               } else if ((!$c||!$b) && !$f && $i<$pages) {
+               } else if ((!$c||!$b) && !$f && $i < $pages) {
                    $f = 1; $e = 0;
-                   if(!$b) $b = 1;
-                   else if(!$c) $c = 1;
+                   if (!$b) $b = 1;
+                   else if (!$c) $c = 1;
                    $fout .= '<li class="dots">. . .</li>';
                }
             }
-                if($_SESSION["page"]<$pages){
+                if ($_SESSION["page"]<$pages) {
                    $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }
                 $fout .= '
@@ -110,7 +110,7 @@ function print_articles($site, $data=array()){
         $fout .= '<div class="clear_block">'.engine::lang("Content not found").'</div>';
     }
     $fout .= '<br/>';
-    if ($_SESSION["user"]["id"]=="1" && $cat_id) {
+    if ($_SESSION["user"]["id"] == "1" && $cat_id) {
         $fout .= '<br/>
         <a id="add-article" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=content&cat_id='.$cat_id).'">
             <input type="button" class="btn w280" value="'.engine::lang("Add article").'" />

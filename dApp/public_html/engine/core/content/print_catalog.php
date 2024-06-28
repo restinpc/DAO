@@ -53,7 +53,7 @@ function print_catalog($site, $data) {
     }
     $fout .= '</div>
     <div class="clear"><br/></div>';
-    if ($_SESSION["user"]["id"]=="1") {
+    if ($_SESSION["user"]["id"] == "1") {
         $fout .= '<br/><a id="add_article" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=content&cat_id='.$data["id"]).'"><input type="button" class="btn w280" value="'.engine::lang("Add article").'" /></a>'
             . '<br/><br/><a id="edit_directory" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=content&cat_id='.$data["id"].'&act=edit').'"><input type="button" class="btn w280" value="'.engine::lang("Edit directory").'" /></a><br/><br/>';
     }

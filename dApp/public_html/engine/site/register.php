@@ -62,7 +62,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
         if (!empty($d)) {
             $this->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Email").' '.engine::lang("already exist").'."); ';
             unset($_POST["email"]);
-        } else if(strpos($email, "@")) {
+        } else if (strpos($email, "@")) {
             $query = 'SELECT COUNT(*) as count FROM nodes_user';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
@@ -85,14 +85,14 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
             $_SESSION["user"] = $data;
             if ($this->configs["confirm_signup_email"]) {
                 email::confirmation($email, $name, $code);
-            } else if($this->configs["send_registration_email"]) {
+            } else if ($this->configs["send_registration_email"]) {
                 email::registration($email, $name);
             }
             if (empty($_SESSION["redirect"])) {
-                $this->content = '<script language="JavaScript">setTimeout(function(){ window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
+                $this->content = '<script language="JavaScript">setTimeout(function() { window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
                 $this->onload .= 'window.location = "'.$_SERVER["DIR"].'/account";';
             } else {
-                $this->content = '<script language="JavaScript">setTimeout(function(){ window.location = "'.$_SESSION["redirect"].'"; }, 1);</script>';
+                $this->content = '<script language="JavaScript">setTimeout(function() { window.location = "'.$_SESSION["redirect"].'"; }, 1);</script>';
             }
             return;
         } else {

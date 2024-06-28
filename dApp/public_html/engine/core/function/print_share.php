@@ -21,19 +21,19 @@
 * @usage <code> engine::print_share($site, "/", "Hello world"); </code>
 */
 require_once("engine/nodes/session.php");
-function share_twitter($url, $caption){
+function share_twitter($url, $caption) {
  return '
 <a title="'.engine::lang("Share friends in").' Twitter" onClick="window.open(\'http://twitter.com/share?text='.$caption.'&url='.urlencode(engine::href($url)).'\', \'Twitter\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/tweeter.jpg" /></a>&nbsp;';
 }
-function share_facebook($url, $caption){
+function share_facebook($url, $caption) {
  return '
 <a title="'.engine::lang("Share friends in").' Facebook" onClick="window.open(\'http://www.facebook.com/sharer.php?u='.urlencode(engine::href($url)).'&t='.$caption.'\', \'Facebook\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/fb.jpg" /></a>&nbsp;';
 }
-function share_vkontakte($url, $caption){
+function share_vkontakte($url, $caption) {
  return '
 <a title="'.engine::lang("Share friends in").' VK" onClick="window.open(\'http://vk.com/share.php?url='.urlencode(engine::href($url)).'&title='.$caption.'\', \'Vkontakte\', \'toolbar=0,status=0,width=320,height=250\');" target="_parent" href="javascript: void(0);"><img src="'.$_SERVER["DIR"].'/img/social/vk.jpg" /></a>&nbsp;';
 }
-function print_share($site, $url, $caption){
+function print_share($site, $url, $caption) {
     return
         share_twitter($url, $caption).
         share_facebook($url, $caption).

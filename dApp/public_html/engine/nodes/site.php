@@ -20,7 +20,7 @@ public $debug;
 * Site class constructor.
 * Output HTML data of website or die with error.
 */
-function __construct(){
+function __construct() {
     array_push($_SERVER["CONSOLE"], "new site()");
     require_once("engine/nodes/headers.php");
     require_once("engine/nodes/session.php");
@@ -55,7 +55,7 @@ function __construct(){
             if (strpos($this->configs["image"], $_SERVER["DIR"]) !== FALSE) {
                 $this->img = $_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].$this->configs["image"];
             } else {
-                if ($this->configs["image"][0]=="/") {
+                if ($this->configs["image"][0] == "/") {
                     $this->img = $_SERVER["PUBLIC_URL"].$this->configs["image"];
                 } else {
                     $this->img = $_SERVER["PUBLIC_URL"].'/'.$this->configs["image"];
@@ -93,7 +93,7 @@ function __construct(){
     ) {
         $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
     } else {
-        if ($_GET[0]=="admin") {
+        if ($_GET[0] == "admin") {
             $_SERVER["CORE_PATH"] = $_GET[0];
             require_once("engine/nodes/admin.php");
             new admin($this);
@@ -160,7 +160,7 @@ function __construct(){
                 $this->title = $data["title"];
             }
         }
-        if(strlen($this->title) > 100) {
+        if (strlen($this->title) > 100) {
             $this->title = mb_substr($this->title, 0, 100).'..';
         }
         $keywords = "";
@@ -244,7 +244,7 @@ if (!isset($_POST["jQuery"])) {
     }
     document.framework.loading_site = () => {
         document.framework.loading_state++;
-        if (document.framework.loading_state != document.framework.loading_stages){
+        if (document.framework.loading_state != document.framework.loading_stages) {
             return;
         }
         try {
@@ -252,7 +252,7 @@ if (!isset($_POST["jQuery"])) {
             document.framework.preload();
             document.framework.loading_state=5;
             setTimeout(document.framework.display, 1000);
-        } catch(e){};
+        } catch(e) {};
         clearTimeout(document.framework.timeout);
     }
     window.onload = document.framework.loading_site;
@@ -291,7 +291,7 @@ $fout .= '
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
         $res = engine::mysql($query);
         $user = mysqli_fetch_array($res);
-        if ($user["ban"]=="1") {
+        if ($user["ban"] == "1") {
             unset($_SESSION["user"]);
             die('<script type="text/javascript">
                 window.alert("'.engine::lang("Your account was banned").'");

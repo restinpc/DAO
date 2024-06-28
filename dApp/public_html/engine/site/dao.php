@@ -16,7 +16,7 @@
 * @var $this->configs - Array MySQL configs.
 */
 
-if(!empty($_GET[2])){
+if (!empty($_GET[2])) {
     $this->content = engine::error();
     return;
 } else if (!empty($_GET[1]) && $_GET[1] == "management") {

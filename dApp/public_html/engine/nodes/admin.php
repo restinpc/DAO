@@ -18,7 +18,7 @@ public $statistic;      // Array CMS statistic.
 * Admin class constructor.
 * @param object $site Admin Site object.
 */
-function admin($site){
+function admin($site) {
     $this->site = $site;
     $_SERVER["SCRIPT_URI"] = str_replace("/admin", $_SERVER["REQUEST_URI"], $_SERVER["SCRIPT_URI"]);
     if ($_SESSION["Lang"] != 'ru' && !strpos($_SERVER["SCRIPT_URI"], '?lang=')) {
@@ -55,7 +55,7 @@ function admin($site){
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
         $this->statistic["perfomance"] = round($d[0],2);
-        if($site->configs["cron"]){
+        if ($site->configs["cron"]) {
             $this->statistic["cron"] = 'jQuery ';
         }
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_exec"';
@@ -64,13 +64,13 @@ function admin($site){
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_done"';
         $res = engine::mysql($query);
         $done = mysqli_fetch_array($res);
-        if($exec["value"]<date("U")-3600) $this->statistic["cron"] .= engine::lang("Disabled");
-        else if($exec["value"]>$done["value"]+300) $this->statistic["cron"] .= engine::lang("Error");
+        if ($exec["value"]<date("U")-3600) $this->statistic["cron"] .= engine::lang("Disabled");
+        else if ($exec["value"]>$done["value"]+300) $this->statistic["cron"] .= engine::lang("Error");
         else $this->statistic["cron"] .= engine::lang("Ok");
-        if(!empty($_GET["mode"])){
+        if (!empty($_GET["mode"])) {
             $this->title = engine::lang(ucfirst($_GET["mode"]));
             $function = 'print_admin_'.$_GET["mode"];
-        }else{
+        } else {
             $this->title = engine::lang("Admin");
             $function = 'print_admin';
         }

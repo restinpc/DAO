@@ -21,12 +21,12 @@
 * @usage <code> engine::print_content_navigation($site, engine::lang("Content")); </code>
 */
 
-function print_content_navigation($site, $title){
+function print_content_navigation($site, $title) {
     $arr = Array();
     $arr[engine::lang("All articles")] = $_SERVER["PUBLIC_URL"].'/content';
     $query = 'SELECT * FROM `nodes_catalog` WHERE `visible` = "1" AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY `order` DESC';
     $res = engine::mysql($query);
-    while($data = mysqli_fetch_array($res)){
+    while ($data = mysqli_fetch_array($res)) {
         $arr[$data["caption"]] = $_SERVER["PUBLIC_URL"].'/content/'.$data["url"];
     }
     return engine::print_navigation($title, $arr);

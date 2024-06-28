@@ -19,13 +19,13 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_purchases($site); </code>
 */
-function print_purchases($site){
+function print_purchases($site) {
     $fout = '<div class="document640">';
     $query = 'SELECT * FROM `nodes_order` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `date` DESC';
     $res = engine::mysql($query);
     $flag = 0;
-    while($data = mysqli_fetch_array($res)){
-        if($data["status"]=="1"){
+    while ($data = mysqli_fetch_array($res)) {
+        if ($data["status"] == "1") {
             $site->onload .= '
                 alert("'.engine::lang("Thank you for your order! Shipment in process now.").'");
                 $id("purcases_count").innerHTML = "";
@@ -36,7 +36,7 @@ function print_purchases($site){
         }
         $flag = 1;
         $fout .= engine::print_purchase($site, $data);
-    }if(!$flag){
+    }if (!$flag) {
         $fout .= '<div class="clear_block">'.engine::lang("There is no purchases").'</div>';
     }$fout .= '</div>';
     return $fout;

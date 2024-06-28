@@ -23,17 +23,17 @@
 * @usage <code> engine::print_search_result($site, "Result 1", "Value 1", "/"); </code>
 */
 
-function print_search_result($site, $caption, $html, $url){
+function print_search_result($site, $caption, $html, $url) {
     $request = engine::escape_string(urldecode($_GET[1]));
     $html = preg_replace('#<[^>]+>#', " ", $html);
     $html = trim(preg_replace('#[\s]+#', ' ', $html));
     $pos = strpos($html, $request);
-    if($pos){
-        if(strlen($html)>180){
-            if($pos<90){
+    if ($pos) {
+        if (strlen($html)>180) {
+            if ($pos<90) {
                 $start = '';
                 $from = 0;
-            }else{
+            } else {
                 $start = '..';
                 $from = $pos-90;
             }$html = $start.mb_substr($html, $from, 180).'..';

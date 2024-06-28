@@ -21,7 +21,7 @@
 * @usage <code> engine::print_show_more($site, "/content/test"); </code>
 */
 
-function print_more_articles($site, $url){
+function print_more_articles($site, $url) {
     $query = 'SELECT * FROM `nodes_content` WHERE `url` = "'.$url.'" AND `lang` = "'.$_SESSION["Lang"].'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);

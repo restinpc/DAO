@@ -79,7 +79,7 @@ if (!empty($_REQUEST["lang"])) {
 $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
 $res = engine::mysql($query);
 $ref = mysqli_fetch_array($res);
-if(!empty($_SERVER["HTTP_REFERER"])) {
+if (!empty($_SERVER["HTTP_REFERER"])) {
     if (empty($ref) && strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
         $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$_SERVER["HTTP_REFERER"].'")';
         engine::mysql($query);

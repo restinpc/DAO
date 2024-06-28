@@ -20,8 +20,8 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_article($site, $data); </code>
 */
-function print_article($site, $data){
-    if(!empty($data["img"]))
+function print_article($site, $data) {
+    if (!empty($data["img"]))
         $site->img = $_SERVER["PUBLIC_URL"]."/img/data/big/".$data["img"];
     $site->description = $data["text"];
     $query = 'SELECT * FROM `nodes_catalog` WHERE `id` = "'.$data["cat_id"].'"';
@@ -31,13 +31,13 @@ function print_article($site, $data){
     $fout .= '<h1>'.$data["caption"].'</h1>';
     $fout .= '<div class="article">';
     preg_match_all('#<img[^>]+src="(.*?)"([^>]+alt="(.*?)")?#',$data["text"],$images);
-    if(!empty($images)){
+    if (!empty($images)) {
         $text = engine::print_image_viewer($site, $data["text"], $data["caption"], $images[1], $images[3]);
     }
     $fout .= '<div class="text"> '.$text.' </div>
     <div class="clear"><br/></div>
     <div class="date">'.engine::lang("Submitted on").' '.date("d/m/Y", $data["public_date"]).' '.date("H:i", $data["public_date"]).'</div><br/>';
-    if($data["date"]!=$data["public_date"]){
+    if ($data["date"]!=$data["public_date"]) {
         $fout .= '<div class="date">'.engine::lang("Last editing on").' '.date("d/m/Y", $data["date"]).' '.date("H:i", $data["date"]).'</div>';
     }
     $fout .= '
@@ -49,12 +49,12 @@ function print_article($site, $data){
         <div class="tal pl10 fs21"><b>'.engine::lang("Latest comments").'</b><br/><br/></div>
         '.engine::print_comments($_SERVER["REQUEST_URI"]).'
         </div>';
-    if($_SESSION["user"]["id"]=="1"){
+    if ($_SESSION["user"]["id"] == "1") {
         $fout .= '<a id="edit-article-'.$data["id"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin/?mode=content&cat_id='.$data["cat_id"].'&id='.$data["id"].'&act=edit').'"><input type="button" class="btn w280" value="'.engine::lang("Edit article").'" /></a><br/><br/>';
     }
     $new_fout = '';
     $blocks = engine::print_more_articles($site, $data["url"]);
-    if(!empty($blocks)){
+    if (!empty($blocks)) {
         $new_fout .= '<div class="clear"></div><br/>'
             . '<div class="tal pl10 fs21"><b>'.engine::lang("You might also be interested in").'</b></div>
             <br/><br/>

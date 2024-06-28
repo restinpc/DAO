@@ -21,7 +21,7 @@ $colors = array("90","110","130","150","170","190","210");
 $src = imagecreatetruecolor($width,$height);
 $fon = imagecolorallocatealpha($src,26,29,29,0);
 imagefill($src,0,0,$fon);
-for($i=0;$i < $fon_let_amount;$i++){
+for ($i=0; $i < $fon_let_amount; $i++) {
     $color = imagecolorallocatealpha($src,rand(0,255),rand(0,255),rand(0,255),100);
     $letter = $letters[rand(0,sizeof($letters)-1)];
     $size = rand($font_size-2,$font_size+2);
@@ -29,14 +29,14 @@ for($i=0;$i < $fon_let_amount;$i++){
     rand($width*0.1,$width-$width*0.1),
     rand($height*0.2,$height),$color,$font,$letter);
 }
-if(date("U") > intval($_SESSION["captcha_date"]+60) || empty($_SESSION["captcha_img"])){
+if (date("U") > intval($_SESSION["captcha_date"]+60) || empty($_SESSION["captcha_img"])) {
     $_SESSION["captcha"] = '';
-    for($i=0;$i < $let_amount;$i++){
+    for ($i=0; $i < $let_amount; $i++) {
         $letter = $letters[rand(0,sizeof($letters)-1)];
         $_SESSION["captcha"] .= $letter;
     }
     $_SESSION["captcha_date"] = date("U");
-    for($i=0;$i < $let_amount;$i++){
+    for ($i=0; $i < $let_amount; $i++) {
         $color = imagecolorallocatealpha($src,$colors[rand(0,sizeof($colors)-1)],
         $colors[rand(0,sizeof($colors)-1)],
         $colors[rand(0,sizeof($colors)-1)],rand(20,40));
@@ -51,7 +51,7 @@ if(date("U") > intval($_SESSION["captcha_date"]+60) || empty($_SESSION["captcha_
     $_SESSION["captcha_img"] = $file;
     header ("Content-type: image/png");
     imagepng($src);
-}else{
+} else {
     $image = file_get_contents($_SESSION["captcha_img"]);
     header ("Content-type: image/png");
     echo($image);

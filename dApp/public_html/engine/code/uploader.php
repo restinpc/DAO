@@ -64,7 +64,7 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
         if (copy(
             $files['tmp_name'],
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/' . $fn
-        )){
+        )) {
             die('<form method="POST" id="new_image_form">
                 <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
                 <input type="hidden" name="new_image" value="'.$fn.'" id="new_image" />
@@ -138,7 +138,7 @@ if (!empty($_POST["name"])) {
         if (!empty($_GET["id"]) && $_GET["id"]<6) {
             $fout .= '
                     var z = parent.document.getElementById("new_img'.(intval($_GET["id"])+1).'"); 
-                    if(z) z.style.display = "block";
+                    if (z) z.style.display = "block";
                     parent.document.getElementById("new_img'.(intval($_GET["id"])).'").style.width = "'.$THUWIDTH.'px";';
         }
         $fout .= '
@@ -146,7 +146,7 @@ if (!empty($_POST["name"])) {
                     parent.document.getElementById("'.$new_img.'").appendChild(df_img);
                     parent.document.getElementById("'.$f1.'").style.width=('.($THUWIDTH+20).'+"px");
                     parent.document.getElementById("'.$f1.'").style.height=('.($THUHEIGHT+20).'+"px");
-                } catch(e){ console.log("error 1"); }     
+                } catch(e) { console.log("error 1"); }     
                 try {
                     var ii = 0;
                     for (var i = 1; i < 5; i++) {
@@ -161,28 +161,28 @@ if (!empty($_POST["name"])) {
                                 top.document.getElementById("file"+i).value = "'. $name.'.'.$ext.'";
                                 break;
                             }
-                        } catch(e){ console.log("error 2"); break; };
+                        } catch(e) { console.log("error 2"); break; };
                     }
                     if (ii > 0) {
                         var new_photo_el = top.document.getElementById("file"+ii);
                         if (!new_photo_el) {
                             try {
                                 top.document.getElementById("upload_btn").style.display = "none";
-                            } catch(e){ };
+                            } catch(e) { };
                         }
                     }
-                } catch(e){ console.log("error 3");  };
+                } catch(e) { console.log("error 3");  };
                 try {
                     var img = parent.document.getElementById("result_file1");
-                    if(img.value != ""){
+                    if (img.value != "") {
                         parent.document.getElementById("edit_photos_form").submit();
                     }
-                } catch(e){ console.log("error 4"); };
+                } catch(e) { console.log("error 4"); };
             </script>
         </body>
         </html>';
         die($fout);
-    } else if(!empty($_POST["new_image"])) {
+    } else if (!empty($_POST["new_image"])) {
         $file = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$_POST["new_image"];
         $size = getimagesize($file);
         if ($size[0] < $THUWIDTH || $size[1] < $THUHEIGHT) {
@@ -191,8 +191,8 @@ if (!empty($_POST["name"])) {
         $f_name = "";
         $a = md5(date('U').$file);
         $ext = strtolower(array_pop(explode(".", $file)));
-        if ($ext != "jpeg" && $ext != "jpg" && $ext != "png" && $ext != "gif"){
-             die(engine::lang("Error").'<script type="text/javascript">setTimeout(function(){window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 1000);</script>');
+        if ($ext != "jpeg" && $ext != "jpg" && $ext != "png" && $ext != "gif") {
+             die(engine::lang("Error").'<script type="text/javascript">setTimeout(function() {window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 1000);</script>');
         }
         if ($ext == "jpeg") {
             $ext = "jpg";
@@ -221,7 +221,7 @@ if (!empty($_POST["name"])) {
                     <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width/$scale).'px; height: '.($height/$scale).'px;" />
                 </div>
                 <div id="frame" draggable="false" onDragStart="return false;" style="width:'.($THUWIDTH/$scale).'px; height:'.($THUHEIGHT/$scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
-                    <table draggable="false" cellpadding=0 cellspacing=0 onDragStart="return false;" onMouseDown=\'if (document.uploader.dragMode != 3){ document.uploader.dragMode = 1; }\'>
+                    <table draggable="false" cellpadding=0 cellspacing=0 onDragStart="return false;" onMouseDown=\'if (document.uploader.dragMode != 3) { document.uploader.dragMode = 1; }\'>
                     <tr><td align=left valign=top></td></tr></table>
                     <div id="bottom_dot" onMouseDown=\'document.uploader.dragMode = 2;\' draggable="false" onDragStart="return false;">
                         <div class="dot" draggable="false"> </div>
@@ -243,7 +243,7 @@ if (!empty($_POST["name"])) {
                     var s1 = '.$height.' / (parent.parent.document.getElementById("img_editor").offsetHeight - 120);
                     var s2 = '.$width.' / (parent.parent.document.getElementById("img_editor").offsetWidth - 100);
                     if (s1 > s2) {
-                        if(s1 > 1) {
+                        if (s1 > 1) {
                             document.uploader.scale = s1;
                         }
                     } else {
@@ -265,13 +265,13 @@ if (!empty($_POST["name"])) {
                     try{
                         window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60)+"px";
                         window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80)+"px";
-                    }catch(e){}
+                    }catch(e) {}
                 </script>
             </body>
             </html>';
             die($fout);
         }
-        die(engine::lang("Error").'<script type="text/javascript">setTimeout(function(){ window.location="'.$_SERVER["DIR"].'/uploader.php?id = '.$_GET["id"].'"; }, 5000);</script></html>');
+        die(engine::lang("Error").'<script type="text/javascript">setTimeout(function() { window.location="'.$_SERVER["DIR"].'/uploader.php?id = '.$_GET["id"].'"; }, 5000);</script></html>');
     }
 } else {
     echo '<body class="nodes dragndrop_body"> 

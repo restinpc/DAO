@@ -23,7 +23,7 @@ class cache{
 * @return string Returns HTML contents of page.
 * $usage <code> cache::update_cache("/", TRUE); </code>
 */
-public static function update_cache($url, $jQuery = 0, $lang="en"){
+public static function update_cache($url, $jQuery = 0, $lang="en") {
     if (strpos($url, $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"]) === FALSE) {
         $path = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$url;
     } else {
@@ -56,7 +56,7 @@ public static function update_cache($url, $jQuery = 0, $lang="en"){
             . '`time` = "'.$load_time.'" '
             . 'WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
         engine::mysql($query);
-    } else if(empty($html)) {
+    } else if (empty($html)) {
         $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
         engine::mysql($query);
         return;
@@ -75,7 +75,7 @@ public static function update_cache($url, $jQuery = 0, $lang="en"){
 * @return string Returns HTML contents of requested page.
 * $usage <code> $cache = new cache(); </code>
 */
-public function __construct(){
+public function __construct() {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -88,7 +88,7 @@ public function __construct(){
         if (!empty($data) && $data["interval"] > 0) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 0, $data["lang"]));
-            } else if(!empty($data["html"])) {
+            } else if (!empty($data["html"])) {
                 if (!empty($data["content"])) {
                     $html = $data["html"];
                 } else {
@@ -98,12 +98,12 @@ public function __construct(){
 <!-- Time loading from cache: ".(doubleval(microtime(1))-$GLOBALS["time"])." -->");
             }
             $fout .= "<!-- Cache is empty -->";
-        } else if(empty($data)) {
+        } else if (empty($data)) {
             $fout .= "<!-- Cache is empty -->";
             $query = 'INSERT INTO `nodes_cache`(url, date, lang, `interval`, html, content) '
             . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", "'.date("U").'", "'.$_SESSION["Lang"].'", -1, "", "")';
             engine::mysql($query);
-        } else if($data["interval"]=="0") {
+        } else if ($data["interval"] == "0") {
             if ($is_cache) {
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 0, $data["lang"]));
@@ -118,7 +118,7 @@ public function __construct(){
             }
         }
     // cacheing for asinc jquery requests
-    } else if(count($_POST) == 1 && isset($_POST["jQuery"])) {
+    } else if (count($_POST) == 1 && isset($_POST["jQuery"])) {
         $query = 'SELECT * FROM `nodes_cache` WHERE `url` LIKE "'.$_SERVER["SCRIPT_URI"].'" AND `lang` LIKE "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
@@ -135,7 +135,7 @@ public function __construct(){
             $query = 'INSERT INTO `nodes_cache`(url, date, lang, `interval`, html, content) '
             . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", "'.date("U").'", "'.$_SESSION["Lang"].'", -1, "", "")';
             engine::mysql($query);
-        } else if ($data["interval"]=="0") {
+        } else if ($data["interval"] == "0") {
             if ($is_cache) {
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
@@ -157,7 +157,7 @@ public function __construct(){
 * </code>
 */
 public function page_id() {
-    if(empty($_POST["nocache"])){
+    if (empty($_POST["nocache"])) {
         $query = 'SELECT `id` FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
         $cache = mysqli_fetch_array($res);
@@ -169,7 +169,7 @@ public function page_id() {
             engine::mysql($query);
             $cache_id = mysqli_insert_id($_SERVER["sql_connection"]);
         }
-    }else {
+    } else {
         $cache_id = 0;
     }
     return $cache_id;

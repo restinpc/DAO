@@ -20,7 +20,7 @@
 * @usage <code> engine::print_finances($site); </code>
 */
 
-function print_finances($site){
+function print_finances($site) {
     $fout = '<div class="document640">';
     if ($_GET[2] == "withdrawal") {
         if (!empty($_POST["amount"])) {
@@ -141,7 +141,7 @@ function print_finances($site){
                     "status" => "Status",
                     "date" => "Date"
                 );
-                foreach ($array as $order=>$value) {
+                foreach ($array as $order => $value) {
                     $table .= '<th>';
                     if ($_SESSION["order"] == $order) {
                         if ($_SESSION["method"] == "ASC") {
@@ -162,7 +162,7 @@ function print_finances($site){
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
             $arr_count++;
-            if ($data["order_id"]=="0") {
+            if ($data["order_id"] == "0") {
                 $type = engine::lang("Withdrawal request");
                 $data["amount"] = -$data["amount"];
                 if ($data["status"] == "1") {
@@ -213,9 +213,9 @@ function print_finances($site){
         if ($data[0] > 0) {
             $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                 <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                 <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-                 <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-                 <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+                 <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
+                 <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
+                 <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
                 </select> '.engine::lang("per page").'.</nobr></p>';
         }
         $fout.= '
@@ -243,17 +243,17 @@ function print_finances($site){
                     } else {
                         $fout.= '<li  id="list-page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                     }
-                } else if((!$c||!$b) && !$f && $i<$pages) {
+                } else if ((!$c||!$b) && !$f && $i < $pages) {
                     $f = 1; $e = 0;
-                    if(!$b) {
+                    if (!$b) {
                         $b = 1;
-                    } else if(!$c) {
+                    } else if (!$c) {
                         $c = 1;
                     }
                     $fout.= '<li class="dots">. . .</li>';
                 }
             }
-            if($_SESSION["page"]<$pages){
+            if ($_SESSION["page"]<$pages) {
                $fout.= '<li  id="list-previous" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
             }
             $fout.= '

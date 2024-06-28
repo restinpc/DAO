@@ -21,7 +21,7 @@
 * @usage <code> engine::print_webvr_navigation("Panorama"); </code>
 */
 
-function print_webvr_navigation($current){
+function print_webvr_navigation($current) {
     $arr = Array(
         engine::lang("Free look mode") => $_SERVER["DIR"]."/webvr/free-look",
         engine::lang("Orbital preview") => $_SERVER["DIR"]."/webvr/orbital",

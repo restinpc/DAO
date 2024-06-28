@@ -12,14 +12,14 @@
 * @usage <code> engine::print_chat(1); </code>
 */
 
-function print_chat($user_id){
+function print_chat($user_id) {
     $query = 'SELECT * FROM `nodes_inbox` WHERE (`from` = '.$_SESSION["user"]["id"].' AND `to` = '.$user_id.') OR '
         . '(`from` = '.$user_id.' AND `to` = '.$_SESSION["user"]["id"].') ORDER BY `date` ASC';
     $res = engine::mysql($query);
     $fout = '<table class="chat_table" border=0 >';
     while ($data = mysqli_fetch_array($res)) {
         if ($data["from"] == $_SESSION["user"]["id"]) {
-            if ($data["readed"]=="0") {
+            if ($data["readed"] == "0") {
                 $fout .= '<tr><td class="chat_unreaded">';
             } else {
                 $fout .= '<tr><td>';

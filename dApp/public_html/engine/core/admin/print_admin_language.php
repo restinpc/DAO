@@ -19,7 +19,7 @@
 * @usage <code> engine::print_admin_language($cms); </code>
 */
 
-function print_admin_language($cms){
+function print_admin_language($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "language" '
         . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
@@ -57,7 +57,7 @@ function print_admin_language($cms){
                 engine::error(401);
                 return;
             }
-            foreach ($_POST as $id=>$value) {
+            foreach ($_POST as $id => $value) {
                 if ($id == "language") {
                     continue;
                 }
@@ -70,7 +70,7 @@ function print_admin_language($cms){
                     $id!="lang" &&
                     $id!="language" &&
                     $id!=""
-                ){
+                ) {
                     $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                     $res = engine::mysql($query);
                     $data = mysqli_fetch_array($res);
@@ -104,7 +104,7 @@ function print_admin_language($cms){
                 "name" => "Name",
                 "value" => "Value"
             );
-            foreach($array as $order=>$value){
+            foreach ($array as $order => $value) {
                 $table .= '<th width=50%>';
                 $table .= engine::lang($value);
                 $table .= '</th>';
@@ -119,7 +119,7 @@ function print_admin_language($cms){
         if ($_SESSION["Lang"] == "en" && $admin_access == 2) {
             $table .= '<td width=50% align=left><input id="input-lang-'.$arr_count.'" name="'.  base64_encode($data["name"]).'" type="text" value="'.$data["value"].'" class="input w100p" />'
                 . '</td><td width=20><div  id="div-delete-'.$arr_count.'" class="close_image"'
-                . 'onClick=\'if(confirm("'.engine::lang("Delete").' \"'.$data["name"].'\"?")){$id("delete_value").value="'.base64_encode($data["name"]).'";'
+                . 'onClick=\'if (confirm("'.engine::lang("Delete").' \"'.$data["name"].'\"?")) {$id("delete_value").value="'.base64_encode($data["name"]).'";'
                 . '$id("delete_form").submit();}\''
                 . '> </div></td>';
         } else {
@@ -154,9 +154,9 @@ function print_admin_language($cms){
         if ($data[0] > 0) {
             $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                 <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                 <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-                 <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-                 <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+                 <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
+                 <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
+                 <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
                 </select> '.engine::lang("per page").'.</nobr></p>';
         }
         $fout .= '
@@ -164,7 +164,7 @@ function print_admin_language($cms){
         if ($count > $_SESSION["count"]) {
             $fout .= '<div class="pagination" >';
             $pages = ceil($count/$_SESSION["count"]);
-            if($_SESSION["page"] > 1){
+            if ($_SESSION["page"] > 1) {
                 $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'">'.engine::lang("Previous").'</a></span>';
             }
             $fout .= '<ul>';
@@ -173,7 +173,7 @@ function print_admin_language($cms){
                 if (($a < 2 && !$b && $e < 2) ||
                     ($i >= ($_SESSION["page"] - 2) && $i <= ($_SESSION["page"] + 2) && $e < 5)||
                     ($i > $pages-2 && $e < 2)
-                ){
+                ) {
                     if ($a < 2) {
                         $a++;
                     }
@@ -211,7 +211,7 @@ function print_admin_language($cms){
     }
     if ($_SESSION["Lang"] == "en" && $admin_access == 2) {
         $fout .= '<br/><input id="input-new-value" type="button" class="btn w280" '
-            . 'onClick=\'result = prompt("New value", ""); if(result != ""){$id("new_value").value=result;'
+            . 'onClick=\'result = prompt("New value", ""); if (result != "") {$id("new_value").value=result;'
             . '$id("new_form").submit();}\' value="'.engine::lang("Add new value").'" /><br/>';
     }
     return $fout;

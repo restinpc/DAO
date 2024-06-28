@@ -8,7 +8,7 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
 * @example <code>
-*  if(file::zip('/temp', '/temp/files.zip')){
+*  if (file::zip('/temp', '/temp/files.zip')) {
 *      file::delete('/temp');
 *  }
 * </code>
@@ -24,9 +24,9 @@ class file{
 * @return bool Returns TRUE on success, FALSE on failure.
 * @usage <code> file::copy("/img", "/temp"); </code>
 */
-static function copy($source, $dest, $permissions = 0755){
+static function copy($source, $dest, $permissions = 0755) {
     if (is_link($source)) return symlink(readlink($source), $dest);
-    if (is_file($source)){
+    if (is_file($source)) {
         $res = copy($source, $dest);
         chmod($dest, $permissions);
         return $res;
@@ -53,7 +53,7 @@ static function copy($source, $dest, $permissions = 0755){
 * @usage <code> file::delete("/temp"); </code>
 */
 static function delete($dir) {
-    foreach(scandir($dir) as $file) {
+    foreach (scandir($dir) as $file) {
         if ('.' === $file || '..' === $file) continue;
         if (is_dir("$dir/$file"))
             self::delete("$dir/$file");
@@ -71,29 +71,29 @@ static function delete($dir) {
 * @return string Returns filename on success, 'error' on failure.
 * @usage <code> file::upload("new_image", "/img", true); </code>
 */
-static function upload($filename, $path, $md5=0){
-    if(!is_array($_FILES[$filename]["name"])){
-        if (is_uploaded_file($_FILES[$filename]['tmp_name'])){
-            if(!$md5){
+static function upload($filename, $path, $md5=0) {
+    if (!is_array($_FILES[$filename]["name"])) {
+        if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
+            if (!$md5) {
                 $a = $_FILES[$filename]["name"];
-            }else{
+            } else {
                 $a = substr(md5($_FILES[$filename]["name"].date("U")), 0, 8).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"])));
             }$f_name = $path."/".$a;
-            if (move_uploaded_file($_FILES[$filename]["tmp_name"], $f_name)){
+            if (move_uploaded_file($_FILES[$filename]["tmp_name"], $f_name)) {
                 return $a;
             } return 'error';
         } return 'error';
-    }else{
+    } else {
         $fout = '';
-        for($i = 0; $i < count($_FILES[$filename]['tmp_name']); $i++){
-            if (is_uploaded_file($_FILES[$filename]['tmp_name'][$i])){
-                if(!$md5){
+        for ($i = 0; $i < count($_FILES[$filename]['tmp_name']); $i++) {
+            if (is_uploaded_file($_FILES[$filename]['tmp_name'][$i])) {
+                if (!$md5) {
                     $a = $_FILES[$filename]["name"][$i];
-                }else{
+                } else {
                     $a = md5($_FILES[$filename]["name"][$i].date("U")).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"][$i])));;
                 }
                 $f_name = $path."/".$a;
-                if (move_uploaded_file($_FILES[$filename]["tmp_name"][$i], $f_name)){
+                if (move_uploaded_file($_FILES[$filename]["tmp_name"][$i], $f_name)) {
                     $fout .= $a.';';
                 }
             }

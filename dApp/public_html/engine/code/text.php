@@ -10,13 +10,13 @@
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 $font = "font/Open-Sans-regular/Open-Sans-regular.ttf";
-if(!empty($_GET["text"])){
+if (!empty($_GET["text"])) {
     ob_start();
     $text = urldecode($_GET["text"]);
     $lines = explode("\n", $text);
     $max = 0;
-    foreach($lines as $line){
-        if(strlen($line)>$max) $max=strlen($line);
+    foreach ($lines as $line) {
+        if (strlen($line)>$max) $max=strlen($line);
     }
     $width = 60+($max*16);
     $height = 60+(count($lines)*25);
@@ -29,7 +29,7 @@ if(!empty($_GET["text"])){
     $text_colour = imagecolorallocate( $src, 0, 0, 0 );
     imagefill($src,0,0,$fon);
     $i = 1;
-    foreach($lines as $line){
+    foreach ($lines as $line) {
         $i++;
         imagettftext( $src, $font_size, 0, 30, 25*$i, $text_colour, $font, $line );
     }

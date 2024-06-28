@@ -28,7 +28,7 @@ if (!empty($_SESSION["user"]["id"])) {
         $this->title = engine::lang("Email confirmation");
         $this->content .= engine::print_email_confirm($this);
         return;
-    } else if(!empty($_GET[1])) {
+    } else if (!empty($_GET[1])) {
         if ($_GET[1] == "settings") {
             if (!empty($_GET[3])) {
                 $this->content = engine::error();
@@ -38,8 +38,8 @@ if (!empty($_SESSION["user"]["id"])) {
             $this->title = $title;
             $this->content .= engine::print_navigation($this, $title);
             $this->content .= engine::print_settings($this);
-        } else if($_GET[1] == "confirm") {
-            if (!empty($_GET[3]) || empty($_GET[2])){
+        } else if ($_GET[1] == "confirm") {
+            if (!empty($_GET[3]) || empty($_GET[2])) {
                 $this->content = engine::error();
                 return;
             }

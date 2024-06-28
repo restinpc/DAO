@@ -15,7 +15,7 @@
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 
-function print_comment($id, $noreply = 0){
+function print_comment($id, $noreply = 0) {
     $fout = '';
     $fout1 = '';
     $query = 'SELECT * FROM `nodes_comment` WHERE `id` = "'.intval($id).'"';
@@ -59,7 +59,7 @@ function print_comment($id, $noreply = 0){
     return $fout;
 }
 
-function print_comments($url){
+function print_comments($url) {
     $fout = '';
     $fout1 = '';
     $url = trim(str_replace('"', "'", urldecode($url)));

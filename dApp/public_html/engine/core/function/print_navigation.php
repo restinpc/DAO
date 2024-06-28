@@ -21,7 +21,7 @@
 * @usage <code> engine::print_navigation("Whitepaper"); </code>
 */
 
-function print_navigation($current, $arr){
+function print_navigation($current, $arr) {
     $fout = '<div class="profile_menu" onMouseOver="document.nodes_menu_hovered = true;" onmouseout="document.nodes_menu_hovered = false;">
         <div class="container">
             <span id="profile_menu_span_nav" class="profile_menu_item show_all selected"><a>'.$current.'</a>
@@ -34,7 +34,7 @@ function print_navigation($current, $arr){
             <!--<div class="fr nav_button" alt="Show navigation">&nbsp;</div>-->
             </span>';
     $i = 0;
-    foreach($arr as $key => $value) {
+    foreach ($arr as $key => $value) {
         $i++;
         $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($current === $key ? "selected" : "").'" onclick=\'$id("profile_menu_link_'.$i.'").click();\'>
             <a id="profile_menu_link_'.$i.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($value).'">'.$key.'</a>

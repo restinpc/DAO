@@ -24,7 +24,7 @@
 * @usage <code> engine::print_scene_preview($site, "A-Frame", "/aframe", "/img/vr/aframe.jpg", "Cardboard version of website"); </code>
 */
 
-function print_scene_preview($site, $caption, $url, $img, $text){
+function print_scene_preview($site, $caption, $url, $img, $text) {
     $fout = '
         <div class="content_block">
         <div  id="content_'.md5($url).'" class="content_img" style="background-image: url(\''.$_SERVER["DIR"].$img.'\');"

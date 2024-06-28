@@ -21,7 +21,7 @@
 * @usage <code> engine::print_social_navigation("Social graph"); </code>
 */
 
-function print_social_navigation($current){
+function print_social_navigation($current) {
     $arr = Array(
         engine::lang("Social graph") => $_SERVER["DIR"]."/social/graph",
         engine::lang("Telegram group") => $_SERVER["DIR"]."/social/telegram",

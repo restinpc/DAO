@@ -20,7 +20,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_order($site, 1); </code>
 */
-function print_order($site, $order_id){
+function print_order($site, $order_id) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "orders" '
         . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
@@ -28,18 +28,18 @@ function print_order($site, $order_id){
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
-    if(!$admin_access){
+    if (!$admin_access) {
         engine::error(401);
         return;
     }
     $query = 'SELECT * FROM `nodes_product_order` WHERE `id` = "'.$order_id.'"';
     $r = engine::mysql($query);
-    while($d = mysqli_fetch_array($r)){
-        if($d["count"]>0){
+    while ($d = mysqli_fetch_array($r)) {
+        if ($d["count"]>0) {
             $query = 'SELECT * FROM `nodes_order` WHERE `id` = "'.$d["order_id"].'"';
             $res = engine::mysql($query);
             $order = mysqli_fetch_array($res);
-            if($order["status"]=="0") continue;
+            if ($order["status"] == "0") continue;
             $query = 'SELECT * FROM `nodes_shipping` WHERE `id` = "'.$order["shipping"].'"';
             $res = engine::mysql($query);
             $address = mysqli_fetch_array($res);
@@ -54,22 +54,22 @@ function print_order($site, $order_id){
             $user = mysqli_fetch_array($res);
             $images = explode(";", $product["img"]);
             $addresstr = '';
-            if(!empty($address["fname"])) $addresstr .= $address["fname"].' '.$address["lname"].', ';
-            if(!empty($address["country"])) $addresstr .= $address["country"].', ';
-            if(!empty($address["state"])) $addresstr .= $address["state"].', ';
-            if(!empty($address["city"])) $addresstr .= $address["city"].', ';
-            if(!empty($address["street1"])) $addresstr .= $address["street1"].', ';
-            if(!empty($address["street2"])) $addresstr .= $address["street2"].', ';
-            if(!empty($address["zip"])) $addresstr .= "zip ".$address["zip"];
+            if (!empty($address["fname"])) $addresstr .= $address["fname"].' '.$address["lname"].', ';
+            if (!empty($address["country"])) $addresstr .= $address["country"].', ';
+            if (!empty($address["state"])) $addresstr .= $address["state"].', ';
+            if (!empty($address["city"])) $addresstr .= $address["city"].', ';
+            if (!empty($address["street1"])) $addresstr .= $address["street1"].', ';
+            if (!empty($address["street2"])) $addresstr .= $address["street2"].', ';
+            if (!empty($address["zip"])) $addresstr .= "zip ".$address["zip"];
             $addresstr = '<a id="link-address-'.$d["id"].'" title="'.$addresstr.'" onClick=\'alert(this.title);\'>'.$address["country"].'</a>';
-            if($d["status"]==1){
+            if ($d["status"] ==1) {
                 $status = engine::lang('Sended');
-            }else if($d["status"]==0){
+            } else if ($d["status"] ==0) {
                 $buttons = '
                 <input id="input-confirm-shipment" type="button" class="btn shipment" value="'.engine::lang('Confirm Shipment').'" onClick=\'document.framework.admin.confirmOrder("'.$d["id"].'", "'.engine::lang("Post track number").'", "'.engine::lang("Shipment is confirmed").'", "'.engine::lang("This item is sold out now?").'");\' />
                 ';
                 $status = engine::lang('New order');
-            }else{
+            } else {
                 $buttons = '<input id="input-archive" type="button" class="btn shipment" value="'.engine::lang('Archive order').'" onClick=\'document.framework.admin.archiveOrder("'.$d["id"].'", "'.engine::lang("Archive order").'");\' />';
                 $status = engine::lang('Finished');
             }
@@ -85,7 +85,7 @@ function print_order($site, $order_id){
             </div>
             <div class="clear"></div>
             <div class="print_order_buttons">';
-                if($admin_access == 2){
+                if ($admin_access == 2) {
                    $fout .= '
                 <form method="POST">'.$buttons.' </form>
                         ';

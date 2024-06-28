@@ -28,7 +28,7 @@ protected  $isWritten = false;
 * @param boolean $compress It defines if the output file is compress (gzip) or not
 * @param boolean $hexValue It defines if the outup values are base-16 or not
 */
-function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hexValue = false){
+function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hexValue = false) {
     $this->compress = $compress;
     if ( !$this->setOutputFile($filepath) )
         return false;
@@ -39,7 +39,7 @@ function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hex
 * Sets the database to work on
 * @param string $db The database name
 */
-function setDatabase($db){
+function setDatabase($db) {
     $this->database = $db;
     if ( !@mysqli_select_db($_SERVER["sql_connection"], $this->database) )
         return false;
@@ -50,7 +50,7 @@ function setDatabase($db){
 * Returns the database where the class is working on
 * @return string
 */
-function getDatabase(){
+function getDatabase() {
     return $this->database;
 }
 //------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ function getDatabase(){
 * Sets the output file type (It can be made only if the file hasn't been already written)
 * @param boolean $compress If it's true, the output file will be compressed
 */
-function setCompress($compress){
+function setCompress($compress) {
     if ( $this->isWritten )
         return false;
     $this->compress = $compress;
@@ -70,7 +70,7 @@ function setCompress($compress){
 * Returns if the output file is or not compressed
 * @return boolean
 */
-function getCompress(){
+function getCompress() {
     return $this->compress;
 }
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ function getCompress(){
 * Sets the output file
 * @param string $filepath The file where the dump will be written
 */
-function setOutputFile($filepath){
+function setOutputFile($filepath) {
     if ( $this->isWritten )
         return false;
     $this->filename = $filepath;
@@ -90,7 +90,7 @@ function setOutputFile($filepath){
 * Returns the output filename
 * @return string
 */
-function getOutputFile(){
+function getOutputFile() {
         return $this->filename;
 }
 //------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ function getOutputFile(){
 * Writes to file the $table's structure
 * @param string $table The table name
 */
-function getTableStructure($table){
+function getTableStructure($table) {
     if ( !$this->setDatabase($this->database) )
         return false;
     // Structure Header
@@ -210,7 +210,7 @@ function getTableData($table,$hexValue = true) {
 * Writes to file all the selected database tables structure
 * @return boolean
 */
-function getDatabaseStructure(){
+function getDatabaseStructure() {
     $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
     if ( @mysqli_num_rows($records) == 0 )
             return false;
@@ -225,7 +225,7 @@ function getDatabaseStructure(){
 * Writes to file all the selected database tables data
 * @param boolean $hexValue It defines if the output is base-16 or not
 */
-function getDatabaseData($hexValue = true){
+function getDatabaseData($hexValue = true) {
     $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
     if ( @mysqli_num_rows($records) == 0 )
             return false;
@@ -268,7 +268,7 @@ function getSqlKeysTable ($table) {
     $results = mysqli_query($_SERVER["sql_connection"], "SHOW KEYS FROM `{$table}`");
     if ( @mysqli_num_rows($results) == 0 )
             return false;
-    while($row = mysqli_fetch_object($results)) {
+    while ($row = mysqli_fetch_object($results)) {
         if (($row->Key_name == 'PRIMARY') AND ($row->Index_type == 'BTREE')) {
             if ( $primary == "" )
                 $primary = "  PRIMARY KEY  (`{$row->Column_name}`";
@@ -276,19 +276,19 @@ function getSqlKeysTable ($table) {
                 $primary .= ", `{$row->Column_name}`";
         }
         if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '0') AND ($row->Index_type == 'BTREE')) {
-            if ( (!is_array($unique)) OR ($unique[$row->Key_name]=="") )
+            if ( (!is_array($unique)) OR ($unique[$row->Key_name] == "") )
                 $unique[$row->Key_name] = "  UNIQUE KEY `{$row->Key_name}` (`{$row->Column_name}`";
             else
                 $unique[$row->Key_name] .= ", `{$row->Column_name}`";
         }
         if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'BTREE')) {
-            if ( (!is_array($index)) OR ($index[$row->Key_name]=="") )
+            if ( (!is_array($index)) OR ($index[$row->Key_name] == "") )
                 $index[$row->Key_name] = "  KEY `{$row->Key_name}` (`{$row->Column_name}`";
             else
                 $index[$row->Key_name] .= ", `{$row->Column_name}`";
         }
         if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'FULLTEXT')) {
-            if ( (!is_array($fulltext)) OR ($fulltext[$row->Key_name]=="") )
+            if ( (!is_array($fulltext)) OR ($fulltext[$row->Key_name] == "") )
                 $fulltext[$row->Key_name] = "  FULLTEXT `{$row->Key_name}` (`{$row->Column_name}`";
             else
                 $fulltext[$row->Key_name] .= ", `{$row->Column_name}`";

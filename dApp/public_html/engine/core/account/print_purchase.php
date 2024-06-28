@@ -20,11 +20,11 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_purchase($site, $data); </code>
 */
-function print_purchase($site, $data){
+function print_purchase($site, $data) {
     $query = 'SELECT * FROM `nodes_product_order` WHERE `order_id` = "'.$data["id"].'"';
     $r = engine::mysql($query);
-    while($d = mysqli_fetch_array($r)){
-        if($d["count"]>0){
+    while ($d = mysqli_fetch_array($r)) {
+        if ($d["count"]>0) {
             $query = 'SELECT * FROM `nodes_order` WHERE `id` = "'.$data["id"].'"';
             $res = engine::mysql($query);
             $order = mysqli_fetch_array($res);
@@ -41,22 +41,22 @@ function print_purchase($site, $data){
             $res = engine::mysql($query);
             $user = mysqli_fetch_array($res);
             $images = explode(";", $product["img"]);
-            if(!empty($d["track"])) $track = engine::lang("Tracking number").": ".$d["track"]."<br/><br/>";
+            if (!empty($d["track"])) $track = engine::lang("Tracking number").": ".$d["track"]."<br/><br/>";
             $addresstr = '';
-            if(!empty($address["fname"])) $addresstr .= $address["fname"].' '.$address["lname"].', ';
-            if(!empty($address["country"])) $addresstr .= $address["country"].', ';
-            if(!empty($address["state"])) $addresstr .= $address["state"].', ';
-            if(!empty($address["city"])) $addresstr .= $address["city"].', ';
-            if(!empty($address["street1"])) $addresstr .= $address["street1"].', ';
-            if(!empty($address["street2"])) $addresstr .= $address["street2"].', ';
-            if(!empty($address["zip"])) $addresstr .= "zip ".$address["zip"];
+            if (!empty($address["fname"])) $addresstr .= $address["fname"].' '.$address["lname"].', ';
+            if (!empty($address["country"])) $addresstr .= $address["country"].', ';
+            if (!empty($address["state"])) $addresstr .= $address["state"].', ';
+            if (!empty($address["city"])) $addresstr .= $address["city"].', ';
+            if (!empty($address["street1"])) $addresstr .= $address["street1"].', ';
+            if (!empty($address["street2"])) $addresstr .= $address["street2"].', ';
+            if (!empty($address["zip"])) $addresstr .= "zip ".$address["zip"];
             $addresstr = '<a id="link-address-'.$d["id"].'" title="'.$addresstr.'" onClick=\'alert(this.title);\'>'.$address["country"].'</a>';
-            if($d["status"]==0){
+            if ($d["status"] ==0) {
                 $status = engine::lang('Shipment in process');
-            }else if($d["status"]==1){
+            } else if ($d["status"] ==1) {
                 $status = engine::lang('Sended');
                 $button = '<a id="link-confirm-'.$d["id"].'" href="'.$_SERVER["DIR"].'/account/confirm/'.$d["id"].'"><input type="button" class="btn confirm_receipt" value="'.engine::lang("Confirm receipt").'" /></a>';
-            }else{
+            } else {
                 $status = engine::lang('Finished');
             }
             $fout .= '<div class="print_order">

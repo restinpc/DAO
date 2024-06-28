@@ -25,8 +25,8 @@
 *   engine::print_yandex_form(1, 100, $return);
 * </code>
 */
-function print_yandex_form($invoice_id, $sum, $return, $autopay=0){
-    if(empty($_SESSION["user"]["email"])) return engine::error(401);
+function print_yandex_form($invoice_id, $sum, $return, $autopay=0) {
+    if (empty($_SESSION["user"]["email"])) return engine::error(401);
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "yandex_money"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -35,7 +35,7 @@ function print_yandex_form($invoice_id, $sum, $return, $autopay=0){
     $res = engine::mysql($query);
     $paypal = mysqli_fetch_array($res);
     $paypal_desc = $paypal["value"];
-    if(strpos("http", $return) != 0){
+    if (strpos("http", $return) != 0) {
         $return = $_SERVER["PROTOCOL"].'://'.$_SERVER['HTTP_HOST'].$_SERVER["DIR"].$return;
     }
     $fout .= '
@@ -54,7 +54,7 @@ function print_yandex_form($invoice_id, $sum, $return, $autopay=0){
             <input type="hidden" name="successURL" value="'.$return.'" />
             <button id="yandex-button-payment" type="submit" class="btn w280">'.engine::lang("Make a payment").'</button>
         </form>';
-    if($autopay){
+    if ($autopay) {
         $fout.= '<script>$id("yandex_form").submit();</script>';
     }
     return $fout;

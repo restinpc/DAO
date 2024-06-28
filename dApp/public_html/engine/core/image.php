@@ -24,12 +24,12 @@ private $type;
 * Class constructor
 * @param string $file Source image.
 */
-function __construct($file){
+function __construct($file) {
     if (@!file_exists($file)) exit("File does not exist");
-    if(!$this->setType($file)) exit("File is not an image");
-    if($this->type == "png"){
+    if (!$this->setType($file)) exit("File is not an image");
+    if ($this->type == "png") {
         $this->image = @imagecreatefrompng($file);
-    }else{
+    } else {
         $this->image = @imagecreatefromjpeg($file);
     }
     $this->setSize();
@@ -38,14 +38,14 @@ function __construct($file){
 /**
 * Resizes an image
 */
-function resize($width = false, $height = false){
-    if(is_numeric($width) && is_numeric($height) && $width > 0 && $height > 0){
+function resize($width = false, $height = false) {
+    if (is_numeric($width) && is_numeric($height) && $width > 0 && $height > 0) {
             $newSize = $this->getSizeByFramework($width, $height);
-    }else if(is_numeric($width) && $width > 0){
+    } else if (is_numeric($width) && $width > 0) {
             $newSize = $this->getSizeByWidth($width);
-    }else if(is_numeric($height) && $height > 0){
+    } else if (is_numeric($height) && $height > 0) {
             $newSize = $this->getSizeByHeight($height);
-    }else $newSize = array($this->width, $this->height);
+    } else $newSize = array($this->width, $this->height);
     $newImage = imagecreatetruecolor($newSize[0], $newSize[1]);
     imagecopyresampled($newImage, $this->image, 0, 0, 0, 0,
         $newSize[0], $newSize[1], $this->width, $this->height);
@@ -57,18 +57,18 @@ function resize($width = false, $height = false){
 /**
 * Crops an image.
 */
-function crop($x0 = 0, $y0 = 0, $w = false, $h = false){
-    if(!is_numeric($x0) || $x0 < 0 || $x0 >= $this->width) $x0 = 0;
-    if(!is_numeric($y0) || $y0 < 0 || $y0 >= $this->height) $y0 = 0;
-    if(!is_numeric($w) || $w <= 0 || $w > $this->width - $x0) $w = $this->width - $x0;
-    if(!is_numeric($h) || $h <= 0 || $h > $this->height - $y0) $h = $this->height - $y0;
+function crop($x0 = 0, $y0 = 0, $w = false, $h = false) {
+    if (!is_numeric($x0) || $x0 < 0 || $x0 >= $this->width) $x0 = 0;
+    if (!is_numeric($y0) || $y0 < 0 || $y0 >= $this->height) $y0 = 0;
+    if (!is_numeric($w) || $w <= 0 || $w > $this->width - $x0) $w = $this->width - $x0;
+    if (!is_numeric($h) || $h <= 0 || $h > $this->height - $y0) $h = $this->height - $y0;
     return $this->cropSave($x0, $y0, $w, $h);
 }
 //------------------------------------------------------------------------------
 /**
 * Crops an image and returs canvas.
 */
-private function cropSave($x0, $y0, $w, $h){
+private function cropSave($x0, $y0, $w, $h) {
     $newImage = imagecreatetruecolor($w, $h);
     imagecopyresampled($newImage, $this->image, 0, 0, $x0, $y0, $w, $h, $w, $h);
     $this->image = $newImage;
@@ -84,15 +84,15 @@ private function cropSave($x0, $y0, $w, $h){
 *  $img->save("/img/", "2", "jpg", true, 100);
 * </code> copies /img/1.jpg to /img/2.jpg
 */
-function save($path = '', $fileName, $type = false, $rewrite = false, $quality = 80){
-    if(trim($fileName) == '' || $this->image === false) return false;
+function save($path = '', $fileName, $type = false, $rewrite = false, $quality = 80) {
+    if (trim($fileName) == '' || $this->image === false) return false;
     $type = strtolower($type);
     $savePath = $path.trim($fileName).".".$type;
-    if(!$rewrite && @file_exists($savePath)) return false;
-    if($type == "jpeg") $type = "jpg";
-    switch($type){
+    if (!$rewrite && @file_exists($savePath)) return false;
+    if ($type == "jpeg") $type = "jpg";
+    switch($type) {
         case 'jpg':
-            if(!is_numeric($quality) || $quality < 0 || $quality > 100) $quality = 100;
+            if (!is_numeric($quality) || $quality < 0 || $quality > 100) $quality = 100;
             imagejpeg($this->image, $savePath, $quality);
             chmod($savePath, 0755);
             return $savePath;
@@ -101,7 +101,7 @@ function save($path = '', $fileName, $type = false, $rewrite = false, $quality =
             chmod($savePath, 0755);
             return $savePath;
         case 'gif':
-            imagegif($this->image, $savePath);
+            imagegif ($this->image, $savePath);
             chmod($savePath, 0755);
             return $savePath;
         default: return false;
@@ -111,10 +111,10 @@ function save($path = '', $fileName, $type = false, $rewrite = false, $quality =
 /**
 * Parsed image type based on mime.
 */
-private function setType($file){
+private function setType($file) {
     $size = getimagesize($file);
     $mime = strtolower(mb_substr($size['mime'], strpos($size['mime'], '/')+1));
-    switch($mime){
+    switch($mime) {
         case 'jpg':
             $this->type = "jpg";
             return true;
@@ -134,7 +134,7 @@ private function setType($file){
 /**
 * Calculates an image size.
 */
-private function setSize(){
+private function setSize() {
     $this->width = imagesx($this->image);
     $this->height = imagesy($this->image);
 }
@@ -142,13 +142,13 @@ private function setSize(){
 /**
 * Gets an image size based on arguments.
 */
-private function getSizeByFramework($width, $height){
-    if($this->width <= $width && $this->height <= height)
+private function getSizeByFramework($width, $height) {
+    if ($this->width <= $width && $this->height <= height)
         return array($this->width, $this->height);
-    if($this->width / $width > $this->height / $height){
+    if ($this->width / $width > $this->height / $height) {
         $newSize[0] = $width;
         $newSize[1] = round($this->height * $width / $this->width);
-    }else{
+    } else {
         $newSize[1] = $height;
         $newSize[0] = round($this->width * $height / $this->height);
     }return $newSize;
@@ -157,8 +157,8 @@ private function getSizeByFramework($width, $height){
 /**
 * Gets an image size by width.
 */
-private function getSizeByWidth($width){
-    if($width >= $this->width) return array($this->width, $this->height);
+private function getSizeByWidth($width) {
+    if ($width >= $this->width) return array($this->width, $this->height);
     $newSize[0] = $width;
     $newSize[1] = round($this->height * $width / $this->width);
     return $newSize;
@@ -167,8 +167,8 @@ private function getSizeByWidth($width){
 /**
 * Gets an image size by height.
 */
-private function getSizeByHeight($height){
-    if($height >= $this->height) return array($this->width, $this->height);
+private function getSizeByHeight($height) {
+    if ($height >= $this->height) return array($this->width, $this->height);
     $newSize[1] = $height;
     $newSize[0] = round($this->width * $height / $this->height);
     return $newSize;
@@ -189,7 +189,7 @@ private function getSizeByHeight($height){
 *  image::resize_image('img/1.jpg', 'img/2.jpg', 800, 600, 0xfff, 100, 0);
 * </code>
 */
-static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quality=80, $proportions=0){
+static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quality=80, $proportions=0) {
     if (!file_exists($src)) return false;
     $size = getimagesize($src);
     if ($size === false) return false;
@@ -199,7 +199,7 @@ static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quali
     $isrc = $icfunc($src);
     $idest = imagecreatetruecolor($width, $height);
     imagefill($idest, 0, 0, $rgb);
-    if($proportions){
+    if ($proportions) {
         $x_ratio = $width / $size[0];
         $y_ratio = $height / $size[1];
         $ratio       = min($x_ratio, $y_ratio);
@@ -209,7 +209,7 @@ static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quali
         $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
         $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
         imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);
-    }else{
+    } else {
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
     }
     imagejpeg($idest, $dest, $quality);
@@ -218,13 +218,13 @@ static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quali
     return true;
 }
 //-----------------------------------------------------------------------------
-static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xffffff, $quality=100, $proportions=1){
+static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xffffff, $quality=100, $proportions=1) {
     if (!file_exists($src)) return false;
     $size = getimagesize($src);
     if ($size === false) return false;
-    if($ext == 'jpg'){
+    if ($ext == 'jpg') {
         $icfunc = "imagecreatefromjpeg";
-    }else{
+    } else {
         $icfunc = "imagecreatefrom" . $ext;
     }
     //echo $icfunc;
@@ -233,14 +233,14 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
 
     $idest = imagecreatetruecolor($width, $height);
     imagesavealpha($idest, true);
-    if($ext == 'jpg'){
+    if ($ext == 'jpg') {
          $color =  imagecolorallocate($idest, 255, 255, 255);
-    }else{
+    } else {
          $color =  imagecolorallocatealpha($idest, 0, 0, 0, 127);
     }
     imagefill($idest, 0, 0, $color);
 
-    if($proportions){
+    if ($proportions) {
         $x_ratio = $width / $size[0];
         $y_ratio = $height / $size[1];
         $ratio       = min($x_ratio, $y_ratio);
@@ -250,17 +250,17 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
         $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
         $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
         imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);
-    }else{
+    } else {
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
     }
-    if( $ext == "jpg" ||
+    if ( $ext == "jpg" ||
         $ext == "jpeg" ||
         $ext == "JPG" ||
-        $ext == "JPEG"){
+        $ext == "JPEG") {
         imagejpeg($idest, $dest, $quality);
-    }else if($ext == "gif" || $ext == "GIF"){
-        imagegif($idest, $dest);
-    }else if($ext == "png" || $ext == "PNG"){
+    } else if ($ext == "gif" || $ext == "GIF") {
+        imagegif ($idest, $dest);
+    } else if ($ext == "png" || $ext == "PNG") {
         var_dump($idest);
         echo imagepng($idest, $dest);
     }

@@ -19,13 +19,13 @@
 * @return string Returns content of block on success, or die with error.
 * @usage <code> engine::print_new_message($site); </code>
 */
-function print_new_message($site){
+function print_new_message($site) {
     $fout = '';
     $query = 'SELECT * FROM `nodes_inbox` WHERE `to` = "'.intval($_SESSION["user"]["id"]).'" '
             . 'AND `readed` = 0 AND `inform` = 0 ORDER BY `date` DESC LIMIT 0, 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if(!empty($data)){
+    if (!empty($data)) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$data["from"].'"';
         $res = engine::mysql($query);
         $user = mysqli_fetch_array($res);

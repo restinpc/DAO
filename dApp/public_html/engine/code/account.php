@@ -25,7 +25,7 @@ if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"
             engine::mysql($query);
             echo '<div class="center pt100">'.engine::lang("New password activated!").'</div>'
                 . '<script>'
-                    . 'function redirect(){'
+                    . 'function redirect() {'
                     . ' parent.window.location="'.$_SERVER["DIR"].'/login";'
                     . '}'
                     . 'setTimeout(redirect, 3000);'
@@ -48,7 +48,7 @@ if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"
                . 'setTimeout(redirect, 3000);'
             . '</script>';
     }
-} else if($_GET["mode"] == "logout") {
+} else if ($_GET["mode"] == "logout") {
     $query = 'DELETE FROM nodes_session WHERE token LIKE "'.$_COOKIE["token"].'" AND user_id = "'.$_SESSION["user"]["id"].'"';
     engine::mysql($query);
     unset($_SESSION["user"]);

@@ -1,6 +1,6 @@
 <?php
 
-function pano_scene_editor($data){
+function pano_scene_editor($data) {
     $query = 'SELECT * FROM `nodes_vr_project` WHERE `id` = "'.$data["project_id"].'"';
     $res = engine::mysql($query);
     $project = mysqli_fetch_array($res);

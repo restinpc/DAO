@@ -18,7 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_backend($cms); </code>
 */
-function print_admin_backend($cms){
+function print_admin_backend($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "backend" '
         . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
@@ -26,12 +26,12 @@ function print_admin_backend($cms){
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
-    if(!$admin_access){
+    if (!$admin_access) {
         engine::error(401);
         return;
     }
-    if(isset($_POST["id"])){
-        if($admin_access != 2){
+    if (isset($_POST["id"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
@@ -42,15 +42,15 @@ function print_admin_backend($cms){
         engine::mysql($query);
         $fout = '<script type="text/javascript">window.location = document.referrer;</script>';
         return $fout;
-    }else if(!empty($_POST["mode"]) && !empty($_POST["file"])){
-        if($admin_access != 2){
+    } else if (!empty($_POST["mode"]) && !empty($_POST["file"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
         $mode = trim(htmlspecialchars($_POST["mode"]));
         $mode = str_replace('/', '', $mode);
         $file = trim(htmlspecialchars($_POST["file"]));
-        if(strpos($file, ".php")===FALSE) $file .= '.php';
+        if (strpos($file, ".php") === FALSE) $file .= '.php';
         $fname = "engine/site/".$file;
         $fname = fopen($fname, 'w') or die("can't open file");
         $code = "<?php
@@ -69,7 +69,7 @@ function print_admin_backend($cms){
 * @var \$this->onload - Page executable JavaScript code.
 * @var \$this->configs - Array MySQL configs.
 */
-if(!empty($_GET[1])){
+if (!empty($_GET[1])) {
     \$this->content = engine::error();
     return; 
 }
@@ -80,8 +80,8 @@ if(!empty($_GET[1])){
         engine::mysql($query);
         fwrite($fname, $code);
         fclose($fname);
-    }else if($_GET["act"]=="edit" && !empty($_GET["id"]) && !empty($_GET["target"]) && !empty($_GET["value"])){
-        if($admin_access != 2){
+    } else if ($_GET["act"] == "edit" && !empty($_GET["id"]) && !empty($_GET["target"]) && !empty($_GET["value"])) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
@@ -90,8 +90,8 @@ if(!empty($_GET[1])){
         $target = trim(htmlspecialchars($_GET["target"]));
         $query = 'UPDATE `nodes_backend` SET `'.$target.'`="'.$value.'" WHERE `id` = "'.$id.'"';
         engine::mysql($query);
-    }else if(intval($_GET["delete"])>0){
-        if($admin_access != 2){
+    } else if (intval($_GET["delete"])>0) {
+        if ($admin_access != 2) {
             engine::error(401);
             return;
         }
@@ -115,7 +115,7 @@ if(!empty($_GET[1])){
             $array = array(
                 "mode" => "Path",
                 "file" => "File"
-            ); foreach($array as $order=>$value){
+            ); foreach ($array as $order => $value) {
                 $table .= '<th>';
                 $table .= engine::lang($value);
                 $table .= '</th>';
@@ -124,22 +124,22 @@ if(!empty($_GET[1])){
         </thead>
         <tbody>';
     $res = engine::mysql($query);
-    while($data = mysqli_fetch_array($res)){
-        if($data["file"] == "main.php"
+    while ($data = mysqli_fetch_array($res)) {
+        if ($data["file"] == "main.php"
         || $data["file"] == "site.php"
         || $data["file"] == "register.php"
         || $data["file"] == "account.php"
         || $data["file"] == "search.php"
         || $data["file"] == "admin.php"
         || $data["file"] == "content.php"
-        || $data["file"] == "login.php"){
+        || $data["file"] == "login.php") {
             $table .= '
                     <tr>
                         <td width=35% align=left><a id="backend-'.$data["id"].'" href="/'.$_SERVER["DIR"].$data["mode"].'" target="_blank">/'.$data["mode"].'</a></td>
                         <td width=35% align=left >'.$data["file"].'</td>';
-            if($data["file"] != "site.php"){
+            if ($data["file"] != "site.php") {
                 $table .= '<td width=30% align=left>
-                    <select  id="select-action-'.$data["id"].'" class="input w100p" onChange=\'if(this.value==1){show_editor("engine/site/'.$data["file"].'");}\'>
+                    <select  id="select-action-'.$data["id"].'" class="input w100p" onChange=\'if (this.value ==1) {show_editor("engine/site/'.$data["file"].'");}\'>
                         <option id="option-action-0">'.engine::lang("Select an action").'</option>
                         <option id="option-action-1" value="1">'.engine::lang("View source").'</option>
                     </select>
@@ -148,17 +148,17 @@ if(!empty($_GET[1])){
             $table .= '
                     </tr>
                 ';
-        }else{
+        } else {
             $table .= '
                     <tr>
                         <td width=35% align=left>
-                        <a id="backend-'.$data["mode"].'" title="'.engine::lang("Edit").'" onClick=\'var s = prompt("'.engine::lang("Edit").':", "'.$data["mode"].'"); if(s.length > 0 && s != "'.$data["mode"].'"){window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&act=edit&id='.$data["id"].'&target=mode&value="+encodeURI(s);}\'>/'.$data["mode"].'</a></td>
+                        <a id="backend-'.$data["mode"].'" title="'.engine::lang("Edit").'" onClick=\'var s = prompt("'.engine::lang("Edit").':", "'.$data["mode"].'"); if (s.length > 0 && s != "'.$data["mode"].'") {window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&act=edit&id='.$data["id"].'&target=mode&value="+encodeURI(s);}\'>/'.$data["mode"].'</a></td>
                         <td width=35% align=left>'.$data["file"].'</td>
                         <td width=30% align=left >
-                        <select id="select-action-'.$data["id"].'" class="input w100p" onChange=\'if(this.value==1){document.framework.showEditor("engine/site/'.$data["file"].'");}else if(this.value==2 && confirm("'.engine::lang("Are you sure?").'")){window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&delete='.$data["id"].'";}\'>
+                        <select id="select-action-'.$data["id"].'" class="input w100p" onChange=\'if (this.value ==1) {document.framework.showEditor("engine/site/'.$data["file"].'");} else if (this.value ==2 && confirm("'.engine::lang("Are you sure?").'")) {window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&delete='.$data["id"].'";}\'>
                             <option id="option-action-0">'.engine::lang("Select an action").'</option>
                             <option id="option-action-1" value="1">'.engine::lang("View source").'</option>';
-            if($admin_access == 2){
+            if ($admin_access == 2) {
                 $table .= '<option id="option-action-2" value="2">'.engine::lang("Delete file").'</option>';
             }
             $table .= '</select>
@@ -169,12 +169,12 @@ if(!empty($_GET[1])){
     }
 $table .= '</tbody>
     </table><br/>';
-if($admin_access == 2){
+if ($admin_access == 2) {
 $table .= '
     <form method="POST" id="default">
         '.engine::lang("Default file").': 
         <select  id="select-default-file" name="default" class="input" onChange=\'$id("default").submit();\'>';
-    if(!empty($_POST["default"])){
+    if (!empty($_POST["default"])) {
         $query = 'UPDATE `nodes_config` SET `value` = "'.$_POST["default"].'" WHERE `name` = "default"';
         engine::mysql($query);
     }
@@ -184,11 +184,11 @@ $table .= '
     $default = $data["value"];
     $query = 'SELECT * FROM `nodes_backend` ORDER BY `id` ASC';
     $res = engine::mysql($query);
-    while($data = mysqli_fetch_array($res)){
-        if($data["file"] != "admin.php"){
-            if($data["file"]!=$default){
+    while ($data = mysqli_fetch_array($res)) {
+        if ($data["file"] != "admin.php") {
+            if ($data["file"]!=$default) {
                 $table .= '<option id="option-file-'.$data["id"].'" value="'.$data["file"].'">'.$data["file"].'</option>';
-            }else{
+            } else {
                 $table .= '<option id="option-file-'.$data["id"].'" selected disabled value="'.$data["file"].'">'.$data["file"].'</option>';
             }
         }
@@ -213,41 +213,41 @@ $table .= '
     $res = engine::mysql($requery);
     $data = mysqli_fetch_array($res);
     $count = $data[0];
-    if($to > $count) $to = $count;
-    if($data[0]>0){
+    if ($to > $count) $to = $count;
+    if ($data[0]>0) {
         $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
             <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-             <option id="option-pagination-20"'; if($_SESSION["count"]=="20") $fout.= ' selected'; $fout.= '>20</option>
-             <option id="option-pagination-50"'; if($_SESSION["count"]=="50") $fout.= ' selected'; $fout.= '>50</option>
-             <option id="option-pagination-100"'; if($_SESSION["count"]=="100") $fout.= ' selected'; $fout.= '>100</option>
+             <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
+             <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
+             <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
             </select> '.engine::lang("per page").'.</nobr></p>';
     }$fout .= '</div><div class="cr"></div>';
-    if($count>$_SESSION["count"]){
+    if ($count>$_SESSION["count"]) {
        $fout .= '<div class="pagination" >';
             $pages = ceil($count/$_SESSION["count"]);
-           if($_SESSION["page"]>1){
+           if ($_SESSION["page"]>1) {
                 $fout .= '<span  id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
             }$fout .= '<ul>';
            $a = $b = $c = $d = $e = $f = 0;
-           for($i = 1; $i <= $pages; $i++){
-               if(($a<2 && !$b && $e<2)||
+           for ($i = 1; $i <= $pages; $i++) {
+               if (($a<2 && !$b && $e<2)||
                    ($i >=( $_SESSION["page"]-2) && $i <=( $_SESSION["page"]+2) && $e<5)||
-               ($i>$pages-2 && $e<2)){
-                   if($a<2) $a++;
+               ($i>$pages-2 && $e<2)) {
+                   if ($a<2) $a++;
                    $e++; $f = 0;
-                   if($i == $_SESSION["page"]){
+                   if ($i == $_SESSION["page"]) {
                        $b = 1; $e = 0;
                       $fout .= '<li class="active-page">'.$i.'</li>';
-                   }else{
+                   } else {
                        $fout .= '<li  id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                    }
-               }else if((!$c||!$b) && !$f && $i<$pages){
+               } else if ((!$c||!$b) && !$f && $i < $pages) {
                    $f = 1; $e = 0;
-                   if(!$b) $b = 1;
-                   else if(!$c) $c = 1;
+                   if (!$b) $b = 1;
+                   else if (!$c) $c = 1;
                    $fout .= '<li class="dots">. . .</li>';
                }
-           }if($_SESSION["page"]<$pages){
+           }if ($_SESSION["page"]<$pages) {
                $fout .= '<li  id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
            }$fout .= '
      </ul>
@@ -256,7 +256,7 @@ $table .= '
          $fout .= '
     </form>
     <div class="clear"><br/></div>';
-    if($admin_access == 2){
+    if ($admin_access == 2) {
          $fout .= '
         <input id="new-file" type="button" class="btn w280" value="'.engine::lang("New file").'" onClick=\' this.style.display = "none"; $id("new_file").style.display = "block"; jQuery("#new_file").removeClass("hidden");\' />
         <div id="new_file" class="hidden">

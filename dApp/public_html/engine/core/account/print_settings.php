@@ -20,8 +20,8 @@
 * @usage <code> engine::print_settings($site); </code>
 */
 
-function print_settings($site){
-    if($_GET[2] == "delete"){
+function print_settings($site) {
+    if ($_GET[2] == "delete") {
         $query = 'DELETE FROM `nodes_comment` WHERE `user_id` = "'.$_SESSION["user"]["id"].'"';
         engine::mysql($query);
         $query = 'DELETE FROM `nodes_inbox` WHERE `from` = "'.$_SESSION["user"]["id"].'" OR `to` = "'.$_SESSION["user"]["id"].'"';
@@ -30,19 +30,19 @@ function print_settings($site){
         engine::mysql($query);
         unset($_SESSION["user"]);
         $fout = '<script language="JavaScript">window.location = "'.$_SERVER["DIR"].'/";</script>';
-    }else{
+    } else {
         $fout = '<div style="height: 70px;"></div>
             <div class="document640">';
-        if(!empty($_POST["name"])){
+        if (!empty($_POST["name"])) {
             $name = strip_tags(engine::escape_string($_POST["name"]));
             $email = strip_tags(strtolower(engine::escape_string($_POST["email"])));
             $bulk_ignore = intval($_POST["bulk_ignore"]);
             $query = 'SELECT `id` FROM `nodes_user` WHERE `email` = "'.$email.'" AND `id` <> "'.$_SESSION["user"]["id"].'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
-            if(!empty($data)){
+            if (!empty($data)) {
                 $site->onload .= ' alert("'.engine::lang("Sorry, this email already registered").'"); ';
-            }else{
+            } else {
                 $query = 'UPDATE `nodes_user` SET `email` = "'.$email.'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
                 engine::mysql($query);
             }
@@ -51,18 +51,18 @@ function print_settings($site){
             $_SESSION["user"]["name"] = $name;
             $_SESSION["user"]["email"] = $email;
             $_SESSION["user"]["bulk_ignore"] = $bulk_ignore;
-            if(!empty($_POST["new_profile_picture"])){
+            if (!empty($_POST["new_profile_picture"])) {
                 image::resize_image('img/data/thumb/'.$_POST["new_profile_picture"], 'img/pic/'.$_POST["new_profile_picture"], 100, 100, 1);
                 $query = 'UPDATE `nodes_user` SET `photo` = "'.$_POST["new_profile_picture"].'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
                 engine::mysql($query);
                 $_SESSION["user"]["photo"] = $_POST["new_profile_picture"];
             }
-        }if(!empty($_POST["pass"])){
+        }if (!empty($_POST["pass"])) {
             $password = engine::encode_password(trim(strtolower($_POST["pass"])));
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
             engine::mysql($query);
         }
-        if(empty($_SESSION["user"]["email"])){
+        if (empty($_SESSION["user"]["email"])) {
             $fout .= '<p>'.engine::lang("Enter your email and password to continue").'</p>';
         }
         $fout .= '
@@ -85,7 +85,7 @@ function print_settings($site){
                 <td class="pb10"><input id="input-name" type="text" name="name" value="'.$_SESSION["user"]["name"].'" class="input w280" /></td>
             </tr>';
 
-        if(!empty($_SESSION["user"]["email"])){
+        if (!empty($_SESSION["user"]["email"])) {
             $fout .= '
             <tr>
                 <td align=right class="settings_caption">'.engine::lang("Email").'</td>
@@ -95,7 +95,7 @@ function print_settings($site){
                 <td align=right class="settings_caption">'.engine::lang("Password").'</td>
                 <td class="pb10"><input id="input-password" type="password" name="pass" value="" placeHolder="'.engine::lang("New password").'" class="input w280" /></td>
             </tr>';
-        }else{
+        } else {
             $fout .= '
             <tr>
                 <td align=right class="settings_caption">'.engine::lang("Email").'</td>
@@ -129,7 +129,7 @@ function print_settings($site){
             <tr>
                 <td class="pt20" colspan=2>
                     <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" /><br/><br/>
-                    <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'alertify.confirm("'.engine::lang("Are you sure you want to delete your account").'?", function(){ window.location = "/account/settings/delete"; }, function(){ alertify.confirm().destroy();} );\' />
+                    <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'alertify.confirm("'.engine::lang("Are you sure you want to delete your account").'?", function() { window.location = "/account/settings/delete"; }, function() { alertify.confirm().destroy();} );\' />
                 </td>
             </tr>
             </table>

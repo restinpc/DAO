@@ -10,7 +10,7 @@
 
 require_once("engine/nodes/session.php");
 
-if(empty($_SESSION["user"]["id"])) {
+if (empty($_SESSION["user"]["id"])) {
     die(engine::error(401));
 }
 $fout = '<!DOCTYPE html>
@@ -65,7 +65,7 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
             }
             $i = 0;
             $files = '';
-            foreach($imgs as $img) {
+            foreach ($imgs as $img) {
                 $i++;
                 if ($_GET["pos"] == $i) {
                     $files .= $_POST["file1"].';';
@@ -97,11 +97,11 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
         $fout .= '<script>
             try{ 
                 parent.document.getElementById("delete_image_block").style.display="none"; 
-            }catch(e){ };
+            }catch(e) { };
             try{ 
                 parent.document.getElementById("new_profile_picture").value="'.$_POST["file1"].'"; 
                 parent.document.getElementById("edit_profile_form").submit();
-            }catch(e){ };
+            }catch(e) { };
             top.document.framework.hideWindow();
             </script>';
     } else {

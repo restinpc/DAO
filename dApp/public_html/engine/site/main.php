@@ -16,7 +16,7 @@
 * @var $this->configs - Array MySQL configs.
 */
 
-if(!empty($_GET[0])){
+if (!empty($_GET[0])) {
     $this->content = engine::error();
     return;
 }

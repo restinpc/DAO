@@ -18,7 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin($cms); </code>
 */
-function print_admin($cms){
+function print_admin($cms) {
     $fout = '
 <div class="document980">
 <div class="two_columns">
@@ -37,8 +37,8 @@ function print_admin($cms){
     <section class="left_column b0">';
     $query = 'SELECT `admin`.*, `access`.`access` FROM `nodes_access` AS `access` LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`id` = `access`.`admin_id` WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `admin`.`id` ASC';
     $res = engine::mysql($query);
-    while($data = mysqli_fetch_array($res)){
-        if($data["access"]){
+    while ($data = mysqli_fetch_array($res)) {
+        if ($data["access"]) {
             $fout .= '<div class="admin_menu_icon"><a id="admin-link-'.$data["id"].'" href="'.$_SERVER["DIR"].'/admin/?mode='.$data["url"].'"><img src="'.$_SERVER["DIR"].'/img/'.$data["img"].'" /><br/>'.engine::lang($data["name"]).'</a></div>';
         }
     }

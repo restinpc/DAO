@@ -1,16 +1,16 @@
 <?php
 
-function pano_link($site, $object, $new=0){
+function pano_link($site, $object, $new=0) {
     $site->content .= '<a-image transparent="true" look-at="#camera" 
         action=\' 
-            setTimeout(function(id){
-                if($id("scene_editor") && $id("scene_editor").style.display=="block"){
-                    if(!document.panorama.objectId){
+            setTimeout(function(id) {
+                if ($id("scene_editor") && $id("scene_editor").style.display== "block") {
+                    if (!document.panorama.objectId) {
                         jQuery(".vr_object_window").css("display", "none");
                         $id("url_'.$object["id"].'_window").style.display = "block";
                         document.panorama.objectId = "'.$object["id"].'";
                     }
-                }else{
+                } else {
                     window.location = "'.$object["url"].'";
                 }
             }, 500, "'.$object["id"].'"); \' '
@@ -22,7 +22,7 @@ function pano_link($site, $object, $new=0){
             . 'opacity="0"'
             . 'width="1" height="1" '
             . 'src="#google"></a-image>';
-    if($_SESSION["user"]["id"] == "1"){
+    if ($_SESSION["user"]["id"] == "1") {
         $fout .= '
         <div id="url_'.$object["id"].'_window"  class="vr_object_window">
             <div style="padding-top:10px; padding-bottom:10px; text-align:center; font-weight:bold;">'.engine::lang("Link properties").'</div><br/>
@@ -41,7 +41,7 @@ function pano_link($site, $object, $new=0){
                     <br/>
                     <br/>
                 <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesURL("'.$object["id"].'");\' />';
-        if(!$new){
+        if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete Link").'" onClick=\'document.panorama.deleteURL("'.$object["id"].'")\' />';
         }
         $fout .= '        

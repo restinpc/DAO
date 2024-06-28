@@ -18,7 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_files($cms); </code>
 */
-function print_admin_files($cms){
+function print_admin_files($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "files" '
         . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
@@ -26,18 +26,18 @@ function print_admin_files($cms){
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
-    if(!$admin_access){
+    if (!$admin_access) {
         engine::error(401);
         return;
     }
-    if(!empty($_FILES)){
+    if (!empty($_FILES)) {
         file::upload("photo", "file");
-    }if(!empty ($_POST["name"])){
+    }if (!empty ($_POST["name"])) {
         $name = trim(htmlspecialchars($_POST["name"]));
         $images = "file/".$name;
-        if(is_file($images)){
+        if (is_file($images)) {
             @unlink($images);
-        }else if(is_file($_SERVER["DOCUMENT_ROOT"]."/file/".$name)){
+        } else if (is_file($_SERVER["DOCUMENT_ROOT"]."/file/".$name)) {
             $images = $_SERVER["DOCUMENT_ROOT"]."/file/".$name;
             @unlink($images);
         }
@@ -50,26 +50,26 @@ function print_admin_files($cms){
     $i = 0;
     $dirct = "file/";
     $hdl = opendir($dirct) or die("can't open direct");
-    while ($file_name = readdir($hdl)){
-        if (($file_name != ".") && ($file_name != "..") && is_file($dirct.$file_name)){
+    while ($file_name = readdir($hdl)) {
+        if (($file_name != ".") && ($file_name != "..") && is_file($dirct.$file_name)) {
             $i++;
             $fout .= '<form method="POST" id="form_'.$i.'"><input type="hidden" name="name" value="'.$file_name.'" /></form><a id="file-'.$i.'" href="'.$_SERVER["DIR"].'/file/'.$file_name.'" target="_blank">'.$file_name.'</a> ';
-            if($admin_access == 2){
+            if ($admin_access == 2) {
                 $fout .= '<div  id="delete-button-'.$i.'" class="close_image ml3 fl" onClick=\'$id("form_'.$i.'").submit();\' title="'.engine::lang("Delete").'"> </div>';
             }
             $fout .= '<br/><br/>';
         }
-     }if(!$i){
+     }if (!$i) {
         $fout = '<div class="clear_block">'.engine::lang("There is no files").'</div>';
-     }else{
+     } else {
         $fout .= '
         </td>
 </tr>
 </table></div>
 </div>';
      }
-     if($admin_access == 2){
-        $fout .= '<input id="button" type="button" name="load" value="'.engine::lang("Upload files").'" class="btn w280" onClick=\'this.style.display="none";$id("form").style.display="block"; jQuery("#form").removeClass("hidden");\' /><br/>
+     if ($admin_access == 2) {
+        $fout .= '<input id="button" type="button" name="load" value="'.engine::lang("Upload files").'" class="btn w280" onClick=\'this.style.display="none"; $id("form").style.display="block"; jQuery("#form").removeClass("hidden");\' /><br/>
        <form method="POST" ENCTYPE="multipart/form-data" id="form" class="w280 m0a hidden">
            <input id="file" type="file" onChange=\'$id("form").submit();\' required placeHolder="'.engine::lang("File").'" title="'.engine::lang("File").'" name="photo[]" multiple class="input pointer w280" /><br/><br/>
        </form>

@@ -11,22 +11,22 @@
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 echo '<!DOCTYPE html><html><body class="nodes">';
-if(empty($_SESSION["user"]["id"])){
+if (empty($_SESSION["user"]["id"])) {
     $_SESSION["redirect"] = $_SERVER["DIR"]."/order.php";
     require_once("engine/nodes/site.php");
     echo '<div class="fs21 tal"><b>'.engine::lang("Step").' 1 \ 5</b></div><br/>';
     $_GET[0] = "register";
     $_POST["jQuery"] = 1;
     $site = new site(1);
-}else if(!empty($_POST["order_confirm"]) && !empty($_SESSION["user"]["id"])){
+} else if (!empty($_POST["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
     $query = 'INSERT INTO `nodes_order`(user_id, date, status) '
             . 'VALUES("'.$_SESSION["user"]["id"].'", "'.date("U").'", "0")';
     engine::mysql($query);
     $query = 'SELECT * FROM `nodes_order` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    foreach($_SESSION["products"] as $key=>$value){
-        if($value>0){
+    foreach ($_SESSION["products"] as $key => $value) {
+        if ($value>0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$key.'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
@@ -35,7 +35,7 @@ if(empty($_SESSION["user"]["id"])){
             engine::mysql($query);
         }
     }$_SESSION["order_confirm"] = $data["id"];
-}else if(!empty($_POST["shipping_confirm"]) && !empty($_SESSION["user"]["id"])){
+} else if (!empty($_POST["shipping_confirm"]) && !empty($_SESSION["user"]["id"])) {
     $fname = htmlspecialchars($_POST["fname"]);
     $lname = htmlspecialchars($_POST["lname"]);
     $country = htmlspecialchars($_POST["country"]);
@@ -58,9 +58,9 @@ if(empty($_SESSION["user"]["id"])){
             . ' `phone` = "'.$phone.'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if(!empty($data)){
+    if (!empty($data)) {
         $shipment = intval($data["id"]);
-    }else{
+    } else {
         $query = 'INSERT INTO `nodes_shipping`(user_id, fname, lname, country, state, city, zip, street1, street2, phone) '
                 . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$fname.'", "'.$lname.'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
         engine::mysql($query);
@@ -72,25 +72,25 @@ if(empty($_SESSION["user"]["id"])){
     $query = 'UPDATE `nodes_order` SET `shipping` = "'.$shipment.'" WHERE `id` = "'.$_SESSION["order_confirm"].'"';
     engine::mysql($query);
     $_SESSION["shipping_confirm"] = $data["id"];
-}else if(!empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
+} else if (!empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
     $query = 'SELECT * FROM `nodes_order` WHERE `id` = "'.intval($_SESSION["order_confirm"]).'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if($data["status"]){
+    if ($data["status"]) {
         unset($_SESSION["order_confirm"]);
         unset($_SESSION["shipping_confirm"]);
         unset($_SESSION["products"]);
     }
 }
-if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
+if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
     echo '<div class="fs21 tal"><b>'.engine::lang("Step").' 2 \ 5</b></div><br/>';
     $fout .= '<h1>'.engine::lang("Confirmation").'</h1><br/><br/>
         <div class="document">
         <form method="POST">
             <input type="hidden" name="order_confirm" value="1" />';
     $price = 0;
-    foreach($_SESSION["products"] as $key=>$value){
-        if($value>0){
+    foreach ($_SESSION["products"] as $key => $value) {
+        if ($value>0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$key.'"';
             $res = engine::mysql($query);
             $product = mysqli_fetch_array($res);
@@ -105,7 +105,7 @@ if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
                 <font class="fs18">$ '.$product["price"].'</font><br/><br/>
                 '.engine::lang("Shipping from").': <a id="link-shipping" onClick=\'alert("'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'");\' title="'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'">'.$shipping["country"].'</a><br/>
                 <div class="order_detail_button">
-                    <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if(confirm("'.engine::lang("Are you sure?").'")){ document.framework.removeFromCart("'.$key.'"); }\' />
+                    <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if (confirm("'.engine::lang("Are you sure?").'")) { document.framework.removeFromCart("'.$key.'"); }\' />
                 </div>
             <div class="clear"></div>
             </div>';
@@ -123,7 +123,7 @@ if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
         </form>
         </div>
         <br/><br/>';
-}else if(empty($_SESSION["shipping_confirm"]) && !empty($_SESSION["user"]["id"])){
+} else if (empty($_SESSION["shipping_confirm"]) && !empty($_SESSION["user"]["id"])) {
     echo '<div class="fs21 tal"><b>'.engine::lang("Step").' 3 \ 5</b></div><br/>';
     $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
     $res = engine::mysql($query);
@@ -147,8 +147,8 @@ if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
         <input id="input-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'"  /><br/><br/>
         <input id="input-next" type="submit" class="btn w280" value="'.engine::lang("Next").'" />
     </form><br/><br/>';
-}else if( !empty($_SESSION["user"]["id"])){
-    if(!empty($_POST["checkout"])){
+} else if ( !empty($_SESSION["user"]["id"])) {
+    if (!empty($_POST["checkout"])) {
         unset($_SESSION["products"]);
         $query = 'INSERT INTO `nodes_invoice`(`user_id`, `order_id`, `amount`, `date`) '
                 . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$_SESSION["order_confirm"].'", "'.  doubleval($_POST["checkout"]).'", "'.date("Y-m-d H:i:s").'")';
@@ -166,8 +166,8 @@ if(empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])){
     $price = 0;
     $products = '<div class="order_detail_left">
         <b>'.engine::lang("Order").'</b><br/><br/>';
-    while($data = mysqli_fetch_array($res)){
-        if($data["count"]>0){
+    while ($data = mysqli_fetch_array($res)) {
+        if ($data["count"]>0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$data["product_id"].'"';
             $r = engine::mysql($query);
             $product = mysqli_fetch_array($r);

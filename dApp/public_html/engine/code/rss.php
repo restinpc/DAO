@@ -24,7 +24,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
 <description>'.$description["value"].'</description>';
 $query = 'SELECT * FROM `nodes_content` ORDER BY `date` DESC LIMIT 0, 50';
 $res = engine::mysql($query);
-while($data = mysqli_fetch_array($res)){
+while ($data = mysqli_fetch_array($res)) {
     echo '<item>
     <title>'.$data["caption"].'</title>
     <link>'.$_SERVER["PUBLIC_URL"].'/content/'.$data["url"].($data["lang"] === "ru" ? "": "?lang=".$data["lang"]).'</link>

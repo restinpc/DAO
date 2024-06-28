@@ -1,6 +1,6 @@
 <?php
 
-function pano_print_object($site, $object, $new=0){
+function pano_print_object($site, $object, $new=0) {
     $site->content .= '
     <a-box class="custom_object" id="object_'.$object["id"].'" 
         position="'.$object["position"].'" 
@@ -10,14 +10,14 @@ function pano_print_object($site, $object, $new=0){
         height="1" width="1" depth="1" color="'.$object["color"].'"  
         onMouseOver=\'console.log("123");\'
         action=\'
-            setTimeout(function(id){
-                if($id("scene_editor") && $id("scene_editor").style.display=="block"){
-                    if(!document.panorama.objectId){
+            setTimeout(function(id) {
+                if ($id("scene_editor") && $id("scene_editor").style.display== "block") {
+                    if (!document.panorama.objectId) {
                         jQuery(".vr_object_window").css("display", "none");
                         $id("object_'.$object["id"].'_window").style.display = "block";
                         document.panorama.objectId = "'.$object["id"].'";
                     }
-                }else{
+                } else {
                     $id("object_"+id+"_text").setAttribute("opacity", "1");
                     var position = $id("fuse").object3D.getWorldPosition(new THREE.Vector3());
                     $id("object_"+id+"_text").object3D.position.set( position.x, position.y, position.z );
@@ -27,14 +27,14 @@ function pano_print_object($site, $object, $new=0){
         \'>
         <a-animation attribute="rotation" begin="fused" dur="500" fill="backwards" to="30 30 180"></a-animation>
     </a-box>';
-    if(!$new){
+    if (!$new) {
         $site->content .= '
         <a-image look-at="#camera" popup="true" trigger="none" class="hidden_layer" id="object_'.$object["id"].'_text"  position="0 9 -10"
             material="color: white;" src="data:image/jpeg;base64,'.$object["base64"].'" 
             height="'.($object["height"]/50).'" width="'.($object["width"]/50).'" opacity="0">
         </a-image>';
     }
-    if($_SESSION["user"]["id"] == "1"){
+    if ($_SESSION["user"]["id"] == "1") {
         $fout .= '
         <div id="object_'.$object["id"].'_window"  class="vr_object_window">
             <div style="padding-top:10px; padding-bottom:10px; text-align:center; font-weight:bold;">Object properties</div><br/>
@@ -57,7 +57,7 @@ function pano_print_object($site, $object, $new=0){
                 <input required id="object_'.$object["id"].'_scale" name="scale" type="text" class="input w100p" value="'.$object["scale"].'" /><br/>
                     <br/>   
                 <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesObject("'.$object["id"].'");\' />';
-        if(!$new){
+        if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete object").'" onClick=\'document.panorama.deleteObject("'.$object["id"].'")\' />';
         }
         $fout .= '        
