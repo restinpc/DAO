@@ -61,7 +61,7 @@ function print_inbox($site, $target_id) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.$_SESSION["user"]["id"];
         $res = engine::mysql($query);
         $u = mysqli_fetch_array($res);
-        if ($target["online"] > date("U")-600) {
+        if ($target["online"] > date("U") - 600) {
             $online = '<br/><font class="chat_font">'.engine::lang("online").'</font>';
         } else {
             $online = '<br/><font class="chat_font">'.engine::lang("offline").'</font>';
@@ -82,7 +82,7 @@ function print_inbox($site, $target_id) {
             </div>
             <div class="chat_center">
                 <textarea name="text" id="nodes_message_text" class="input" placeHolder="'.engine::lang("Your message here").'"
-                    onkeypress=\'if (event.keyCode==13&&!event.shiftKey) { event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
+                    onkeypress=\'if (event.keyCode== 13&&!event.shiftKey) { event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
                 ></textarea>
                 <br/>
                 <input id="send-message" type="button" onClick=\'document.framework.postMessage("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'"  />
@@ -105,7 +105,7 @@ function print_inbox($site, $target_id) {
                             . '(`from` = "'.intval($u["id"]).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
-                    if (!intval($d[0]) && $_SESSION["user"]["id"]!="1" && intval($u["id"]) != 1) {
+                    if (!intval($d[0]) && $_SESSION["user"]["id"] != "1" && intval($u["id"]) != 1) {
                         continue;
                     }
                 }
@@ -128,7 +128,7 @@ function print_inbox($site, $target_id) {
                 } else {
                     $new = '';
                 }
-                if ($u["online"] > date("U")-600) {
+                if ($u["online"] > date("U") - 600) {
                     $online = '<font class="chat_font">'.engine::lang("online").'</font>';
                 } else {
                     $online = '<font class="chat_font">'.engine::lang("offline").'</font>';

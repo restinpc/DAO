@@ -11,7 +11,7 @@
 */
 
 class email{
-//------------------------------------------------------------------------------
+
 /**
 * Generates HTML template for a message.
 *
@@ -71,13 +71,13 @@ static function bulk_mail($data) {
         if (engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body))) {
             $status = 1;
         } else {
-            $status = $data["status"]-1;
+            $status = $data["status"] -1;
         }
     } else {
         if (engine::send_mail($user["email"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $outbox["caption"], email::email_template($outbox["text"]))) {
             $status = 1;
         } else {
-            $status = $data["status"]-1;
+            $status = $data["status"] -1;
         }
     }
     $query = 'UPDATE `nodes_user_outbox` SET `status` = "'.$status.'", `date` = "'.date("U").'" WHERE `id` = "'.$data["id"].'"';
@@ -343,7 +343,7 @@ static function new_purchase($id) {
     $body = engine::lang("Dear").' Admin!<br/><br/>'
             . engine::lang("There in new purchase at").' '.$_SERVER["HTTP_HOST"].'. '
             . engine::lang("Details").' <a target="_blank" href="'.$_SERVER["PUBLIC_URL"].'/admin/?mode=orders">'.engine::lang("here").'</a>.';
-    if ($transaction["txt_id"]!="test_transaction") {
+    if ($transaction["txt_id"] != "test_transaction") {
         $body .= '<br/>'.$user["name"].'</a> '.engine::lang("make a payment").' $'.$transaction["amount"].' '.engine::lang("to your PayPal account").'.';
     }
     engine::send_mail($email["value"], $site_name."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
@@ -409,7 +409,7 @@ static function delivery_confirmation($id) {
     $caption = engine::lang("Your order has been completed at").' '.$_SERVER["HTTP_HOST"];
     $body = engine::lang("Dear").' '.$user["name"].'!<br/><br/>
         '.engine::lang("Your order has been completed").'! ';
-    if ($user["id"]!="1") {
+    if ($user["id"] != "1") {
         $body .= '<br/>'.engine::lang("Funds added to your account and available for withdrawal").' '
         . '<a target="_blank" href="'.$_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].'/account/finances">'.engine::lang("here").'</a>.';
     }

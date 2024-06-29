@@ -11,14 +11,17 @@
 require_once("engine/nodes/session.php");
 
 if (!empty($_POST["id"])) {
-    if (!isset($_SESSION["products"])) $_SESSION["products"] = array();
+    if (!isset($_SESSION["products"])) {
+        $_SESSION["products"] = array();
+    }
     $_SESSION["products"][$_POST["id"]] = 1;
     $count = 0;
     foreach ($_SESSION["products"] as $key => $value) {
-        if ($value>0) {
+        if ($value> 0) {
             $count++;
         }
-    }unset($_SESSION["order_confirm"]);
+    }
+    unset($_SESSION["order_confirm"]);
     unset($_SESSION["shipping_confirm"]);
     echo $count;
 } else if (!empty($_POST["remove"])) {
@@ -27,7 +30,7 @@ if (!empty($_POST["id"])) {
     $count = 0;
     if (!empty($_SESSION["products"])) {
         foreach ($_SESSION["products"] as $key => $value) {
-            if ($value>0) {
+            if ($value > 0) {
                 $count++;
             }
         }
@@ -35,7 +38,7 @@ if (!empty($_POST["id"])) {
     if ($count) {
         echo engine::print_cart($count);
     }
-} else if (intval($_POST["scene"])>0) {
+} else if (intval($_POST["scene"]) > 0) {
     function html_to_obj($html) {
         $dom = new DOMDocument();
         $dom->loadHTML($html);
@@ -62,7 +65,7 @@ if (!empty($_POST["id"])) {
         echo json_encode(html_to_obj($m[1][0]));
     }
     die();
-} else if (intval($_POST["scene_reset"])>0) {
+} else if (intval($_POST["scene_reset"]) > 0) {
     $id = intval($_POST["scene_reset"]);
     $query = 'DELETE FROM `nodes_vr_object` WHERE `scene_id` = "'.$id.'"';
     engine::mysql($query);
@@ -91,7 +94,7 @@ if (!empty($_POST["id"])) {
         if (!empty($_POST["text"])) {
             $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));
             $text = str_replace("\n", "<br/>", $text);
-            $query = 'SELECT * FROM `nodes_inbox` WHERE `from` = "'.intval($_SESSION["user"]["id"]).'" AND `to` = "'.intval($_GET["message"]).'" AND `text` LIKE "'.$text.'" AND `date` > "'.(date("U")-600).'"';
+            $query = 'SELECT * FROM `nodes_inbox` WHERE `from` = "'.intval($_SESSION["user"]["id"]).'" AND `to` = "'.intval($_GET["message"]).'" AND `text` LIKE "'.$text.'" AND `date` > "'.(date("U") - 600).'"';
             $res = engine::mysql($query);
             $message = mysqli_fetch_array($res);
             if (empty($message)) {
@@ -107,7 +110,7 @@ if (!empty($_POST["id"])) {
                 $r_sign = engine::mysql($query);
                 $d_sign = mysqli_fetch_array($r_sign);
                 if ($d_conf["value"]) {
-                    if ($target["online"] < date("U")-600) {
+                    if ($target["online"] < date("U") - 600) {
                         email::new_message($target["id"], $_SESSION["user"]["id"]);
                     }
                 }
@@ -123,7 +126,9 @@ if (!empty($_POST["id"])) {
         $query = 'SELECT * FROM `nodes_transaction` WHERE `user_id` = "'.$user["id"].'" AND `status` = "1"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        if (!empty($data)) die(engine::lang("Withdrawal already requested"));
+        if (!empty($data)) {
+            die(engine::lang("Withdrawal already requested"));
+        }
         $query = 'INSERT INTO `nodes_transaction`(user_id, order_id, amount, status, date, comment)'
                 . 'VALUES("'.$_SESSION["user"]["id"].'", "0", "'.$user["balance"].'", "1", "'.date("U").'", "'.$paypal.'" )';
         engine::mysql($query);
@@ -143,9 +148,9 @@ if (!empty($_POST["id"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.intval($_POST["user_id"]).'"';
         $res = engine::mysql($query);
         $user = mysqli_fetch_array($res);
-        $balance = $user["balance"]+doubleval($_POST["transaction"]);
+        $balance = $user["balance"] +floatval($_POST["transaction"]);
         $query = 'INSERT INTO `nodes_transaction`(user_id, order_id, amount, `txn_id`, `payment_date`, status, date, comment, ip) '
-                . 'VALUES("'.intval($_POST["user_id"]).'", "-2", "'.doubleval($_POST["transaction"]).'", "", "", "2", "'.date("U").'", "Transaction from admin", "'.$_SERVER["REMOTE_ADDR"].'")';
+                . 'VALUES("'.intval($_POST["user_id"]).'", "-2", "'.floatval($_POST["transaction"]).'", "", "", "2", "'.date("U").'", "Transaction from admin", "'.$_SERVER["REMOTE_ADDR"].'")';
         engine::mysql($query);
         $query = 'UPDATE `nodes_user` SET `balance` = "'.$balance.'" WHERE `id` = "'.intval($_POST["user_id"]).'"';
         engine::mysql($query);
@@ -202,7 +207,7 @@ if (!empty($_POST["id"])) {
         $files = '';
         foreach ($imgs as $img) {
             $i++;
-            if ($_POST["pos"]!=$i) {
+            if ($_POST["pos"] != $i) {
                 $files .= $img.';';
             }
         }

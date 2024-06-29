@@ -31,29 +31,31 @@ function print_navigation($site, $title) {
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     $count = '';
-    if ($data[0]>0) {
+    if ($data[0] > 0) {
         $count = ' ('.$data[0].')';
     }
     if ($_SESSION["user"]["admin"] == "1") {
-        $fout .= '<span  id="profile_menu_span_3" class="profile_menu_item" onClick=\'$id("profile_menu_link_3").click();\'>'
-            . '<a id="profile_menu_link_3" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin').'">'.engine::lang("Admin").'</a></span>';
+        $fout .= '<span id="profile_menu_span_3" class="profile_menu_item" onClick=\'$id("profile_menu_link_3").click();\'>'
+            . '<a id="profile_menu_link_3" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin').'">'.engine::lang("Admin").'</a>'
+            . '</span>';
     }
-    $fout .= '<span  id="profile_menu_span_1" class="profile_menu_item '.($title == engine::lang("Profile")?'selected':'').'" onClick=\'$id("profile_menu_link_1").click();\'>'
-        . '<a id="profile_menu_link_1" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account').'">'.engine::lang("Profile").'</a></span>';
-
+    $fout .= '<span id="profile_menu_span_1" class="profile_menu_item '.($title == engine::lang("Profile")?'selected':'').'" onClick=\'$id("profile_menu_link_1").click();\'>'
+        . '<a id="profile_menu_link_1" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account').'">'.engine::lang("Profile").'</a>'
+        . '</span>';
     $fout .= '
         <span id="profile_menu_span_2" class="profile_menu_item '.($title == engine::lang("Finances")?'selected':'').'" onClick=\'$id("profile_menu_link_2").click();\'>'
-        . '<a id="profile_menu_link_2" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/finances').'">'.engine::lang("Finances").'</a></span>';
-
-
+        . '<a id="profile_menu_link_2" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/finances').'">'.engine::lang("Finances").'</a>'
+        . '</span>';
     $fout .= '
         <span id="profile_menu_span_5" class="profile_menu_item '.($title == engine::lang("Messages")?'selected':'').'" onClick=\'$id("profile_menu_link_5").click();\'>'
-        . '<a id="profile_menu_link_5" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox').'">'.engine::lang("Messages").$count.'</a></span>';
-
+        . '<a id="profile_menu_link_5" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox').'">'.engine::lang("Messages").$count.'</a>'
+        . '</span>';
     $fout .= '
         <span id="profile_menu_span_6" class="profile_menu_item '.($title == engine::lang("Settings")?'selected':'').'" onClick=\'$id("profile_menu_link_6").click();\'>'
-        . '<a id="profile_menu_link_6" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/settings').'">'.engine::lang("Settings").'</a></span>'
-        . '</div>'
-    . '</div>';
+        . '<a id="profile_menu_link_6" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/settings').'">'.engine::lang("Settings").'</a>'
+        . '</span>';
+    $fout .= '
+        </div>
+    </div>';
     return $fout;
 }

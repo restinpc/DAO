@@ -3,12 +3,7 @@
  * Prints an metaverse whitepaper.
  * @path /engine/core/webvr/print_en_metaverse.php
  *
- * @name    DAO Mansion    @version 1.0.2
- * @param object $site Site class object.
- * @return string Returns content of metaverse whitepaper.
- * @usage <code>
- *   engine::print_en_metaverse($site);
- * </code>
+ * @name    DAO Mansion    @version 1.0.3
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,10 +14,16 @@
  * @var $site->img - Page meta image.
  * @var $site->onload - Page executable JavaScript code.
  * @var $site->configs - Array MySQL configs.
+ * 
+ * @param object $site Site class object.
+ * @return string Returns content of metaverse whitepaper.
+ * @usage <code>
+ *   engine::print_en_metaverse($site);
+ * </code>
  */
+
 function print_en_metaverse($site) {
-        return '
-<h1>VR/AI game</h1>
+    return '<h1>VR/AI multiplayer game</h1>
 <p>
     The final stage of the startup will be the development of a VR product that will use tokens as an internal currency, and as a result, increase the value of both tokens and cryptocurrency in general.
     The development of this product can only be fully started when everything else is ready, since this product will require just a huge resource.
@@ -32,7 +33,7 @@ function print_en_metaverse($site) {
     Half Life Alyx + Population One + Mascarade Bloodhunt + Darwinia with a gamable blockchain motivation.
     Basicly, every skill requre token mana with same as Bloodhunt mechanics. 
 </p>
-<img src="/img/metaverse/splash.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;"  />
+<img src="'.$_SERVER["DIR"].'/img/metaverse/splash.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;"  />
 <ul>
     <li><a href="#1">Terms</a></li>
     <li><a href="#2">Environment</a></li>
@@ -70,7 +71,7 @@ function print_en_metaverse($site) {
 </ul>
 <h2>Environment</h2>
 <a name="2"></a>
-<img src="/img/metaverse/realm.png" width="100%" style="float:right; max-width:300px; padding: 10px;" />
+<img src="'.$_SERVER["DIR"].'/img/metaverse/realm.png" width="100%" style="float:right; max-width:300px; padding: 10px;" />
 <ul>
 <li>1) The temperature mechanics is that as the temperature rises, everything that drains HP starts to do it stronger, and at some point it is impossible to be on the realm due to overheating. When the temperature drops, the abilities start to work weaker until it just one-time kills everyone remaining on the realm. There are a lot of abilities that increase the temperature and only 1 that reduces it - Białe Zimno (140), or in common terms, burnout. Or when somebody leave realm, temp is deheating realm a bit.</li>
 <li>2) Metaverse idea: Dodecahedron (12 side) planet with</li>
@@ -92,7 +93,7 @@ function print_en_metaverse($site) {
 <li>4) And will be perfect to make it DAO (bigest part opensource and voting blockchain for changes) and GPU minable (rendering equirectangular hell, calculating bot actions, generation custom realms).</li>
 <li>5) It should work in webbrowser to simplify integration as smartphone devices (cardboard with 3 cameras looks well idea.. cloud rendering?)</li>
 <li>6) The complete set of devices is seen as room side gyroscope/centrefuge device + bodypart controllers + vr headset. Compact MRT for reading neural pattern will be perfect too.</li>
-<img src="/img/metaverse/station.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;" />
+<img src="'.$_SERVER["DIR"].'/img/metaverse/station.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;" />
 </ul>
 
 <h2>Skills</h2>

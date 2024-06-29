@@ -19,7 +19,7 @@ private $image;
 private $width;
 private $height;
 private $type;
-//------------------------------------------------------------------------------
+
 /**
 * Class constructor
 * @param string $file Source image.
@@ -34,7 +34,7 @@ function __construct($file) {
     }
     $this->setSize();
 }
-//------------------------------------------------------------------------------
+
 /**
 * Resizes an image
 */
@@ -53,7 +53,7 @@ function resize($width = false, $height = false) {
     $this->setSize();
     return $this;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Crops an image.
 */
@@ -64,7 +64,7 @@ function crop($x0 = 0, $y0 = 0, $w = false, $h = false) {
     if (!is_numeric($h) || $h <= 0 || $h > $this->height - $y0) $h = $this->height - $y0;
     return $this->cropSave($x0, $y0, $w, $h);
 }
-//------------------------------------------------------------------------------
+
 /**
 * Crops an image and returs canvas.
 */
@@ -75,7 +75,7 @@ private function cropSave($x0, $y0, $w, $h) {
     $this->setSize();
     return $this;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Saves image to file.
 *
@@ -107,7 +107,7 @@ function save($path = '', $fileName, $type = false, $rewrite = false, $quality =
         default: return false;
     }
 }
-//------------------------------------------------------------------------------
+
 /**
 * Parsed image type based on mime.
 */
@@ -130,7 +130,7 @@ private function setType($file) {
         default: return false;
     }
 }
-//------------------------------------------------------------------------------
+
 /**
 * Calculates an image size.
 */
@@ -138,7 +138,7 @@ private function setSize() {
     $this->width = imagesx($this->image);
     $this->height = imagesy($this->image);
 }
-//------------------------------------------------------------------------------
+
 /**
 * Gets an image size based on arguments.
 */
@@ -153,7 +153,7 @@ private function getSizeByFramework($width, $height) {
         $newSize[0] = round($this->width * $height / $this->height);
     }return $newSize;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Gets an image size by width.
 */
@@ -163,7 +163,7 @@ private function getSizeByWidth($width) {
     $newSize[1] = round($this->height * $width / $this->width);
     return $newSize;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Gets an image size by height.
 */
@@ -173,7 +173,7 @@ private function getSizeByHeight($height) {
     $newSize[0] = round($this->width * $height / $this->height);
     return $newSize;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Copies and resize an image.
 *
@@ -208,7 +208,7 @@ static function resize_image($src, $dest, $width, $height, $rgb=0x1d1d1d, $quali
         $new_height  = !$use_x_ratio ? $height : round($size[1] * $ratio);
         $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
         $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
-        imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);
+        imagecopyresampled($idest, $isrc, $new_left, $new_top,0,0, $new_width, $new_height, $size[0], $size[1]);
     } else {
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
     }
@@ -249,7 +249,7 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
         $new_height  = !$use_x_ratio ? $height : round($size[1] * $ratio);
         $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
         $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
-        imagecopyresampled($idest,$isrc,$new_left,$new_top,0,0,$new_width,$new_height,$size[0],$size[1]);
+        imagecopyresampled($idest, $isrc, $new_left, $new_top,0,0, $new_width, $new_height, $size[0], $size[1]);
     } else {
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
     }
@@ -268,7 +268,7 @@ static function upload_plan($src, $dest, $ext, $width=600, $height=600, $rgb=0xf
     imagedestroy($idest);
     return true;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Saves base64 encoded image string to jpg file.
 *

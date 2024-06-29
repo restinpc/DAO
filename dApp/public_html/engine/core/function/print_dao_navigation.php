@@ -3,7 +3,7 @@
 * Prints DAO navigation block.
 * @path /engine/core/function/print_dao_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -15,9 +15,8 @@
 * @var $site->onload - Page executable JavaScript code.
 * @var $site->configs - Array MySQL configs.
 *
-* @param string $url Page URL.
-* @param string $caption Page caption.
-* @return string Returns content of block on success, or die with error.
+* @param string $current Page caption.
+* @return string Returns content of block.
 * @usage <code> engine::print_dao_navigation("DAO Dashboard"); </code>
 */
 

@@ -1,9 +1,9 @@
 <?php
 /**
-* Prints an image viewer and updates pictures inside article
+* Prints an image viewer and updates pictures inside article.
 * @path /engine/core/function/print_image_viewer.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -30,7 +30,7 @@
 */
 
 function print_image_viewer($site, $text, $caption, $images, $captions) {
-    $galery = '';
+    $gallery = '';
     if (!empty($images)) {
         for ($i = 0; $i < count($images); $i++) {
             $image = $images[$i];
@@ -46,7 +46,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
                 } else {
                     $title = $caption;
                 }
-                $galery .= '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                $gallery .= '<figure itemprop="associatedMedia" itemscope itemtype="https://schema.org/ImageObject">
                     <a id="image-'.$i.'" target="_blank" href="'.$image.'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
                         <img id="nodes_gallery_'.$i.'" src="'.$image.'" itemprop="thumbnail" alt="'.$image.'" title="'.$title.'" />
                     </a>
@@ -55,10 +55,10 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
             }
         }
     }
-    if (!empty($galery)) {
+    if (!empty($gallery)) {
         $fout = $text.'
-        <div class="nodes_gallery hidden" itemscope itemtype="http://schema.org/ImageGallery">
-            '.$galery.'
+        <div class="nodes_gallery hidden" itemscope itemtype="https://schema.org/ImageGallery">
+            '.$gallery.'
         </div>
         <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="pswp__bg"></div>
@@ -97,5 +97,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
         </div>';
         $site->onload .= '; document.framework.showRotator(".nodes_gallery"); ';
         return $fout;
-    } else return $text;
+    } else {
+        return $text;
+    }
 }

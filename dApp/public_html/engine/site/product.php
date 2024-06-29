@@ -3,7 +3,7 @@
 * Backend product pages file.
 * @path /engine/site/product.php
 *
-* @name    Nodes Studio    @version 2.0.3
+* @name    Nodes Studio    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,7 +20,7 @@ if (empty($_GET[0]) || !empty($_GET[2])) {
     $this->content = engine::error();
     return; 
 }
-if (intval($_GET[1])>0) {
+if (intval($_GET[1]) > 0) {
     $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.intval($_GET[1]).'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -32,7 +32,10 @@ if (intval($_GET[1])>0) {
         $r = engine::mysql($query);
         $d = mysqli_fetch_array($r);
         $this->title = $data["title"].' - '.$this->title;
-        $this->description = mb_substr($data["text"],0,300);
+        if (strlen($this->description) > 198) {
+            $description = mb_substr($this->description, 0, 198);
+            $this->description = $description.(strcmp($description, $this->description) ? '..' : '');
+        }
         $this->content .= engine::print_navigation($this, $d["caption"]);
         $this->content .= engine::print_product($this, $data);
     } else {

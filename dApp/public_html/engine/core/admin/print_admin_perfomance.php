@@ -3,7 +3,7 @@
 * Print admin perfomance page.
 * @path /engine/core/admin/print_admin_perfomance.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -65,7 +65,7 @@ function print_admin_perfomance($cms) {
             $url_date2 = date("Y-m-d", $timeStamp);
             $prev = '<a id="date-'.$url_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=hour&date='.$url_date1.'">&laquo; '.$date1.'</a>';
             $now = '<b>'.date("d/m/Y", strtotime($_GET["date"])).'</b>';
-            if (strtotime($url_date2)<=strtotime(date("Y-m-d"))) {
+            if (strtotime($url_date2) <= strtotime(date("Y-m-d"))) {
                 $next = '<a id="date-'.$url_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=hour&date='.$url_date2.'">'.$date2.' &raquo;</a>';
             } else {
                 $next = '&nbsp;';
@@ -97,7 +97,7 @@ function print_admin_perfomance($cms) {
             $url_date2 = date("Y-m-d", $timeStamp);
             $prev = '<a id="date-'.$url_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=day&date='.$url_date1.'">&laquo; '.$date1.'</a>';
             $now = '<b>'.date("d/m/Y", strtotime($_GET["date"])).'</b>';
-            if (strtotime($url_date2)<=strtotime(date("Y-m-d"))) {
+            if (strtotime($url_date2) <= strtotime(date("Y-m-d"))) {
                 $next = '<a id="date-'.$url_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=day&date='.$url_date2.'">'.$date2.' &raquo;</a>';
             } else {
                 $next = '&nbsp;';
@@ -139,7 +139,7 @@ function print_admin_perfomance($cms) {
             $link_date2 = date('Y-m-d', $timeStamp);
             $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=week&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
             $now = '<b>'.$date1.' - '.$date.'</b>';
-            if (strtotime($_GET["date"]."00:00:00".$next2)<=strtotime(date("Y-m-d"))) {
+            if (strtotime($_GET["date"]."00:00:00".$next2) <= strtotime(date("Y-m-d"))) {
                 $next = '<a id="date-'.$link_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=week&date='.$link_date2.'">'.$date2.' - '.$date22.' &raquo;</a>';
             } else {
                 $next = '&nbsp;';
@@ -181,7 +181,7 @@ function print_admin_perfomance($cms) {
             $link_date2 = date('Y-m-d', $timeStamp);
             $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=month&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
             $now = '<b>'.$date1.' - '.$date.'</b>';
-            if (strtotime($_GET["date"]."00:00:00".$next2)<=strtotime(date("Y-m-d"))) {
+            if (strtotime($_GET["date"]."00:00:00".$next2) <= strtotime(date("Y-m-d"))) {
                 $next = '<a id="date-'.$link_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action='.$_GET["action"].'&interval=month&date='.$link_date2.'">'.$date2.' - '.$date22.' &raquo;</a>';
             } else {
                 $next = '&nbsp;';
@@ -231,14 +231,14 @@ function print_admin_perfomance($cms) {
         $pages = array();
         $perfomance = array();
         while ($data = mysqli_fetch_array($res)) {
-            $pages[$data["cache_id"]]++;
+            $pages[$data["cache_id"]] ++;
             $perfomance[$data["cache_id"]] += $data["script_time"];
         }
         $p = array();
         $sum = 0;
         $c = 0;
         foreach ($pages as $i => $value) {
-            $pages[$i] = round($perfomance[$i]/$value,2);
+            $pages[$i] = round($perfomance[$i] / $value,2);
             $sum += floatval($pages[$i]);
             $c++;
         }

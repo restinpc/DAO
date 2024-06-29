@@ -3,7 +3,7 @@
 * Print admin files page.
 * @path /engine/core/admin/print_admin_files.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -18,6 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_files($cms); </code>
 */
+
 function print_admin_files($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "files" '
@@ -32,7 +33,8 @@ function print_admin_files($cms) {
     }
     if (!empty($_FILES)) {
         file::upload("photo", "file");
-    }if (!empty ($_POST["name"])) {
+    }
+    if (!empty ($_POST["name"])) {
         $name = trim(htmlspecialchars($_POST["name"]));
         $images = "file/".$name;
         if (is_file($images)) {
@@ -42,11 +44,10 @@ function print_admin_files($cms) {
             @unlink($images);
         }
     }
-    $fout .= '<div class="document640">
-<div class="table">
-<table id="table">
-<tr><td align=left>
-        ';
+    $fout .= '<div class="document980">
+        <div class="table">
+            <table id="table">
+            <tr><td align=left>';
     $i = 0;
     $dirct = "file/";
     $hdl = opendir($dirct) or die("can't open direct");
@@ -55,26 +56,26 @@ function print_admin_files($cms) {
             $i++;
             $fout .= '<form method="POST" id="form_'.$i.'"><input type="hidden" name="name" value="'.$file_name.'" /></form><a id="file-'.$i.'" href="'.$_SERVER["DIR"].'/file/'.$file_name.'" target="_blank">'.$file_name.'</a> ';
             if ($admin_access == 2) {
-                $fout .= '<div  id="delete-button-'.$i.'" class="close_image ml3 fl" onClick=\'$id("form_'.$i.'").submit();\' title="'.engine::lang("Delete").'"> </div>';
+                $fout .= '<div id="delete-button-'.$i.'" class="close_image ml3 fl" onClick=\'$id("form_'.$i.'").submit();\' title="'.engine::lang("Delete").'"> </div>';
             }
             $fout .= '<br/><br/>';
         }
-     }if (!$i) {
-        $fout = '<div class="clear_block">'.engine::lang("There is no files").'</div>';
-     } else {
+    }
+    if (!$i) {
+       $fout = '<div class="clear_block">'.engine::lang("There is no files").'</div>';
+    } else {
         $fout .= '
-        </td>
-</tr>
-</table></div>
-</div>';
-     }
-     if ($admin_access == 2) {
+            </td></tr>
+            </table>
+        </div>
+        </div>';
+    }
+    if ($admin_access == 2) {
         $fout .= '<input id="button" type="button" name="load" value="'.engine::lang("Upload files").'" class="btn w280" onClick=\'this.style.display="none"; $id("form").style.display="block"; jQuery("#form").removeClass("hidden");\' /><br/>
-       <form method="POST" ENCTYPE="multipart/form-data" id="form" class="w280 m0a hidden">
-           <input id="file" type="file" onChange=\'$id("form").submit();\' required placeHolder="'.engine::lang("File").'" title="'.engine::lang("File").'" name="photo[]" multiple class="input pointer w280" /><br/><br/>
-       </form>
-       ';
-     }
+            <form method="POST" ENCTYPE="multipart/form-data" id="form" class="w280 m0a hidden">
+                <input id="file" type="file" onChange=\'$id("form").submit();\' required placeHolder="'.engine::lang("File").'" title="'.engine::lang("File").'" name="photo[]" multiple class="input pointer w280" /><br/><br/>
+            </form>';
+    }
     return $fout;
 }
 

@@ -3,7 +3,7 @@
 * Prints new message block.
 * @path /engine/core/function/print_new_message.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -19,6 +19,7 @@
 * @return string Returns content of block on success, or die with error.
 * @usage <code> engine::print_new_message($site); </code>
 */
+
 function print_new_message($site) {
     $fout = '';
     $query = 'SELECT * FROM `nodes_inbox` WHERE `to` = "'.intval($_SESSION["user"]["id"]).'" '
@@ -32,18 +33,18 @@ function print_new_message($site) {
         if (strlen($data["text"]) > 100) {
             $data["text"] = mb_substr($data["text"], 0, 100)."..";
         }
-        if ($user["online"] > date("U")-600) {
+        if ($user["online"] > date("U") - 600) {
             $online = '<span class="fs11">'.engine::lang("online").'</span>';
         }
         $fout .= '
             <div id="nodes_message">
-                <div  id="new_msg_img" class="new_msg_img" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
+                <div id="new_msg_img" class="new_msg_img" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" width=50 /><br/>'.$online.'
                 </div>
                 <div class="new_msg_close">
-                    <div  id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'" onClick=\'$id("nodes_message").style.display="none";\'> </div>
+                    <div id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'" onClick=\'$id("nodes_message").style.display="none";\'> </div>
                 </div>
-                <div  id="new_msg_name"  class="pointer" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
+                <div id="new_msg_name"  class="pointer" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <div class="new_msg_name">'.$user["name"].'</div>'
                     .$data["text"].'
                 </div>

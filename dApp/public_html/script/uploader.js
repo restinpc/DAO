@@ -37,7 +37,7 @@ if (!document.uploader) {
 * @usage <code> let id = $id("content"); </code>
 */
 function $id(id) {
-    return $id(id);
+    return document.getElementById(id);
 }
 
 /**

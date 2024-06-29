@@ -3,7 +3,7 @@
 * Backend content pages file.
 * @path /engine/site/content.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -33,13 +33,25 @@ if ($_GET[0] != "content") {
         return;
     }
 }
-if (!empty($_POST["from"])) $_SESSION["from"] = $_POST["from"];
-if (!empty($_POST["to"])) $_SESSION["to"] = $_POST["to"];
-if (!empty($_POST["count"])) $_SESSION["count"] = intval($_POST["count"]);
-if (!empty($_POST["page"])) $_SESSION["page"] = intval($_POST["page"]);
-if ($_SESSION["order"]!="order") $_SESSION["order"] = "order";
-if ($_SESSION["method"]!="DESC") $_SESSION["method"] = "DESC";
-if ($_GET[0]!="content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
+if (!empty($_POST["from"])) {
+    $_SESSION["from"] = $_POST["from"];
+}
+if (!empty($_POST["to"])) {
+    $_SESSION["to"] = $_POST["to"];
+}
+if (!empty($_POST["count"])) {
+    $_SESSION["count"] = intval($_POST["count"]);
+}
+if (!empty($_POST["page"])) {
+    $_SESSION["page"] = intval($_POST["page"]);
+}
+if ($_SESSION["order"] != "order") {
+    $_SESSION["order"] = "order";
+}
+if ($_SESSION["method"] != "DESC") {
+    $_SESSION["method"] = "DESC";
+}
+if ($_GET[0] != "content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
     $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$link.'" AND `lang` = "'.$_SESSION["Lang"].'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -121,8 +133,8 @@ if ($_GET[0]!="content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
             "Web 3.0",
         );
         $this->description = "Здесь вы найдете богатый выбор информационных материалов, статей, и других ресурсов, связанных с передовыми технологиями и концепциями будущего интернета.
-         Мы анализируем перспективы Web 3.0, включая распределенные приложения (dApps) и нейросети.
-         Также мы рассматриваем различные аспекты виртуальной реальности, включая создание и использование цифровых миров, социальные взаимодействия и возможности для бизнеса.";
+        Мы анализируем перспективы Web 3.0, включая распределенные приложения (dApps) и нейросети.
+        Также мы рассматриваем различные аспекты виртуальной реальности, включая создание и использование цифровых миров, социальные взаимодействия и возможности для бизнеса.";
     }
     $this->content .= engine::print_content_navigation($this, engine::lang("All articles"));
     $this->content .= '<div class="document980">';

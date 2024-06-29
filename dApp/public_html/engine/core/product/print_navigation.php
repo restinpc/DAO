@@ -3,7 +3,7 @@
 * Print product navigation menu.
 * @path /engine/core/product/print_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -25,20 +25,20 @@ function print_navigation($site, $title) {
     $i = 0;
     $fout = '<div class="profile_menu">
         <div class="container">
-            <span  id="span-show-nav" class="profile_menu_item show_all selected" ><a>'.$title.'</a>
+            <span id="span-show-nav" class="profile_menu_item show_all selected" ><a>'.$title.'</a>
                 <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>    
             </span>';
-        $fout .= '
-        <span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == engine::lang("Products")?'selected':'').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
+    $fout .= '
+        <span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == engine::lang("Products") ? 'selected' : '').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
         . '<a id="profile_menu_link_'.$i++.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/product').'">'.engine::lang("Products").'</a></span>';
     $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "1" AND `url` <> "" ORDER BY `order` DESC';
     $res = engine::mysql($query);
     while ($data = mysqli_fetch_array($res)) {
-        $fout .= '
-        <span  id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == $data["value"]?'selected':'').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
-        . '<a id="profile_menu_link_'.$i++.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/product/'.$data["url"]).'">'.$data["value"].'</a></span>';
+        $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == $data["value"]?'selected':'').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
+            . '<a id="profile_menu_link_'.$i++.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/product/'.$data["url"]).'">'.$data["value"].'</a>'
+        . '</span>';
     }
-        $fout .= '</div>'
+    $fout .= '</div>'
     . '</div>';
     if ($i) return $fout;
 }

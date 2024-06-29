@@ -17,7 +17,7 @@ require_once("engine/nodes/session.php");
 $flag = 0;
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_exec"';
 engine::mysql($query);
-$server = doubleval(microtime(1)-$GLOBALS["time"]);
+$server = floatval(microtime(1)- $GLOBALS["time"]);
 /*
  * Sends bulk mail messages every minute if exists.
  */
@@ -47,9 +47,9 @@ if (empty($data)) {
     $data = mysqli_fetch_array($res);
     if (!empty($data)) {
         $flag = 1;
-        $current = doubleval(microtime(1));
+        $current = floatval(microtime(1));
         $html = engine::curl_get_query($data["url"]);
-        $now = doubleval(microtime(1)-$current);
+        $now = floatval(microtime(1)- $current);
         $query = 'INSERT INTO `nodes_perfomance`(`cache_id`, `server_time`, `script_time`, `date`) '
                 . 'VALUES("'.$data["id"].'", "'.$server.'", "'.$now.'", "'.date("U").'")';
         engine::mysql($query);
@@ -67,7 +67,7 @@ if (!$flag) {
             $query = 'SELECT * FROM `nodes_config` WHERE `name` = "lastreport"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
-            if ($data["value"] < date("U")-86000) {
+            if ($data["value"] < date("U") - 86000) {
                 $flag = 2;
                 email::daily_report();
                 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "lastreport"';
@@ -204,7 +204,7 @@ if (!$flag) {
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        $count = round($data[0]/1440);
+        $count = round($data[0] /1440);
         if ($count < 1) {
             $count = 1;
         }
@@ -214,7 +214,7 @@ if (!$flag) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
                 $flag = 5;
                 $url = $data["url"];
-                cache::update_cache($url,0,$data["lang"]);
+                cache::update_cache($url,0, $data["lang"]);
             }
         }
     }
@@ -234,7 +234,7 @@ if (!$flag) {
             $flag = 6;
             $url = $data["url"];
             $lang = $data["lang"];
-            cache::update_cache($url,0,$lang);
+            cache::update_cache($url,0, $lang);
         }
     }
 }

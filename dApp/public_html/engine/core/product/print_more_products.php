@@ -3,7 +3,7 @@
 * Prints see also product block.
 * @path /engine/core/product/print_more_products.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -33,7 +33,9 @@ function print_more_products($site, $id) {
         $res = engine::mysql($query);
         while ($d = mysqli_fetch_array($res)) {
             if (!in_array($d["id"], $urls)) {
-                if ($count>5) break;
+                if ($count > 5) {
+                    break;
+                }
                 $count++;
                 $fout .= engine::print_product_preview($site, $d);
                 array_push($urls, $d["id"]);

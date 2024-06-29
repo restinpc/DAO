@@ -3,7 +3,7 @@
 * Print account purchases page.
 * @path /engine/core/account/print_purchases.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -19,6 +19,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_purchases($site); </code>
 */
+
 function print_purchases($site) {
     $fout = '<div class="document640">';
     $query = 'SELECT * FROM `nodes_order` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `date` DESC';
@@ -36,8 +37,10 @@ function print_purchases($site) {
         }
         $flag = 1;
         $fout .= engine::print_purchase($site, $data);
-    }if (!$flag) {
+    }
+    if (!$flag) {
         $fout .= '<div class="clear_block">'.engine::lang("There is no purchases").'</div>';
-    }$fout .= '</div>';
+    }
+    $fout .= '</div>';
     return $fout;
 }

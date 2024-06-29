@@ -3,7 +3,7 @@
 * Print email confirmation page.
 * @path /engine/core/account/print_email_confirm.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -19,6 +19,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_email_confirm($site); </code>
 */
+
 function print_email_confirm($site) {
     $code = '';
     if (!empty($_POST["code"])) {

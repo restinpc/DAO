@@ -48,16 +48,16 @@ if (empty($user) || empty($user["pass"])) {
     $this->content .= '
     <div class="profile_star m10 fl">
         <div class="profile_stars">
-            <div class="baseimage" style="margin-top: -' . (160 - round($rating) * 32) . 'px;" ></div>
+            <div class="baseimage" style="margin-top: -'.(160 - round($rating) * 32).'px;" ></div>
         </div>
         <div class="votes">
-           ' . $rating . ' / 5.00 (' . $user["votes"] . ' ' . engine::lang("votes") . ')
+           '.$rating.' / 5.00 ('.$user["votes"].' '.engine::lang("votes").')
         </div>
     </div>
     <div class="document">
         <div class="clear_block">
-            <p>' . engine::lang("Member of") . ' <b>Web 3.0</b> ' . engine::lang("community") . '.</p>
-            <br/><br/>' . $button . '<br/>
+            <p>'.engine::lang("Member of").' <b>Web 3.0</b> '.engine::lang("community").'</p>
+            <br/><br/>'.$button.'<br/>
         </div>
     </div>';
 }

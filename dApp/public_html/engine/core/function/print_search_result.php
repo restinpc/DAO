@@ -29,15 +29,17 @@ function print_search_result($site, $caption, $html, $url) {
     $html = trim(preg_replace('#[\s]+#', ' ', $html));
     $pos = strpos($html, $request);
     if ($pos) {
-        if (strlen($html)>180) {
+        if (strlen($html) >180) {
             if ($pos<90) {
                 $start = '';
                 $from = 0;
             } else {
                 $start = '..';
                 $from = $pos-90;
-            }$html = $start.mb_substr($html, $from, 180).'..';
-        }$html = str_replace($_GET[1], "<b>".$_GET[1]."</b>", $html);
+            }
+            $html = $start.mb_substr($html, $from, 180).'..';
+        }
+        $html = str_replace($_GET[1], "<b>".$_GET[1]."</b>", $html);
         $fout = '<div class="search_result">'
             . '<a id="link-'.$url.'" href="'.$url.'" target="_blank" class="fs16">'.$caption.'</a>'
             . '<p>'.$html.'</p>'

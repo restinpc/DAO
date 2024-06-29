@@ -3,7 +3,7 @@
 * Prints an image rotator block.
 * @path /engine/core/product/print_image_rotator.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -24,8 +24,11 @@
 *   engine::print_image_rotator($site, $caption, $images);
 * </code>
 */
+
 function print_image_rotator($site, $caption, $images) {
-    $images = array_filter($images, function($element) { return !empty($element); });
+    $images = array_filter($images, function($element) {
+        return !empty($element);
+    });
     $fout = '
     <div id="jssor_1" style="position: relative; margin: 0 auto; left: 0px; width: 600px; height: 500px; overflow: hidden; visibility: hidden;">
         <div data-u="slides" id="slider_block" style="cursor: default; position: relative; width: 600px; top: 0px; left: 0px; height: 500px; overflow: hidden;">
@@ -40,17 +43,15 @@ function print_image_rotator($site, $caption, $images) {
     if (count($images) == 1) {
         $class = 'class="hidden"';
     }
-    $galery = '
-    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" '.$class.'>
-        <a id="link-g00" target="_blank" href="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
-            <img id="g0" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" itemprop="thumbnail" alt="'.$caption.' 1" />
-        </a>
-        <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
-    </figure>';
-
+    $gallery = '<figure itemprop="associatedMedia" itemscope itemtype="https://schema.org/ImageObject" '.$class.'>
+            <a id="link-g00" target="_blank" href="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
+                <img id="g0" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" itemprop="thumbnail" alt="'.$caption.' 1" />
+            </a>
+            <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
+        </figure>';
     for ($i = 1; $i < count($images); $i++) {
         if (!empty($images[$i])) {
-            if ($i==count($images)-1) {
+            if ($i == count($images) - 1) {
                 $size = getimagesize($_SERVER["DIR"].'/img/data/big/'.$images[$i]);
                 if (!$size[0]) {
                     $size = getimagesize($images[$i]);
@@ -62,15 +63,15 @@ function print_image_rotator($site, $caption, $images) {
                     . '<a id="link-'.$i.'" onClick=\'$id("g'.$i.'").click();\'>'
                     . '<img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'"  />'
                     . '</a></div>';
-                $galery .= '
-                    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" >
+                $gallery .= '
+                    <figure itemprop="associatedMedia" itemscope itemtype="https://schema.org/ImageObject" >
                         <a id="link-g'.($i).'" target="_blank" href="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
                             <img id="g'.($i).'" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="thumbnail" alt="'.$caption.' '.($i+1).'" />
                         </a>
                         <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
                     </figure>';
             } else {
-                $fout .= '<div class="hidden"> <img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" /> </div>';
+                $fout .= '<div class="hidden"><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" /> </div>';
             }
         }
     }
@@ -80,7 +81,7 @@ function print_image_rotator($site, $caption, $images) {
             <div data-u="prototype" style="width:21px;height:21px;"></div>
         </div>
     </div>
-    <div class="nodes_gallery" itemscope itemtype="http://schema.org/ImageGallery">'.$galery.'</div>
+    <div class="nodes_gallery" itemscope itemtype="https://schema.org/ImageGallery">'.$gallery.'</div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
         <div class="pswp__scroll-wrap">
@@ -116,7 +117,6 @@ function print_image_rotator($site, $caption, $images) {
             </div>
         </div>
     </div>';
-
     $site->onload .= '; document.framework.showRotator(".nodes_gallery");';
     return $fout;
 }

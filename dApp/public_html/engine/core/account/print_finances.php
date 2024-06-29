@@ -63,7 +63,7 @@ function print_finances($site) {
                         <div class="table_row">
                             <div class="withdrawal_left_cell">'.engine::lang("Wallet").':</div>
                             <div class="table_cell">
-                                <select  id="select-payment-method" required class="input w100p" name="method">
+                                <select id="select-payment-method" required class="input w100p" name="method">
                                     <option id="option-paypal">PayPal</option>
                                     <option id="option-yandex">Yandex Money</option>
                                     <option id="option-bitcoin">Bitcoin</option>
@@ -90,8 +90,8 @@ function print_finances($site) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$_SESSION["user"]["id"].'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        if (doubleval($_POST["amount"]) > 0) {
-            $amount = doubleval($_POST["amount"]);
+        if (floatval($_POST["amount"]) > 0) {
+            $amount = floatval($_POST["amount"]);
             $query = 'INSERT INTO `nodes_invoice`(user_id, order_id, amount, date) '
                     . 'VALUES("'.$_SESSION["user"]["id"].'", "-1", "'.$amount.'", "'.date("Y-m-d H:i:s").'")';
             engine::mysql($query);
@@ -125,8 +125,8 @@ function print_finances($site) {
             $_SESSION["order"] = "date";
         }
         $arr_count = 0;
-        $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
-        $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
+        $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
+        $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
         $query = 'SELECT * FROM `nodes_transaction` WHERE `status` > 0 AND `user_id` = "'.$_SESSION["user"]["id"].'"'
                 . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
         $requery = 'SELECT COUNT(*) FROM `nodes_transaction` WHERE `status` > 0 AND `user_id` = "'.$_SESSION["user"]["id"].'"';
@@ -164,7 +164,7 @@ function print_finances($site) {
             $arr_count++;
             if ($data["order_id"] == "0") {
                 $type = engine::lang("Withdrawal request");
-                $data["amount"] = -$data["amount"];
+                $data["amount"] = - $data["amount"];
                 if ($data["status"] == "1") {
                     $is_withdrawal = 0;
                 }
@@ -198,73 +198,76 @@ function print_finances($site) {
         </div>';
         if ($arr_count) {
             $fout.= $table.'
-        <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
-        <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
-        <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
-        <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
-        <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-        <div class="total-entry">';
-        $res = engine::mysql($requery);
-        $data = mysqli_fetch_array($res);
-        $count = $data[0];
-        if ($to > $count) {
-            $to = $count;
-        }
-        if ($data[0] > 0) {
-            $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                 <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
-                 <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
-                 <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
-                </select> '.engine::lang("per page").'.</nobr></p>';
-        }
-        $fout.= '
-        </div>
-        <div class="cr"></div>';
-        if ($count > $_SESSION["count"]) {
-            $fout.= '<div class="pagination" >';
-            $pages = ceil($count/$_SESSION["count"]);
-            if ($_SESSION["page"]> 1) {
-                $fout.= '<span  id="list-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+            <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+            <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
+            <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
+            <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
+            <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
+            <div class="total-entry">';
+            $res = engine::mysql($requery);
+            $data = mysqli_fetch_array($res);
+            $count = $data[0];
+            if ($to > $count) {
+                $to = $count;
             }
-            $fout.= '<ul>';
-            $a = $b = $c = $d = $e = $f = 0;
-            for ($i = 1; $i <= $pages; $i++) {
-                if (($a<2 && !$b && $e<2)||
-                ($i >=( $_SESSION["page"]-2) && $i <=( $_SESSION["page"]+2) && $e<5)||
-                ($i>$pages-2 && $e<2)) {
-                    if ($a<2) {
-                        $a++;
-                    }
-                    $e++; $f = 0;
-                    if ($i == $_SESSION["page"]) {
-                        $b = 1; $e = 0;
-                       $fout.= '<li class="active-page">'.$i.'</li>';
-                    } else {
-                        $fout.= '<li  id="list-page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
-                    }
-                } else if ((!$c||!$b) && !$f && $i < $pages) {
-                    $f = 1; $e = 0;
-                    if (!$b) {
-                        $b = 1;
-                    } else if (!$c) {
-                        $c = 1;
-                    }
-                    $fout.= '<li class="dots">. . .</li>';
-                }
-            }
-            if ($_SESSION["page"]<$pages) {
-               $fout.= '<li  id="list-previous" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+            if ($data[0] > 0) {
+                $fout .= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
+                    <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
+                     <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") { $fout.= ' selected'; } $fout.= '>20</option>
+                     <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") { $fout.= ' selected'; } $fout.= '>50</option>
+                     <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
+                    </select> '.engine::lang("per page").'.</nobr></p>';
             }
             $fout.= '
-            </ul>
-        </div>';
-             }
-             $fout.= '<div class="clear"><br/></div>';
+            </div>
+            <div class="cr"></div>';
+            if ($count > $_SESSION["count"]) {
+                $fout .= '<div class="pagination">';
+                $pages = ceil($count / $_SESSION["count"]);
+                if ($_SESSION["page"] > 1) {
+                    $fout.= '<span id="list-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                }
+                $fout.= '<ul>';
+                $a = $b = $c = $d = $e = $f = 0;
+                for ($i = 1; $i <= $pages; $i++) {
+                    if (($a < 2 && !$b && $e < 2)
+                        || ($i >= ($_SESSION["page"] - 2) && $i <= ($_SESSION["page"] + 2) && $e < 5)
+                        || ($i > $pages - 2 && $e < 2)
+                    ) {
+                        if ($a < 2) {
+                            $a++;
+                        }
+                        $e++;
+                        $f = 0;
+                        if ($i == $_SESSION["page"]) {
+                            $b = 1;
+                            $e = 0;
+                            $fout.= '<li class="active-page">'.$i.'</li>';
+                        } else {
+                            $fout.= '<li  id="list-page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                        }
+                    } else if ((!$c || !$b) && !$f && $i < $pages) {
+                        $f = 1; $e = 0;
+                        if (!$b) {
+                            $b = 1;
+                        } else if (!$c) {
+                            $c = 1;
+                        }
+                        $fout.= '<li class="dots">. . .</li>';
+                    }
+                }
+                if ($_SESSION["page"] < $pages) {
+                   $fout.= '<li  id="list-previous" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                }
+                $fout.= '
+                </ul>
+            </div>';
+            }
+            $fout.= '<div class="clear"><br/></div>';
         } else {
             $fout.= '<div class="clear_block">'.engine::lang('Transactions not found').'</div>';
         }
-        if ($balance>0 && $is_withdrawal) {
+        if ($balance > 0 && $is_withdrawal) {
             $fout.= '<a id="request_withdrawal" href="'.$_SERVER["DIR"].'/account/finances/withdrawal"><input type="button" class="btn w280" value="'.engine::lang("Request withdrawal").'" /></a><br/><br/>';
         }
         $fout.=  '<input id="input-deposit" type="button" class="btn w280" value="'.engine::lang("Deposit money").'" onClick=\'document.framework.deposit("'.engine::lang("Amount to deposit").'");\' /><br/><br/>';

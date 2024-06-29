@@ -171,7 +171,6 @@ if (!empty($_GET["id"])) {
     $sides = Array("pz", "nz", "px", "nx", "py", "ny");
     $rotations = Array("0 0 0", "0 -180 0", "0 -90 0", "0 90 0", "90 0 0", "-90 0 0");
     $json = json_decode($data["cubemap"]);
-
     $fout .= '
         </a-assets>
         <a-entity id="rig" 
@@ -191,31 +190,31 @@ if (!empty($_GET["id"])) {
     $s = 512;
     $t = 1;
     $w = $s/2;
-    $x = $q*$s/2;
+    $x = $q* $s/2;
     for ($l = 0; $l< count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
         for ($i = 0; $i < $q; $i++) {
             for ($j = 0; $j < $q; $j++) {
-                $id = ($i*$q+$j);
+                $id = ($i * $q + $j);
                 if ($side == "pz") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "nz") {
-                    $i_1 = ($x-$i*$s-$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = ($x - $i * $s - $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "px") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = (-$x+$i*$s+$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = (-$x + $i * $s + $w);
                 } else if ($side == "nx") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = ($x-$i*$s-$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = ($x - $i * $s - $w);
                 } else if ($side == "py") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "ny") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = (-$x+$j*$s+$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = (-$x + $j * $s + $w);
                 }
                 $positions = Array(
                     $i_1.' '.$j_1.' -'.$x,
@@ -226,7 +225,7 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="1" class="mesh"  side="'.$side.'"  id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="1" class="mesh" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }
@@ -235,32 +234,32 @@ if (!empty($_GET["id"])) {
     $q = 2;
     $s = 256;
     $t = 2;
-    $w = $s/2;
-    $x = $q*$s/2;
-    for ($l = 0; $l< count($sides); $l++) {
+    $w = $s / 2;
+    $x = $q * $s / 2;
+    for ($l = 0; $l < count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
         for ($i = 0; $i < $q; $i++) {
             for ($j = 0; $j < $q; $j++) {
-                $id = ($i*$q+$j);
+                $id = ($i * $q + $j);
                 if ($side == "pz") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "nz") {
-                    $i_1 = ($x-$i*$s-$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = ($x - $i * $s - $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "px") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = (-$x+$i*$s+$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = (-$x + $i * $s + $w);
                 } else if ($side == "nx") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = ($x-$i*$s-$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = ($x - $i * $s - $w);
                 } else if ($side == "py") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "ny") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = (-$x+$j*$s+$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = (-$x + $j * $s + $w);
                 }
                 $positions = Array(
                     $i_1.' '.$j_1.' -'.$x,
@@ -271,43 +270,41 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="2" class="mesh load_later" side="'.$side.'"  id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="2" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="'.$_SERVER["DIR"].'/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }
-
     $fout .= '</a-entity>  '
         . '<a-entity id="cubemap_2" position="0 0 0"  scale="1.01 1.01 1.01">';
-
     $q = 4;
     $s = 128;
     $t = 3;
-    $w = $s/2;
-    $x = $q*$s/2;
-    for ($l = 0; $l< count($sides); $l++) {
+    $w = $s / 2;
+    $x = $q * $s / 2;
+    for ($l = 0; $l < count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
         for ($i = 0; $i < $q; $i++) {
             for ($j = 0; $j < $q; $j++) {
-                $id = ($i*$q+$j);
+                $id = ($i * $q + $j);
                 if ($side == "pz") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "nz") {
-                    $i_1 = ($x-$i*$s-$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = ($x - $i * $s - $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "px") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = (-$x+$i*$s+$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = (-$x + $i * $s + $w);
                 } else if ($side == "nx") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = ($x-$i*$s-$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = ($x - $i * $s - $w);
                 } else if ($side == "py") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "ny") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = (-$x+$j*$s+$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = (-$x + $j * $s + $w);
                 }
                 $positions = Array(
                     $i_1.' '.$j_1.' -'.$x,
@@ -318,43 +315,41 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="3"  class="mesh load_later" side="'.$side.'"  id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="3" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }
-
     $fout .= '</a-entity>'
         . '<a-entity id="cubemap_3" position="0 0 0" scale="1.0 1.0 1.0">';
-
     $q = 8;
     $s = 64;
     $t = 4;
-    $w = $s/2;
-    $x = $q*$s/2;
+    $w = $s / 2;
+    $x = $q* $s / 2;
     for ($l = 0; $l< count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
         for ($i = 0; $i < $q; $i++) {
             for ($j = 0; $j < $q; $j++) {
-                $id = ($i*$q+$j);
+                $id = ($i * $q + $j);
                 if ($side == "pz") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "nz") {
-                    $i_1 = ($x-$i*$s-$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = ($x - $i * $s - $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "px") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = (-$x+$i*$s+$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = (-$x + $i * $s + $w);
                 } else if ($side == "nx") {
-                    $i_1 = ($x-$j*$s-$w);
-                    $j_1 = ($x-$i*$s-$w);
+                    $i_1 = ($x - $j * $s - $w);
+                    $j_1 = ($x - $i * $s - $w);
                 } else if ($side == "py") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = ($x-$j*$s-$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = ($x - $j * $s - $w);
                 } else if ($side == "ny") {
-                    $i_1 = (-$x+$i*$s+$w);
-                    $j_1 = (-$x+$j*$s+$w);
+                    $i_1 = (-$x + $i * $s + $w);
+                    $j_1 = (-$x + $j * $s + $w);
                 }
                 $positions = Array(
                     $i_1.' '.$j_1.' -'.$x,
@@ -395,7 +390,7 @@ if (!empty($_GET["id"])) {
     $res = engine::mysql($query);
     while ($d = mysqli_fetch_array($res)) {
         $site = new site();
-        $navigation .= engine::pano_navigation($site, $d);
+        $navigation .= engine::pano_print_navigation($site, $d);
         $fout .= $site->content;
     }
     $new_nav = array();
@@ -403,19 +398,19 @@ if (!empty($_GET["id"])) {
     $new_nav["position"] = "0 -100 0";
     $new_nav["level_id"] = $data["level_id"];
     $new_nav["scale"] = "10 10 10";
-    $navigation .= engine::pano_navigation($this, $new_nav, 1);
+    $navigation .= engine::pano_print_navigation($this, $new_nav, 1);
     //---------------
     $query = 'SELECT * FROM `nodes_vr_link` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
     while ($d = mysqli_fetch_array($res)) {
-        $gsv .= engine::pano_link($this, $d);
+        $gsv .= engine::pano_print_link($this, $d);
     }
     $new_nav = array();
     $new_nav["id"] = "new_google";
     $new_nav["position"] = "0 -100 0";
     $new_nav["level_id"] = $data["level_id"];
     $new_nav["scale"] = "10 10 10";
-    $gsv .= engine::pano_link($this, $new_nav, 1);
+    $gsv .= engine::pano_print_link($this, $new_nav, 1);
     //---------------
     $fout .= '
         </a-entity>

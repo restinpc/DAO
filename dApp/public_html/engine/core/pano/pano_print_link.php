@@ -1,10 +1,34 @@
 <?php
+/**
+* Prints VR panorama navigation hyperlink.
+* @path /engine/core/pano/pano_print_link.php
+*
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
+* @license http://www.apache.org/licenses/LICENSE-2.0
+*
+* @var $site->title - Page title.
+* @var $site->content - Page HTML data.
+* @var $site->keywords - Array meta keywords.
+* @var $site->description - Page meta description.
+* @var $site->img - Page meta image.
+* @var $site->onload - Page executable JavaScript code.
+* @var $site->configs - Array MySQL configs.
+*
+* @param object $site Site class object.
+* @param string $object Object data.
+* @param bool $new Flag to add object as new.
+* @return string Returns content of block.
+* @usage <code> engine::pano_print_link($site, $object, $new=0); </code>
+*/
 
-function pano_link($site, $object, $new=0) {
-    $site->content .= '<a-image transparent="true" look-at="#camera" 
+function pano_print_link($site, $object, $new=0) {
+    $site->content .= '<a-image
+        transparent="true"
+        look-at="#camera" 
         action=\' 
             setTimeout(function(id) {
-                if ($id("scene_editor") && $id("scene_editor").style.display== "block") {
+                if ($id("scene_editor") && $id("scene_editor").style.display == "block") {
                     if (!document.panorama.objectId) {
                         jQuery(".vr_object_window").css("display", "none");
                         $id("url_'.$object["id"].'_window").style.display = "block";
@@ -13,18 +37,20 @@ function pano_link($site, $object, $new=0) {
                 } else {
                     window.location = "'.$object["url"].'";
                 }
-            }, 500, "'.$object["id"].'"); \' '
-            . 'id="url_'.$object["id"].'" '
-            . 'position="'.$object["position"].'" '
-            . 'scale="'.$object["scale"].'" '
-            . 'rotation="0 0 0"  '
-            . ' class="custom_object"'
-            . 'opacity="0"'
-            . 'width="1" height="1" '
-            . 'src="#google"></a-image>';
+            }, 500, "'.$object["id"].'");
+        \'
+        id="url_'.$object["id"].'"
+        position="'.$object["position"].'"
+        scale="'.$object["scale"].'"
+        rotation="0 0 0"
+        class="custom_object"
+        opacity="0"
+        width="1"
+        height="1"
+        src="#google"
+    ></a-image>';
     if ($_SESSION["user"]["id"] == "1") {
-        $fout .= '
-        <div id="url_'.$object["id"].'_window"  class="vr_object_window">
+        $fout .= '<div id="url_'.$object["id"].'_window"  class="vr_object_window">
             <div style="padding-top:10px; padding-bottom:10px; text-align:center; font-weight:bold;">'.engine::lang("Link properties").'</div><br/>
             <form method="POST" id="url_'.$object["id"].'_form">
                 <input id="action_'.$object["id"].'" type="hidden" name="action" value="'.($new ? 'new_url' : 'edit_url').'" />
@@ -44,8 +70,7 @@ function pano_link($site, $object, $new=0) {
         if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete Link").'" onClick=\'document.panorama.deleteURL("'.$object["id"].'")\' />';
         }
-        $fout .= '        
-                <input type="submit" class="btn w100p" value="'.engine::lang("Submit").'" /><br/><br/>
+        $fout .= '<input type="submit" class="btn w100p" value="'.engine::lang("Submit").'" /><br/><br/>
             </form>
         </div>';
         return $fout;

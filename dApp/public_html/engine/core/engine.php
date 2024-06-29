@@ -53,7 +53,7 @@ public static function __callStatic($name, $arguments) {
         $count = count($arguments);
         if (!$count) {
             return $name();
-        } else if ($count==1) {
+        } else if ($count== 1) {
             return $name($arguments[0]);
         } else if ($count==2) {
             return $name(
@@ -101,7 +101,9 @@ public static function __callStatic($name, $arguments) {
                 $arguments[6]
             );
         }
-    } else self::error();
+    } else {
+        self::error();
+    }
 }
 
 static function lang($key) {
@@ -152,7 +154,8 @@ static function error($error_code='0') {
     $query = 'SELECT `value` FROM `nodes_config` WHERE `name` = "debug"';
     $res = self::mysql($query);
     $data = mysqli_fetch_array($res);
-    if (0) {
+    if (false) {
+        // todo - trace errors
         echo "PHP:"."\n";
         print_r(error_get_last());
         echo "\n"."----------------------------------------"."\n"."MySQL:"."\n";
@@ -161,13 +164,18 @@ static function error($error_code='0') {
         print_r($_SERVER["CONSOLE"]);
         echo "\n"."----------------------------------------"."\n";
     } else {
-        if ($error_code != 0) $_GET[$error_code] = 1;
+        if ($error_code != 0) {
+            $_GET[$error_code] = 1;
+        }
         if (!isset($_GET["204"]) && !isset($_GET["504"])) {
-            $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://","\$h", $_SERVER["SCRIPT_URI"]);
-            while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"])-1] == "/") {
+            $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
+            while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
                 $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"])-1);
-            }$_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
-            if (empty($_SERVER["SCRIPT_URI"])) $_SERVER["SCRIPT_URI"]="/";
+            }
+            $_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
+            if (empty($_SERVER["SCRIPT_URI"])) {
+                $_SERVER["SCRIPT_URI"] = "/";
+            }
             $get = $session = $post = '';
             $get = print_r($_GET, 1);
             $post = print_r($_POST, 1);
@@ -198,16 +206,18 @@ static function error($error_code='0') {
                         . '"'.$session.'", '
                         . '"1")';
             } else {
-               $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"]+1).'" WHERE `id` = "'.$data["id"].'"';
+               $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"] + 1).'" WHERE `id` = "'.$data["id"].'"';
             }
             self::mysql($query);
         }
-        if (empty($_POST["jQuery"])) { echo '<!DOCTYPE html>
-        <html style="background: #1a1d1d; height: 100%; font-family: sans-serif;">
-        <head><title>Error</title><meta charset="UTF-8" />
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head><body>';
+        if (empty($_POST["jQuery"])) { 
+            echo '<!DOCTYPE html>
+                <html style="background: #1a1d1d; height: 100%; font-family: sans-serif;">
+                <head><title>Error</title><meta charset="UTF-8" />
+                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+            <body>';
             require_once("engine/code/error.php");
             echo '</body></html>';
         } else {
@@ -228,7 +238,7 @@ static function error($error_code='0') {
 * </code>
 */
 static function mysql($query) {
-    array_push($_SERVER["CONSOLE"], "engine::mysql(".  str_replace('"', '\"', $query).")");
+    array_push($_SERVER["CONSOLE"], "engine::mysql(".str_replace('"', '\"', $query).")");
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error(500));
@@ -262,7 +272,8 @@ static function send_mail($email, $header, $theme, $message) {
     $theme = '=?utf-8?B?' . base64_encode($theme) . '?=';
     if (mail($email, "{$theme}\n", $message, $header)) {
         return true;
-    } return false;
+    }
+    return false;
 }
 
 /**
@@ -286,7 +297,7 @@ static function url_translit($str) {
         "ш"=>"sh", "щ"=>"sch", "ъ"=>"y", "ы"=>"yi", "ь"=>"", "э"=>"e", "ю"=>"yu",
         "я"=>"ya", "  "=>" ", " "=>"_"
     );
-    $str = strtr($str,$translit);
+    $str = strtr($str, $translit);
     $str = preg_replace ("/[^a-zA-ZА-Яа-я0-9_\s]/", "", $str);
     return $str;
 }
@@ -317,13 +328,15 @@ static function curl_get_query($url, $format=0) {
     curl_close($ch);
     if (empty($html)) {
         return $error;
-    }if ($format) {
+    }
+    if ($format) {
         $html = str_replace("\r", "", $html);
         $html = str_replace("\f", "", $html);
         $html = str_replace("\v", " ", $html);
         $html = str_replace("\n", "", $html);
         $html = str_replace("\t", "", $html);
-    }return $html;
+    }
+    return $html;
 }
 
 /**
@@ -355,13 +368,15 @@ static function curl_post_query($url, $query, $format=0) {
     curl_close($ch);
     if (empty($html)) {
         return $error;
-    }if ($format) {
+    }
+    if ($format) {
         $html = str_replace("\r", "", $html);
         $html = str_replace("\f", "", $html);
         $html = str_replace("\v", " ", $html);
         $html = str_replace("\n", "", $html);
         $html = str_replace("\t", "", $html);
-    }return $html;
+    }
+    return $html;
 }
 
 static function redirect($url) {

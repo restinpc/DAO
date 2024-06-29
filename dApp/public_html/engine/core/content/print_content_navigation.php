@@ -3,7 +3,7 @@
 * Print content navigation menu.
 * @path /engine/core/content/print_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -22,7 +22,7 @@
 */
 
 function print_content_navigation($site, $title) {
-    $arr = Array();
+    $arr = array();
     $arr[engine::lang("All articles")] = $_SERVER["PUBLIC_URL"].'/content';
     $query = 'SELECT * FROM `nodes_catalog` WHERE `visible` = "1" AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY `order` DESC';
     $res = engine::mysql($query);

@@ -7,9 +7,11 @@
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
+
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
-if (!empty($_GET["file"])&& $_SESSION["user"]["admin"] == "1") {
+
+if (!empty($_GET["file"]) && $_SESSION["user"]["admin"] == "1") {
     echo '<!DOCTYPE html>
 <html lang="en">
 <head>

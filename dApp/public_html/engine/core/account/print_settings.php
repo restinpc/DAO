@@ -57,7 +57,8 @@ function print_settings($site) {
                 engine::mysql($query);
                 $_SESSION["user"]["photo"] = $_POST["new_profile_picture"];
             }
-        }if (!empty($_POST["pass"])) {
+        }
+        if (!empty($_POST["pass"])) {
             $password = engine::encode_password(trim(strtolower($_POST["pass"])));
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `id` = "'.$_SESSION["user"]["id"].'"';
             engine::mysql($query);
@@ -67,75 +68,70 @@ function print_settings($site) {
         }
         $fout .= '
         <form method="POST" id="edit_profile_form"> 
-        <input type="hidden" name="new_profile_picture" id="new_profile_picture" />
-        <table class="w400 m0a" align="center">
-            <tr>
-                <td align=left colspan=2>
-                    <div class="user_photo_block"><img src="'.$_SERVER["DIR"].'/img/pic/'.$_SESSION["user"]["photo"].'" width=80 /></div>
-                    <div class="ml100">
-                        '.engine::lang("Profile image").'
-                        <br/>
-                        <br/>
-                        <input id="change-picture" type="button" class="btn w280" value="'.engine::lang("Change picture").'" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td align=right class="settings_caption">'.engine::lang("Name").'</td>
-                <td class="pb10"><input id="input-name" type="text" name="name" value="'.$_SESSION["user"]["name"].'" class="input w280" /></td>
-            </tr>';
-
+            <input type="hidden" name="new_profile_picture" id="new_profile_picture" />
+            <table class="w400 m0a" align="center">
+                <tr>
+                    <td align=left colspan=2>
+                        <div class="user_photo_block"><img src="'.$_SERVER["DIR"].'/img/pic/'.$_SESSION["user"]["photo"].'" width=80 /></div>
+                        <div class="ml100">
+                            '.engine::lang("Profile image").'
+                            <br/>
+                            <br/>
+                            <input id="change-picture" type="button" class="btn w280" value="'.engine::lang("Change picture").'" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right class="settings_caption">'.engine::lang("Name").'</td>
+                    <td class="pb10"><input id="input-name" type="text" name="name" value="'.$_SESSION["user"]["name"].'" class="input w280" /></td>
+                </tr>';
         if (!empty($_SESSION["user"]["email"])) {
-            $fout .= '
-            <tr>
-                <td align=right class="settings_caption">'.engine::lang("Email").'</td>
-                <td class="pb10"><input id="input-email" type="text" name="email" value="'.$_SESSION["user"]["email"].'" class="input w280" /></td>
-            </tr>
-            <tr>
-                <td align=right class="settings_caption">'.engine::lang("Password").'</td>
-                <td class="pb10"><input id="input-password" type="password" name="pass" value="" placeHolder="'.engine::lang("New password").'" class="input w280" /></td>
-            </tr>';
+            $fout .= '<tr>
+                    <td align=right class="settings_caption">'.engine::lang("Email").'</td>
+                    <td class="pb10"><input id="input-email" type="text" name="email" value="'.$_SESSION["user"]["email"].'" class="input w280" /></td>
+                </tr>
+                <tr>
+                    <td align=right class="settings_caption">'.engine::lang("Password").'</td>
+                    <td class="pb10"><input id="input-password" type="password" name="pass" value="" placeHolder="'.engine::lang("New password").'" class="input w280" /></td>
+                </tr>';
         } else {
-            $fout .= '
-            <tr>
-                <td align=right class="settings_caption">'.engine::lang("Email").'</td>
-                <td class="pb10"><input id="input-email" required type="text" name="email" placeHolder="'.engine::lang("Enter your email").'" class="input w280" /></td>
-            </tr>
-            <tr>
-                <td align=right class="settings_caption">'.engine::lang("Password").'</td>
-                <td class="pb10"><input id="input-password" required type="password" name="pass" value="" placeHolder="'.engine::lang("Enter your password").'" class="input w280" /></td>
-            </tr>';
+            $fout .= '<tr>
+                    <td align=right class="settings_caption">'.engine::lang("Email").'</td>
+                    <td class="pb10"><input id="input-email" required type="text" name="email" placeHolder="'.engine::lang("Enter your email").'" class="input w280" /></td>
+                </tr>
+                <tr>
+                    <td align=right class="settings_caption">'.engine::lang("Password").'</td>
+                    <td class="pb10"><input id="input-password" required type="password" name="pass" value="" placeHolder="'.engine::lang("Enter your password").'" class="input w280" /></td>
+                </tr>';
         }
-        $fout .= '
-        <tr>
-            <td align=right class="settings_caption">'.engine::lang("Subscription").'</td>
-            <td class="pb10">
-                <select  id="select-subscription" name="bulk_ignore" class="input w280" >
-                    <option id="option-enabled" value="0">'.engine::lang("Enabled").'</option>
-                    <option id="option-disabled" value="1" '.($_SESSION["user"]["bulk_ignore"]?'selected':'').'>'.engine::lang("Disabled").'</option>
-                </select>
-            </td>
-        </tr> 
-        <tr>
-        <td align=right  class="settings_caption">'.engine::lang("Telegram").'</td>
-        <td align=left class="pl7">
-            <div class="settings_url">
-                <a href="https://t.me/'.str_replace('@', '', $_SESSION["user"]["url"]).'" target="_blank">'.$_SESSION["user"]["url"].'</a>
-            </div>
-            <br/>
-            <br/>
-        </td>
-            </tr>
-            <tr>
-                <td class="pt20" colspan=2>
-                    <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" /><br/><br/>
-                    <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'alertify.confirm("'.engine::lang("Are you sure you want to delete your account").'?", function() { window.location = "/account/settings/delete"; }, function() { alertify.confirm().destroy();} );\' />
-                </td>
-            </tr>
+        $fout .= '<tr>
+                    <td align=right class="settings_caption">'.engine::lang("Subscription").'</td>
+                    <td class="pb10">
+                        <select id="select-subscription" name="bulk_ignore" class="input w280" >
+                            <option id="option-enabled" value="0">'.engine::lang("Enabled").'</option>
+                            <option id="option-disabled" value="1" '.($_SESSION["user"]["bulk_ignore"]?'selected':'').'>'.engine::lang("Disabled").'</option>
+                        </select>
+                    </td>
+                </tr> 
+                <tr>
+                    <td align=right  class="settings_caption">'.engine::lang("Telegram").'</td>
+                    <td align=left class="pl7">
+                        <div class="settings_url">
+                            <a href="https://t.me/'.str_replace('@', '', $_SESSION["user"]["url"]).'" target="_blank">'.$_SESSION["user"]["url"].'</a>
+                        </div>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pt20" colspan=2>
+                        <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" /><br/><br/>
+                        <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'alertify.confirm("'.engine::lang("Are you sure you want to delete your account").'?", function() { window.location = "/account/settings/delete"; }, function() { alertify.confirm().destroy();} );\' />
+                    </td>
+                </tr>
             </table>
-            </form><br/>
-            </div>
-            ';
+        </form><br/>
+        </div>';
     }
     return $fout;
 }

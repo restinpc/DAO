@@ -10,6 +10,7 @@
 
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
+
 echo '<!DOCTYPE html><html><body class="nodes">';
 if (empty($_SESSION["user"]["id"])) {
     $_SESSION["redirect"] = $_SERVER["DIR"]."/order.php";
@@ -26,7 +27,7 @@ if (empty($_SESSION["user"]["id"])) {
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     foreach ($_SESSION["products"] as $key => $value) {
-        if ($value>0) {
+        if ($value> 0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$key.'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
@@ -34,7 +35,8 @@ if (empty($_SESSION["user"]["id"])) {
             . 'VALUES("'.$key.'", "'.$data["id"].'", "'.$d["price"].'", "'.$value.'", "0", "'.date("U").'")';
             engine::mysql($query);
         }
-    }$_SESSION["order_confirm"] = $data["id"];
+    }
+    $_SESSION["order_confirm"] = $data["id"];
 } else if (!empty($_POST["shipping_confirm"]) && !empty($_SESSION["user"]["id"])) {
     $fname = htmlspecialchars($_POST["fname"]);
     $lname = htmlspecialchars($_POST["lname"]);
@@ -90,7 +92,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             <input type="hidden" name="order_confirm" value="1" />';
     $price = 0;
     foreach ($_SESSION["products"] as $key => $value) {
-        if ($value>0) {
+        if ($value> 0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$key.'"';
             $res = engine::mysql($query);
             $product = mysqli_fetch_array($res);
@@ -151,7 +153,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
     if (!empty($_POST["checkout"])) {
         unset($_SESSION["products"]);
         $query = 'INSERT INTO `nodes_invoice`(`user_id`, `order_id`, `amount`, `date`) '
-                . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$_SESSION["order_confirm"].'", "'.  doubleval($_POST["checkout"]).'", "'.date("Y-m-d H:i:s").'")';
+                . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$_SESSION["order_confirm"].'", "'.  floatval($_POST["checkout"]).'", "'.date("Y-m-d H:i:s").'")';
         engine::mysql($query);
         echo '<script>
             window.location = "'.$_SERVER["DIR"].'/invoice.php?id='. mysqli_insert_id($_SERVER["sql_connection"]).'";
@@ -167,7 +169,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
     $products = '<div class="order_detail_left">
         <b>'.engine::lang("Order").'</b><br/><br/>';
     while ($data = mysqli_fetch_array($res)) {
-        if ($data["count"]>0) {
+        if ($data["count"] > 0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$data["product_id"].'"';
             $r = engine::mysql($query);
             $product = mysqli_fetch_array($r);
@@ -183,7 +185,8 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             </div>';
             $price += $data["price"];
         }
-    }$products .= '</div>';
+    }
+    $products .= '</div>';
     $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);

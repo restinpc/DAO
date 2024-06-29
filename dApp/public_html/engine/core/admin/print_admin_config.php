@@ -3,7 +3,7 @@
 * Print admin config page.
 * @path /engine/core/admin/print_admin_config.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -18,6 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_config($cms); </code>
 */
+
 function print_admin_config($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "config" '
@@ -44,16 +45,16 @@ function print_admin_config($cms) {
     $res = engine::mysql($query);
     $fout = '<div class="document640">
             <form method="POST"><div class="table">
-        <table width=100% id="table">';
+        <table width=100% id="table" class="mw100p">';
     $i = 0;
     while ($data = mysqli_fetch_array($res)) {
         $i++;
         if ($data["type"] == "bool") {
             $fout .= '
                 <tr>
-                    <td width=100 align=left class="p5">'.$data["text"].'</td>
+                    <td width=225 align=left class="p5">'.$data["text"].'</td>
                     <td class="p5" align=left >
-                    <select  id="select-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" name="'.$data["name"].'">';
+                    <select id="select-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" name="'.$data["name"].'">';
             if ($data["value"]) {
                 $fout .= '<option id="option-no-'.$i.'" value="0">'.engine::lang("No").'</option>'
                         . '<option id="option-yes-'.$i.'" value="1" selected>'.engine::lang("Yes").'</option>';

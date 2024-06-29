@@ -64,12 +64,12 @@ function print_admin_language($cms) {
                 $id = base64_decode($id);
                 $id = trim($id);
                 if (!empty($id) &&
-                    $id!="jQuery" &&
-                    $id!="cache" &&
-                    $id!="nocache" &&
-                    $id!="lang" &&
-                    $id!="language" &&
-                    $id!=""
+                    $id!= "jQuery" &&
+                    $id!= "cache" &&
+                    $id!= "nocache" &&
+                    $id!= "lang" &&
+                    $id!= "language" &&
+                    $id!= ""
                 ) {
                     $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                     $res = engine::mysql($query);
@@ -85,10 +85,10 @@ function print_admin_language($cms) {
             }
         }
     }
-    $fout = '<div class="document980">';
+    $fout = '<div class="document640">';
     $arr_count = 0;
-    $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
-    $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
+    $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
+    $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT * FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"'.
             ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];;
     $requery = 'SELECT COUNT(*) FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"';
@@ -117,13 +117,13 @@ function print_admin_language($cms) {
         $arr_count++;
         $table .= '<tr><td width=50% align=left>'.$data["name"].'</td>';
         if ($_SESSION["Lang"] == "en" && $admin_access == 2) {
-            $table .= '<td width=50% align=left><input id="input-lang-'.$arr_count.'" name="'.  base64_encode($data["name"]).'" type="text" value="'.$data["value"].'" class="input w100p" />'
-                . '</td><td width=20><div  id="div-delete-'.$arr_count.'" class="close_image"'
+            $table .= '<td width=50% align=left><input id="input-lang-'.$arr_count.'" name="'.  base64_encode($data["name"]).'" type="text" value="'.$data["value"].'" class="input w100p mw100p" />'
+                . '</td><td width=20><div id="div-delete-'.$arr_count.'" class="close_image"'
                 . 'onClick=\'if (confirm("'.engine::lang("Delete").' \"'.$data["name"].'\"?")) {$id("delete_value").value="'.base64_encode($data["name"]).'";'
                 . '$id("delete_form").submit();}\''
                 . '> </div></td>';
         } else {
-            $table .= '<td width=50% align=left colspan=2><input id="input-lang-'.$arr_count.'" name="'.base64_encode($data["name"]).'" '.($admin_access!=2?'disabled':'').' type="text" value="'.$data["value"].'" class="input w270" /></td>';
+            $table .= '<td width=50% align=left colspan=2><input id="input-lang-'.$arr_count.'" name="'.base64_encode($data["name"]).'" '.($admin_access!=2?'disabled':'').' type="text" value="'.$data["value"].'" class="input w100p mw100p" /></td>';
         }
         $table .= '</tr>';
     }
@@ -138,7 +138,7 @@ function print_admin_language($cms) {
     </form><br/>';
     if ($arr_count) {
         $fout .= $table.'
-        <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -153,19 +153,19 @@ function print_admin_language($cms) {
         }
         if ($data[0] > 0) {
             $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                <nobr><select  id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                 <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
-                 <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
-                 <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
+                <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
+                 <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") { $fout.= ' selected'; } $fout.= '>20</option>
+                 <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") { $fout.= ' selected'; } $fout.= '>50</option>
+                 <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
                 </select> '.engine::lang("per page").'.</nobr></p>';
         }
         $fout .= '
         </div><div class="cr"></div>';
         if ($count > $_SESSION["count"]) {
             $fout .= '<div class="pagination" >';
-            $pages = ceil($count/$_SESSION["count"]);
+            $pages = ceil($count / $_SESSION["count"]);
             if ($_SESSION["page"] > 1) {
-                $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'">'.engine::lang("Previous").'</a></span>';
+                $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'">'.engine::lang("Previous").'</a></span>';
             }
             $fout .= '<ul>';
             $a = $b = $c = $d = $e = $f = 0;
@@ -186,7 +186,7 @@ function print_admin_language($cms) {
                     } else {
                         $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'">'.$i.'</a></li>';
                     }
-                } else if ((!$c||!$b) && !$f && $i < $pages) {
+                } else if ((!$c || !$b) && !$f && $i < $pages) {
                     $f = 1;
                     $e = 0;
                     if (!$b) {
@@ -198,11 +198,11 @@ function print_admin_language($cms) {
                 }
             }
             if ($_SESSION["page"] < $pages) {
-                $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'">'.engine::lang("Next").'</a></li>';
+                $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'">'.engine::lang("Next").'</a></li>';
             }
             $fout .= '
-         </ul>
-        </div>';
+            </ul>
+           </div>';
         }
         $fout .= '</form><div class="clear"></div>
             </div>';

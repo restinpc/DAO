@@ -1,4 +1,12 @@
 <?php
+/**
+* Prints VR panorama scene editor block.
+* @path /engine/core/pano/pano_scene_editor.php
+*
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
+* @license http://www.apache.org/licenses/LICENSE-2.0
+*/
 
 function pano_scene_editor($data) {
     $query = 'SELECT * FROM `nodes_vr_project` WHERE `id` = "'.$data["project_id"].'"';
@@ -8,7 +16,7 @@ function pano_scene_editor($data) {
     $res = engine::mysql($query);
     $level = mysqli_fetch_array($res);
     $fout = '
-    <input id="scene_show_editor" type="button" class="btn" value="Show editor" onClick=\'document.panorama.showSceneEditor();\' />
+    <input id="scene_show_editor" type="button" class="btn" value="'.engine::lang("Show editor").'" onClick=\'document.panorama.showSceneEditor();\' />
     <div id="scene_editor">
         <form method="POST" id="scene_form">
             <input id="act" type="hidden" name="update" value="'.$data["id"].'" />

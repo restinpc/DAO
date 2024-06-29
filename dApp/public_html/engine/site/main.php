@@ -3,7 +3,7 @@
 * Backend main page file.
 * @path /engine/site/main.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -22,16 +22,15 @@ if (!empty($_GET[0])) {
 }
 $this->title = "DAO";
 // $this->content .= engine::print_site_navigation(engine::lang("Project whitepaper"));
-
 $query = 'SELECT value FROM nodes_config WHERE name = "git"';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
 $git = $data["value"];
-
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
     $this->keywords = Array(
         "DAO",
+        "Mansion",
         "Особняк",
         "Вилла",
         "Web 3.0",
@@ -48,7 +47,7 @@ if ($_SESSION["Lang"] == "ru") {
         <h1>DAO</h1>
         <p>
             <video id="intro" width="100%" height="auto" autoplay muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
-               <source src="file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
+               <source src="'.$_SERVER["DIR"].'/file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
         <p>Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).</p>
@@ -126,7 +125,7 @@ if ($_SESSION["Lang"] == "ru") {
         <br/>
         <p>
             <video id="outro" width="100%" height="auto" controls="controls" poster="'.$_SERVER["DIR"].'/img/outro.jpg">
-               <source src="file/2.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
+               <source src="'.$_SERVER["DIR"].'/file/2.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
         </div>
@@ -137,6 +136,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->description = '项目目标是根据 DAO（去中心化自治组织）原则建立社区、别墅和数字基础设施，以确保参与者的舒适生活。';
     $this->keywords = Array(
         "DAO",
+        "Mansion",
         "別墅",
         "大廈",
         "Web 3.0",
@@ -220,7 +220,7 @@ if ($_SESSION["Lang"] == "ru") {
         <br/>
         <p>
             <video id="outro" width="100%" height="auto" controls="controls" poster="'.$_SERVER["DIR"].'/img/outro.jpg">
-               <source src="file/2.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
+               <source src="'.$_SERVER["DIR"].'/file/2.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
         </div>
@@ -232,6 +232,7 @@ if ($_SESSION["Lang"] == "ru") {
     $this->keywords = Array(
         "DAO",
         "Mansion",
+        "Villa",
         "Web 3.0",
         "Decentralized Organization",
         "Tokenomics",
@@ -313,7 +314,7 @@ if ($_SESSION["Lang"] == "ru") {
         <br/>
         <p>
             <video id="outro" width="100%" height="auto" controls="controls" poster="'.$_SERVER["DIR"].'/img/outro.jpg">
-               <source src="file/2.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
+               <source src="'.$_SERVER["DIR"].'/file/2.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
         </div>

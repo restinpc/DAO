@@ -3,7 +3,7 @@
 * Framework admin class.
 * @path /engine/nodes/admin.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -30,7 +30,7 @@ function admin($site) {
     }
     if (!empty($_SESSION["user"]["email"]) && $_SESSION["user"]["admin"] == "1") {
         $this->statistic = array();
-        $this->statistic["version"] = "2.0.".$site->configs["version"];
+        $this->statistic["version"] = $site->configs["version"];
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `title` <> ""';
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
@@ -64,9 +64,13 @@ function admin($site) {
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_done"';
         $res = engine::mysql($query);
         $done = mysqli_fetch_array($res);
-        if ($exec["value"]<date("U")-3600) $this->statistic["cron"] .= engine::lang("Disabled");
-        else if ($exec["value"]>$done["value"]+300) $this->statistic["cron"] .= engine::lang("Error");
-        else $this->statistic["cron"] .= engine::lang("Ok");
+        if ($exec["value"] <date("U")-3600) {
+            $this->statistic["cron"] .= engine::lang("Disabled");
+        } else if ($exec["value"] > $done["value"] + 300) {
+            $this->statistic["cron"] .= engine::lang("Error");
+        } else {
+            $this->statistic["cron"] .= engine::lang("Ok");
+        }
         if (!empty($_GET["mode"])) {
             $this->title = engine::lang(ucfirst($_GET["mode"]));
             $function = 'print_admin_'.$_GET["mode"];

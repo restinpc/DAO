@@ -110,17 +110,16 @@ echo '<!DOCTYPE html>
 </script>
 <script src="'.$_SERVER["DIR"].'/script/uploader.js" type="text/javascript"></script>
 </head>';
-
 if (!empty($_POST["name"])) {
     if (!empty($_POST["url"])) {
         $ext = strtolower(array_pop(explode(".", $_POST["url"])));
-        $name = md5($_POST["filename"]+date("U"));
+        $name = md5($_POST["filename"] +date("U"));
         $img = new image($_POST["url"]);
         $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/', $name, $ext, true, 100);
         unlink($_POST["url"]);
         $img->crop(
-            intval($_POST["l"]*$_POST["scale"]),
-            intval($_POST["t"]*$_POST["scale"]),
+            intval($_POST["l"]* $_POST["scale"]),
+            intval($_POST["t"]* $_POST["scale"]),
             intval($_POST["w"]),
             intval($_POST["h"])
         );
@@ -135,7 +134,7 @@ if (!empty($_POST["name"])) {
                     df_img.id = "d_img";
                     df_img.src = "//'.$_SERVER["HTTP_HOST"].$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.'";';
 
-        if (!empty($_GET["id"]) && $_GET["id"]<6) {
+        if (!empty($_GET["id"]) && $_GET["id"] <6) {
             $fout .= '
                     var z = parent.document.getElementById("new_img'.(intval($_GET["id"])+1).'"); 
                     if (z) z.style.display = "block";
@@ -204,11 +203,11 @@ if (!empty($_POST["name"])) {
             if ($size[0] > MAX_IMG_WIDTH || $size[1] > MAX_IMG_HEIGHT) {
                 if ($size[0] / MAX_IMG_WIDTH > $size[1] / MAX_IMG_HEIGHT) {
                     $width = MAX_IMG_WIDTH;
-                    $height = $size[1] * (MAX_IMG_WIDTH/$size[0]);
+                    $height = $size[1] * (MAX_IMG_WIDTH/ $size[0]);
                     image::resize_image($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/".$f_name, $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/".$f_name, $width, $height);
                 } else {
                     $height = MAX_IMG_HEIGHT;
-                    $width = $size[0]*(MAX_IMG_HEIGHT/$size[1]);
+                    $width = $size[0] * (MAX_IMG_HEIGHT/ $size[1]);
                     image::resize_image($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/".$f_name, $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/".$f_name, $width, $height);
                 }
             }
@@ -217,10 +216,10 @@ if (!empty($_POST["name"])) {
             $height = intval($size[1]);
             $scale = 1;
             $fout = '<body class="nodes uploader_body" draggable="false" title="'.engine::lang("For uploading selected area use double click").'">
-                <div id="image" draggable="false" onDragStart="return false;" style="background: url('.$_SERVER["DIR"].'/'.$f_name.') top left no-repeat; width: '.($width/$scale).'px; height: '.($height/$scale).'px; background-size: cover;" >
-                    <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width/$scale).'px; height: '.($height/$scale).'px;" />
+                <div id="image" draggable="false" onDragStart="return false;" style="background: url('.$_SERVER["DIR"].'/'.$f_name.') top left no-repeat; width: '.($width/ $scale).'px; height: '.($height/ $scale).'px; background-size: cover;" >
+                    <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width/ $scale).'px; height: '.($height/ $scale).'px;" />
                 </div>
-                <div id="frame" draggable="false" onDragStart="return false;" style="width:'.($THUWIDTH/$scale).'px; height:'.($THUHEIGHT/$scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
+                <div id="frame" draggable="false" onDragStart="return false;" style="width:'.($THUWIDTH/ $scale).'px; height:'.($THUHEIGHT/ $scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
                     <table draggable="false" cellpadding=0 cellspacing=0 onDragStart="return false;" onMouseDown=\'if (document.uploader.dragMode != 3) { document.uploader.dragMode = 1; }\'>
                     <tr><td align=left valign=top></td></tr></table>
                     <div id="bottom_dot" onMouseDown=\'document.uploader.dragMode = 2;\' draggable="false" onDragStart="return false;">
@@ -278,7 +277,7 @@ if (!empty($_POST["name"])) {
     <form id="upload" method="POST" enctype="multipart/form-data">
         <div style="height: 100%;">
             <input type="file" id="fileselect" name="fileselect" onChange=\'document.getElementById("upload").submit();\' />
-            <div  id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Drop file here").'</div>
+            <div id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Drop file here").'</div>
         </div>
         <div id="submitbutton">
             <button class="btn" type="submit">'.engine::lang("Upload Files").'</button>

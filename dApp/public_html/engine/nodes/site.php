@@ -65,18 +65,42 @@ function __construct() {
     } else {
         $this->img = $_SERVER["PUBLIC_URL"].'/img/outro.jpg';
     }
-    if (empty($_SESSION["REQUEST_URI"])) $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
-    if (empty($_SESSION["Lang"])) $_SESSION["Lang"] = $config["lang"];
-    if (!empty($_POST["from"])) $_SESSION["from"] = $_POST["from"];
-    if (!empty($_POST["to"])) $_SESSION["to"] = $_POST["to"];
-    if (!empty($_POST["count"])) $_SESSION["count"] = intval($_POST["count"]);
-    if (!empty($_POST["page"])) $_SESSION["page"] = intval($_POST["page"]);
-    if (!empty($_POST["method"])) $_SESSION["method"] = $_POST["method"];
-    if (!empty($_POST["order"])) $_SESSION["order"] = $_POST["order"];
-    if (empty($_SESSION["count"])) $_SESSION["count"] = 20;
-    if (empty($_SESSION["page"])) $_SESSION["page"] = 1;
-    if (empty($_SESSION["method"])) $_SESSION["method"] = "ASC";
-    if (empty($_SESSION["order"])) $_SESSION["order"] ="id";
+    if (empty($_SESSION["REQUEST_URI"])) {
+        $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
+    }
+    if (empty($_SESSION["Lang"])) {
+        $_SESSION["Lang"] = $config["lang"];
+    }
+    if (!empty($_POST["from"])) {
+        $_SESSION["from"] = $_POST["from"];
+    }
+    if (!empty($_POST["to"])) {
+        $_SESSION["to"] = $_POST["to"];
+    }
+    if (!empty($_POST["count"])) {
+        $_SESSION["count"] = intval($_POST["count"]);
+    }
+    if (!empty($_POST["page"])) {
+        $_SESSION["page"] = intval($_POST["page"]);
+    }
+    if (!empty($_POST["method"])) {
+        $_SESSION["method"] = $_POST["method"];
+    }
+    if (!empty($_POST["order"])) {
+        $_SESSION["order"] = $_POST["order"];
+    }
+    if (empty($_SESSION["count"])) {
+        $_SESSION["count"] = 20;
+    }
+    if (empty($_SESSION["page"])) {
+        $_SESSION["page"] = 1;
+    }
+    if (empty($_SESSION["method"])) {
+        $_SESSION["method"] = "ASC";
+    }
+    if (empty($_SESSION["order"])) {
+        $_SESSION["order"] = "id";
+    }
     if ($_SESSION["REQUEST_URI"] != $_SERVER["REQUEST_URI"]) {
         $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
         $_SESSION["count"] = 20;
@@ -89,7 +113,7 @@ function __construct() {
     }
     if (!empty($_SESSION["user"]["id"])
         && empty($_SESSION["user"]["email"]) 
-        && ($_GET[0]!="account" || $_GET[1]!="settings")
+        && ($_GET[0] != "account" || $_GET[1] != "settings")
     ) {
         $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
     } else {
@@ -184,7 +208,7 @@ function __construct() {
         }
         $loader = $_SERVER["DIR"]."/img/load.gif";
         $fout = '<!DOCTYPE html>
-<html itemscope itemtype="http://schema.org/WebSite" lang="'.$_SESSION["Lang"].'" style="background: #1a1d1d url('.$_SERVER["DIR"].$loader.') no-repeat center center fixed; min-height: 400px; background-size: 45px;">
+<html itemscope itemtype="https://schema.org/WebSite" lang="'.$_SESSION["Lang"].'" style="background: #1a1d1d url('.$_SERVER["DIR"].$loader.') no-repeat center center fixed; min-height: 400px; background-size: 45px;">
 <head>
 <title>'.$this->title.'</title>
 <meta http-equiv="content-type" content="text/html" />
@@ -206,7 +230,7 @@ function __construct() {
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />
 <meta name="copyright" content="Copyright '.$_SERVER["HTTP_HOST"].', '.date("Y").'" />
 <link rel="apple-touch-icon" sizes="180x180" href="'.$_SERVER["DIR"].'/apple-touch-icon.png" />
-<link rel="manifest" href="'.$_SERVER["DIR"].'/favicon/manifest.json" />
+<link rel="manifest" crossorigin="use-credentials" href="'.$_SERVER["DIR"].'/favicon/manifest.json" />
 <link rel="mask-icon" href="'.$_SERVER["DIR"].'/favicon/safari-pinned-tab.svg" color="#5bbad5" />
 <link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
 <meta name="msapplication-config" content="'.$_SERVER["DIR"].'/favicon/browserconfig.xml" />
@@ -343,4 +367,5 @@ $fout .= '
         $fout = preg_replace($search, $replace, $fout);
     }
     echo $fout;
-}}
+}
+}

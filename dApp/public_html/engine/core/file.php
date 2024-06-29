@@ -3,7 +3,7 @@
 * File managment library.
 * @path /engine/core/file.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,8 +13,8 @@
 *  }
 * </code>
 */
-class file{
-//------------------------------------------------------------------------------
+
+class file {
 /**
 * Backup a file, or recursively copy a folder and its contents.
 *
@@ -25,26 +25,32 @@ class file{
 * @usage <code> file::copy("/img", "/temp"); </code>
 */
 static function copy($source, $dest, $permissions = 0755) {
-    if (is_link($source)) return symlink(readlink($source), $dest);
+    if (is_link($source)) {
+        return symlink(readlink($source), $dest);
+    }
     if (is_file($source)) {
         $res = copy($source, $dest);
         chmod($dest, $permissions);
         return $res;
     }
-    if (!is_dir($dest)) mkdir($dest, $permissions);
+    if (!is_dir($dest)) {
+        mkdir($dest, $permissions);
+    }
     $dir = dir($source);
-    while (false !== $entry = $dir->read()) {
-        if ($entry == '.' ||
-            $entry == '..' ||
-            $entry == 'backup' ||
-            $entry == 'session')
-                continue;
-        self::copy("$source/$entry", "$dest/$entry", $permissions);
+    while (false !== ($entry = $dir->read())) {
+        if ($entry == '.'
+            || $entry == '..'
+            || $entry == 'backup'
+            || $entry == 'session'
+        ) {
+            continue;
+        }
+        self::copy("$source/ $entry", "$dest/ $entry", $permissions);
     }
     $dir->close();
     return true;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Recursively delete a directory.
 *
@@ -54,14 +60,19 @@ static function copy($source, $dest, $permissions = 0755) {
 */
 static function delete($dir) {
     foreach (scandir($dir) as $file) {
-        if ('.' === $file || '..' === $file) continue;
-        if (is_dir("$dir/$file"))
-            self::delete("$dir/$file");
-        else unlink("$dir/$file");
-    }rmdir($dir);
+        if ('.' === $file || '..' === $file) {
+            continue;
+        }
+        if (is_dir("$dir/ $file")) {
+            self::delete("$dir/ $file");
+        } else {
+            unlink("$dir/ $file");
+        }
+    }
+    rmdir($dir);
     return true;
 }
-//------------------------------------------------------------------------------
+
 /**
 * Uploading file from FILES request data to server.
 *
@@ -78,11 +89,14 @@ static function upload($filename, $path, $md5=0) {
                 $a = $_FILES[$filename]["name"];
             } else {
                 $a = substr(md5($_FILES[$filename]["name"].date("U")), 0, 8).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"])));
-            }$f_name = $path."/".$a;
+            }
+            $f_name = $path."/".$a;
             if (move_uploaded_file($_FILES[$filename]["tmp_name"], $f_name)) {
                 return $a;
-            } return 'error';
-        } return 'error';
+            }
+            return 'error';
+        }
+        return 'error';
     } else {
         $fout = '';
         for ($i = 0; $i < count($_FILES[$filename]['tmp_name']); $i++) {
@@ -97,10 +111,11 @@ static function upload($filename, $path, $md5=0) {
                     $fout .= $a.';';
                 }
             }
-        } return $fout;
+        }
+        return $fout;
     }
  }
-//------------------------------------------------------------------------------
+
 /**
 * Add files and sub-directories in a folder to zip file.
 *
@@ -110,9 +125,9 @@ static function upload($filename, $path, $md5=0) {
 */
 private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
     $handle = opendir($folder);
-    while (false !== $f = readdir($handle)) {
+    while (false !== ($f = readdir($handle))) {
       if ($f != '.' && $f != '..') {
-        $filePath = "$folder/$f";
+        $filePath = "$folder/ $f";
         $localPath = mb_substr($filePath, $exclusiveLength);
         if (is_file($filePath)) {
           $zipFile->addFile($filePath, $localPath);
@@ -124,7 +139,7 @@ private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
     }
     closedir($handle);
 }
-//------------------------------------------------------------------------------
+
 /**
 * Zip a folder (include itself).
 *

@@ -17,7 +17,7 @@
 *
 * @param object $site Site class object.
 * @param string $url Page URL.
-* @return string Returns Show more block on article or product page.
+* @return string Returns Show more block.
 * @usage <code> engine::print_show_more($site, "/content/test"); </code>
 */
 
@@ -27,7 +27,7 @@ function print_more_articles($site, $url) {
     $data = mysqli_fetch_array($res);
     $count = 0;
     $fout = '';
-    $urls = Array();
+    $urls = array();
     // print articles same catalog
     $query = 'SELECT * FROM `nodes_content` WHERE `id` <> "'.$data["id"].'" '
             . 'AND `cat_id` = "'.$data["cat_id"].'" '

@@ -27,7 +27,7 @@ echo '
     <div class="caption"><h1>'.engine::lang("Sitemap").'</h1></div>
     <div class="content">
         <center><form method="POST" id="admin_lang_select" class="white">'.engine::lang("Select your language").': 
-        <select  id="select-lang" class="input" name="lang" onChange=\'document.getElementById("admin_lang_select").submit();\'>';
+        <select id="select-lang" class="input" name="lang" onChange=\'document.getElementById("admin_lang_select").submit();\'>';
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -36,7 +36,7 @@ echo '
     foreach ($arr as $value) {
         $value = trim($value);
         if (!empty($value)) {
-            if (!empty($_SESSION["Lang"])&& $_SESSION["Lang"] == $value) {
+            if (!empty($_SESSION["Lang"]) && $_SESSION["Lang"] == $value) {
                 echo '<option id="option-lang-'.$value.'" value="'.$value.'" selected>'.$value.'</option>';
             } else {
                 $fout .= '<li class="hidden"><a id="sitemap-'.$value.'" href="'.$_SERVER["DIR"].'/sitemap.php?lang='.$value.'" hreflang="'.  strtolower($value).'" class="white" >'.engine::lang("Sitemap").' ('.  strtoupper($value).')</a></li>
@@ -61,10 +61,10 @@ while ($data = mysqli_fetch_array($res)) {
         $html = trim(preg_replace('#[\s]+#', ' ', $html));
         $desc = mb_substr($html,0,50)."..";
     } else $title = $data["url"];
-    if (!strpos(" ".$data["url"], "/img/")&&
-            !strpos(" ".$data["url"], "/register")&&
-            !strpos(" ".$data["url"], "/account")&&
-            !strpos(" ".$data["url"], "/admin")&&
+    if (!strpos(" ".$data["url"], "/img/") &&
+            !strpos(" ".$data["url"], "/register") &&
+            !strpos(" ".$data["url"], "/account") &&
+            !strpos(" ".$data["url"], "/admin") &&
             !strpos(" ".$data["url"], "/search")) {
         if ($data["lang"] == "ru" || empty($data["lang"])) {
     echo '<li><a id="href-'.$data["url"].'" href="'.$data["url"].'" target="_blank" hreflang="'.$data["lang"].'" title="'.$desc.'">'.$title.'</a></li>

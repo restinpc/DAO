@@ -7,16 +7,7 @@
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
-* @var $site->title - Page title.
-* @var $site->content - Page HTML data.
-* @var $site->keywords - Array meta keywords.
-* @var $site->description - Page meta description.
-* @var $site->img - Page meta image.
-* @var $site->onload - Page executable JavaScript code.
-* @var $site->configs - Array MySQL configs.
-*
-* @param string $url Page URL.
-* @param string $caption Page caption.
+* @param string $current Page caption.
 * @return string Returns content of block on success, or die with error.
 * @usage <code> engine::print_webvr_navigation("Panorama"); </code>
 */

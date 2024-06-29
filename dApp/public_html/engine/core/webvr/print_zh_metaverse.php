@@ -3,12 +3,7 @@
  * Prints an metaverse whitepaper.
  * @path /engine/core/webvr/print_zh_metaverse.php
  *
- * @name    DAO Mansion    @version 1.0.2
- * @param object $site Site class object.
- * @return string Returns content of metaverse whitepaper.
- * @usage <code>
- *   engine::print_zh_metaverse($site);
- * </code>
+ * @name    DAO Mansion    @version 1.0.3
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,10 +14,16 @@
  * @var $site->img - Page meta image.
  * @var $site->onload - Page executable JavaScript code.
  * @var $site->configs - Array MySQL configs.
+ * 
+ * @param object $site Site class object.
+ * @return string Returns content of metaverse whitepaper.
+ * @usage <code>
+ *   engine::print_zh_metaverse($site);
+ * </code>
  */
+
 function print_zh_metaverse($site) {
-        return '
-<h1>VR/AI遊戲</h1>
+    return '<h1>VR/AI多人遊戲</h1>
 <p>
     初创企业的最后阶段将是开发一款使用代币作为内部货币的VR产品，从而提高代币和加密货币的价值。
     开发这个产品只有在其他一切准备就绪时才能全面展开，因为这个产品需要巨大的资源。
@@ -32,7 +33,7 @@ function print_zh_metaverse($site) {
     基本上，结合了《半条命：爱莉克斯》、《人口之一》、《面具猎杀》和《达尔文人》的游戏元素，并引入可玩的区块链激励机制。
     每個技能的核心都是一個法力標記，其工作原理與《Bloodhunt》的機制類似。
 </p>
-<img src="/img/metaverse/splash.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;"  />
+<img src="'.$_SERVER["DIR"].'/img/metaverse/splash.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;"  />
 <ul>
     <li><a href="#1">條款</a></li>
     <li><a href="#2">環境</a></li>
@@ -69,7 +70,7 @@ function print_zh_metaverse($site) {
 </ul>
 <h2>環境</h2>
 <a name="2"></a>
-<img src="/img/metaverse/realm.png" width="100%" style="float:right; max-width:300px; padding: 10px;" />
+<img src="'.$_SERVER["DIR"].'/img/metaverse/realm.png" width="100%" style="float:right; max-width:300px; padding: 10px;" />
 <ul style="list-style: decimal inside;">
 <li>温度机制是随着温度升高，消耗生命值的一切事物开始变得更强大，而在某个点上由于过热无法在领域中存在。当温度下降时，能力开始变得越来越弱，直到最终一次性消灭领域中剩下的所有人。有很多增加温度的能力，只有一个能减少温度 - Białe Zimno（140），或用通俗的话说，即精疲力竭。或者当有人离开领域时，温度会稍微降低领域的温度。</li>
 <li>元版本构想：一个十二面体行星</li>
@@ -91,7 +92,7 @@ function print_zh_metaverse($site) {
 <li>最好将其制作成DAO（最大部分开源和投票区块链来进行更改），并且支持GPU挖矿（渲染等距地狱、计算机器人动作、生成自定义领域）。</li>
 <li>应该能在Web浏览器中运行，以简化与智能手机设备的集成（带有3个摄像头的卡片板看起来是个好主意..云渲染？）。</li>
 <li>完整的设备组合包括房间侧陀螺仪/离心装置设备+身体部位控制器+VR头显。阅读神经模式的紧凑型磁共振成像设备也是完美的补充。</li>
-<img src="/img/metaverse/station.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;" />
+<img src="'.$_SERVER["DIR"].'/img/metaverse/station.jpg" width="100%" style="float:right; max-width:350px; padding: 10px;" />
 </ul>
 <h2>技能</h2>
 <a name="3"></a>

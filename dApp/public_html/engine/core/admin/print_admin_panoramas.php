@@ -21,8 +21,8 @@
 
 function print_admin_panoramas($cms) {
     $arr_count = 0;
-    $from = ($_SESSION["page"]-1)*$_SESSION["count"]+1;
-    $to = ($_SESSION["page"]-1)*$_SESSION["count"]+$_SESSION["count"];
+    $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
+    $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $fout .= '<div class="document980">';
     if (empty($_GET["project_id"])) {
         if (!empty($_POST) && $_POST["action"] == "add_project") {
@@ -87,28 +87,28 @@ function print_admin_panoramas($cms) {
             $links = $d[0];
             $arr_count++;
             $table .= '<tr><td align=left>'.$data["name"].'</td>
-            <td align=left>'.$levels.'</td>
-            <td align=left>'.$scenes.'</td>
-            <td align=left>'.$objects.'</td>
-            <td align=left>'.$points.'</td>
-            <td align=left>'.$links.'</td>
-            <td align=left>
-                <a class="btn small" href="'.$_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$data["id"].'">Project details</a>
-                <input type="button" class="btn small" value="'.engine::lang("Delete").'" onClick=\'
-                    if (confirm("'.engine::lang("Are you sure you want to delete a project with all levels, scenes and custom objects?").'")) {
-                        $id("act-val").value = "delete";
-                        $id("act-id").value = "'.$data["id"].'";
-                        $id("act-form").submit();
-                    }
-                \' />
-            </td>
-                </tr>';
+                <td align=left>'.$levels.'</td>
+                <td align=left>'.$scenes.'</td>
+                <td align=left>'.$objects.'</td>
+                <td align=left>'.$points.'</td>
+                <td align=left>'.$links.'</td>
+                <td align=left>
+                    <a class="btn small" href="'.$_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$data["id"].'">Project details</a>
+                    <input type="button" class="btn small" value="'.engine::lang("Delete").'" onClick=\'
+                        if (confirm("'.engine::lang("Are you sure you want to delete a project with all levels, scenes and custom objects?").'")) {
+                            $id("act-val").value = "delete";
+                            $id("act-id").value = "'.$data["id"].'";
+                            $id("act-form").submit();
+                        }\'
+                    />
+                </td>
+            </tr>';
         }
         $table .= '
         </table></div><br/>';
         if ($arr_count) {
             $fout .= $table.'
-            <form method="POST"  id="query_form" onSubmit="document.framework.submit_search_form();">
+            <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
             <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
             <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
             <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -124,24 +124,24 @@ function print_admin_panoramas($cms) {
             if ($data[0] > 0) {
                 $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                     <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                     <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
-                     <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
-                     <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
+                     <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") { $fout.= ' selected'; } $fout.= '>20</option>
+                     <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") { $fout.= ' selected'; } $fout.= '>50</option>
+                     <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
                     </select> '.engine::lang("per page").'.</nobr></p>';
             }
             $fout .= '</div><div class="cr"></div>';
             if ($count > $_SESSION["count"]) {
                 $fout .= '<div class="pagination" >';
-                $pages = ceil($count/$_SESSION["count"]);
+                $pages = ceil($count / $_SESSION["count"]);
                 if ($_SESSION["page"] > 1) {
-                    $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                    $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
                 }
                 $fout .= '<ul>';
                 $a = $b = $c = $d = $e = $f = 0;
                 for ($i = 1; $i <= $pages; $i++) {
                     if (($a < 2 && !$b && $e < 2)
-                        || ($i >=( $_SESSION["page"]-2) && $i <=( $_SESSION["page"]+2) && $e<5)
-                        || ($i>$pages-2 && $e<2)
+                        || ($i >= ($_SESSION["page"] - 2) && $i <= ($_SESSION["page"] + 2) && $e < 5)
+                        || ($i > $pages - 2 && $e < 2)
                     ) {
                         if ($a<2) {
                             $a++;
@@ -156,7 +156,8 @@ function print_admin_panoramas($cms) {
                             $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                         }
                     } else if ((!$c || !$b) && !$f && $i < $pages) {
-                        $f = 1; $e = 0;
+                        $f = 1;
+                        $e = 0;
                         if (!$b) {
                            $b = 1;
                         } else if (!$c) {
@@ -166,12 +167,13 @@ function print_admin_panoramas($cms) {
                     }
                 }
                 if ($_SESSION["page"] < $pages) {
-                    $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                    $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }
                 $fout .= '</ul>
                 </div>
                 ';
-             }$fout .= '
+            }
+            $fout .= '
                 </form>
                 <div class="clear"></div>';
         } else {
@@ -179,7 +181,7 @@ function print_admin_panoramas($cms) {
         }
         $fout .= '
             <input type="button" class="btn w280" value="'.engine::lang("Add project").'" onClick=\'this.style.display="none"; $id("new_project").style.display="block";\' />
-            <form method="POST"  ENCTYPE="multipart/form-data" id="new_project" style="display:none;" >
+            <form method="POST" ENCTYPE="multipart/form-data" id="new_project" style="display:none;" >
                 <input type="hidden" name="action" value="add_project" />
                 <h2 class="fs21">'.engine::lang("Add project").'</h2><br/>
                 <center>
@@ -205,7 +207,7 @@ function print_admin_panoramas($cms) {
             if ($_POST["action"] == "new_level") {
                 $name = trim(htmlspecialchars($_POST["name"]));
                 $text = trim(engine::escape_string($_POST["text"]));
-                //$image = "/img/plans/".file::upload("image", "img/plans", 1);
+                // $image = "/img/plans/".file::upload("image", "img/plans", 1);
                 $query = 'INSERT INTO `nodes_vr_level`(`project_id`, `name`, `text`, `image`, `scale`) '
                         . 'VALUES("'.$project_id.'", "'.$name.'", "'.$text.'", "", "1")';
                 engine::mysql($query);
@@ -232,66 +234,45 @@ function print_admin_panoramas($cms) {
             $query = 'SELECT * FROM `nodes_vr_level` WHERE `project_id` = "'.$project["id"].'" ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
             $requery = 'SELECT COUNT(*) FROM `nodes_vr_level` WHERE `project_id` = "'.$project["id"].'"';
             $fout .= '<div class="tal"><a href="'.$_SERVER["DIR"].'/admin/?mode=panoramas">'.engine::lang("Panoramas").'</a> / <b>'.$project["name"].'</b> / </div>
-                <h1>'.engine::lang("Project details").'</h1>
-                <script rel="preload" src="'.$_SERVER["DIR"].'/script/aframe-master.js"></script>
-                <script rel="preload" src="'.$_SERVER["DIR"].'/script/panorama.js"></script>
-                ';
-            if ($_GET["action"] == "scheme") {
-                $fout .= '
-                    <a-scene vr-mode-ui="enabled: false;" background="color: #000;" width=100% height=600 style="width:100%; height:600px;" >
-                    <a-sky id="sky_back" src="'.$_SERVER["DIR"].'/img/vr/pano.jpg"  position="0 0 0 rotation="0 0 0" radius="100" opacity="1">
-                    <a-circle position="0 -10 0" rotation="-90 0 0" color="white" radius="100" opacity="0.7"></a-circle>';
-                $query = 'SELECT * FROM `nodes_vr_scene` WHERE `project_id` = "'.$project_id.'"';
+                <h1>'.engine::lang("Project details").'</h1>';
+            $table = '
+                <form method="POST" id="act-form">
+                    <input type="hidden" id="act-id" name="id" value="" />
+                    <input type="hidden" id="act-val" name="action" value="" />
+                </form>
+                <div class="table">
+                <table id="table" class="w100p" style="max-width:700px;">
+                <thead>
+                <tr>
+                    <th>'.engine::lang("Level Name").'</th>
+                    <th>'.engine::lang("Scenes").'</th>
+                    <th>'.engine::lang("Objects").'</th>
+                    <th>'.engine::lang("Portals").'</th>
+                    <th>'.engine::lang("Links").'</th>
+                    <th></th>
+                </tr>
+                </thead>';
+            $res = engine::mysql($query);
+            $aframe = '';
+            while ($data = mysqli_fetch_array($res)) {
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_scene` WHERE `level_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
-                while ($object = mysqli_fetch_array($r)) {
-                    $fout .= '<a-box  id="object_'.$object["id"].'" 
-                        position="'.($object["lat"]*1).' '.($object["height"]-10).' -'.(10+$object["lng"]*1).'" 
-                        rotation="0 0 0" 
-                        scale="1 1 1"
-                        width="1" height="1" depth="1"
-                        color="orange"
-                        opacity="1"></a-box>';
-                }
-                $fout .= ' </a-scene>';
-            } else {
-                $table = '
-                    <form method="POST" id="act-form">
-                        <input type="hidden" id="act-id" name="id" value="" />
-                        <input type="hidden" id="act-val" name="action" value="" />
-                    </form>
-                    <div class="table">
-                    <table id="table" class="w100p" style="max-width:700px;">
-                    <thead>
-                    <tr>
-                        <th>'.engine::lang("Level Name").'</th>
-                        <th>'.engine::lang("Scenes").'</th>
-                        <th>'.engine::lang("Objects").'</th>
-                        <th>'.engine::lang("Portals").'</th>
-                        <th>'.engine::lang("Links").'</th>
-                        <th></th>
-                    </tr>
-                    </thead>';
-                $res = engine::mysql($query);
-                $aframe = '';
-                while ($data = mysqli_fetch_array($res)) {
-                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_scene` WHERE `level_id` = "'.$data["id"].'"';
-                    $r = engine::mysql($query);
-                    $d = mysqli_fetch_array($r);
-                    $scenes = $d[0];
-                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_object` WHERE `level_id` = "'.$data["id"].'"';
-                    $r = engine::mysql($query);
-                    $d = mysqli_fetch_array($r);
-                    $objects = $d[0];
-                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_navigation` WHERE `level_id` = "'.$data["id"].'"';
-                    $r = engine::mysql($query);
-                    $d = mysqli_fetch_array($r);
-                    $points = $d[0];
-                    $query = 'SELECT COUNT(`id`) FROM `nodes_vr_link` WHERE `level_id` = "'.$data["id"].'"';
-                    $r = engine::mysql($query);
-                    $d = mysqli_fetch_array($r);
-                    $links = $d[0];
-                    $arr_count++;
-                    $table .= '<tr><td align=left>'.$data["name"].'</td>
+                $d = mysqli_fetch_array($r);
+                $scenes = $d[0];
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_object` WHERE `level_id` = "'.$data["id"].'"';
+                $r = engine::mysql($query);
+                $d = mysqli_fetch_array($r);
+                $objects = $d[0];
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_navigation` WHERE `level_id` = "'.$data["id"].'"';
+                $r = engine::mysql($query);
+                $d = mysqli_fetch_array($r);
+                $points = $d[0];
+                $query = 'SELECT COUNT(`id`) FROM `nodes_vr_link` WHERE `level_id` = "'.$data["id"].'"';
+                $r = engine::mysql($query);
+                $d = mysqli_fetch_array($r);
+                $links = $d[0];
+                $arr_count++;
+                $table .= '<tr><td align=left>'.$data["name"].'</td>
                     <td align=left>'.$scenes.'</td>
                     <td align=left>'.$objects.'</td>
                     <td align=left>'.$points.'</td>
@@ -306,120 +287,117 @@ function print_admin_panoramas($cms) {
                             }
                         \' />
                     </td>
-                        </tr>';
-                }
-                $table .= '</table>
-                    </div><br/>';
-                if ($arr_count) {
-                    $fout .= $table.'
-                    <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
-                    <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
-                    <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
-                    <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
-                    <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-                    <input type="hidden" name="reset" id="query_reset" value="0" />
-                    <div class="total-entry">';
-                    $res = engine::mysql($requery);
-                    $data = mysqli_fetch_array($res);
-                    $count = $data[0];
-                    if ($to > $count) {
-                        $to = $count;
-                    }
-                    if ($data[0] > 0) {
-                        $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
-                            <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                             <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
-                             <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
-                             <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
-                            </select> '.engine::lang("per page").'.</nobr></p>';
-                    }
-                    $fout .= '</div><div class="cr"></div>';
-                    if ($count > $_SESSION["count"]) {
-                        $fout .= '<div class="pagination" >';
-                        $pages = ceil($count/$_SESSION["count"]);
-                        if ($_SESSION["page"] > 1) {
-                            $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
-                        }
-                        $fout .= '<ul>';
-                        $a = $b = $c = $d = $e = $f = 0;
-                        for ($i = 1; $i <= $pages; $i++) {
-                            if (($a < 2 && !$b && $e < 2)
-                                || ($i >= ($_SESSION["page"] - 2) && $i <= ($_SESSION["page"]+2) && $e < 5)
-                                || ($i > $pages - 2 && $e < 2)
-                            ) {
-                                if ($a < 2) {
-                                    $a++;
-                                }
-                                $e++;
-                                $f = 0;
-                                if ($i == $_SESSION["page"]) {
-                                    $b = 1;
-                                    $e = 0;
-                                    $fout .= '<li class="active-page">'.$i.'</li>';
-                                } else {
-                                    $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
-                                }
-                           } else if ((!$c || !$b) && !$f && $i < $pages) {
-                                $f = 1;
-                                $e = 0;
-                                if (!$b) {
-                                    $b = 1;
-                                } else if (!$c) {
-                                    $c = 1;
-                                }
-                                $fout .= '<li class="dots">. . .</li>';
-                           }
-                        }
-                        if ($_SESSION["page"] < $pages) {
-                            $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
-                        }
-                        $fout .= '</ul>
-                        </div>
-                        ';
-                     }
-                     $fout .= '</form>
-                        <div class="clear"></div>';
-                } else {
-                    $fout .= '<div class="clear_block">'.engine::lang("Levels not found").'</div>';
-                }
-                $fout .= '
-                    <a target="_blank" href="'.$_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$project_id.'&action=scheme"><input id="project_scheme_button" type="button" class="btn w280" value="'.engine::lang("Show project scheme").'" /></a>
-                    <br/>
-                    <input id="add_new_level_button" type="button" class="btn w280" value="'.engine::lang("Add level").'" onClick=\'
-                        this.style.display = "none";
-                        $id("project_scheme_button").style.display = "none";
-                        $id("new_level").style.display = "block";
-                        $id("edit_project_button").style.display = "none";\' 
-                    />
-                    <form method="POST"  ENCTYPE="multipart/form-data" id="new_level" style="display:none;" >
-                        <input type="hidden" name="action" value="new_level" />
-                        <h2 class="fs21">'.engine::lang("Add level").'</h2><br/>
-                        <center>
-                            <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
-                            <input id="input-article-image" type="file" class="input w600" name="image" /><br/><br/>
-                            <div class="w600">
-                            <textarea class="input w600" id="editable" name="text" placeHolder="Text" required></textarea>
-                            </div><br/><br/>
-                            <input id="input-submit" type="submit" onClick=\'$id("new_level").submit();\' class="btn w280" value="'.engine::lang("Submit").'" /><br/><br/>
-                            <br/>
-                        </center>
-                    </form>
-                    <br/>
-                    <input id="edit_project_button" type="button" class="btn w280" value="'.engine::lang("Project properties").'" onClick=\'this.style.display="none"; $id("edit_project").style.display="block"; $id("add_new_level_button").style.display="none";\' />
-                    <form method="POST"  ENCTYPE="multipart/form-data" id="edit_project" style="display:none;" >
-                        <input type="hidden" name="action" value="edit_project" />
-                        <h2 class="fs21">'.engine::lang("Project properties").'</h2><br/>
-                        <center>
-                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" value="'.$project["name"].'" /><br/><br/>
-                        <!-- <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" value="'.$project["url"].'" /><br/><br/> -->
-                        <div class="w600">
-                        <textarea class="input w600" id="editable_2" name="text" placeHolder="Text" required>'.$project["text"].'</textarea>
-                        </div><br/><br/>
-                        <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/><br/>
-                        <br/></center>
-                    </form>
-                </div>';
+                </tr>';
             }
+            $table .= '</table>
+                </div><br/>';
+            if ($arr_count) {
+                $fout .= $table.'
+                <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+                <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
+                <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
+                <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
+                <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
+                <input type="hidden" name="reset" id="query_reset" value="0" />
+                <div class="total-entry">';
+                $res = engine::mysql($requery);
+                $data = mysqli_fetch_array($res);
+                $count = $data[0];
+                if ($to > $count) {
+                    $to = $count;
+                }
+                if ($data[0] > 0) {
+                    $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
+                        <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
+                         <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") { $fout.= ' selected'; } $fout.= '>20</option>
+                         <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") { $fout.= ' selected'; } $fout.= '>50</option>
+                         <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
+                        </select> '.engine::lang("per page").'.</nobr></p>';
+                }
+                $fout .= '</div><div class="cr"></div>';
+                if ($count > $_SESSION["count"]) {
+                    $fout .= '<div class="pagination" >';
+                    $pages = ceil($count / $_SESSION["count"]);
+                    if ($_SESSION["page"] > 1) {
+                        $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                    }
+                    $fout .= '<ul>';
+                    $a = $b = $c = $d = $e = $f = 0;
+                    for ($i = 1; $i <= $pages; $i++) {
+                        if (($a < 2 && !$b && $e < 2)
+                            || ($i >= ($_SESSION["page"] - 2) && $i <= ($_SESSION["page"] +2) && $e < 5)
+                            || ($i > $pages - 2 && $e < 2)
+                        ) {
+                            if ($a < 2) {
+                                $a++;
+                            }
+                            $e++;
+                            $f = 0;
+                            if ($i == $_SESSION["page"]) {
+                                $b = 1;
+                                $e = 0;
+                                $fout .= '<li class="active-page">'.$i.'</li>';
+                            } else {
+                                $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                            }
+                       } else if ((!$c || !$b) && !$f && $i < $pages) {
+                            $f = 1;
+                            $e = 0;
+                            if (!$b) {
+                                $b = 1;
+                            } else if (!$c) {
+                                $c = 1;
+                            }
+                            $fout .= '<li class="dots">. . .</li>';
+                       }
+                    }
+                    if ($_SESSION["page"] < $pages) {
+                        $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                    }
+                    $fout .= '</ul>
+                    </div>
+                    ';
+                 }
+                 $fout .= '</form>
+                    <div class="clear"></div>';
+            } else {
+                $fout .= '<div class="clear_block">'.engine::lang("Levels not found").'</div>';
+            }
+            $fout .= '
+                <br/>
+                <input id="add_new_level_button" type="button" class="btn w280" value="'.engine::lang("Add level").'" onClick=\'
+                    this.style.display = "none";
+                    $id("new_level").style.display = "block";
+                    $id("edit_project_button").style.display = "none";\' 
+                />
+                <form method="POST" ENCTYPE="multipart/form-data" id="new_level" style="display:none;" >
+                    <input type="hidden" name="action" value="new_level" />
+                    <h2 class="fs21">'.engine::lang("Add level").'</h2><br/>
+                    <center>
+                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
+                        <input id="input-article-image" type="file" class="input w600" name="image" /><br/><br/>
+                        <div class="w600">
+                        <textarea class="input w600" id="editable" name="text" placeHolder="Text" required></textarea>
+                        </div><br/><br/>
+                        <input id="input-submit" type="submit" onClick=\'$id("new_level").submit();\' class="btn w280" value="'.engine::lang("Submit").'" /><br/><br/>
+                        <br/>
+                    </center>
+                </form>
+                <br/>
+                <input id="edit_project_button" type="button" class="btn w280" value="'.engine::lang("Project properties").'" onClick=\'this.style.display="none"; $id("edit_project").style.display="block"; $id("add_new_level_button").style.display="none";\' />
+                <form method="POST" ENCTYPE="multipart/form-data" id="edit_project" style="display:none;" >
+                    <input type="hidden" name="action" value="edit_project" />
+                    <h2 class="fs21">'.engine::lang("Project properties").'</h2><br/>
+                    <center>
+                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" value="'.$project["name"].'" /><br/><br/>
+                    <!-- <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" value="'.$project["url"].'" /><br/><br/> -->
+                    <div class="w600">
+                    <textarea class="input w600" id="editable_2" name="text" placeHolder="Text" required>'.$project["text"].'</textarea>
+                    </div><br/><br/>
+                    <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/><br/>
+                    <br/></center>
+                </form>
+            </div>';
         } else {
             $level_id = $_GET["level_id"];
             $query = 'SELECT * FROM `nodes_vr_level` WHERE `id` = "'.$level_id.'"';
@@ -449,25 +427,25 @@ function print_admin_panoramas($cms) {
                 foreach ($sides as $side) {
                     for ($i = 0; $i < 1; $i++) {
                         for ($j = 0; $j < 1; $j++) {
-                            $id = ($i*1+$j);
+                            $id = ($i*1+ $j);
                             $cubemap .= '"'.$side.'_1_'.($id).'":"'.$scene_id.'xf_1_'.$side.'_'.$id.'.png", ';
                         }
                     }
                     for ($i = 0; $i < 2; $i++) {
                         for ($j = 0; $j < 2; $j++) {
-                            $id = ($i*2+$j);
+                            $id = ($i * 2+ $j);
                             $cubemap .= '"'.$side.'_2_'.($id).'":"'.$scene_id.'xf_2_'.$side.'_'.$id.'.png", ';
                         }
                     }
                     for ($i = 0; $i < 4; $i++) {
                         for ($j = 0; $j < 4; $j++) {
-                            $id = ($i*4+$j);
+                            $id = ($i * 4 + $j);
                             $cubemap .= '"'.$side.'_3_'.($id).'":"'.$scene_id.'xf_3_'.$side.'_'.$id.'.png", ';
                         }
                     }
                     for ($i = 0; $i < 8; $i++) {
                         for ($j = 0; $j < 8; $j++) {
-                            $id = ($i*8+$j);
+                            $id = ($i*8+ $j);
                             $cubemap .= '"'.$side.'_4_'.($id).'":"'.$scene_id.'xf_4_'.$side.'_'.$id.'.png", ';
                         }
                     }
@@ -499,31 +477,31 @@ function print_admin_panoramas($cms) {
                         $width = $img_size[0];
                         $height = $img_size[1];
                         $res = 32;
-                        if ($height/8 >= 64) {
+                        if ($height / 8 >= 64) {
                             $res = 64;
                         }
-                        if ($height/8 >= 128) {
+                        if ($height / 8 >= 128) {
                             $res = 128;
                         }
-                        if ($height/8>=256) {
+                        if ($height / 8 >= 256) {
                             $res = 256;
                         }
-                        if ($height/8>=512) {
+                        if ($height / 8 >= 512) {
                             $res = 512;
                         }
-                        if ($height/8>=1024) {
+                        if ($height / 8 >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 8; $i++) {
                             for ($j = 0; $j < 8; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
                                 $img->crop(
-                                        intval($i*($width/8)),
-                                        intval($j*($height/8)),
-                                        intval(($width/8)),
-                                        intval(($height/8))
-                                    );
-                                $id = ($i*8+$j);
+                                    intval($i * ($width / 8)),
+                                    intval($j * ($height / 8)),
+                                    intval(($width / 8)),
+                                    intval(($height / 8))
+                                );
+                                $id = ($i*8+ $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_4_'.$side.'_'.$id, 'png', true, 100);
                             }
@@ -548,43 +526,43 @@ function print_admin_panoramas($cms) {
                             for ($j = 0; $j < 4; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
                                 $img->crop(
-                                        intval($i*($width/4)),
-                                        intval($j*($height/4)),
-                                        intval(($width/4)),
-                                        intval(($height/4))
-                                    );
-                                $id = ($i*4+$j);
+                                    intval($i * ($width/4)),
+                                    intval($j * ($height / 4)),
+                                    intval(($width/4)),
+                                    intval(($height / 4))
+                                );
+                                $id = ($i * 4 + $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_3_'.$side.'_'.$id, 'png', true, 80);
                             }
                         }
                         //--------
                         $res = 32;
-                        if ($height/2 >= 64) {
+                        if ($height / 2 >= 64) {
                             $res = 64;
                         }
-                        if ($height/2 >= 128) {
+                        if ($height / 2 >= 128) {
                             $res = 128;
                         }
-                        if ($height/2>=256) {
+                        if ($height / 2 >= 256) {
                             $res = 256;
                         }
-                        if ($height/2>=512) {
+                        if ($height / 2 >= 512) {
                             $res = 512;
                         }
-                        if ($height/2>=1024) {
+                        if ($height / 2 >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 2; $i++) {
                             for ($j = 0; $j < 2; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
                                 $img->crop(
-                                        intval($i*($width/2)),
-                                        intval($j*($height/2)),
-                                        intval(($width/2)),
-                                        intval(($height/2))
-                                    );
-                                $id = ($i*2+$j);
+                                    intval($i * ($width / 2)),
+                                    intval($j * ($height / 2)),
+                                    intval(($width / 2)),
+                                    intval(($height / 2))
+                                );
+                                $id = ($i * 2+ $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_2_'.$side.'_'.$id, 'png', true, 60);
                             }
@@ -597,19 +575,19 @@ function print_admin_panoramas($cms) {
                         if ($height >= 128) {
                             $res = 128;
                         }
-                        if ($height>=256) {
+                        if ($height >= 256) {
                             $res = 256;
                         }
-                        if ($height>=512) {
+                        if ($height >= 512) {
                             $res = 512;
                         }
-                        if ($height>=1024) {
+                        if ($height >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 1; $i++) {
                             for ($j = 0; $j < 1; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
-                                $id = ($i*2+$j);
+                                $id = ($i * 2+ $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_1_'.$side.'_'.$id, 'png', true, 40);
                             }
@@ -632,16 +610,16 @@ function print_admin_panoramas($cms) {
                 $json = json_decode($json);
                 $fout .= '<h1>'.engine::lang("Confirm uploading").'</h1><br/>'
                         . '<div class="table">
-                            <form method="POST"  ENCTYPE="multipart/form-data">
-                <input type="hidden" name="action" value="confirm_uploading" />
-                <table id="table" class="w100p" style="max-width:700px;">
-                <thead>
-                <tr>
-                    <th>'.engine::lang("Scene Name").'</th>
-                    <th>'.engine::lang("Image").'</th>
-                    <th>'.engine::lang("Coordinates").'</th>
-                </tr>';
-                foreach ($json[0]->shots as $key => $value) {
+                <form method="POST" ENCTYPE="multipart/form-data">
+                    <input type="hidden" name="action" value="confirm_uploading" />
+                    <table id="table" class="w100p" style="max-width:700px;">
+                    <thead>
+                    <tr>
+                        <th>'.engine::lang("Scene Name").'</th>
+                        <th>'.engine::lang("Image").'</th>
+                        <th>'.engine::lang("Coordinates").'</th>
+                    </tr>';
+                foreach ($json[0] ->shots as $key => $value) {
                     $name = explode('.', $key)[0];
                     $fout .= '<tr>
                         <td align=left>'.$name.'
@@ -660,8 +638,7 @@ function print_admin_panoramas($cms) {
                         . '<input type="submit" class="btn w280" value="'.engine::lang("Confirm").'" /><br/><br/>'
                         . '<a href="'.engine::href($_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id).'" class="btn w280">'.engine::lang("Back to level").'</a>'
                     . '</form>'
-                    . '</div>'
-                        ;
+                    . '</div>';
                 return $fout;
             } else if ($_POST["action"] == "build_navigation") {
                 $scene_id = intval($_POST["id"]);
@@ -671,8 +648,8 @@ function print_admin_panoramas($cms) {
                 $query = 'SELECT * FROM `nodes_vr_scene` WHERE `level_id` = "'.$data["level_id"].'" AND `id` != "'.$data["id"].'"';
                 $res = engine::mysql($query);
                 while ($d = mysqli_fetch_array($res)) {
-                    $lat = $d["lat"]-$data["lat"];
-                    $lng = $d["lng"]-$data["lng"];
+                    $lat = $d["lat"] - $data["lat"];
+                    $lng = $d["lng"] - $data["lng"];
                     // $position = ($lat).' 5 '.($lng);
                     $position = '0 -100 0';
                     $query = 'INSERT INTO `nodes_vr_navigation`(`project_id`, `level_id`, `scene_id`, `target`, `position`, `scale`) '
@@ -691,31 +668,12 @@ function print_admin_panoramas($cms) {
                     $floor_radius = "20";
                     $logo_size = "4";
                     $image = '';
-                    /*
-                    for ($j = 0; $j < count($_FILES["files"]["name"]); $j++) {
-                        $filename = $_FILES["files"]["name"][$j];
-                        if ($filename == $_POST["file"][$i]) {
-                            $file = $_FILES["files"]["tmp_name"][$j];
-                            if (is_uploaded_file($_FILES["files"]['tmp_name'][$j])) {
-                                $a = md5($_FILES["files"]["name"][$j].date("U")).".".strtolower(array_pop(explode(".", $_FILES["files"]["name"][$j])));;
-                                $f_name = "img/scenes/".$a;
-                                if (move_uploaded_file($_FILES["files"]["tmp_name"][$j], $f_name)) {
-                                    $f_name = '/'.$f_name;
-                                    $image = $f_name;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                     *
-                     */
                     $query = 'INSERT INTO `nodes_vr_scene`(`project_id`, `level_id`, `name`, `image`, `position`, `rotation`, `lat`, `lng`, `floor_position`, `floor_radius`, `logo_size`) '
                         . 'VALUES("'.$project_id.'", "'.$level_id.'", "'.$name.'", "'.$image.'", "'.$position.'", "'.$rotation.'", "'.$lat.'", "'.$lng.'", "'.$floor_position.'", "'.$floor_radius.'", "'.$logo_size.'")';
                     engine::mysql($query);
                 }
-
                 $fout = '<form method="POST" id="fx"><input type="hidden" name="action" value="upload_data" /></form>'
-                        . '<script>$id("fx").submit();</script>';
+                        . '<script> $id("fx").submit();</script>';
                 return $fout;
             } else if ($_POST["action"] == "upload_data") {
                 if (!empty($_FILES) && !empty($_POST["name"])) {
@@ -728,33 +686,30 @@ function print_admin_panoramas($cms) {
                     $folderPath = "img/cubemap/";
                     $sides = Array("pz", "nz", "px", "nx", "py", "ny");
                     foreach ($sides as $side) {
-
                         for ($i = 0; $i < 1; $i++) {
                             for ($j = 0; $j < 1; $j++) {
-                                $id = ($i*1+$j);
+                                $id = ($i * 1 + $j);
                                 $cubemap .= '"'.$side.'_1_'.($id).'":"'.$scene_id.'xf_1_'.$side.'_'.$id.'.png", ';
                             }
                         }
                         for ($i = 0; $i < 2; $i++) {
                             for ($j = 0; $j < 2; $j++) {
-                                $id = ($i*2+$j);
+                                $id = ($i * 2+ $j);
                                 $cubemap .= '"'.$side.'_2_'.($id).'":"'.$scene_id.'xf_2_'.$side.'_'.$id.'.png", ';
                             }
                         }
                         for ($i = 0; $i < 4; $i++) {
                             for ($j = 0; $j < 4; $j++) {
-                                $id = ($i*4+$j);
+                                $id = ($i * 4 + $j);
                                 $cubemap .= '"'.$side.'_3_'.($id).'":"'.$scene_id.'xf_3_'.$side.'_'.$id.'.png", ';
                             }
                         }
                         for ($i = 0; $i < 8; $i++) {
                             for ($j = 0; $j < 8; $j++) {
-                                $id = ($i*8+$j);
+                                $id = ($i * 8 + $j);
                                 $cubemap .= '"'.$side.'_4_'.($id).'":"'.$scene_id.'xf_4_'.$side.'_'.$id.'.png", ';
                             }
                         }
-
-
                     }
                     $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
                     $query = 'UPDATE `nodes_vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
@@ -773,99 +728,101 @@ function print_admin_panoramas($cms) {
                             $side = 'px';
                         } else if (strpos($_FILES["images"]["name"][$k], '_perspective_view_right')) {
                             $side = 'nx';
-                        } else continue;
+                        } else {
+                            continue;
+                        }
                         $img_size = getimagesize($_FILES["images"]["tmp_name"][$k]);
                         $width = $img_size[0];
                         $height = $img_size[1];
                         //--------
                         $res = 32;
-                        if ($height/8 >= 64) {
+                        if ($height / 8 >= 64) {
                             $res = 64;
                         }
-                        if ($height/8 >= 128) {
+                        if ($height / 8 >= 128) {
                             $res = 128;
                         }
-                        if ($height/8>=256) {
+                        if ($height / 8 >= 256) {
                             $res = 256;
                         }
-                        if ($height/8>=512) {
+                        if ($height / 8 >= 512) {
                             $res = 512;
                         }
-                        if ($height/8>=1024) {
+                        if ($height / 8 >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 8; $i++) {
                             for ($j = 0; $j < 8; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
                                 $img->crop(
-                                        intval($i*($width/8)),
-                                        intval($j*($height/8)),
-                                        intval(($width/8)),
-                                        intval(($height/8))
-                                    );
-                                $id = ($i*8+$j);
+                                    intval($i * ($width / 8)),
+                                    intval($j * ($height / 8)),
+                                    intval(($width / 8)),
+                                    intval(($height / 8))
+                                );
+                                $id = ($i * 8 + $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_4_'.$side.'_'.$id, 'png', true, 100);
                             }
                         }
                         //--------
                         $res = 32;
-                        if ($height/4 >= 64) {
+                        if ($height / 4 >= 64) {
                             $res = 64;
                         }
-                        if ($height/4 >= 128) {
+                        if ($height / 4 >= 128) {
                             $res = 128;
                         }
-                        if ($height/4>=256) {
+                        if ($height / 4 >= 256) {
                             $res = 256;
                         }
-                        if ($height/4>=512) {
+                        if ($height / 4 >= 512) {
                             $res = 512;
                         }
-                        if ($height/4>=1024) {
+                        if ($height / 4 >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 4; $i++) {
                             for ($j = 0; $j < 4; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
                                 $img->crop(
-                                        intval($i*($width/4)),
-                                        intval($j*($height/4)),
-                                        intval(($width/4)),
-                                        intval(($height/4))
-                                    );
-                                $id = ($i*4+$j);
+                                    intval($i * ($width/4)),
+                                    intval($j * ($height / 4)),
+                                    intval(($width/4)),
+                                    intval(($height / 4))
+                                );
+                                $id = ($i * 4 + $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_3_'.$side.'_'.$id, 'png', true, 80);
                             }
                         }
                         //--------
                         $res = 32;
-                        if ($height/2 >= 64) {
+                        if ($height / 2 >= 64) {
                             $res = 64;
                         }
-                        if ($height/2 >= 128) {
+                        if ($height / 2 >= 128) {
                             $res = 128;
                         }
-                        if ($height/2>=256) {
+                        if ($height / 2 >= 256) {
                             $res = 256;
                         }
-                        if ($height/2>=512) {
+                        if ($height / 2 >= 512) {
                             $res = 512;
                         }
-                        if ($height/2>=1024) {
+                        if ($height / 2 >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 2; $i++) {
                             for ($j = 0; $j < 2; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
                                 $img->crop(
-                                        intval($i*($width/2)),
-                                        intval($j*($height/2)),
-                                        intval(($width/2)),
-                                        intval(($height/2))
-                                    );
-                                $id = ($i*2+$j);
+                                    intval($i * ($width / 2)),
+                                    intval($j * ($height / 2)),
+                                    intval(($width / 2)),
+                                    intval(($height / 2))
+                                );
+                                $id = ($i * 2 + $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_2_'.$side.'_'.$id, 'png', true, 60);
                             }
@@ -878,19 +835,19 @@ function print_admin_panoramas($cms) {
                         if ($height >= 128) {
                             $res = 128;
                         }
-                        if ($height>=256) {
+                        if ($height >= 256) {
                             $res = 256;
                         }
-                        if ($height>=512) {
+                        if ($height >= 512) {
                             $res = 512;
                         }
-                        if ($height>=1024) {
+                        if ($height >= 1024) {
                             $res = 1024;
                         }
                         for ($i = 0; $i < 1; $i++) {
                             for ($j = 0; $j < 1; $j++) {
                                 $img = new image($_FILES["images"]["tmp_name"][$k]);
-                                $id = ($i*2+$j);
+                                $id = ($i * 2 + $j);
                                 $img->resize($res, $res);
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_1_'.$side.'_'.$id, 'png', true, 40);
                             }
@@ -910,7 +867,7 @@ function print_admin_panoramas($cms) {
                     <form method="POST" ENCTYPE="multipart/form-data" id="next_pano"   >
                         <input type="hidden" name="action" value="upload_data" />
                         <input type="hidden" name="name" value="'.$d["name"].'" />
-                        Upload 6 images of cubemap <input type="file" multiple name="images[]" /><br/>
+                        '.engine::lang("Upload 6 images of cubemap").' <input type="file" multiple name="images[]" /><br/>
                         <input type="submit" class="btn w280" />
                     </form>';
                     return $fout;
@@ -945,7 +902,7 @@ function print_admin_panoramas($cms) {
             }
             $query = 'SELECT * FROM `nodes_vr_scene` WHERE `project_id` = "'.$project["id"].'" AND `level_id` = "'.$level["id"].'" ORDER BY `id` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
             $requery = 'SELECT COUNT(*) FROM `nodes_vr_scene` WHERE `project_id` = "'.$project["id"].'" AND `level_id` = "'.$level["id"].'"';
-            $fout .= '<h1>Level details</h1>';
+            $fout .= '<h1>'.engine::lang("Level details").'</h1>';
             $table = '<div id="listing">
                 <form method="POST" id="act-form">
                     <input type="hidden" id="act-id" name="id" value="" />
@@ -982,34 +939,35 @@ function print_admin_panoramas($cms) {
                 <td align=left>'.$points.'</td>
                 <td align=left>'.$links.'</td>
                 <td align=left>
-                    <a class="btn small" href="'.$_SERVER["DIR"].'/panorama.php?id='.$data["id"].'" target="_blank">'.engine::lang("View scene").'</a><input type="button" class="btn small" value="'.engine::lang("Delete").'" onClick=\'
-                        if (confirm("'.engine::lang("Are you sure you want to delete a scene with all custom objects?").'")) {
-                            $id("act-val").value = "delete";
-                            $id("act-id").value = "'.$data["id"].'";
-                            $id("act-form").submit();
-                        }
-                    \' />';
-
+                    <a class="btn small" href="'.$_SERVER["DIR"].'/panorama.php?id='.$data["id"].'" target="_blank">'.engine::lang("View scene").'</a>
+                        <input type="button" class="btn small" value="'.engine::lang("Delete").'" onClick=\'
+                            if (confirm("'.engine::lang("Are you sure you want to delete a scene with all custom objects?").'")) {
+                                $id("act-val").value = "delete";
+                                $id("act-id").value = "'.$data["id"].'";
+                                $id("act-form").submit();
+                            }\'
+                        />';
                 $query = 'SELECT COUNT(*) FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
                 $d = mysqli_fetch_array($r);
-                if ($d[0] ==0) {
+                if ($d[0] == 0) {
                     $table .= '<input type="button" class="btn small" value="Build navigation" onClick=\'
                         if (confirm("Are you sure you want to build navigation to neightbors scenes?")) {
                             $id("act-val").value = "build_navigation";
                             $id("act-id").value = "'.$data["id"].'";
                             $id("act-form").submit();
-                        }
-                    \' />';
+                        }\'
+                    />';
                 }
                 $table .= '
-                </td>
-                    </tr>';
-                        }$table .= '
+                    </td>
+                </tr>';
+            }
+            $table .= '
                 </table></div><br/>';
             if ($arr_count) {
                 $fout .= $table.'
-                <form method="POST"  id="query_form"  onSubmit="document.framework.submit_search_form();">
+                <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
                 <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
                 <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -1019,150 +977,164 @@ function print_admin_panoramas($cms) {
                 $res = engine::mysql($requery);
                 $data = mysqli_fetch_array($res);
                 $count = $data[0];
-                if ($to > $count) $to = $count;
-                if ($data[0]>0) {
+                if ($to > $count) {
+                    $to = $count;
+                }
+                if ($data[0] > 0) {
                     $fout.= '<p class="p5">'.engine::lang("Showing").' '.$from.' '.engine::lang("to").' '.$to.' '.engine::lang("from").' '.$count.' '.engine::lang("entries").', 
                         <nobr><select id="select-pagination" class="input" onChange=\'$id("count_field").value = this.value; document.framework.submit_search_form();\' >
-                         <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") $fout.= ' selected'; $fout.= '>20</option>
-                         <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") $fout.= ' selected'; $fout.= '>50</option>
-                         <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") $fout.= ' selected'; $fout.= '>100</option>
+                         <option id="option-pagination-20"'; if ($_SESSION["count"] == "20") { $fout.= ' selected'; } $fout.= '>20</option>
+                         <option id="option-pagination-50"'; if ($_SESSION["count"] == "50") { $fout.= ' selected'; } $fout.= '>50</option>
+                         <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
                         </select> '.engine::lang("per page").'.</nobr></p>';
-                }$fout .= '</div><div class="cr"></div>';
-                if ($count>$_SESSION["count"]) {
+                }
+                $fout .= '</div><div class="cr"></div>';
+                if ($count > $_SESSION["count"]) {
                     $fout .= '<div class="pagination" >';
-                    $pages = ceil($count/$_SESSION["count"]);
-                    if ($_SESSION["page"]>1) {
-                        $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"]-1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
-                    }$fout .= '<ul>';
+                    $pages = ceil($count / $_SESSION["count"]);
+                    if ($_SESSION["page"] > 1) {
+                        $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
+                    }
+                    $fout .= '<ul>';
                     $a = $b = $c = $d = $e = $f = 0;
                     for ($i = 1; $i <= $pages; $i++) {
-                       if (($a<2 && !$b && $e<2)||
-                           ($i >=( $_SESSION["page"]-2) && $i <=( $_SESSION["page"]+2) && $e<5)||
-                       ($i>$pages-2 && $e<2)) {
-                           if ($a<2) $a++;
-                           $e++; $f = 0;
-                           if ($i == $_SESSION["page"]) {
-                               $b = 1; $e = 0;
-                              $fout .= '<li class="active-page">'.$i.'</li>';
-                           } else {
-                               $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
-                           }
-                       } else if ((!$c||!$b) && !$f && $i < $pages) {
-                           $f = 1; $e = 0;
-                           if (!$b) $b = 1;
-                           else if (!$c) $c = 1;
-                           $fout .= '<li class="dots">. . .</li>';
-                       }
-                    }if ($_SESSION["page"]<$pages) {
-                       $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"]+1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
-                    }$fout .= '</ul>
+                       if (($a < 2 && !$b && $e < 2)
+                            || ($i >= ($_SESSION["page"] - 2) && $i <= ($_SESSION["page"] + 2) && $e < 5)
+                            || ($i > $pages - 2 && $e < 2)
+                        ) {
+                            if ($a < 2) {
+                                $a++;
+                            }
+                            $e++;
+                            $f = 0;
+                            if ($i == $_SESSION["page"]) {
+                                $b = 1; $e = 0;
+                                $fout .= '<li class="active-page">'.$i.'</li>';
+                            } else {
+                                $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                            }
+                        } else if ((!$c || !$b) && !$f && $i < $pages) {
+                            $f = 1; 
+                            $e = 0;
+                            if (!$b) {
+                                $b = 1;
+                            } else if (!$c) {
+                                $c = 1;
+                            }
+                            $fout .= '<li class="dots">. . .</li>';
+                        }
+                    }
+                    if ($_SESSION["page"] < $pages) {
+                       $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                    }
+                    $fout .= '</ul>
                     </div>
                     ';
-                 }$fout .= '
-                    </form><div class="clear"></div>';
+                }
+                $fout .= '</form>
+                    <div class="clear"></div>';
             } else {
                 $fout .= '<div class="clear_block">'.engine::lang("Scenes not found").'</div>';
             }
-
             $fout .= '
+            </div>
+            <div style="max-width: 640px; margin:0px auto;">
+                <input id="show_level_plan" type="button" class="btn w280" value="'.engine::lang("Show level plan").'" onClick=\'
+                   $id("show_level_plan").style.display="none";
+                   $id("upload_scene_button").style.display="none";
+                   $id("edit_scene_button").style.display="none";
+                   $id("add_new_scene_button").style.display="none";
+                   $id("level_plan").style.display="block";
+                   try{ $id("listing").style.display="none"; }catch(e) {}
+                   document.framework.admin.showLevelPlan();\'
+                />
+                <div id="level_plan">
+                    '.engine::pano_level_plan($level_id).'
                 </div>
-                <div style="max-width: 640px; margin:0px auto;">
-                    <input id="show_level_plan" type="button" class="btn w280" value="'.engine::lang("Show level plan").'" onClick=\'
-                       $id("show_level_plan").style.display="none";
-                       $id("upload_scene_button").style.display="none";
-                       $id("edit_scene_button").style.display="none";
-                       $id("add_new_scene_button").style.display="none";
-                       $id("level_plan").style.display="block";
-                       try{ $id("listing").style.display="none"; }catch(e) {}
-                       document.framework.admin.showLevelPlan();
-                   \' />
-                   <div id="level_plan">
-                       '.engine::pano_level_plan($level_id).'
-                   </div>
-                   <br/>
-                   <input id="upload_scene_button" type="button" class="btn w280" value="'.engine::lang("Upload scenes").'" onClick=\'
-                       $id("show_level_plan").style.display="none";
-                       $id("upload_scene_button").style.display="none";
-                       $id("upload_scene").style.display="block";
-                       $id("edit_scene_button").style.display="none";
-                       $id("add_new_scene_button").style.display="none";
-                       try{ $id("listing").style.display="none"; }catch(e) {}
-                   \' />
-                   <form method="POST"  ENCTYPE="multipart/form-data" id="upload_scene" style="display:none; text-align:left;" >
-                       <input type="hidden" name="action" value="upload_scene" />
-                       <center><h2 class="fs21">'.engine::lang("Upload scenes").'</h2></center><br/>
-                       JSON:<br/>
-                       <input id="input-article-caption" type="file" class="input w600" name="json" required /><br/><br/>
-                       <!--
-                       Scene images:<br/>
-                       <input id="input-article-images" type="file" multiple class="input w600" name="file[]"  /><br/><br/>
-                       -->
-                       <center><input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
-                       <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a></center><br/><br/>
-                       <br/>
-                   </form>
-                   <br/>
-                   <input id="add_new_scene_button" type="button" class="btn w280" value="'.engine::lang("Add new scene").'" onClick=\'
-                       $id("show_level_plan").style.display="none";
-                       $id("upload_scene_button").style.display="none";
-                       $id("new_scene").style.display="block";
-                       $id("edit_scene_button").style.display="none";
-                       $id("add_new_scene_button").style.display="none";
-                       try{ $id("listing").style.display="none"; }catch(e) {}
-                       \' />
-                   <form method="POST" ENCTYPE="multipart/form-data" id="new_scene" style="display:none; text-align:left;" >
-                       <input type="hidden" name="action" value="new_scene" />
-                       <center><h2 class="fs21">'.engine::lang("Add new scene").'</h2></center><br/>        
-  <main id="worker_wnd" class="lh2 w280 m0a">
-    <section>
-      <label>'.engine::lang("Upload a panoramic image").': <br/><br/><input id="imageInput" type="file" ></label>
-      <label>'.engine::lang("Or upload 6 images of cubemap").'</label> <input type="file" multiple name="images[]" onChange=\'$id("new_scene_details").style.display = "block"; $id("worker_wnd").style.display="none";\' />
-    </section>
-    <section class="settings">
-      <div>
-        <label>'.engine::lang("Cube Rotation").': <input id="cubeRotation" type="number" min="0" max="359" value="180">°</label>
-      </div>
-      <fieldset title="'.engine::lang("The resampling algorithm to use when generating the cubemap").'">
-        <label><input type="radio" name="interpolation" value="lanczos" checked>Lanczos (best but slower)</label><br/>
-        <label><input type="radio" name="interpolation" value="cubic">Cubic (sharper details)</label><br/>
-        <label><input type="radio" name="interpolation" value="linear">Linear (softer details)</label><br/>
-      </fieldset>
-      <fieldset style="display:none;">
-        '.engine::lang("Output format").'<br/>
-        <label><input type="radio" name="format" value="png" checked>PNG</label><br/>
-        <label><input type="radio" name="format" value="jpg">JPEG</label><br/>
-      </fieldset>
-    </section>
-    <section>
-      <div id="cubemap">
-        <b id="generating" style="visibility:hidden">'.engine::lang("Generating").'...</b>
-        <output id="faces"></output>
-      </div>
-    </section>
-  </main>
-  <script src="'.$_SERVER["DIR"].'/script/pano2cube.js"></script>
-                <div style="display:none;" id="new_scene_details">
-                    '.engine::lang("Scene name").':<br/>
-                    <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
-                    '.engine::lang("Scene position").':<br/>
-                    <input id="input-article-position" type="text" class="input w600" name="position" required placeHolder="'.engine::lang("Position").'" value="0 3 0" /><br/><br/>
-                    '.engine::lang("Scene rotation").':<br/>
-                    <input id="input-article-rotation" type="text" class="input w600" name="rotation" required placeHolder="'.engine::lang("Rotation").'" value="0 0 0" /><br/><br/>
-                    '.engine::lang("Scene latitude").':<br/>
-                    <input id="input-article-latitude" type="number" class="input w600" name="lat" required placeHolder="'.engine::lang("Latitude").'" value="0" /><br/><br/>
-                    '.engine::lang("Scene longitude").':<br/>
-                    <input id="input-article-longitude" type="number" class="input w600" name="lng" required placeHolder="'.engine::lang("Longitude").'" value="0" /><br/><br/>
-                    '.engine::lang("Floor position").':<br/>
-                    <input id="input-article-floor-position" type="text" class="input w600" name="floor_position" required placeHolder="'.engine::lang("Floor position").'" value="0 -2 0" /><br/><br/>
-                    '.engine::lang("Floor radius").':<br/>
-                    <input id="input-article-floor-radius" type="number" class="input w600" name="floor_radius" required placeHolder="'.engine::lang("Floor radius").'" value="20" /><br/><br/>
-                    '.engine::lang("Logo size").':<br/>
-                    <input id="input-article-floor-radius" type="number" class="input w600" name="logo_size" required placeHolder="'.engine::lang("Logo size").'" value="4" /><br/><br/>
-                    <center><input id="input-submit-new-scene" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
-                        <a href="'.engine::href($_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id).'"><input type="button" class="btn w280" value="'.engine::lang("Cancel").'" /></a><br/>
-                        </center><br/><br/>
+                <br/>
+                <input id="upload_scene_button" type="button" class="btn w280" value="'.engine::lang("Upload scenes").'" onClick=\'
+                    $id("show_level_plan").style.display="none";
+                    $id("upload_scene_button").style.display="none";
+                    $id("upload_scene").style.display="block";
+                    $id("edit_scene_button").style.display="none";
+                    $id("add_new_scene_button").style.display="none";
+                    try{ $id("listing").style.display="none"; }catch(e) {}\'
+                 />
+                <form method="POST" ENCTYPE="multipart/form-data" id="upload_scene" style="display:none; text-align:left;" >
+                    <input type="hidden" name="action" value="upload_scene" />
+                    <center><h2 class="fs21">'.engine::lang("Upload scenes").'</h2></center><br/>
+                    JSON:<br/>
+                    <input id="input-article-caption" type="file" class="input w600" name="json" required /><br/><br/>
+                    <!--
+                    Scene images:<br/>
+                    <input id="input-article-images" type="file" multiple class="input w600" name="file[]"  /><br/><br/>
+                    -->
+                    <center><input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
+                    <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a></center><br/><br/>
                     <br/>
-                </div>
+                </form>
+                <br/>
+                <input id="add_new_scene_button" type="button" class="btn w280" value="'.engine::lang("Add new scene").'" onClick=\'
+                    $id("show_level_plan").style.display="none";
+                    $id("upload_scene_button").style.display="none";
+                    $id("new_scene").style.display="block";
+                    $id("edit_scene_button").style.display="none";
+                    $id("add_new_scene_button").style.display="none";
+                    try{ $id("listing").style.display="none"; }catch(e) {}\'
+                />
+                <form method="POST" ENCTYPE="multipart/form-data" id="new_scene" style="display:none; text-align:left;" >
+                    <input type="hidden" name="action" value="new_scene" />
+                    <center><h2 class="fs21">'.engine::lang("Add new scene").'</h2></center><br/>        
+                    <main id="worker_wnd" class="lh2 w280 m0a">
+                      <section>
+                        <label>'.engine::lang("Upload a panoramic image").': <br/><br/><input id="imageInput" type="file" ></label>
+                        <label>'.engine::lang("Or upload 6 images of cubemap").'</label> <input type="file" multiple name="images[]" onChange=\'$id("new_scene_details").style.display = "block"; $id("worker_wnd").style.display="none";\' />
+                      </section>
+                      <section class="settings">
+                        <div>
+                          <label>'.engine::lang("Cube Rotation").': <input id="cubeRotation" type="number" min="0" max="359" value="180">°</label>
+                        </div>
+                        <fieldset title="'.engine::lang("The resampling algorithm to use when generating the cubemap").'">
+                          <label><input type="radio" name="interpolation" value="lanczos" checked>Lanczos (best but slower)</label><br/>
+                          <label><input type="radio" name="interpolation" value="cubic">Cubic (sharper details)</label><br/>
+                          <label><input type="radio" name="interpolation" value="linear">Linear (softer details)</label><br/>
+                        </fieldset>
+                        <fieldset style="display:none;">
+                          '.engine::lang("Output format").'<br/>
+                          <label><input type="radio" name="format" value="png" checked>PNG</label><br/>
+                          <label><input type="radio" name="format" value="jpg">JPEG</label><br/>
+                        </fieldset>
+                      </section>
+                      <section>
+                        <div id="cubemap">
+                          <b id="generating" style="visibility:hidden">'.engine::lang("Generating").'...</b>
+                          <output id="faces"></output>
+                        </div>
+                      </section>
+                    </main>
+                    <script src="'.$_SERVER["DIR"].'/script/pano2cube.js"></script>
+                    <div style="display:none;" id="new_scene_details">
+                        '.engine::lang("Scene name").':<br/>
+                        <input id="input-article-caption" type="text" class="input w600" name="name" required placeHolder="'.engine::lang("Name").'" /><br/><br/>
+                        '.engine::lang("Scene position").':<br/>
+                        <input id="input-article-position" type="text" class="input w600" name="position" required placeHolder="'.engine::lang("Position").'" value="0 3 0" /><br/><br/>
+                        '.engine::lang("Scene rotation").':<br/>
+                        <input id="input-article-rotation" type="text" class="input w600" name="rotation" required placeHolder="'.engine::lang("Rotation").'" value="0 0 0" /><br/><br/>
+                        '.engine::lang("Scene latitude").':<br/>
+                        <input id="input-article-latitude" type="number" class="input w600" name="lat" required placeHolder="'.engine::lang("Latitude").'" value="0" /><br/><br/>
+                        '.engine::lang("Scene longitude").':<br/>
+                        <input id="input-article-longitude" type="number" class="input w600" name="lng" required placeHolder="'.engine::lang("Longitude").'" value="0" /><br/><br/>
+                        '.engine::lang("Floor position").':<br/>
+                        <input id="input-article-floor-position" type="text" class="input w600" name="floor_position" required placeHolder="'.engine::lang("Floor position").'" value="0 -2 0" /><br/><br/>
+                        '.engine::lang("Floor radius").':<br/>
+                        <input id="input-article-floor-radius" type="number" class="input w600" name="floor_radius" required placeHolder="'.engine::lang("Floor radius").'" value="20" /><br/><br/>
+                        '.engine::lang("Logo size").':<br/>
+                        <input id="input-article-floor-radius" type="number" class="input w600" name="logo_size" required placeHolder="'.engine::lang("Logo size").'" value="4" /><br/><br/>
+                        <center><input id="input-submit-new-scene" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
+                            <a href="'.engine::href($_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id).'"><input type="button" class="btn w280" value="'.engine::lang("Cancel").'" /></a><br/>
+                            </center><br/><br/>
+                        <br/>
+                    </div>
                 </form>
                 <br/>
                 <input id="edit_scene_button" type="button" class="btn w280" value="'.engine::lang("level properties").'" onClick=\'
@@ -1171,9 +1143,9 @@ function print_admin_panoramas($cms) {
                     $id("edit_level").style.display="block";
                     $id("edit_scene_button").style.display="none";
                     $id("add_new_scene_button").style.display="none";
-                    try{ $id("listing").style.display="none"; }catch(e) {}
-                    \' />
-                <form method="POST"  ENCTYPE="multipart/form-data" id="edit_level" style="display:none;" >
+                    try{ $id("listing").style.display="none"; }catch(e) {}\' 
+                />
+                <form method="POST" ENCTYPE="multipart/form-data" id="edit_level" style="display:none;" >
                     <input type="hidden" name="action" value="edit_level" />
                     <h2 class="fs21">'.engine::lang("Level properties").'</h2><br/>
                     <center>
@@ -1186,7 +1158,7 @@ function print_admin_panoramas($cms) {
                     <br/>
                     <br/></center>
                 </form>
-         </div>';
+            </div>';
         }
     }
     $cms->onload .= ' document.framework.tinymce_init(); ';
