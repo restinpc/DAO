@@ -211,6 +211,7 @@ document.uploader.UploadFile = (file) => {
                 }
             }
         };
+        console.error(file);
         xhr.open("POST", document.framework.root_dir+"/uploader.php?dragndrop=1", true);
         xhr.setRequestHeader("X-FILENAME", file.name);
         xhr.setRequestHeader("X_FILENAME", file.name);

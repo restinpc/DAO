@@ -45,9 +45,6 @@ if (!empty($_GET["id"])) {
     $result .= $_GET["id"];
 }
 if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
-    print_r($_SERVER);
-    print_r($_FILES);
-    die();
     $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
     if ($fn) {
         $ext = explode('.', $fn);
@@ -121,8 +118,8 @@ if (!empty($_POST["name"])) {
         $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/', $name, $ext, true, 100);
         unlink($_POST["url"]);
         $img->crop(
-            intval($_POST["l"]* $_POST["scale"]),
-            intval($_POST["t"]* $_POST["scale"]),
+            intval($_POST["l"] * $_POST["scale"]),
+            intval($_POST["t"] * $_POST["scale"]),
             intval($_POST["w"]),
             intval($_POST["h"])
         );
@@ -219,10 +216,10 @@ if (!empty($_POST["name"])) {
             $height = intval($size[1]);
             $scale = 1;
             $fout = '<body class="nodes uploader_body" draggable="false" title="'.engine::lang("For uploading selected area use double click").'">
-                <div id="image" draggable="false" onDragStart="return false;" style="background: url('.$_SERVER["DIR"].'/'.$f_name.') top left no-repeat; width: '.($width/ $scale).'px; height: '.($height/ $scale).'px; background-size: cover;" >
-                    <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width/ $scale).'px; height: '.($height/ $scale).'px;" />
+                <div id="image" draggable="false" onDragStart="return false;" style="background: url('.$_SERVER["DIR"].'/'.$f_name.') top left no-repeat; width: '.($width / $scale).'px; height: '.($height / $scale).'px; background-size: cover;" >
+                    <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width / $scale).'px; height: '.($height / $scale).'px;" />
                 </div>
-                <div id="frame" draggable="false" onDragStart="return false;" style="width:'.($THUWIDTH/ $scale).'px; height:'.($THUHEIGHT/ $scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
+                <div id="frame" draggable="false" onDragStart="return false;" style="width:'.($THUWIDTH / $scale).'px; height:'.($THUHEIGHT / $scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
                     <table draggable="false" cellpadding=0 cellspacing=0 onDragStart="return false;" onMouseDown=\'if (document.uploader.dragMode != 3) { document.uploader.dragMode = 1; }\'>
                     <tr><td align=left valign=top></td></tr></table>
                     <div id="bottom_dot" onMouseDown=\'document.uploader.dragMode = 2;\' draggable="false" onDragStart="return false;">
