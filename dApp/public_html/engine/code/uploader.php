@@ -261,16 +261,16 @@ if (!empty($_POST["name"])) {
                     document.getElementById("frame").style.width = ('.($THUWIDTH).'/scale) +"px";
                     document.getElementById("frame").style.height = ('.($THUHEIGHT).'/scale) +"px";
                     document.getElementById("scale").value = scale;
-                    
                     addHandler(document.getElementById("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
                     addHandler(document.getElementById("frame"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
                     try {
-                        console.error(parent);
-                        parent.document.getElementById("'.$f1.'1").style.width = ('.($width).'/scale+60) +"px";
-                        parent.document.getElementById("'.$f1.'1").style.height = ('.($height).'/scale+80) +"px";
+                        console.error(parent.document);
+                        parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
+                        parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
                     } catch(e) {
+                        console.error(e.message);
                         console.error("it");
                     }
                 </script>
