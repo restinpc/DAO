@@ -28,7 +28,7 @@ if (empty($user) || empty($user["pass"])) {
     return;
 } else {
     $this->title = $user["name"];
-    $this->keywords = Array(
+    $this->keywords = array(
         $user["name"],
         engine::lang("Member of") . ' Web 3.0 ' . engine::lang("community"),
         $user["email"], $user["url"]

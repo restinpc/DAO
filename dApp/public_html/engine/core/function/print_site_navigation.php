@@ -13,7 +13,7 @@
 */
 
 function print_site_navigation($current) {
-    $arr = Array(
+    $arr = array(
         engine::lang("Booking rooms") => $_SERVER["DIR"]."/booking",
         engine::lang("Developed by") => $_SERVER["DIR"]."/developer",
         engine::lang("Terms & conditions") => $_SERVER["DIR"]."/content/terms_and_conditions",

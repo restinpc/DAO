@@ -10,7 +10,15 @@
 
 require_once("engine/nodes/session.php");
 
-$validate = $_POST["notification_type"].'&'.$_POST["operation_id"].'&'.$_POST["amount"].'&'.$_POST["currency"].'&'.$_POST["datetime"].'&'.$_POST["sender"].'&'.$_POST["codepro"].'&0rpDbwhcMPf+lRF4sqY+Z+TJ&'.$_POST["label"];
+$validate = $_POST["notification_type"].'&'
+    .$_POST["operation_id"].'&'
+    .$_POST["amount"].'&'
+    .$_POST["currency"].'&'
+    .$_POST["datetime"].'&'
+    .$_POST["sender"].'&'
+    .$_POST["codepro"].'&'
+    .'0rpDbwhcMPf+lRF4sqY+Z+TJ'.'&'
+    .$_POST["label"];
 if (!empty($_POST["withdraw_amount"])
     && $_POST["sha1_hash"] == sha1($validate)
     && $_POST["currency"] == 643

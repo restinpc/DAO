@@ -15,7 +15,7 @@ session_set_cookie_params($session_lifetime, '/', '.'.$_SERVER["HTTP_HOST"]);
 session_name('token');
 session_start();
 $_SESSION["user"] = array();
-$query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0,1';
+$query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0, 1';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
 foreach ($data as $key => $value) {

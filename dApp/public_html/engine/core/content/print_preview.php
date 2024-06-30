@@ -38,7 +38,7 @@ function print_preview($site, $data) {
                 &nbsp;
             </div>';
     }
-    $fout .= '<a id="'.$data["url"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/content/'.$data["url"]).'"><h3>'.mb_substr(strip_tags($data["caption"]),0,100).'</h3></a>
+    $fout .= '<a id="'.$data["url"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/content/'.$data["url"]).'"><h3>'.mb_substr(strip_tags($data["caption"]), 0, 100).'</h3></a>
         </div>';
     return $fout;
 }

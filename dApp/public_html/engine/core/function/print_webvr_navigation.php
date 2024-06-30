@@ -13,7 +13,7 @@
 */
 
 function print_webvr_navigation($current) {
-    $arr = Array(
+    $arr = array(
         engine::lang("Free look mode") => $_SERVER["DIR"]."/webvr/free-look",
         engine::lang("Orbital preview") => $_SERVER["DIR"]."/webvr/orbital",
         engine::lang("Panorama viewer") => $_SERVER["DIR"]."/webvr/panorama",

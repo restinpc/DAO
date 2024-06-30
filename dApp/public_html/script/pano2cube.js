@@ -50,9 +50,9 @@ class CubeFace {
     var name = this.faceName;
     fd.append('url', url);
     try{
-        var url_data = '/upload_cubemap.php?name='+name+'&img_id='+parseInt($id("cubemap_id").value);
+        var url_data = document.framework.root_dir + '/cubemap.php?name='+name+'&img_id='+parseInt($id("cubemap_id").value);
     }catch(e){
-        var url_data = '/upload_cubemap.php?name='+name;
+        var url_data = document.framework.root_dir + '/cubemap.php?name='+name;
     }
     $.ajax({
         type: 'POST',

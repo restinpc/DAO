@@ -21,7 +21,7 @@ if (!empty($_GET[2])) {
     return;
 }
 $this->title = engine::lang("Developed by");
-$this->keywords = Array(
+$this->keywords = array(
     "Aleksandr V", 
     "restinpc", 
     "Vorkunov", 

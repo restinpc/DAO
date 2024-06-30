@@ -3,7 +3,7 @@
 * Prints search result block.
 * @path /engine/core/function/print_search_result.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -29,20 +29,20 @@ function print_search_result($site, $caption, $html, $url) {
     $html = trim(preg_replace('#[\s]+#', ' ', $html));
     $pos = strpos($html, $request);
     if ($pos) {
-        if (strlen($html) >180) {
-            if ($pos<90) {
+        if (strlen($html) > 180) {
+            if ($pos < 90) {
                 $start = '';
                 $from = 0;
             } else {
                 $start = '..';
-                $from = $pos-90;
+                $from = $pos - 90;
             }
             $html = $start.mb_substr($html, $from, 180).'..';
         }
         $html = str_replace($_GET[1], "<b>".$_GET[1]."</b>", $html);
         $fout = '<div class="search_result">'
-            . '<a id="link-'.$url.'" href="'.$url.'" target="_blank" class="fs16">'.$caption.'</a>'
-            . '<p>'.$html.'</p>'
+                . '<a id="link-'.$url.'" href="'.$url.'" target="_blank" class="fs16">'.$caption.'</a>'
+                . '<p>'.$html.'</p>'
             . '</div><br/>';
         return $fout;
     }

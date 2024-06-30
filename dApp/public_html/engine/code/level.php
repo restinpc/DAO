@@ -29,11 +29,11 @@ $fout = '<!DOCTYPE html>
     </script>
 </head>
 <body class="nodes" style="opacity:1;">
-'.engine::print_level_plan($_GET["id"]).'
-<link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
-<script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript"></script>
+    '.engine::print_level_plan($_GET["id"]).'
+    <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
+    <script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
+    <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
+    <script src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript"></script>
 </body>
 </html>';
 echo $fout;

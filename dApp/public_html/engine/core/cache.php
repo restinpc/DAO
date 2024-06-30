@@ -63,10 +63,10 @@ public static function update_cache($url, $jQuery = 0, $lang="en") {
     }
     if (!$jQuery) {
         return($fout."
-<!-- Refreshing cache. Time loading: ".(floatval(microtime(1))- $GLOBALS["time"])." -->");
+<!-- Refreshing cache. Time loading: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
     } else {
         return('<title>'.$data["title"].'</title>'.$content."
-<!-- Refreshing cache and return content. Time loading: ".(floatval(microtime(1))- $GLOBALS["time"])." -->");
+<!-- Refreshing cache and return content. Time loading: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
     }
 }
 /*
@@ -95,7 +95,7 @@ public function __construct() {
                     $html = str_replace('<content/>', $data["content"], $data["html"]);
                 }
                 die($html."
-<!-- Time loading from cache: ".(floatval(microtime(1))- $GLOBALS["time"])." -->");
+<!-- Time loading from cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
             $fout .= "<!-- Cache is empty -->";
         } else if (empty($data)) {
@@ -114,7 +114,7 @@ public function __construct() {
                     $html = str_replace('<content/>', $data["content"], $data["html"]);
                 }
                 die($html."
-<!-- Time loading form cache: ".(floatval(microtime(1))- $GLOBALS["time"])." -->");
+<!-- Time loading form cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
         }
     // cacheing for asinc jquery requests
@@ -127,7 +127,7 @@ public function __construct() {
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
             } else if (!empty($data["html"])) {
                 die('<title>'.$data["title"].'</title>'.$data["content"]."
-<!-- Time loading from cache: ".(floatval(microtime(1))- $GLOBALS["time"])." -->");
+<!-- Time loading from cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
             $fout .= "<!-- Cache is empty -->";
         } else if (empty($data)) {
@@ -141,7 +141,7 @@ public function __construct() {
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
                 }
                 die('<title>'.$data["title"].'</title>'.$data["content"]."
-<!-- Time loading form cache: ".(floatval(microtime(1))- $GLOBALS["time"])." -->");
+<!-- Time loading form cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
         }
     }

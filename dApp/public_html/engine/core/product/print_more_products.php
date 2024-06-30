@@ -25,7 +25,7 @@ function print_more_products($site, $id) {
     $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $product = mysqli_fetch_array($res);
-    $urls = Array();
+    $urls = array();
     $count = 0;
     $fout = '';
     do {

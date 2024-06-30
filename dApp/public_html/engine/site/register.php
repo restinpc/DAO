@@ -25,21 +25,21 @@ if (!empty($_GET[1])) {
 }
 $this->title = engine::lang("Sign Up");
 if ($_SESSION["Lang"] == "en") {
-    $this->keywords = Array(
+    $this->keywords = array(
         "Registration",
         "Web 3.0",
         "Community"
     );
     $this->description = "Registering as a Member of the Web 3.0 Community";
 } else if ($_SESSION["Lang"] == "zh") {
-    $this->keywords = Array(
+    $this->keywords = array(
         "登記",
         "Web 3.0",
         "社區"
     );
     $this->description = '註冊成為 Web 3.0 社區的成員';
 } else {
-    $this->keywords = Array(
+    $this->keywords = array(
         "Регистрация",
         "Web 3.0",
         "Сообщество"

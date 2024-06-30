@@ -222,9 +222,9 @@ function print_admin_perfomance($cms) {
         $query = 'SELECT AVG(`server_time`) FROM `nodes_perfomance` WHERE `server_time` > 0';
         $res = engine::mysql($query);
         $mid_server = mysqli_fetch_array($res);
-        $fout .= '<br/><center class="lh2"><span class="statistic_span" style="color: rgb(68,115,186);">'.engine::lang("Average Server Response").': '.round($mid_server[0],2).'</span> ';
-        $fout .= '<span class="statistic_span" style="color: rgb(20,180,180);">'.engine::lang("Average Site Response").': '.round($mid_script[0],2).'</span><br/><br/>';
-        $fout .= '<img width=100% title="'.engine::lang("Page generation time").'" class="w600" src="'.$_SERVER["DIR"].'/perfomance.php?interval='.((!empty($_GET["interval"]))?$_GET["interval"]:"hour").'&date='.$_GET["date"].'&rand='.rand(0,100).'" /></center><br/>';
+        $fout .= '<br/><center class="lh2"><span class="statistic_span" style="color: rgb(68, 115, 186);">'.engine::lang("Average Server Response").': '.round($mid_server[0], 2).'</span> ';
+        $fout .= '<span class="statistic_span" style="color: rgb(20, 180, 180);">'.engine::lang("Average Site Response").': '.round($mid_script[0], 2).'</span><br/><br/>';
+        $fout .= '<img width=100% title="'.engine::lang("Page generation time").'" class="w600" src="'.$_SERVER["DIR"].'/perfomance.php?interval='.((!empty($_GET["interval"]))?$_GET["interval"]:"hour").'&date='.$_GET["date"].'&rand='.rand(0, 100).'" /></center><br/>';
     } else if ($_GET["action"] == "pages") {
         $query = 'SELECT * FROM `nodes_perfomance` WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'"';
         $res = engine::mysql($query);
@@ -238,7 +238,7 @@ function print_admin_perfomance($cms) {
         $sum = 0;
         $c = 0;
         foreach ($pages as $i => $value) {
-            $pages[$i] = round($perfomance[$i] / $value,2);
+            $pages[$i] = round($perfomance[$i] / $value, 2);
             $sum += floatval($pages[$i]);
             $c++;
         }

@@ -54,7 +54,7 @@ function admin($site) {
         $query = 'SELECT AVG(`script_time`) FROM `nodes_perfomance` WHERE `script_time` > 0';
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
-        $this->statistic["perfomance"] = round($d[0],2);
+        $this->statistic["perfomance"] = round($d[0], 2);
         if ($site->configs["cron"]) {
             $this->statistic["cron"] = 'jQuery ';
         }
@@ -64,7 +64,7 @@ function admin($site) {
         $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_done"';
         $res = engine::mysql($query);
         $done = mysqli_fetch_array($res);
-        if ($exec["value"] <date("U")-3600) {
+        if ($exec["value"] <date("U") - 3600) {
             $this->statistic["cron"] .= engine::lang("Disabled");
         } else if ($exec["value"] > $done["value"] + 300) {
             $this->statistic["cron"] .= engine::lang("Error");

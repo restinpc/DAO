@@ -3,7 +3,7 @@
 * Do not edit directly.
 * @path /template/bootstrap/template.js
 *
-* @name    DAO Mansion    @version 1.0.0
+* @name    DAO Mansion    @version 1.0.3
 * @license http://www.apache.org/licenses/LICENSE-2.0 GNU Public License
 */
 //------------------------------------------------------------------------------

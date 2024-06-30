@@ -103,7 +103,7 @@ if ($_GET[0] != "content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
 } else {
     $this->title = engine::lang("Content");
     if ($_SESSION["Lang"] == "en") {
-        $this->keywords = Array(
+        $this->keywords = array(
             "Нейросети",
             "dApp",
             "VR",
@@ -114,7 +114,7 @@ if ($_GET[0] != "content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
         We analyze the prospects of Web 3.0, including distributed applications (dApps) and neural networks.
         We also explore various aspects of virtual reality, including the creation and use of digital worlds, social interactions, and business opportunities.";
     } else if ($_SESSION["Lang"] == "zh") {
-        $this->keywords = Array(
+        $this->keywords = array(
             "神經網絡",
             "dApp",
             "VR",
@@ -125,7 +125,7 @@ if ($_GET[0] != "content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
         我們分析了 Web 3.0 的前景，包括分佈式應用程序 (dApp) 和神經網絡。
         我們還探索虛擬現實的各個方面，包括數字世界的創建和使用、社交互動和商業機會。';
     } else {
-        $this->keywords = Array(
+        $this->keywords = array(
             "Нейросети",
             "dApp",
             "VR",

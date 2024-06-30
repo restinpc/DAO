@@ -28,7 +28,7 @@ $data = mysqli_fetch_array($res);
 $git = $data["value"];
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
-    $this->keywords = Array(
+    $this->keywords = array(
         "DAO",
         "Mansion",
         "Особняк",
@@ -134,7 +134,7 @@ if ($_SESSION["Lang"] == "ru") {
     </div>';
 } else if ($_SESSION["Lang"] == "zh") {
     $this->description = '项目目标是根据 DAO（去中心化自治组织）原则建立社区、别墅和数字基础设施，以确保参与者的舒适生活。';
-    $this->keywords = Array(
+    $this->keywords = array(
         "DAO",
         "Mansion",
         "別墅",
@@ -229,7 +229,7 @@ if ($_SESSION["Lang"] == "ru") {
     </div>';
 } else {
     $this->description = 'The goal of the project is to build a community, villa, and digital infrastructure for the comfortable existence of participants according to the principles of a Decentralized Autonomous Organization (DAO).';
-    $this->keywords = Array(
+    $this->keywords = array(
         "DAO",
         "Mansion",
         "Villa",

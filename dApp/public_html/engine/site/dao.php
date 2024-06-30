@@ -23,13 +23,13 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Decentralized management");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public management of digital resources of a decentralized organization";
-        $this->keywords = Array("DAO", "Blockchain", "Management", "Decentralized organization", "Web 3.0");
+        $this->keywords = array("DAO", "Blockchain", "Management", "Decentralized organization", "Web 3.0");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '去中心化組織數字資源的公共管理';
-        $this->keywords = Array("DAO", "Blockchain", "區塊鏈", "管理", "分散的組織", "Web 3.0");
+        $this->keywords = array("DAO", "Blockchain", "區塊鏈", "管理", "分散的組織", "Web 3.0");
     } else {
         $this->description = "Общественное управление цифровыми ресурсами децентрализованной организации";
-        $this->keywords = Array("DAO", "Blockchain", "Менеджмент", "Децентрализованная организация", "Web 3.0");
+        $this->keywords = array("DAO", "Blockchain", "Менеджмент", "Децентрализованная организация", "Web 3.0");
     }
     $this->content .= engine::print_dao_navigation(engine::lang("Decentralized management"));
     $this->content .= engine::print_under_construction();
@@ -37,19 +37,19 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Blockchain monitor");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public monitoring of all DAO-related blockchain transactions";
-        $this->keywords = Array("DAO", "Blockchain", "Explorer", "Decentralized organization", "Web 3.0");
+        $this->keywords = array("DAO", "Blockchain", "Explorer", "Decentralized organization", "Web 3.0");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '對所有 DAO 相關區塊鏈交易的公開監控';
-        $this->keywords = Array("DAO", "Blockchain", "區塊鏈", "探險家", "分散的組織", "Web 3.0");
+        $this->keywords = array("DAO", "Blockchain", "區塊鏈", "探險家", "分散的組織", "Web 3.0");
     } else {
         $this->description = "Публичный мониторинг всех связанных с DAO blockchain транзакций";
-        $this->keywords = Array("DAO", "Blockchain", "Мониторинг", "Децентрализованная организация", "Web 3.0");
+        $this->keywords = array("DAO", "Blockchain", "Мониторинг", "Децентрализованная организация", "Web 3.0");
     }
     $this->content .= engine::print_dao_navigation(engine::lang("Blockchain monitor"));
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "capitalization") {
     $this->title = engine::lang("Capitalization");
-    $this->keywords = Array("DAO", engine::lang("Capitalization"), engine::lang("Decentralized organization"), "Web 3.0");
+    $this->keywords = array("DAO", engine::lang("Capitalization"), engine::lang("Decentralized organization"), "Web 3.0");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Project capitalization history chart";
     } else if ($_SESSION["Lang"] == "zh") {
@@ -61,7 +61,7 @@ if (!empty($_GET[2])) {
     $this->content .= '<iframe id="capital" src="'.$_SERVER["DIR"].'/apps/capital/" class="app" onLoad="document.framework.loading_site();"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "market") {
     $this->title = engine::lang("P2P marketplace");
-    $this->keywords = Array("DAO", "P2P", engine::lang("Decentralized organization"), "Web 3.0");
+    $this->keywords = array("DAO", "P2P", engine::lang("Decentralized organization"), "Web 3.0");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Internal P2P platform of the project with support for digital and physical spot trading";
     } else if ($_SESSION["Lang"] == "zh") {
@@ -73,7 +73,7 @@ if (!empty($_GET[2])) {
     $this->content .= engine::print_under_construction();
 } else if (!empty($_GET[1]) && $_GET[1] == "git") {
     $this->title = engine::lang("Git repository");
-    $this->keywords = Array("DAO", "Git", engine::lang("Decentralized organization"), "Web 3.0");
+    $this->keywords = array("DAO", "Git", engine::lang("Decentralized organization"), "Web 3.0");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public Git repository of the project";
     } else if ($_SESSION["Lang"] == "zh") {

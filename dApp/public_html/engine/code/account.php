@@ -23,31 +23,17 @@ if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"
             $password = engine::encode_password($new_pass);
             $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `email` = "'.$email.'"';
             engine::mysql($query);
-            echo '<div class="center pt100">'.engine::lang("New password activated!").'</div>'
-                . '<script>'
-                    . 'function redirect() {'
-                    . ' parent.window.location="'.$_SERVER["DIR"].'/login";'
-                    . '}'
-                    . 'setTimeout(redirect, 3000);'
-                . '</script>';
+            echo '<div class="center pt100">'.engine::lang("New password activated!").'</div>';
         } else {
-            echo '<div class="center pt100">'.engine::lang("Invalid confirmation code").'.</div>'
-                . '<script>'
-                    . 'function redirect() {'
-                    . ' parent.window.location = "'.$_SERVER["DIR"].'/login";'
-                    . '}'
-                    . 'setTimeout(redirect, 3000);'
-                . '</script>';
+            echo '<div class="center pt100">'.engine::lang("Invalid confirmation code").'.</div>';
         }
     } else {
-       echo '<div class="center pt100">Email '.engine::lang("not found").'.</div>'
-            . '<script>'
-               . 'function redirect() {'
-               . '  parent.window.location = "'.$_SERVER["DIR"].'/login";'
-               . '}'
-               . 'setTimeout(redirect, 3000);'
-            . '</script>';
+        echo '<div class="center pt100">Email '.engine::lang("not found").'.</div>';
     }
+    echo '<script>'
+        . 'function redirect() { parent.window.location = "'.$_SERVER["DIR"].'/login"; }'
+        . 'setTimeout(redirect, 3000);'
+     . '</script>';
 } else if ($_GET["mode"] == "logout") {
     $query = 'DELETE FROM nodes_session WHERE token LIKE "'.$_COOKIE["token"].'" AND user_id = "'.$_SESSION["user"]["id"].'"';
     engine::mysql($query);

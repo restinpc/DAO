@@ -3,7 +3,7 @@
 * Print admin backend page.
 * @path /engine/core/admin/print_admin_backend.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -18,6 +18,7 @@
 * @return string Returns content of page on success, or die with error.
 * @usage <code> engine::print_admin_backend($cms); </code>
 */
+
 function print_admin_backend($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
         . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "backend" '
@@ -69,6 +70,7 @@ function print_admin_backend($cms) {
 * @var \$this->onload - Page executable JavaScript code.
 * @var \$this->configs - Array MySQL configs.
 */
+
 if (!empty($_GET[1])) {
     \$this->content = engine::error();
     return; 
@@ -107,8 +109,7 @@ if (!empty($_GET[1])) {
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT * FROM `nodes_backend` ORDER BY `id` ASC';
     $requery = 'SELECT COUNT(*) FROM `nodes_backend` ORDER BY `id` ASC';
-    $table = '
-        <div class="table">
+    $table = '<div class="table">
         <table width=100% id="table" class="mw100p">
         <thead>
         <tr>';
@@ -169,7 +170,7 @@ if (!empty($_GET[1])) {
         }
     }
     $table .= '</tbody>
-    </table><br/>';
+        </table><br/>';
     if ($admin_access == 2) {
         $table .= '<form method="POST" id="default">
             '.engine::lang("Default file").': 
@@ -198,15 +199,15 @@ if (!empty($_GET[1])) {
             </select>
         </form>
         <br/>
-    </div>';
+        </div>';
     $fout .= '<div class="document640">'.$table.'
-    <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
-    <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
-    <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
-    <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
-    <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-    <input type="hidden" name="reset" id="query_reset" value="0" />
-    <div class="total-entry">';
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
+        <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
+        <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
+        <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
+        <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
+        <input type="hidden" name="reset" id="query_reset" value="0" />
+        <div class="total-entry">';
     $res = engine::mysql($requery);
     $data = mysqli_fetch_array($res);
     $count = $data[0];
@@ -224,59 +225,57 @@ if (!empty($_GET[1])) {
     $fout .= '</div><div class="cr"></div>';
     if ($count > $_SESSION["count"]) {
         $fout .= '<div class="pagination" >';
-            $pages = ceil($count / $_SESSION["count"]);
-            if ($_SESSION["page"] > 1) {
-                $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
-            }
-            $fout .= '<ul>';
-            $a = $b = $c = $d = $e = $f = 0;
-            for ($i = 1; $i <= $pages; $i++) {
-                if (($a < 2 && !$b && $e < 2)
-                    || ($i >=( $_SESSION["page"] -2) && $i <= ($_SESSION["page"] + 2) && $e < 5)
-                    || ($i > $pages - 2 && $e < 2)
-                ){
-                    if ($a < 2) {
-                        $a++;
-                    }
-                    $e++;
-                    $f = 0;
-                    if ($i == $_SESSION["page"]) {
-                        $b = 1;
-                        $e = 0;
-                        $fout .= '<li class="active-page">'.$i.'</li>';
-                    } else {
-                        $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
-                    }
-                } else if ((!$c || !$b) && !$f && $i < $pages) {
-                    $f = 1;
-                    $e = 0;
-                    if (!$b) {
-                        $b = 1;
-                    } else if (!$c) {
-                        $c = 1;
-                    }
-                    $fout .= '<li class="dots">. . .</li>';
-                }
-            }
-            if ($_SESSION["page"] < $pages) {
-                $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
-            }
-            $fout .= '</ul>
-            </div>';
+        $pages = ceil($count / $_SESSION["count"]);
+        if ($_SESSION["page"] > 1) {
+            $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';
         }
-        $fout .= '
-    </form>
-    <div class="clear"><br/></div>';
+        $fout .= '<ul>';
+        $a = $b = $c = $d = $e = $f = 0;
+        for ($i = 1; $i <= $pages; $i++) {
+            if (($a < 2 && !$b && $e < 2)
+                || ($i >=( $_SESSION["page"] -2) && $i <= ($_SESSION["page"] + 2) && $e < 5)
+                || ($i > $pages - 2 && $e < 2)
+            ){
+                if ($a < 2) {
+                    $a++;
+                }
+                $e++;
+                $f = 0;
+                if ($i == $_SESSION["page"]) {
+                    $b = 1;
+                    $e = 0;
+                    $fout .= '<li class="active-page">'.$i.'</li>';
+                } else {
+                    $fout .= '<li id="page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                }
+            } else if ((!$c || !$b) && !$f && $i < $pages) {
+                $f = 1;
+                $e = 0;
+                if (!$b) {
+                    $b = 1;
+                } else if (!$c) {
+                    $c = 1;
+                }
+                $fout .= '<li class="dots">. . .</li>';
+            }
+        }
+        if ($_SESSION["page"] < $pages) {
+            $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+        }
+        $fout .= '</ul>
+            </div>';
+    }
+    $fout .= '</form>
+        <div class="clear"><br/></div>';
     if ($admin_access == 2) {
-        $fout .= '
-        <input id="new-file" type="button" class="btn w280" value="'.engine::lang("New file").'" onClick=\'this.style.display = "none"; $id("new_file").style.display = "block"; jQuery("#new_file").removeClass("hidden");\' />
-        <div id="new_file" class="hidden">
-            <form method="POST">
-                '.engine::lang("Path").': <input id="input-path" required placeHolder="'.engine::lang("Path").'" type="text" class="input" name="mode" /><br/><br/>
-                '.engine::lang("File").': <input id="input-file" required placeHolder="'.engine::lang("File").'" type="text" class="input" name="file" /><br/><br/>
-                 <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" />
-            </form><br/>
-        </div>';
+        $fout .= '<input id="new-file" type="button" class="btn w280" value="'.engine::lang("New file").'" onClick=\'this.style.display = "none"; $id("new_file").style.display = "block"; jQuery("#new_file").removeClass("hidden");\' />
+            <div id="new_file" class="hidden">
+                <form method="POST">
+                    '.engine::lang("Path").': <input id="input-path" required placeHolder="'.engine::lang("Path").'" type="text" class="input" name="mode" /><br/><br/>
+                    '.engine::lang("File").': <input id="input-file" required placeHolder="'.engine::lang("File").'" type="text" class="input" name="file" /><br/><br/>
+                     <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" />
+                </form><br/>
+            </div>';
     }
     $fout .= '</div>';
     return $fout;

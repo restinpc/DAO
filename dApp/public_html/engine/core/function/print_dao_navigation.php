@@ -21,7 +21,7 @@
 */
 
 function print_dao_navigation($current) {
-    $arr = Array(
+    $arr = array(
         engine::lang("Git repository") => $_SERVER["DIR"]."/dao/git",
         engine::lang("Capitalization") => $_SERVER["DIR"]."/dao/capitalization",
         engine::lang("Blockchain monitor") => $_SERVER["DIR"]."/dao/monitor",

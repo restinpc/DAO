@@ -212,8 +212,8 @@ function print_admin_panoramas($cms) {
                         . 'VALUES("'.$project_id.'", "'.$name.'", "'.$text.'", "", "1")';
                 engine::mysql($query);
                 $ext = explode('.', $_FILES["image"]["name"]);
-                $file = "img/plans/".  mysqli_insert_id($_SERVER["sql_connection"]).'.'.$ext[count($ext)-1];
-                $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext)-1]);
+                $file = "img/plans/".  mysqli_insert_id($_SERVER["sql_connection"]).'.'.$ext[count($ext) - 1];
+                $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext) - 1]);
                 $query = 'UPDATE `nodes_vr_level` SET `image` = "/'.$file.'" WHERE `id` = "'.mysqli_insert_id($_SERVER["sql_connection"]).'"';
                 engine::mysql($query);
             } else if ($_POST["action"] == "edit_project") {
@@ -409,7 +409,7 @@ function print_admin_panoramas($cms) {
             $fout .= '<div class="tal"><a href="'.$_SERVER["DIR"].'/admin/?mode=panoramas">'.engine::lang("Panoramas").'</a> / <a href="/admin/?mode=panoramas&project_id='.$project_id.'">'.$project["name"].'</a> / <b>'.$level["name"].'</b></div>';
             if ($_POST["action"] == "new_scene") {
                 $name = trim(htmlspecialchars($_POST["name"]));
-                $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
+                $cubemap = substr($cubemap, 0, count($cubemap) - 3).'}';
                 $position = engine::escape_string($_POST["position"]);
                 $rotation = engine::escape_string($_POST["rotation"]);
                 $lat = floatval($_POST["lat"]);
@@ -423,7 +423,7 @@ function print_admin_panoramas($cms) {
                 $scene_id = mysqli_insert_id($_SERVER["sql_connection"]);
                 $cubemap = '{';
                 $folderPath = "img/cubemap/";
-                $sides = Array("pz", "nz", "px", "nx", "py", "ny");
+                $sides = array("pz", "nz", "px", "nx", "py", "ny");
                 foreach ($sides as $side) {
                     for ($i = 0; $i < 1; $i++) {
                         for ($j = 0; $j < 1; $j++) {
@@ -450,7 +450,7 @@ function print_admin_panoramas($cms) {
                         }
                     }
                 }
-                $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
+                $cubemap = substr($cubemap, 0, count($cubemap) - 3).'}';
                 $query = 'UPDATE `nodes_vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
                 engine::mysql($query);
                 if (!empty($_FILES)) {
@@ -684,7 +684,7 @@ function print_admin_panoramas($cms) {
                     $scene_id = $d["id"];
                     $cubemap = '{';
                     $folderPath = "img/cubemap/";
-                    $sides = Array("pz", "nz", "px", "nx", "py", "ny");
+                    $sides = array("pz", "nz", "px", "nx", "py", "ny");
                     foreach ($sides as $side) {
                         for ($i = 0; $i < 1; $i++) {
                             for ($j = 0; $j < 1; $j++) {
@@ -711,7 +711,7 @@ function print_admin_panoramas($cms) {
                             }
                         }
                     }
-                    $cubemap = substr($cubemap, 0, count($cubemap)-3).'}';
+                    $cubemap = substr($cubemap, 0, count($cubemap) - 3).'}';
                     $query = 'UPDATE `nodes_vr_scene` SET `cubemap` = "'.str_replace('"', '\"', $cubemap).'" WHERE `id` = "'.$scene_id.'"';
                     engine::mysql($query);
                     mkdir($_SERVER["DOCUMENT_ROOT"].'/img/scenes/'.  $scene_id);
@@ -886,8 +886,8 @@ function print_admin_panoramas($cms) {
                 }
                 if (!empty($_FILES["image"]["tmp_name"])) {
                     $ext = explode('.', $_FILES["image"]["name"]);
-                    $file = "img/plans/".$id.'.'.$ext[count($ext)-1];
-                    $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext)-1]);
+                    $file = "img/plans/".$id.'.'.$ext[count($ext) - 1];
+                    $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext) - 1]);
                     if ($image) {
                         $query = 'UPDATE `nodes_vr_level` SET `rotation` = "0", `scale` = "1", `image` = "/'.$file.'" WHERE `id` = "'.$id.'"';
                         engine::mysql($query);

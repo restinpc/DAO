@@ -3,7 +3,7 @@
 * Product purchase processor.
 * @path /engine/code/order.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -11,7 +11,9 @@
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 
-echo '<!DOCTYPE html><html><body class="nodes">';
+echo '<!DOCTYPE html>
+<html>
+<body class="nodes">';
 if (empty($_SESSION["user"]["id"])) {
     $_SESSION["redirect"] = $_SERVER["DIR"]."/order.php";
     require_once("engine/nodes/site.php");
@@ -27,12 +29,12 @@ if (empty($_SESSION["user"]["id"])) {
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     foreach ($_SESSION["products"] as $key => $value) {
-        if ($value> 0) {
+        if ($value > 0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$key.'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             $query = 'INSERT INTO `nodes_product_order`(product_id, order_id, price, count, status, date) '
-            . 'VALUES("'.$key.'", "'.$data["id"].'", "'.$d["price"].'", "'.$value.'", "0", "'.date("U").'")';
+                . 'VALUES("'.$key.'", "'.$data["id"].'", "'.$d["price"].'", "'.$value.'", "0", "'.date("U").'")';
             engine::mysql($query);
         }
     }
@@ -92,7 +94,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             <input type="hidden" name="order_confirm" value="1" />';
     $price = 0;
     foreach ($_SESSION["products"] as $key => $value) {
-        if ($value> 0) {
+        if ($value > 0) {
             $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$key.'"';
             $res = engine::mysql($query);
             $product = mysqli_fetch_array($res);
@@ -101,16 +103,17 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             $res = engine::mysql($query);
             $shipping = mysqli_fetch_array($res);
             $images = explode(";", $product["img"]);
+            $addr = $shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'");\' title="'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"];
             $fout .= '<div class="order_detail">
-            <div class="order_detail_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
-                <b class="fs18">'.$product["title"].'</b><br/><br/>
-                <font class="fs18">$ '.$product["price"].'</font><br/><br/>
-                '.engine::lang("Shipping from").': <a id="link-shipping" onClick=\'alert("'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'");\' title="'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'">'.$shipping["country"].'</a><br/>
-                <div class="order_detail_button">
-                    <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if (confirm("'.engine::lang("Are you sure?").'")) { document.framework.removeFromCart("'.$key.'"); }\' />
-                </div>
-            <div class="clear"></div>
-            </div>';
+                <div class="order_detail_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
+                    <b class="fs18">'.$product["title"].'</b><br/><br/>
+                    <font class="fs18">$ '.$product["price"].'</font><br/><br/>
+                    '.engine::lang("Shipping from").': <a id="link-shipping" onClick=\'alert("'.$addr.'">'.$shipping["country"].'</a><br/>
+                    <div class="order_detail_button">
+                        <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if (confirm("'.engine::lang("Are you sure?").'")) { document.framework.removeFromCart("'.$key.'"); }\' />
+                    </div>
+                <div class="clear"></div>
+                </div>';
         }
     }
     if (!$price) {
@@ -136,29 +139,26 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             width: 280px !important;
         }
         </style>
-    <form method="POST">
-        <input type="hidden" name="shipping_confirm" value="1" />
-        <input id="input-fname" type="text" class="input w280" placeHolder="'.engine::lang("First name").'" name="fname" required value="'.$data["fname"].'" /><br/><br/>
-        <input id="input-lname" type="text" class="input w280" placeHolder="'.engine::lang("Last name").'" name="lname" required value="'.$data["lname"].'" /><br/><br/>
-        <input id="input-country" type="text" placeHolder="'.engine::lang("Country").'" id="country_selector" name="country" required value="'.$data["country"].'" class="input w280"   /><br/><br/>
-        <input id="input-state" type="text" class="input w280" placeHolder="'.engine::lang("State").'" name="state" value="'.$data["state"].'" required /><br/><br/>
-        <input id="input-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'"  /><br/><br/>
-        <input id="input-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'"  /><br/><br/>
-        <input id="input-s1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'"  /><br/><br/>
-        <input id="input-s2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'"  /><br/><br/>
-        <input id="input-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'"  /><br/><br/>
-        <input id="input-next" type="submit" class="btn w280" value="'.engine::lang("Next").'" />
-    </form><br/><br/>';
-} else if ( !empty($_SESSION["user"]["id"])) {
+        <form method="POST">
+            <input type="hidden" name="shipping_confirm" value="1" />
+            <input id="input-fname" type="text" class="input w280" placeHolder="'.engine::lang("First name").'" name="fname" required value="'.$data["fname"].'" /><br/><br/>
+            <input id="input-lname" type="text" class="input w280" placeHolder="'.engine::lang("Last name").'" name="lname" required value="'.$data["lname"].'" /><br/><br/>
+            <input id="input-country" type="text" placeHolder="'.engine::lang("Country").'" id="country_selector" name="country" required value="'.$data["country"].'" class="input w280"   /><br/><br/>
+            <input id="input-state" type="text" class="input w280" placeHolder="'.engine::lang("State").'" name="state" value="'.$data["state"].'" required /><br/><br/>
+            <input id="input-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'"  /><br/><br/>
+            <input id="input-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'"  /><br/><br/>
+            <input id="input-s1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'"  /><br/><br/>
+            <input id="input-s2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'"  /><br/><br/>
+            <input id="input-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'"  /><br/><br/>
+            <input id="input-next" type="submit" class="btn w280" value="'.engine::lang("Next").'" />
+        </form><br/><br/>';
+} else if (!empty($_SESSION["user"]["id"])) {
     if (!empty($_POST["checkout"])) {
         unset($_SESSION["products"]);
         $query = 'INSERT INTO `nodes_invoice`(`user_id`, `order_id`, `amount`, `date`) '
                 . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$_SESSION["order_confirm"].'", "'.  floatval($_POST["checkout"]).'", "'.date("Y-m-d H:i:s").'")';
         engine::mysql($query);
-        echo '<script>
-            window.location = "'.$_SERVER["DIR"].'/invoice.php?id='. mysqli_insert_id($_SERVER["sql_connection"]).'";
-        </script>';
-        die();
+        die('<script>window.location = "'.$_SERVER["DIR"].'/invoice.php?id='. mysqli_insert_id($_SERVER["sql_connection"]).'";</script>');
     }
     echo '<div class="fs21 tal"><b>'.engine::lang("Step").' 4 \ 5</b></div><br/>';
     $fout .= '<div class="document">
@@ -178,11 +178,11 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             $shipping = mysqli_fetch_array($r);
             $images = explode(";", $product["img"]);
             $products .= '<div class="order_detail">
-            <div class="order_detail_preview" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
-                <b class="fs18">'.$product["title"].'</b><br/><br/>
-                <font class="fs18">$ '.$product["price"].'</font><br/>
-            <div class="clear"></div>
-            </div>';
+                <div class="order_detail_preview" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
+                    <b class="fs18">'.$product["title"].'</b><br/><br/>
+                    <font class="fs18">$ '.$product["price"].'</font><br/>
+                <div class="clear"></div>
+                </div>';
             $price += $data["price"];
         }
     }
@@ -221,5 +221,7 @@ $fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" t
 <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
 <script src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript"></script>
 <script>jQuery("#country_selector").countrySelect({  defaultCountry: "us" })</script>
-</body><script>document.body.style.opacity = "1";</script></html>';
+</body>
+<script>document.body.style.opacity = "1";</script>
+</html>';
 echo $fout;

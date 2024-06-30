@@ -23,13 +23,13 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Telegram group");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Web 3.0 Community in Telegram";
-        $this->keywords = Array("Social", "Telegram", "Web 3.0", "Community");
+        $this->keywords = array("Social", "Telegram", "Web 3.0", "Community");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = 'Telegram 中的 Web 3.0 社區';
-        $this->keywords = Array("社交", "Telegram", "Web 3.0", "社區");
+        $this->keywords = array("社交", "Telegram", "Web 3.0", "社區");
     } else {
         $this->description = "Web 3.0 сообщество в Telegram";
-        $this->keywords = Array("Общество", "Telegram", "Web 3.0", "Сообщество");
+        $this->keywords = array("Общество", "Telegram", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Telegram group"));
     $this->content .= '<iframe src="'.$_SERVER["DIR"].'/telegram.php" onLoad="document.framework.loading_site();" width="100%" class="app"></iframe>';
@@ -37,13 +37,13 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Digital constitution");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public inner constitution with principles and rules of community";
-        $this->keywords = Array("Social", "Constitution", "Rules", "Web 3.0", "Community");
+        $this->keywords = array("Social", "Constitution", "Rules", "Web 3.0", "Community");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '具有社區原則和規則的公共內部憲法';
-        $this->keywords = Array("社會", "憲法", "規則", "Web 3.0", "社區");
+        $this->keywords = array("社會", "憲法", "規則", "Web 3.0", "社區");
     } else {
         $this->description = "Публичная внутренняя конституция с принципами и правилами сообщества";
-        $this->keywords = Array("Общество", "Конституция", "Web 3.0", "Сообщество");
+        $this->keywords = array("Общество", "Конституция", "Web 3.0", "Сообщество");
     }
     $query = 'SELECT value FROM nodes_config WHERE name = "git"';
     $res = engine::mysql($query);
@@ -69,13 +69,13 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Crypto democracy");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Public tokenized elections";
-        $this->keywords = Array("Social", "Blockchain", "Elections", "Web 3.0", "Community");
+        $this->keywords = array("Social", "Blockchain", "Elections", "Web 3.0", "Community");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '公開代幣化選舉';
-        $this->keywords = Array("社交", "區塊鏈", "選舉", "Web 3.0", "社區");
+        $this->keywords = array("社交", "區塊鏈", "選舉", "Web 3.0", "社區");
     } else {
         $this->description = "Публичные токенизированные голосования";
-        $this->keywords = Array("Общество", "Голосования", "Выборы", "Web 3.0", "Сообщество");
+        $this->keywords = array("Общество", "Голосования", "Выборы", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Crypto democracy")).
     $this->content .= engine::print_under_construction();
@@ -83,13 +83,13 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Crowdfunding");
     if ($_SESSION["Lang"] == "en") {
         $this->description = "Crowdfunding platform for inner initiatives";
-        $this->keywords = Array("Social", "Crowdfunding", "Web 3.0", "Community");
+        $this->keywords = array("Social", "Crowdfunding", "Web 3.0", "Community");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '內部倡議眾籌平台';
-        $this->keywords = Array("社交", "眾籌", "Web 3.0", "社區");
+        $this->keywords = array("社交", "眾籌", "Web 3.0", "社區");
     } else {
         $this->description = "Краудфандинговая платформа для внутренних инициатив";
-        $this->keywords = Array("Общество", "Краудфандинг", "Web 3.0", "Сообщество");
+        $this->keywords = array("Общество", "Краудфандинг", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Crowdfunding")).
     $this->content .= engine::print_under_construction();
@@ -97,13 +97,13 @@ if (!empty($_GET[2])) {
     $this->title = engine::lang("Social graph");
     if ($_SESSION["Lang"] == "en") {
         $this->description = 'Web 3.0 Community Social Graph Viewer App';
-        $this->keywords = Array("Social", "Web 3.0", "Community");
+        $this->keywords = array("Social", "Web 3.0", "Community");
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '社區社交圖譜查看器應用程序';
-        $this->keywords = Array("社交", "Web 3.0", "社區");
+        $this->keywords = array("社交", "Web 3.0", "社區");
     } else {
         $this->description = 'Приложение для просмотра социального графа сообщества';
-        $this->keywords = Array("Общество", "Web 3.0", "Сообщество");
+        $this->keywords = array("Общество", "Web 3.0", "Сообщество");
     }
     $this->content .= engine::print_social_navigation(engine::lang("Social graph"));
     $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/graph/index.html" onLoad="document.framework.loading_site();" width="100%" class="app"></iframe>';

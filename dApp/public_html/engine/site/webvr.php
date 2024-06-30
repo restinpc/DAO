@@ -22,7 +22,7 @@ if (!empty($_GET[2])) {
 }
 if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     $this->title = engine::lang("Metaverse");
-    $this->keywords = Array("VR", "AI", "WebVR", "3D", engine::lang("Metaverse"), "Web 3.0", "Blockchain", "NFT");
+    $this->keywords = array("VR", "AI", "WebVR", "3D", engine::lang("Metaverse"), "Web 3.0", "Blockchain", "NFT");
     $this->content .= engine::print_webvr_navigation(engine::lang("Metaverse"));
     $this->content .= '<div class="document980 article">
     <div class="whitepaper text">';
@@ -40,7 +40,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     </div>';
 } else if (!empty($_GET[1]) && $_GET[1] == "orbital") {
     $this->title = engine::lang("Orbital preview");
-    $this->keywords = Array("3D", engine::lang("Mansion"), "Web 3.0", "Autodesk");
+    $this->keywords = array("3D", engine::lang("Mansion"), "Web 3.0", "Autodesk");
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion orbital viewer application inspired by Autodesk Forge Viewer';
     } else if ($_SESSION["Lang"] == "zh") {
@@ -52,7 +52,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     $this->content .= '<iframe src="'.$_SERVER["DIR"].'/apps/orbital/" onLoad="document.framework.loading_site();" class="app" width="100%"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "panorama") {
     $this->title = engine::lang("Panorama viewer");
-    $this->keywords = Array("WebVR", engine::lang("Panorama"), "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");
+    $this->keywords = array("WebVR", engine::lang("Panorama"), "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion panorama viewer application with VR support inspired by Google Maps';
     } else if ($_SESSION["Lang"] == "zh") {
@@ -64,7 +64,7 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     $this->content .= engine::print_panorama($this);
 } else if (!empty($_GET[1]) && $_GET[1] == "free-look") {
     $this->title = engine::lang("Free look mode");
-    $this->keywords = Array("WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");
+    $this->keywords = array("WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");
     if ($_SESSION["Lang"] == "en") {
         $this->description = '3D Mansion free-look mode viewer application with VR support powered by AFrame';
     } else if ($_SESSION["Lang"] == "zh") {

@@ -1,7 +1,7 @@
 <?php
 /**
-* Captcha generator.
-* @path /engine/code/captcha.php
+* Header application backend script.
+* @path /engine/code/token.php
 *
 * @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>

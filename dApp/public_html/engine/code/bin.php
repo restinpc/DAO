@@ -17,7 +17,7 @@ if (!empty($_POST["id"])) {
     $_SESSION["products"][$_POST["id"]] = 1;
     $count = 0;
     foreach ($_SESSION["products"] as $key => $value) {
-        if ($value> 0) {
+        if ($value > 0) {
             $count++;
         }
     }
@@ -52,8 +52,7 @@ if (!empty($_POST["id"])) {
         foreach ($element->childNodes as $subElement) {
             if ($subElement->nodeType == XML_TEXT_NODE) {
                 $obj["html"] = $subElement->wholeText;
-            }
-            else {
+            } else {
                 $obj["children"][] = element_to_obj($subElement);
             }
         }
@@ -89,7 +88,9 @@ if (!empty($_POST["id"])) {
             $query = 'UPDATE `nodes_inbox` SET `inform` = 1  WHERE `to` = "'.intval($_SESSION["user"]["id"]).'"';
             engine::mysql($query);
             die(json_encode($message));
-        } else die();
+        } else {
+            die();
+        }
     } else if (!empty($_GET["message"])) {
         if (!empty($_POST["text"])) {
             $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));
@@ -195,7 +196,9 @@ if (!empty($_POST["id"])) {
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         $images = explode(";", $data["img"]);
-        if (empty($images[0])) $images = array($data["img"]);
+        if (empty($images[0])) {
+            $images = array($data["img"]);
+        }
         $imgs = array();
         foreach ($images as $img) {
             $img = trim($img);

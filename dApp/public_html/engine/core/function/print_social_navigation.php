@@ -13,7 +13,7 @@
 */
 
 function print_social_navigation($current) {
-    $arr = Array(
+    $arr = array(
         engine::lang("Social graph") => $_SERVER["DIR"]."/social/graph",
         engine::lang("Telegram group") => $_SERVER["DIR"]."/social/telegram",
         engine::lang("Digital constitution") => $_SERVER["DIR"]."/social/constitution",

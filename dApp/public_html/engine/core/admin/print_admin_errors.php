@@ -89,7 +89,7 @@ function print_admin_errors($cms) {
         $table .= '<tr>
             <td  id="error-details-'.$arr_count.'" align=left valign=middle onClick=\'alert("<b>GET</b> '.(!empty($data["get"])?$data["get"]:engine::lang("Empty")).'<hr/>'
                 . ' <b>POST</b> '.(!empty($data["post"])?$data["post"]:engine::lang("Empty")).'<hr/>'
-                . ' <b>SESSION</b> '.(!empty($data["session"])?$data["session"]:engine::lang("Empty")).'");\' class="pointer">'.mb_substr(str_replace($_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"], "", $data["url"]),0,60).'</td>
+                . ' <b>SESSION</b> '.(!empty($data["session"])?$data["session"]:engine::lang("Empty")).'");\' class="pointer">'.mb_substr(str_replace($_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"], "", $data["url"]), 0,60).'</td>
             <td align=left valign=middle>'.$data["ip"].'</td>
             <td align=left valign=middle>'.date("d/m/Y H:i", $data["date"]).'</td>
             <td align=left valign=middle>'.$data["lang"].'</td>

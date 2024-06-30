@@ -66,7 +66,7 @@ function print_image_rotator($site, $caption, $images) {
                 $gallery .= '
                     <figure itemprop="associatedMedia" itemscope itemtype="https://schema.org/ImageObject" >
                         <a id="link-g'.($i).'" target="_blank" href="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
-                            <img id="g'.($i).'" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="thumbnail" alt="'.$caption.' '.($i+1).'" />
+                            <img id="g'.($i).'" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="thumbnail" alt="'.$caption.' '.($i + 1).'" />
                         </a>
                         <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
                     </figure>';

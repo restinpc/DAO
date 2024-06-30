@@ -146,7 +146,7 @@ function print_admin_products($cms) {
                 </div>';
             }
             $fout .= '<div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/><br/>
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/><br/><br/>
                 <input type="hidden" name="product" value="1" />
                 <div class="add_product_left">
                     '.engine::lang("Please, describe this item").'<br/><br/>

@@ -271,7 +271,7 @@ function print_admin_content($cms) {
             }
             $fout .= '
             <div class="clear"><br/></div>
-            <input id="input-upload-image" type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>
+            <input id="input-upload-image" type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/><br/>
             <div class="w600">
                 <textarea class="input w600" height="600" id="editable" name="text" >'.$data["text"].'</textarea>
             </div>
@@ -371,7 +371,7 @@ function print_admin_content($cms) {
                     </div>';
             }
             $fout .= '<div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/><br/>
                 <div class="w600">
                     <textarea class="input w600" id="editable" name="text">'.$data["text"].'</textarea>
                 </div><br/>
@@ -550,7 +550,7 @@ function print_admin_content($cms) {
             }
             $fout .= '
                 <div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0,0);\' /><br/><br/>
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/><br/>
                 <div class="w600">
                     <textarea class="input w600" id="editable" name="text">'.$_POST["text"].'</textarea>
                 </div><br/><br/>
@@ -703,7 +703,7 @@ function print_admin_content($cms) {
             }
             $fout .= '
                 <div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0,0);\' />
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0, 0);\' />
                 <br/><br/>
                 <div class="w600">
                     <textarea class="input w600" id="editable" name="text"  placeHolder="Text"></textarea>

@@ -60,7 +60,7 @@ function print_products($site) {
                 $requery = 'SELECT * FROM `nodes_product_property` WHERE `id` = "'.$key.'"';
                 $r = engine::mysql($requery);
                 $d = mysqli_fetch_array($r);
-                if ($value> 0) {
+                if ($value > 0) {
                     $i++;
                     $query .= ' INNER JOIN `nodes_property_data` AS `pd_'.$i.'` '
                         . 'ON ('

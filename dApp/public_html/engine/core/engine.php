@@ -53,27 +53,27 @@ public static function __callStatic($name, $arguments) {
         $count = count($arguments);
         if (!$count) {
             return $name();
-        } else if ($count== 1) {
+        } else if ($count == 1) {
             return $name($arguments[0]);
-        } else if ($count==2) {
+        } else if ($count == 2) {
             return $name(
                 $arguments[0],
                 $arguments[1]
             );
-        } else if ($count==3) {
+        } else if ($count == 3) {
             return $name(
                 $arguments[0],
                 $arguments[1],
                 $arguments[2]
             );
-        } else if ($count==4) {
+        } else if ($count == 4) {
             return $name(
                 $arguments[0],
                 $arguments[1],
                 $arguments[2],
                 $arguments[3]
             );
-        } else if ($count==5) {
+        } else if ($count == 5) {
             return $name(
                 $arguments[0],
                 $arguments[1],
@@ -81,7 +81,7 @@ public static function __callStatic($name, $arguments) {
                 $arguments[3],
                 $arguments[4]
             );
-        } else if ($count==6) {
+        } else if ($count == 6) {
             return $name(
                 $arguments[0],
                 $arguments[1],
@@ -90,7 +90,7 @@ public static function __callStatic($name, $arguments) {
                 $arguments[4],
                 $arguments[5]
             );
-        } else if ($count==7) {
+        } else if ($count == 7) {
             return $name(
                 $arguments[0],
                 $arguments[1],
@@ -148,7 +148,7 @@ static function href($url) {
 * @param string $error_code HTTP code of error.
 * @usage <code> engine::error(401); </code>
 */
-static function error($error_code='0') {
+static function error($error_code = '0') {
     array_push($_SERVER["CONSOLE"], "engine::error(".$error_code.")");
     $my_error = mysqli_error($_SERVER["sql_connection"]);
     $query = 'SELECT `value` FROM `nodes_config` WHERE `name` = "debug"';
@@ -163,66 +163,65 @@ static function error($error_code='0') {
         echo "\n"."----------------------------------------"."\n"."Console:"."\n";
         print_r($_SERVER["CONSOLE"]);
         echo "\n"."----------------------------------------"."\n";
-    } else {
-        if ($error_code != 0) {
-            $_GET[$error_code] = 1;
+    }
+    if ($error_code != 0) {
+        $_GET[$error_code] = 1;
+    }
+    if (!isset($_GET["204"]) && !isset($_GET["504"])) {
+        $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
+        while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
+            $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"]) - 1);
         }
-        if (!isset($_GET["204"]) && !isset($_GET["504"])) {
-            $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
-            while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
-                $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"])-1);
-            }
-            $_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
-            if (empty($_SERVER["SCRIPT_URI"])) {
-                $_SERVER["SCRIPT_URI"] = "/";
-            }
-            $get = $session = $post = '';
-            $get = print_r($_GET, 1);
-            $post = print_r($_POST, 1);
-            $session = print_r($_SESSION, 1);
-            $get = engine::escape_string($get);
-            $post = engine::escape_string($post);
-            $session = engine::escape_string($session);
-            $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" '
-                    . 'AND `lang` = "'.$_SESSION["Lang"].'"';
-            engine::mysql($query);
-            $query = 'SELECT * FROM `nodes_error` WHERE '
-                    . '`url` = "'.$_SERVER["SCRIPT_URI"].'" AND '
-                    . '`lang` = "'.$_SESSION["Lang"].'" AND '
-                    . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'" AND '
-                    . '`get` = "'.$get.'" AND '
-                    . '`post` = "'.$post.'" AND '
-                    . '`session` = "'.$session.'"';
-            $res = engine::mysql($query);
-            $data = mysqli_fetch_array($res);
-            if (empty($data)) {
-                $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `ip`, `get`, `post`, `session`, `count`) '
-                . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", '
-                        . '"'.$_SESSION["Lang"].'", '
-                        . '"'.date("U").'", '
-                        . '"'.$_SERVER["REMOTE_ADDR"].'", '
-                        . '"'.$get.'", '
-                        . '"'.$post.'", '
-                        . '"'.$session.'", '
-                        . '"1")';
-            } else {
-               $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"] + 1).'" WHERE `id` = "'.$data["id"].'"';
-            }
-            self::mysql($query);
+        $_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
+        if (empty($_SERVER["SCRIPT_URI"])) {
+            $_SERVER["SCRIPT_URI"] = "/";
         }
-        if (empty($_POST["jQuery"])) { 
-            echo '<!DOCTYPE html>
-                <html style="background: #1a1d1d; height: 100%; font-family: sans-serif;">
-                <head><title>Error</title><meta charset="UTF-8" />
-                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                </head>
-            <body>';
-            require_once("engine/code/error.php");
-            echo '</body></html>';
+        $get = $session = $post = '';
+        $get = print_r($_GET, 1);
+        $post = print_r($_POST, 1);
+        $session = print_r($_SESSION, 1);
+        $get = engine::escape_string($get);
+        $post = engine::escape_string($post);
+        $session = engine::escape_string($session);
+        $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" '
+                . 'AND `lang` = "'.$_SESSION["Lang"].'"';
+        engine::mysql($query);
+        $query = 'SELECT * FROM `nodes_error` WHERE '
+                . '`url` = "'.$_SERVER["SCRIPT_URI"].'" AND '
+                . '`lang` = "'.$_SESSION["Lang"].'" AND '
+                . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'" AND '
+                . '`get` = "'.$get.'" AND '
+                . '`post` = "'.$post.'" AND '
+                . '`session` = "'.$session.'"';
+        $res = engine::mysql($query);
+        $data = mysqli_fetch_array($res);
+        if (empty($data)) {
+            $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `ip`, `get`, `post`, `session`, `count`) '
+            . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", '
+                    . '"'.$_SESSION["Lang"].'", '
+                    . '"'.date("U").'", '
+                    . '"'.$_SERVER["REMOTE_ADDR"].'", '
+                    . '"'.$get.'", '
+                    . '"'.$post.'", '
+                    . '"'.$session.'", '
+                    . '"1")';
         } else {
-            require_once("engine/code/error.php");
+           $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"] + 1).'" WHERE `id` = "'.$data["id"].'"';
         }
+        self::mysql($query);
+    }
+    if (empty($_POST["jQuery"])) { 
+        echo '<!DOCTYPE html>
+            <html style="background: #1a1d1d; height: 100%; font-family: sans-serif;">
+            <head><title>Error</title><meta charset="UTF-8" />
+            <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            </head>
+        <body>';
+        require_once("engine/code/error.php");
+        echo '</body></html>';
+    } else {
+        require_once("engine/code/error.php");
     }
     die();
 }

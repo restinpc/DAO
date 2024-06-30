@@ -28,21 +28,21 @@ if (empty($_GET[1])) {
     $flag = 0;
     $this->title = engine::lang("Login");
     if ($_SESSION["Lang"] == "en") {
-        $this->keywords = Array(
+        $this->keywords = array(
             "Authorization",
             "Web 3.0",
             "Community"
         );
         $this->description = "Authorization on the site";
     } else if ($_SESSION["Lang"] == "zh") {
-        $this->keywords = Array(
+        $this->keywords = array(
             "授權",
             "Web 3.0",
             "社區"
         );
         $this->description = '網站授權';
     } else {
-        $this->keywords = Array(
+        $this->keywords = array(
             "Авторизация",
             "Web 3.0",
             "Сообщество"
@@ -100,21 +100,21 @@ if (empty($_GET[1])) {
     }
 } else if ($_GET[1] == "restore") {
     if ($_SESSION["Lang"] == "en") {
-        $this->keywords = Array(
+        $this->keywords = array(
             "Access recovery",
             "Password reset",
             "Web 3.0",
         );
         $this->description = "Account recovery form";
     } else if ($_SESSION["Lang"] == "zh") {
-        $this->keywords = Array(
+        $this->keywords = array(
             "訪問恢復",
             "重設密碼",
             "Web 3.0",
         );
         $this->description = '帳戶恢復表格';
     } else {
-        $this->keywords = Array(
+        $this->keywords = array(
             "Восстановление доступа",
             "Сброс пароля",
             "Web 3.0",

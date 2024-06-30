@@ -22,21 +22,21 @@ if (!empty($_GET[2])) {
 }
 $this->title = engine::lang("Contact us");
 if ($_SESSION["Lang"] == "en") {
-    $this->keywords = Array(
+    $this->keywords = array(
         "Feedback",
         "Contacts",
         "Web 3.0"
     );
     $this->description = "Contact information and feedback form with the project administrator";
 } else if ($_SESSION["Lang"] == "zh") {
-    $this->keywords = Array(
+    $this->keywords = array(
         "反饋",
         "聯繫方式",
         "Web 3.0"
     );
     $this->description = '項目管理員的聯繫信息和反饋表';
 } else {
-    $this->keywords = Array(
+    $this->keywords = array(
         "Обратная связь",
         "Контакты",
         "Web 3.0"

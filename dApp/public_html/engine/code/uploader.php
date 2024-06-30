@@ -48,7 +48,7 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
     $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
     if ($fn) {
         $ext = explode('.', $fn);
-        $fn = md5($fn).'.'.$ext[count($ext)-1];
+        $fn = md5($fn).'.'.$ext[count($ext) - 1];
         if (file_put_contents(
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$fn,
             file_get_contents('php://input')
@@ -60,7 +60,7 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
     } else if (isset($_FILES['fileselect'])) {
         $files = $_FILES['fileselect'];
         $ext = explode('.', $files['name']);
-        $fn = md5($files['name']).'.'.$ext[count($ext)-1];
+        $fn = md5($files['name']).'.'.$ext[count($ext) - 1];
         if (copy(
             $files['tmp_name'],
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/' . $fn
@@ -136,7 +136,7 @@ if (!empty($_POST["name"])) {
 
         if (!empty($_GET["id"]) && $_GET["id"] <6) {
             $fout .= '
-                    var z = parent.document.getElementById("new_img'.(intval($_GET["id"])+1).'"); 
+                    var z = parent.document.getElementById("new_img'.(intval($_GET["id"]) + 1).'"); 
                     if (z) z.style.display = "block";
                     parent.document.getElementById("new_img'.(intval($_GET["id"])).'").style.width = "'.$THUWIDTH.'px";';
         }
@@ -149,9 +149,9 @@ if (!empty($_POST["name"])) {
                 try {
                     var ii = 0;
                     for (var i = 1; i < 5; i++) {
-                        ii = i+1;
+                        ii = i + 1;
                         try {
-                            var el = top.document.getElementById("new_photo_"+i);
+                            var el = top.document.getElementById("new_photo_" + i);
                             if (el.title == "none") {
                                 el.style.background = "url('.$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.') center no-repeat";
                                 el.style.backgroundSize = "cover";
@@ -250,20 +250,20 @@ if (!empty($_POST["name"])) {
                             document.uploader.scale = s2;
                         }
                     }
-                    document.getElementById("image").style.width = (('.($width).'/scale))+"px";
-                    document.getElementById("image").style.height = (('.($height).'/scale))+"px";
-                    document.getElementById("img").style.width = ('.($width).'/scale)+"px";
-                    document.getElementById("img").style.height = ('.($height).'/scale)+"px";
-                    document.getElementById("frame").style.width = ('.($THUWIDTH).'/scale)+"px";
-                    document.getElementById("frame").style.height = ('.($THUHEIGHT).'/scale)+"px";
+                    document.getElementById("image").style.width = (('.($width).'/scale)) +"px";
+                    document.getElementById("image").style.height = (('.($height).'/scale)) +"px";
+                    document.getElementById("img").style.width = ('.($width).'/scale) +"px";
+                    document.getElementById("img").style.height = ('.($height).'/scale) +"px";
+                    document.getElementById("frame").style.width = ('.($THUWIDTH).'/scale) +"px";
+                    document.getElementById("frame").style.height = ('.($THUHEIGHT).'/scale) +"px";
                     document.getElementById("scale").value = scale;
                     addHandler(document.getElementById("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
                     addHandler(document.getElementById("frame"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
                     try{
-                        window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60)+"px";
-                        window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80)+"px";
+                        window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
+                        window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
                     }catch(e) {}
                 </script>
             </body>

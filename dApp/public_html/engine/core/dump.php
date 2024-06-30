@@ -12,6 +12,7 @@
 *  $dumper->doDump();
 * </code>
 */
+
 class dump {
 protected $database = null;
 var $compress = false;
@@ -182,8 +183,8 @@ function getTableData($table, $hexValue = true) {
             $selectStatement .= ", ";
         }
     }
-    $insertStatement = @mb_substr($insertStatement,0,-2).') VALUES';
-    $selectStatement = @mb_substr($selectStatement,0,-2).' FROM `'.$table.'`';
+    $insertStatement = @mb_substr($insertStatement, 0,-2).') VALUES';
+    $selectStatement = @mb_substr($selectStatement, 0,-2).' FROM `'.$table.'`';
     $records = @mysqli_query($_SERVER["sql_connection"], $selectStatement);
     $num_rows = @mysqli_num_rows($records);
     $num_fields = @mysqli_num_fields($records);
@@ -204,7 +205,7 @@ function getTableData($table, $hexValue = true) {
                 }
                 $data .= ',';
             }
-            $data = @mb_substr($data,0,-1).")";
+            $data = @mb_substr($data, 0,-1).")";
             $data .= ( $i < ($num_rows-1) ) ? ',' : ';';
             $data .= "\n";
             //if data in greater than 1MB save

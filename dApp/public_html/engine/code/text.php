@@ -11,7 +11,7 @@
 require_once("engine/nodes/headers.php");
 require_once("engine/nodes/session.php");
 
-header ("Content-type: image/png");
+header("Content-type: image/png");
 $font = "font/Open-Sans-regular/Open-Sans-regular.ttf";
 if (!empty($_GET["text"])) {
     ob_start();

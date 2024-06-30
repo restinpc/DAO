@@ -1,9 +1,9 @@
 <?php
 /**
-* Backend file.
+* Images processor.
 * @path /engine/code/images.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -30,21 +30,20 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
             $fout .= '<script>alert("'.engine::lang("Error").'"); parent.document.framework.hideWindow();</script>';
         } else {
             $image_size = getimagesize($_SERVER["DOCUMENT_ROOT"].'/img/data/'.$file);
-            $fout .= '
-            <script>
-                parent.tinymce.EditorManager.get("editable").execCommand(\'mceInsertContent\', false, "<p><img src=\"'.$_SERVER["PUBLIC_URL"].'/img/data/'.$file.'\" style=\"width: 100%; max-width: '.$image_size[0].'px; max-height: '.$image_size[1].'px; margin-left: auto; margin-right: auto; display: block;\" alt=\"'.$name.'\"  title=\"'.$name.'\"  /></p>");
-                parent.document.framework.hideWindow(); 
-            </script>';
+            $fout .= '<script>
+                    parent.tinymce.EditorManager.get("editable").execCommand(\'mceInsertContent\', false, "<p><img src=\"'.$_SERVER["PUBLIC_URL"].'/img/data/'.$file.'\" style=\"width: 100%; max-width: '.$image_size[0].'px; max-height: '.$image_size[1].'px; margin-left: auto; margin-right: auto; display: block;\" alt=\"'.$name.'\"  title=\"'.$name.'\"  /></p>");
+                    parent.document.framework.hideWindow(); 
+                </script>';
         }
     } else {
         $fout .= '<p>'.engine::lang("Select an image to upload").'</p><br/>
-        <div class="w100p center">
-            <form method="POST" ENCTYPE="multipart/form-data" id="form" >
-                <input type="file" class="input w280" name="tiny_image" /><br/><br/>
-                <input type="text" name="name" class="input w280" required placeHolder="'.engine::lang("Image description").'" /><br/><br/>
-                <input type="submit" class="btn w280" value="'.engine::lang("Upload image").'" />
-            </form>
-        </div>';
+            <div class="w100p center">
+                <form method="POST" ENCTYPE="multipart/form-data" id="form" >
+                    <input type="file" class="input w280" name="tiny_image" /><br/><br/>
+                    <input type="text" name="name" class="input w280" required placeHolder="'.engine::lang("Image description").'" /><br/><br/>
+                    <input type="submit" class="btn w280" value="'.engine::lang("Upload image").'" />
+                </form>
+            </div>';
     }
 } else if (!empty($_GET['id']) && !empty($_GET["pos"])) {
     if (!empty($_POST)) {
@@ -80,7 +79,7 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
             engine::mysql($query);
             $fout = '<script>top.document.getElementById("edit_product_form").submit();</script>';
         } else {
-            $fout = "Error. ".$_SERVER["DIR"].'/img/data/thumb/'.$_POST["file1"].' not found';
+            $fout = engine::lang("Error").' - '.$_SERVER["DIR"].'/img/data/thumb/'.$_POST["file1"].' '.engine::lang("not found");
         }
     } else {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';
@@ -90,28 +89,29 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
                 document.getElementById("new_img1").style.display="block"; 
             </script>
             </center>
-        </form>';
+            </form>';
     }
 } else {
     if (!empty($_POST)) {
         $fout .= '<script>
-            try{ 
-                parent.document.getElementById("delete_image_block").style.display="none"; 
-            }catch(e) { };
-            try{ 
-                parent.document.getElementById("new_profile_picture").value="'.$_POST["file1"].'"; 
-                parent.document.getElementById("edit_profile_form").submit();
-            }catch(e) { };
-            top.document.framework.hideWindow();
+                try { 
+                    parent.document.getElementById("delete_image_block").style.display="none"; 
+                } catch(e) {};
+                try{ 
+                    parent.document.getElementById("new_profile_picture").value="'.$_POST["file1"].'"; 
+                    parent.document.getElementById("edit_profile_form").submit();
+                } catch(e) {};
+                top.document.framework.hideWindow();
             </script>';
     } else {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';
         $fout .= engine::print_uploader(1);
         $fout .= '<script> 
-            document.getElementById("input-upload-new").style.display="none";
-            document.getElementById("new_img1").style.display="block"; 
-        </script>
-        </center></form>';
+                document.getElementById("input-upload-new").style.display="none";
+                document.getElementById("new_img1").style.display="block"; 
+            </script>
+            </center>
+            </form>';
     }
 }
 echo $fout.

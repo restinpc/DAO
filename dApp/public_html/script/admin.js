@@ -2,7 +2,7 @@
  * Admin JavaScript library.
  * @path /script/admin.js
  *
- * @name    DAO Mansion    @version 1.0.2
+ * @name    DAO Mansion    @version 1.0.3
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */

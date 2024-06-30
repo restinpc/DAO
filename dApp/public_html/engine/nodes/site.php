@@ -40,7 +40,7 @@ function __construct() {
         empty($_POST["nocache"])) {
         die(engine::error(204));
     }
-    $config = Array();
+    $config = array();
     $_SESSION["temp_template"] = "";
     $this->description = $this->configs["description"];
     if (!empty($this->configs["name"])) {
@@ -235,8 +235,7 @@ function __construct() {
 <link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
 <meta name="msapplication-config" content="'.$_SERVER["DIR"].'/favicon/browserconfig.xml" />
 <meta name="theme-color" content="#ffffff" />
-<style>.material-icons{ visibility:hidden; }</style>
-';
+<style>.material-icons{ visibility:hidden; }</style>';
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
     window.stateChangeIsLocal = true;
@@ -288,8 +287,7 @@ if (!isset($_POST["jQuery"])) {
     let load_events = true;
 </script>';
 }
-$fout .= '
-<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
+$fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
 <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'document.framework.loading_site();\' />
 <style>
 @font-face {

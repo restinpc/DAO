@@ -3,7 +3,7 @@
 * Paypal payment processor.
 * @path /engine/code/paypal.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -11,7 +11,7 @@
 require_once("engine/nodes/session.php");
 
 if (!empty($_GET["invoice_id"]) && !empty($_POST["mc_gross"])) {
-    $amount = $_POST["mc_gross"];
+    $amount = floatval($_POST["mc_gross"]);
     $invoice_id = intval($_GET["invoice_id"]);
     $query = 'SELECT * FROM `nodes_invoice` WHERE `id` = "'.$invoice_id.'"';
     $res = engine::mysql($query);
@@ -22,7 +22,9 @@ if (!empty($_GET["invoice_id"]) && !empty($_POST["mc_gross"])) {
     $user = mysqli_fetch_array($res);
     $balance = $user["balance"];
     $postdata = "";
-    foreach ($_POST as $key => $value) $postdata .= $key."=".urlencode($value)."&";
+    foreach ($_POST as $key => $value) {
+        $postdata .= $key."=".urlencode($value)."&";
+    }
     $postdata .= "cmd=_notify-validate";
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "paypal_test"';
     $res = engine::mysql($query);
@@ -52,4 +54,6 @@ if (!empty($_GET["invoice_id"]) && !empty($_POST["mc_gross"])) {
         engine::mysql($query);
         email::new_transaction($user_id, $amount);
     }
-} else engine::error();
+} else {
+    engine::error();
+}

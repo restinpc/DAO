@@ -17,7 +17,7 @@ require_once("engine/nodes/session.php");
 $flag = 0;
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_exec"';
 engine::mysql($query);
-$server = floatval(microtime(1)- $GLOBALS["time"]);
+$server = floatval(microtime(1) - $GLOBALS["time"]);
 /*
  * Sends bulk mail messages every minute if exists.
  */
@@ -31,14 +31,9 @@ while ($data = mysqli_fetch_array($res)) {
     email::bulk_mail($data);
 }
 /*
- * Clean-up temp BTC transactions.
- */
-$query = 'DELETE FROM `nodes_transaction` WHERE `comment` = "Temp" AND `date` < "'.(date("U")-86400).'"';
-engine::mysql($query);
-/*
  * Milestones a performance once a 20 minute.
  */
-$query = 'SELECT `date` FROM `nodes_perfomance` WHERE `date` > "'.(date("U")-1200).'"';
+$query = 'SELECT `date` FROM `nodes_perfomance` WHERE `date` > "'.(date("U") - 1200).'"';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
 if (empty($data)) {
@@ -49,7 +44,7 @@ if (empty($data)) {
         $flag = 1;
         $current = floatval(microtime(1));
         $html = engine::curl_get_query($data["url"]);
-        $now = floatval(microtime(1)- $current);
+        $now = floatval(microtime(1) - $current);
         $query = 'INSERT INTO `nodes_perfomance`(`cache_id`, `server_time`, `script_time`, `date`) '
                 . 'VALUES("'.$data["id"].'", "'.$server.'", "'.$now.'", "'.date("U").'")';
         engine::mysql($query);
@@ -165,8 +160,12 @@ if (!$flag) {
         $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
         $hdl = opendir($dir);
         while ($file_name = readdir($hdl)) {
-            if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)
-                && ($file_name != "admin.jpg") && ($file_name != "anon.jpg")) {
+            if (($file_name != ".")
+                && ($file_name != "..")
+                && is_file($dir.$file_name)
+                && ($file_name != "admin.jpg")
+                && ($file_name != "anon.jpg")
+            ) {
                 if (!in_array($file_name, $images)) {
                     unlink($dir.$file_name);
                 }
@@ -204,7 +203,7 @@ if (!$flag) {
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        $count = round($data[0] /1440);
+        $count = round($data[0] / 1440);
         if ($count < 1) {
             $count = 1;
         }
@@ -214,7 +213,7 @@ if (!$flag) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
                 $flag = 5;
                 $url = $data["url"];
-                cache::update_cache($url,0, $data["lang"]);
+                cache::update_cache($url, 0, $data["lang"]);
             }
         }
     }
@@ -234,11 +233,10 @@ if (!$flag) {
             $flag = 6;
             $url = $data["url"];
             $lang = $data["lang"];
-            cache::update_cache($url,0, $lang);
+            cache::update_cache($url, 0, $lang);
         }
     }
 }
-
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_done"';
 engine::mysql($query);
 echo $flag;

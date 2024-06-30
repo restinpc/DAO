@@ -122,7 +122,7 @@ function print_admin_finance($cms) {
             $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$data["user_id"].'"';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
-            $user = '<span title="'.$d["name"].'">'.mb_substr($d["name"],0,20).((strlen($d["name"]) >20)?'...':'').'</span>';
+            $user = '<span title="'.$d["name"].'">'.mb_substr($d["name"], 0, 20).((strlen($d["name"]) >20)?'...':'').'</span>';
         } else {
             $user = "Anonim";
         }if ($data["order_id"] == "0") {

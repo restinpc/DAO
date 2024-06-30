@@ -1,6 +1,6 @@
 <?php
 /**
-* Git repository.
+* Git repository proxy page.
 * @path /engine/code/git.php
 *
 * @name    DAO Mansion    @version 1.0.3

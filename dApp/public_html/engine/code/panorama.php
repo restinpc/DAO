@@ -18,7 +18,9 @@ if (!empty($_GET["id"])) {
     $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if (empty($data)) engine::error();
+    if (empty($data)) {
+        engine::error();
+    }
     if (!empty($_POST["update"]) && $_SESSION["user"]["id"] == 1) {
         $id = intval($_POST["update"]);
         $name = engine::escape_string($_POST["name"]);
@@ -159,7 +161,6 @@ if (!empty($_GET["id"])) {
             <img id="pixel" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />';
     $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$data["id"].'"';
     $r = engine::mysql($query);
-
     while ($dd = mysqli_fetch_array($r)) {
         $json = json_decode($dd["cubemap"]);
         foreach ($json as $key => $value) {
@@ -168,19 +169,21 @@ if (!empty($_GET["id"])) {
             $id = str_replace('.png', '', $value);
         }
     }
-    $sides = Array("pz", "nz", "px", "nx", "py", "ny");
-    $rotations = Array("0 0 0", "0 -180 0", "0 -90 0", "0 90 0", "90 0 0", "-90 0 0");
+    $sides = array("pz", "nz", "px", "nx", "py", "ny");
+    $rotations = array("0 0 0", "0 -180 0", "0 -90 0", "0 90 0", "90 0 0", "-90 0 0");
     $json = json_decode($data["cubemap"]);
     $fout .= '
         </a-assets>
         <a-entity id="rig" 
             position="'.$data["position"].'" 
-            rotation="'.$data["rotation"].'">
+            rotation="'.$data["rotation"].'"
+        >
             <a-camera id="camera" 
                 look-controls
                 mouse-cursor
                 nodes-camera   
-                wasd-controls-enabled="false">
+                wasd-controls-enabled="false"
+            >
                 '.engine::pano_vr_cursor().'
             </a-camera>
         </a-entity>
@@ -189,9 +192,9 @@ if (!empty($_GET["id"])) {
     $q = 1;
     $s = 512;
     $t = 1;
-    $w = $s/2;
-    $x = $q* $s/2;
-    for ($l = 0; $l< count($sides); $l++) {
+    $w = $s / 2;
+    $x = $q * $s / 2;
+    for ($l = 0; $l < count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
         for ($i = 0; $i < $q; $i++) {
@@ -216,7 +219,7 @@ if (!empty($_GET["id"])) {
                     $i_1 = (-$x + $i * $s + $w);
                     $j_1 = (-$x + $j * $s + $w);
                 }
-                $positions = Array(
+                $positions = array(
                     $i_1.' '.$j_1.' -'.$x,
                     $i_1.' '.$j_1.' '.$x,
                     ''.$x.' '.$i_1.' '.$j_1,
@@ -225,12 +228,12 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="1" class="mesh" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="1" class="mesh" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="'.$_SERVER["DIR"].'/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }
     $fout .= '</a-entity> 
-    <a-entity id="cubemap_1" position="0 0 0" scale="1.02 1.02 1.02">';
+        <a-entity id="cubemap_1" position="0 0 0" scale="1.02 1.02 1.02">';
     $q = 2;
     $s = 256;
     $t = 2;
@@ -261,7 +264,7 @@ if (!empty($_GET["id"])) {
                     $i_1 = (-$x + $i * $s + $w);
                     $j_1 = (-$x + $j * $s + $w);
                 }
-                $positions = Array(
+                $positions = array(
                     $i_1.' '.$j_1.' -'.$x,
                     $i_1.' '.$j_1.' '.$x,
                     ''.$x.' '.$i_1.' '.$j_1,
@@ -306,7 +309,7 @@ if (!empty($_GET["id"])) {
                     $i_1 = (-$x + $i * $s + $w);
                     $j_1 = (-$x + $j * $s + $w);
                 }
-                $positions = Array(
+                $positions = array(
                     $i_1.' '.$j_1.' -'.$x,
                     $i_1.' '.$j_1.' '.$x,
                     ''.$x.' '.$i_1.' '.$j_1,
@@ -325,8 +328,8 @@ if (!empty($_GET["id"])) {
     $s = 64;
     $t = 4;
     $w = $s / 2;
-    $x = $q* $s / 2;
-    for ($l = 0; $l< count($sides); $l++) {
+    $x = $q * $s / 2;
+    for ($l = 0; $l < count($sides); $l++) {
         $side = $sides[$l];
         $rotation_img = $rotations[$l];
         for ($i = 0; $i < $q; $i++) {
@@ -351,7 +354,7 @@ if (!empty($_GET["id"])) {
                     $i_1 = (-$x + $i * $s + $w);
                     $j_1 = (-$x + $j * $s + $w);
                 }
-                $positions = Array(
+                $positions = array(
                     $i_1.' '.$j_1.' -'.$x,
                     $i_1.' '.$j_1.' '.$x,
                     ''.$x.' '.$i_1.' '.$j_1,
@@ -385,7 +388,6 @@ if (!empty($_GET["id"])) {
     $new_obj["scale"] = "10 10 10";
     $new_obj["text"] = "";
     $objects .= engine::pano_print_object($this, $new_obj, 1);
-    //---------------
     $query = 'SELECT * FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
     while ($d = mysqli_fetch_array($res)) {
@@ -399,7 +401,6 @@ if (!empty($_GET["id"])) {
     $new_nav["level_id"] = $data["level_id"];
     $new_nav["scale"] = "10 10 10";
     $navigation .= engine::pano_print_navigation($this, $new_nav, 1);
-    //---------------
     $query = 'SELECT * FROM `nodes_vr_link` WHERE `scene_id` = "'.$data["id"].'"';
     $res = engine::mysql($query);
     while ($d = mysqli_fetch_array($res)) {
@@ -411,17 +412,15 @@ if (!empty($_GET["id"])) {
     $new_nav["level_id"] = $data["level_id"];
     $new_nav["scale"] = "10 10 10";
     $gsv .= engine::pano_print_link($this, $new_nav, 1);
-    //---------------
     $fout .= '
-        </a-entity>
-        <a-entity id="line" trigger="none" line="color: white; opacity:0;"></a-entity>
-        <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
-        <a-circle id="move_point" action=\'document.panorama.navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
-        <a-image id="cursor_img" transparent="true" position="0 0 0" look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
-        <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
-    </a-scene>
-    <audio id="vr-sound" preload><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>
-        ';
+            </a-entity>
+            <a-entity id="line" trigger="none" line="color: white; opacity:0;"></a-entity>
+            <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
+            <a-circle id="move_point" action=\'document.panorama.navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
+            <a-image id="cursor_img" transparent="true" position="0 0 0" look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
+            <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
+        </a-scene>
+        <audio id="vr-sound" preload><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>';
     if ($_SESSION["user"]["id"] == "1") {
         $fout .= engine::pano_scene_editor($data);
     }
@@ -433,8 +432,9 @@ if (!empty($_GET["id"])) {
     $fout .= '</div>'
         . '<div id="vr-block"></div>';
     $onload .= ' document.panorama.loadVR('.$data["level_id"].');';
-} else engine::error();
-
+} else {
+    engine::error();
+}
 echo '<!DOCTYPE html>
 <html style="background-color:#fff;">
 <head>
@@ -465,20 +465,22 @@ echo '<!DOCTYPE html>
 </head>
 <body class="nodes">
     '.$fout.'
-    <script>window.addEventListener("load", () => {
-        const scene = $id("nodes_scene");
-        scene.addEventListener("enter-vr", () => {
-            try {
-                parent.document.panorama.permission();
-                parent.document.panorama.fullScreen();
-            } catch (e) {}
+    <script>
+        window.addEventListener("load", () => {
+            const scene = $id("nodes_scene");
+            scene.addEventListener("enter-vr", () => {
+                try {
+                    parent.document.panorama.permission();
+                    parent.document.panorama.fullScreen();
+                } catch (e) {}
+            });
+            scene.addEventListener("exit-vr", () => {
+                try {
+                    parent.document.panorama.hideFullScreen();
+                } catch (e) {}
+            });
+            '.$onload.' 
         });
-        scene.addEventListener("exit-vr", () => {
-            try {
-                parent.document.panorama.hideFullScreen();
-            } catch (e) {}
-        });
-        '.$onload.' 
-    });</script>
+    </script>
 </body>
 </html>';

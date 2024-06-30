@@ -82,7 +82,7 @@ static function delete($dir) {
 * @return string Returns filename on success, 'error' on failure.
 * @usage <code> file::upload("new_image", "/img", true); </code>
 */
-static function upload($filename, $path, $md5=0) {
+static function upload($filename, $path, $md5 = 0) {
     if (!is_array($_FILES[$filename]["name"])) {
         if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
             if (!$md5) {

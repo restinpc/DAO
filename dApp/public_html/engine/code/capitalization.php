@@ -1,11 +1,18 @@
 <?php
+/**
+* Capital application backend script.
+* @path /engine/code/capitalization.php
+*
+* @name    DAO Mansion    @version 1.0.3
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
+* @license http://www.apache.org/licenses/LICENSE-2.0
+*/
 
 require_once("engine/nodes/config2.php");
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Request-Method: GET, OPTIONS");
 header("Access-Control-Allow-Headers: *");
-
 $_SERVER["sql_connection"] = mysqli_connect($_SERVER["config"]["sql_server"], $_SERVER["config"]["sql_login"], $_SERVER["config"]["sql_pass"], $_SERVER["config"]["sql_db"],3306);
 mysqli_select_db($_SERVER["sql_connection"], $_SERVER["config"]["sql_db"]);
 mysqli_query($_SERVER["sql_connection"], "SET SESSION wait_timeout = 4000");
@@ -102,7 +109,7 @@ WHERE data.user_id = 1
 ORDER BY data.id ASC';
 @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
 $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error(500));
-$fout = Array();
+$fout = array();
 while ($data = mysqli_fetch_array($res)) {
     array_push($fout, $data);
 }

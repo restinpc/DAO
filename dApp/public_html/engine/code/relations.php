@@ -1,9 +1,9 @@
 <?php
 /**
-* RSS-feed generator.
-* @path /engine/code/rss.php
+* Graph application backend script.
+* @path /engine/code/relations.php
 *
-* @name    DAO Mansion    @version 1.0.2
+* @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -14,9 +14,9 @@ require_once("engine/nodes/session.php");
 header('Content-Type: application/json; charset=utf-8');
 $query = 'SELECT * FROM nodes_relations';
 $res = engine::mysql($query);
-$users = Array();
-$relations = Array();
-$types = Array(
+$users = array();
+$relations = array();
+$types = array(
     "1" => "Partner",
     "2" => "Sexual"
 );

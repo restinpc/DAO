@@ -1,6 +1,6 @@
 <?php
 /**
-* Invoice page
+* Invoice page.
 * @path /engine/code/invoice.php
 *
 * @name    DAO Mansion    @version 1.0.3
@@ -36,7 +36,9 @@ if (!empty($_GET["id"])) {
                 $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$order["product_id"].'"';
                 $r = engine::mysql($query);
                 $product = mysqli_fetch_array($r);
-                if ($flag) $caption .= '<hr style="border-color: #ddd;" />';
+                if ($flag) {
+                    $caption .= '<hr style="border-color: #ddd;" />';
+                }
                 $caption .= '<table style="width: 100%;"><td><b>'.$product["title"].'</b></td><td style="text-align:right;" width=200>$'.$product["price"].'</td></table>';
                 $flag++;
             }
@@ -113,7 +115,7 @@ if (!empty($_GET["id"])) {
         if ($amount <= $sum) {
             $status = '<span style="color:#0a0;">'.engine::lang("Successfully paid").'</span>';
         } else if ($sum > 0) {
-            $script = '<script>setTimeout(function() {window.location="'.$_SERVER["DIR"].'/invoice.php?id='.$id.'";}, 30000);</script>';
+            $script = '<script>setTimeout(function() { window.location="'.$_SERVER["DIR"].'/invoice.php?id='.$id.'"; }, 30000);</script>';
             $status = '<span style="color:#00f;">'.engine::lang("Partially paid").'</span>';
             if (!empty($paypal["value"])) {
                 $payment .= engine::print_paypal_form($id, $atb, $_SERVER["PUBLIC_URL"].'/invoice.php?id='.$id);
@@ -145,27 +147,27 @@ if (!empty($_GET["id"])) {
                 } else {
                     if ($options == 1) {
                         if (!empty($paypal["value"])) {
-                            $button = '<br/><input id="make-payment-input"  type="button" onClick=\'document.getElementById("paypal_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
+                            $button = '<br/><input id="make-payment-input" type="button" onClick=\'document.getElementById("paypal_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
                         } else if (!empty($yandex["value"])) {
                             $button = '<br/><input  id="make-payment-input" type="button" onClick=\'document.getElementById("yandex_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
                         }
                     } else {
                         $button = '<br/>
-                            <select  class="input w280" id="payment_method">';
+                            <select class="input w280" id="payment_method">';
                         if (!empty($paypal["value"])) {
                             $button .= '<option id="option-paypal" value="paypal">PayPal</option>';
                         }
                         if (!empty($yandex["value"])) {
                             $button .= '<option id="option-yandex" value="yandex">Yandex Money</option>';
                         }
-                        $button .= '
-                            </select><br/>
+                        $button .= '</select><br/>
                             <input id="make-payment-input"  type="button" class="btn w280" value="'.engine::lang("Make payment").'" onClick=\''
                                 . 'if (document.getElementById("payment_method").value == "paypal") {'
                                 . '     document.getElementById("paypal_form").submit();'
                                 . '} else if (document.getElementById("payment_method").value == "yandex") {'
                                 . '     document.getElementById("yandex_form").submit();'
-                                . '}\' /> ';
+                                . '}\'
+                            />';
                     }
                 }
             } else {
@@ -189,12 +191,12 @@ if (!empty($_GET["id"])) {
             $d = mysqli_fetch_array($r);
             $logo = $d["value"];
         }
-$fout = '<!DOCTYPE html>
+        $fout = '<!DOCTYPE html>
 <html>
 <head>
-<title>'.engine::lang("Invoice").' № '.$data["id"].'</title>
-<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
-<link href="'.$_SERVER["DIR"].'/template/invoice.css" rel="stylesheet" type="text/css" />
+    <title>'.engine::lang("Invoice").' № '.$data["id"].'</title>
+    <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
+    <link href="'.$_SERVER["DIR"].'/template/invoice.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="nodes">
     <div class="invoice">
@@ -224,7 +226,7 @@ $fout = '<!DOCTYPE html>
             '.engine::lang("Total").': <b>$'.$amount.'</b><br/>
             '.engine::lang('Balance').': <b>$'.$user["balance"].'</b><br/>
             '.engine::lang("Total Paid").': <b>$'.($sum).'</b><br/>
-            '.(($atb> 0)?engine::lang("Amount to be paid").': <b>$'.($atb).'</b><br/>':'').'
+            '.(($atb> 0) ? engine::lang("Amount to be paid").': <b>$'.($atb).'</b><br/>' : '').'
             '.$button.'
         </div>
         <div class="clear"></div>
@@ -232,7 +234,7 @@ $fout = '<!DOCTYPE html>
     '.$script.'
 </body>
 </html>';
-echo $fout;
+    echo $fout;
     } else {
         engine::error();
     }

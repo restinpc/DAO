@@ -22,7 +22,7 @@ if (!empty($_GET[2])) {
 }
 $this->title = engine::lang("Booking rooms");
 if ($_SESSION["Lang"] == "en") {
-    $this->keywords = Array(
+    $this->keywords = array(
         "DAO Mansion",
         "Rent a house",
         "Rental Property",
@@ -32,7 +32,7 @@ if ($_SESSION["Lang"] == "en") {
     );
     $this->description = "Real estate rental online";
 } else if ($_SESSION["Lang"] == "zh") {
-    $this->keywords = Array(
+    $this->keywords = array(
         "DAO 大廈",
         "租一套公寓",
         "出租物業",
@@ -42,7 +42,7 @@ if ($_SESSION["Lang"] == "en") {
     );
     $this->description = '在線房地產租賃';
 } else {
-    $this->keywords = Array(
+    $this->keywords = array(
         "DAO Особняк",
         "Снять жилье",
         "Аренда недвижимости",
