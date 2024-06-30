@@ -290,7 +290,7 @@ if (!empty($_POST["name"])) {
     </form>
     <div id="messages"></div>
     <script>
-        if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
+        // if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
         document.getElementById("fileselect").click();
     </script>
 </body>
