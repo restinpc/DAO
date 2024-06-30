@@ -48,8 +48,10 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
     $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
     if ($fn) {
         $ext = explode('.', $fn);
-        $fn = md5($fn).'.'.$ext[count($ext) - 1];
+        $fn = md5($fn).'.'.$ext[count($ext) - 1];        parallel
+        print_r($_SERVER);
         $file = file_get_contents('php://input');
+        die("it");
         echo $file;
         if (file_put_contents(
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$fn,
