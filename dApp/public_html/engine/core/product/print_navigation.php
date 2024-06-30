@@ -26,7 +26,7 @@ function print_navigation($site, $title) {
     $fout = '<div class="profile_menu">
         <div class="container">
             <span id="span-show-nav" class="profile_menu_item show_all selected" ><a>'.$title.'</a>
-                <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>    
+                <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>
             </span>';
     $fout .= '
         <span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($title == engine::lang("Products") ? 'selected' : '').'" onClick=\'$id("profile_menu_link_'.$i.'").click();\'>'
@@ -40,5 +40,7 @@ function print_navigation($site, $title) {
     }
     $fout .= '</div>'
     . '</div>';
-    if ($i) return $fout;
+    if ($i) {
+        return $fout;
+    }
 }

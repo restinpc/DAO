@@ -36,7 +36,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
             $image = $images[$i];
             $image = str_replace('../img', '/img', $image);
             $size = getimagesize($image);
-            $text = str_replace($images[$i].'"', $image.'"  id="viewer-image-'.$i.'" alt="'.$image.'" onClick=\'document.framework.nodesGallery("'.$image.'");\' class="img pointer"', $text);
+            $text = str_replace($images[$i].'"', $image.'" id="viewer-image-'.$i.'" alt="'.$image.'" onClick=\'document.framework.nodesGallery("'.$image.'");\' class="img pointer"', $text);
             if (!$size[0]) {
                 $size = getimagesize($_SERVER["PUBLIC_URL"].$image);
             }
@@ -50,7 +50,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
                     <a id="image-'.$i.'" target="_blank" href="'.$image.'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
                         <img id="nodes_gallery_'.$i.'" src="'.$image.'" itemprop="thumbnail" alt="'.$image.'" title="'.$title.'" />
                     </a>
-                    <figcaption itemprop="caption description">'.$title.'</figcaption>                                 
+                    <figcaption itemprop="caption description">'.$title.'</figcaption>
                 </figure>';
             }
         }

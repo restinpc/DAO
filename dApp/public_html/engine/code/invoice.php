@@ -47,7 +47,7 @@ if (!empty($_GET["id"])) {
         }
         if ($sandbox && floatval($_POST["demo_payment"]) > 0) {
             $query = 'INSERT INTO `nodes_transaction`(user_id, invoice_id, order_id, amount, status, date, gateway, comment, ip) '
-                    . 'VALUES("'.$user["id"].'", "'.$id.'", "-1", "'.floatval($_POST["demo_payment"]).'", "2", "'.date("U").'", "Demo", "Deposit", "'.$_SERVER["REMOTE_ADDR"].'")';
+                . 'VALUES("'.$user["id"].'", "'.$id.'", "-1", "'.floatval($_POST["demo_payment"]).'", "2", "'.date("U").'", "Demo", "Deposit", "'.$_SERVER["REMOTE_ADDR"].'")';
             engine::mysql($query);
             $query = 'UPDATE `nodes_user` SET `balance` = "'.($user["balance"] +floatval($_POST["demo_payment"])).'" WHERE `id` = "'.$user["id"].'"';
             engine::mysql($query);
@@ -60,12 +60,12 @@ if (!empty($_GET["id"])) {
             $r = engine::mysql($query);
             $order = mysqli_fetch_array($r);
             if (!$order["status"]) {
-                $query = 'SELECT * FROM `nodes_user`  WHERE `id` = "'.$user["id"].'"';
+                $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user["id"].'"';
                 $res = engine::mysql($query);
                 $user = mysqli_fetch_array($res);
                 if ($user["balance"] >= $data["amount"]) {
                     $query = 'INSERT INTO `nodes_transaction`(user_id, invoice_id, order_id, amount, status, date, gateway, comment, ip) '
-                            . 'VALUES("'.$user["id"].'", "'.$id.'", "'.$data["order_id"].'", "-'.$amount.'", "2", "'.date("U").'", "Demo", "Order payment", "'.$_SERVER["REMOTE_ADDR"].'")';
+                        . 'VALUES("'.$user["id"].'", "'.$id.'", "'.$data["order_id"].'", "-'.$amount.'", "2", "'.date("U").'", "Demo", "Order payment", "'.$_SERVER["REMOTE_ADDR"].'")';
                     engine::mysql($query);
                     $query = 'UPDATE `nodes_user` SET `balance` = "'.($user["balance"] - $amount).'" WHERE `id` = "'.$user["id"].'"';
                     engine::mysql($query);
@@ -149,7 +149,7 @@ if (!empty($_GET["id"])) {
                         if (!empty($paypal["value"])) {
                             $button = '<br/><input id="make-payment-input" type="button" onClick=\'document.getElementById("paypal_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
                         } else if (!empty($yandex["value"])) {
-                            $button = '<br/><input  id="make-payment-input" type="button" onClick=\'document.getElementById("yandex_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
+                            $button = '<br/><input id="make-payment-input" type="button" onClick=\'document.getElementById("yandex_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
                         }
                     } else {
                         $button = '<br/>
@@ -161,11 +161,11 @@ if (!empty($_GET["id"])) {
                             $button .= '<option id="option-yandex" value="yandex">Yandex Money</option>';
                         }
                         $button .= '</select><br/>
-                            <input id="make-payment-input"  type="button" class="btn w280" value="'.engine::lang("Make payment").'" onClick=\''
+                            <input id="make-payment-input" type="button" class="btn w280" value="'.engine::lang("Make payment").'" onClick=\''
                                 . 'if (document.getElementById("payment_method").value == "paypal") {'
-                                . '     document.getElementById("paypal_form").submit();'
+                                . ' document.getElementById("paypal_form").submit();'
                                 . '} else if (document.getElementById("payment_method").value == "yandex") {'
-                                . '     document.getElementById("yandex_form").submit();'
+                                . ' document.getElementById("yandex_form").submit();'
                                 . '}\'
                             />';
                     }
@@ -222,7 +222,7 @@ if (!empty($_GET["id"])) {
         </div>
         <div class="clear"></div>
         <div class="hidden">'.$payment.'</div>
-        <div class="invoice_pay">  
+        <div class="invoice_pay">
             '.engine::lang("Total").': <b>$'.$amount.'</b><br/>
             '.engine::lang('Balance').': <b>$'.$user["balance"].'</b><br/>
             '.engine::lang("Total Paid").': <b>$'.($sum).'</b><br/>

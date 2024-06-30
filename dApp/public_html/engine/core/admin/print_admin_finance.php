@@ -56,7 +56,7 @@ function print_admin_finance($cms) {
                 engine::mysql($query);
                 email::finish_withdrawal($data["user_id"]);
                 $fout = '<div class="clear_block">'.engine::lang("Withdrawal request processed").'!</div>'
-                        . '<a id="back-to-finance" href="'.$_SERVER["DIR"].'/admin/?mode=finance"><input type="button" class="btn w280" value="'.engine::lang("Back to finances").'" /></a><br/><br/>';
+                    . '<a id="back-to-finance" href="'.$_SERVER["DIR"].'/admin/?mode=finance"><input type="button" class="btn w280" value="'.engine::lang("Back to finances").'" /></a><br/><br/>';
                 return $fout;
             }
             $t = explode(';', $data["comment"]);
@@ -65,7 +65,7 @@ function print_admin_finance($cms) {
             $fout = '<div class="document640">
                 <form method="POST">
                 <h2>'.engine::lang("Withdrawal confirmation").'</h2><br/><br/>
-                    <p class="lh2">'.engine::lang("Please, confirm transaction").' '.($data["amount"]).'$  '.$wallet.' '.$id.'</p><br/><br/>
+                    <p class="lh2">'.engine::lang("Please, confirm transaction").' '.($data["amount"]).'$ '.$wallet.' '.$id.'</p><br/><br/>
                     <input type="hidden" name="id" value="'.$data["id"].'" />
                     <input id="input-confirm-payment" type="submit" class="btn w280" value="'.engine::lang("Confirm payment").'" /><br/><br/>
                     <a id="back-to-finance" href="'.$_SERVER["DIR"].'/admin/?mode=finance"><input type="button" class="btn w280" value="'.engine::lang("Back to finances").'" /></a><br/><br/>
@@ -85,33 +85,33 @@ function print_admin_finance($cms) {
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT * FROM `nodes_transaction` WHERE `status` > 0'
-            . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
+        . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
     $requery = 'SELECT COUNT(*) FROM `nodes_transaction` WHERE `status` > 0';
     $table = '
         <div class="table">
         <table width=100% id="table">
         <thead>
         <tr>';
-            $array = array(
-                "user_id" => "User",
-                "order_id" => "Type",
-                "amount" => "Amount",
-                "date" => "Date"
-            );
-            foreach ($array as $order => $value) {
-                $table .= '<th>';
-                if ($_SESSION["order"] == $order) {
-                    if ($_SESSION["method"] == "ASC") {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
-                    } else {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
-                    }
-                } else {
-                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
-                }
-                $table .= '</th>';
+    $array = array(
+        "user_id" => "User",
+        "order_id" => "Type",
+        "amount" => "Amount",
+        "date" => "Date"
+    );
+    foreach ($array as $order => $value) {
+        $table .= '<th>';
+        if ($_SESSION["order"] == $order) {
+            if ($_SESSION["method"] == "ASC") {
+                $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+            } else {
+                $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
             }
-            $table .= '
+        } else {
+            $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
+        }
+        $table .= '</th>';
+    }
+    $table .= '
         <th></th>
         </tr>
         </thead>';
@@ -139,20 +139,20 @@ function print_admin_finance($cms) {
             <td align=left valign=middle>'.$data["amount"].'$</td>
             <td align=left valign=middle>'.date("d/m/Y H:i", $data["date"]).'</td>
             <td width=30 align=left valign=middle class="nowrap">';
-            if ($admin_access == 2) {
-                $table .= '<form method="POST">
-                        <input type="hidden" name="id" value="'.$data["id"].'" />';
-                        if (!$data["order_id"] && $data["status"] == 1) {
-                            $table .= '<a id="process-payment" href="'.$_SERVER["DIR"].'/admin/?mode=finance&id='.$data["id"].'"><input type="button" class="btn small" value="'.engine::lang("Process payment").'" /></a>';
+        if ($admin_access == 2) {
+            $table .= '<form method="POST">
+                <input type="hidden" name="id" value="'.$data["id"].'" />';
+            if (!$data["order_id"] && $data["status"] == 1) {
+                $table .= '<a id="process-payment" href="'.$_SERVER["DIR"].'/admin/?mode=finance&id='.$data["id"].'"><input type="button" class="btn small" value="'.engine::lang("Process payment").'" /></a>';
 
-                        } else {
-                            $table .= '<input id="input-delete-'.$arr_count.'" type="submit" name="submit_btn" value="'.engine::lang("Delete").'" class="btn small" />';
-                        }
-                if (intval($data["invoice_id"]) > 0) {
-                    $table .= ' <input id="view-invoice-'.$arr_count.'" type="button" onClick=\'window.open("'.$_SERVER["DIR"].'/invoice.php?id='.$data["invoice_id"].'");\' class="btn small" value="'.engine::lang("View invoice").'">';
-                }
-                $table .= '</form>';
+            } else {
+                $table .= '<input id="input-delete-'.$arr_count.'" type="submit" name="submit_btn" value="'.engine::lang("Delete").'" class="btn small" />';
             }
+            if (intval($data["invoice_id"]) > 0) {
+                $table .= ' <input id="view-invoice-'.$arr_count.'" type="button" onClick=\'window.open("'.$_SERVER["DIR"].'/invoice.php?id='.$data["invoice_id"].'");\' class="btn small" value="'.engine::lang("View invoice").'">';
+            }
+            $table .= '</form>';
+        }
         $table .= '
             </td>
         </tr>';
@@ -162,7 +162,7 @@ function print_admin_finance($cms) {
     <br/>';
     if ($arr_count) {
         $fout .= $table.'
-    <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+    <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
     <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
     <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
     <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -182,8 +182,8 @@ function print_admin_finance($cms) {
              <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
             </select> '.engine::lang("per page").'.</nobr></p>';
     }
-    $fout .= '
-    </div><div class="cr"></div>';
+    $fout .= '</div>
+        <div class="cr"></div>';
     if ($count > $_SESSION["count"]) {
         $fout .= '<div class="pagination" >';
         $pages = ceil($count / $_SESSION["count"]);

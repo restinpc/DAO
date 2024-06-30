@@ -81,7 +81,7 @@ if (!$flag) {
     if ($data["value"] < date("U") - 86400) {
         $flag = 3;
         $images = array();
-        $query = 'SELECT * FROM  `nodes_product`';
+        $query = 'SELECT * FROM `nodes_product`';
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
             $imgs = explode(';', $data["img"]);

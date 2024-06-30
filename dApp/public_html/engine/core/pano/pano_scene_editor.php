@@ -57,7 +57,7 @@ function pano_scene_editor($data) {
             <input type="submit" class="btn w100p" value="'.engine::lang("Save scene settings").'" /><br/>
         </form>
     </div>
-    <div style="position:absolute; top:10px; right: 10px; width: 180px; display:none;" id="add_area">        
+    <div style="position:absolute; top:10px; right: 10px; width: 180px; display:none;" id="add_area">
         <input type="button" class="btn w100p" value="'.engine::lang("Add object").'" onClick=\'document.panorama.addObject();\' />
         <input type="button" class="btn w100p" value="'.engine::lang("Add navigation").'" onClick=\'document.panorama.addNavigation();\' />
         <input type="button" class="btn w100p" value="'.engine::lang("Add link").'" onClick=\'document.panorama.addURL();\' />

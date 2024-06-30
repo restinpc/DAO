@@ -59,7 +59,7 @@ if (!empty($_GET[2])) {
             '.$content.'
             <br/>
             '.engine::lang("The original document is in a").' 
-            <a href="'.$link.'" target="_blank">'.engine::lang("public repository").'/a>, '
+            <a href="'.$link.'" target="_blank">'.engine::lang("public repository").'</a>, '
             .engine::lang("and is available for editing by the community").'
             <br/>
             <br/>

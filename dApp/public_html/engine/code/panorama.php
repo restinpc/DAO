@@ -181,7 +181,7 @@ if (!empty($_GET["id"])) {
             <a-camera id="camera" 
                 look-controls
                 mouse-cursor
-                nodes-camera   
+                nodes-camera
                 wasd-controls-enabled="false"
             >
                 '.engine::pano_vr_cursor().'
@@ -277,8 +277,8 @@ if (!empty($_GET["id"])) {
             }
         }
     }
-    $fout .= '</a-entity>  '
-        . '<a-entity id="cubemap_2" position="0 0 0"  scale="1.01 1.01 1.01">';
+    $fout .= '</a-entity>'
+        . '<a-entity id="cubemap_2" position="0 0 0" scale="1.01 1.01 1.01">';
     $q = 4;
     $s = 128;
     $t = 3;
@@ -363,14 +363,12 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="4"  class="mesh load_later" side="'.$side.'"  id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="4" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }
-    $fout .= '
-        </a-entity> 
-        <a-entity id="virtual_scene">
-            ';
+    $fout .= '</a-entity> 
+        <a-entity id="virtual_scene">';
     $objects = '';
     $navigation = '';
     $gsv = '';
@@ -417,8 +415,8 @@ if (!empty($_GET["id"])) {
             <a-entity id="line" trigger="none" line="color: white; opacity:0;"></a-entity>
             <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
             <a-circle id="move_point" action=\'document.panorama.navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
-            <a-image id="cursor_img" transparent="true" position="0 0 0" look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25"  src="#arrow"></a-image>
-            <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0"  width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
+            <a-image id="cursor_img" transparent="true" position="0 0 0" look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25" src="#arrow"></a-image>
+            <a-image class="vr_hidden" opacity="0" transparent="true" id="vr_logo" position="0 0.02 0" rotation="-90 0 0" width="'.$data["logo_size"].'" height="'.$data["logo_size"].'" src="#logo"></a-image>
         </a-scene>
         <audio id="vr-sound" preload><source src="'.$_SERVER["DIR"].'/res/sounds/vr-load.wav" type="audio/wav"></audio>';
     if ($_SESSION["user"]["id"] == "1") {

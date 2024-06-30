@@ -33,7 +33,7 @@ function pano_print_object($site, $object, $new = 0) {
         height="1"
         width="1"
         depth="1"
-        color="'.$object["color"].'"  
+        color="'.$object["color"].'"
         onMouseOver=\'console.log("onMouseOver");\'
         action=\'
             setTimeout(function(id) {
@@ -76,26 +76,25 @@ function pano_print_object($site, $object, $new = 0) {
                 <input id="action_'.$object["id"].'" type="hidden" name="action" value="'.($new ? 'new_object' : 'edit_object').'" />
                 <input type="hidden" name="id" value="'.$object["id"].'" />
                 '.engine::lang("Text").':<br/>
-                <textarea required name="text"  class="input w100p">'.$object["text"].'</textarea><br/>
-                    <br/>
+                <textarea required name="text" class="input w100p">'.$object["text"].'</textarea><br/>
+                <br/>
                 '.engine::lang("Color").':<br/>
                 <input required id="object_'.$object["id"].'_color" name="color" type="text" class="input w100p" value="'.$object["color"].'" /><br/>
-                    <br/>
+                <br/>
                 '.engine::lang("Position").':<br/>
                 <input required id="object_'.$object["id"].'_position" name="position" type="text" class="input w100p" value="'.$object["position"].'" /><br/>
-                    <br/>
+                <br/>
                 '.engine::lang("Rotation").':<br/>
                 <input required id="object_'.$object["id"].'_rotation" name="rotation" type="text" class="input w100p" value="'.$object["rotation"].'" /><br/>
-                    <br/>
+                <br/>
                 '.engine::lang("Scale").':<br/>
                 <input required id="object_'.$object["id"].'_scale" name="scale" type="text" class="input w100p" value="'.$object["scale"].'" /><br/>
-                    <br/>   
+                <br/> 
                 <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesObject("'.$object["id"].'");\' />';
         if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete object").'" onClick=\'document.panorama.deleteObject("'.$object["id"].'")\' />';
         }
-        $fout .= '        
-                <input type="submit" class="btn w100p" value="'.engine::lang("Submit").'" /><br/><br/>
+        $fout .= '<input type="submit" class="btn w100p" value="'.engine::lang("Submit").'" /><br/><br/>
             </form>
         </div>';
         return $fout;

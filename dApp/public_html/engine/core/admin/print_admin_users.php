@@ -75,7 +75,7 @@ function print_admin_users($cms) {
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT * FROM `nodes_user` WHERE `ban` >= 0 AND `admin` = 0'
-            . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
+        . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
     $requery = 'SELECT COUNT(*) FROM `nodes_user` WHERE `ban` >= 0 AND `admin` = 0';
     $table = '
         <div class="table">
@@ -116,8 +116,8 @@ function print_admin_users($cms) {
         $ban = '<form method="POST" id="ban_form"><input type="hidden" name="ban" id="ban_value" value="0" /></form>'
             . '<form method="POST" id="unban_form"><input type="hidden" name="unban" id="unban_value" value="0" /></form>'
             . '<form method="POST" id="delete_form"><input type="hidden" name="delete" id="delete_value" value="0" /></form>'
-            . '<form method="POST" id="die_form"><input type="hidden" name="die"  id="die_value" value="0" /></form>'
-            . '<form method="POST" id="confirm_form"><input type="hidden" name="confirm"  id="confirm_value" value="0" /></form>'
+            . '<form method="POST" id="die_form"><input type="hidden" name="die" id="die_value" value="0" /></form>'
+            . '<form method="POST" id="confirm_form"><input type="hidden" name="confirm" id="confirm_value" value="0" /></form>'
             . '<select id="select-user-'.$i.'" class="input" onChange=\'
                 if (confirm("'.engine::lang("Are you sure?").'")) {if (this.value == "1") {
                     $id("unban_value").value="'.$data["id"].'";
@@ -141,12 +141,12 @@ function print_admin_users($cms) {
             }\'>';
         if (intval($data["ban"])) {
             $ban .= '<option id="option-user-'.$i.'-0" value="0" selected disabled>'.engine::lang("Banned").'</option>'
-                    . '<option id="option-user-'.$i.'-1" value="1">'.engine::lang("Unban").'</option>'
-                    . '<option id="option-user-'.$i.'-2" value="2">'.engine::lang("Delete").'</option>';
+                . '<option id="option-user-'.$i.'-1" value="1">'.engine::lang("Unban").'</option>'
+                . '<option id="option-user-'.$i.'-2" value="2">'.engine::lang("Delete").'</option>';
         } else {
             $ban .= '<option id="option-user-'.$i.'-0" value="0" selected disabled>'.engine::lang("Active").'</option>'
-                    . '<option id="option-user-'.$i.'-3" value="3">'.engine::lang("Ban").'</option>'
-                    . '<option id="option-user-'.$i.'-4" value="4">'.engine::lang("Delete").'</option>';
+                . '<option id="option-user-'.$i.'-3" value="3">'.engine::lang("Ban").'</option>'
+                . '<option id="option-user-'.$i.'-4" value="4">'.engine::lang("Delete").'</option>';
         }
         $ban .= '<option id="option-user-'.$i.'-5" value="5">'.engine::lang("New transaction").'</option>';
         $ban .= '</select>';
@@ -172,7 +172,7 @@ function print_admin_users($cms) {
         <br/>';
     if ($arr_count) {
         $fout .= $table.'
-            <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+            <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
             <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
             <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
             <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />

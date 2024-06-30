@@ -68,15 +68,15 @@ function print_product($site, $data) {
             $fout .= ' onClick=\'alert("'.engine::lang("Unable to purchase your own product").'")\' ';
         } else {
             $fout .= ' onClick=\'document.framework.buyNow('.$data["id"].', '
-                    . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
-                    . '"'.engine::lang("Continue").'", '
-                    . '"'.engine::lang("Checkout").'");\' ';
+                . '"'.engine::lang("A new item has been added to your Shopping Cart").'", '
+                . '"'.engine::lang("Continue").'", '
+                . '"'.engine::lang("Checkout").'");\' ';
         }
         $fout .= ' >
                 <div class="detail_buy_now">
                     <div class="label_1">'.engine::lang("Buy Now").'&nbsp;</div> 
                     <div class="label_2 cart_img">&nbsp;</div>
-                    <div class="label_3">&nbsp;$'.round($data["price"], 2).'</div>    
+                    <div class="label_3">&nbsp;$'.round($data["price"], 2).'</div>
                 </div>
             </div>
             <a id="show_comments" href="#comments" onClick=\'$id("comments_block").style.display="block"; this.style.display="none";\'>
@@ -113,8 +113,7 @@ function print_product($site, $data) {
     }
     $fout .= $new_fout;
     $fout .= '<div class="clear"><br/></div>';
-    $fout .= '
-    </div>';
+    $fout .= '</div>';
     return $fout;
 }
 

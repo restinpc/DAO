@@ -57,13 +57,12 @@ function print_admin_config($cms) {
                     <select id="select-config-'.$i.'" '.($admin_access != 2?'disabled':'').' class="input w100p" name="'.$data["name"].'">';
             if ($data["value"]) {
                 $fout .= '<option id="option-no-'.$i.'" value="0">'.engine::lang("No").'</option>'
-                        . '<option id="option-yes-'.$i.'" value="1" selected>'.engine::lang("Yes").'</option>';
+                    . '<option id="option-yes-'.$i.'" value="1" selected>'.engine::lang("Yes").'</option>';
             } else {
                 $fout .= '<option id="option-no-'.$i.'" value="0" selected>'.engine::lang("No").'</option>'
-                        . '<option id="option-yes-'.$i.'" value="1">'.engine::lang("Yes").'</option>';
+                    . '<option id="option-yes-'.$i.'" value="1">'.engine::lang("Yes").'</option>';
             }
-            $fout .= '        
-                    </select>
+            $fout .= '</select>
                     </td>
                 </tr>';
         } else {
@@ -83,7 +82,7 @@ function print_admin_config($cms) {
             . '<input id="input-save-settings" type="submit" class="btn w280" value="'.engine::lang("Save settings").'" />';
     }
     $fout .= '</form>'
-            . '</div>';
+        . '</div>';
     return $fout;
 }
 

@@ -77,32 +77,32 @@ function print_admin_pages($cms) {
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT `catch`.`url`,'
-            . ' `catch`.`id`,'
-            . ' `catch`.`interval`,'
-            . ' `catch`.`description` AS `desc`,'
-            . ' `catch`.`keywords` AS `key`,'
-            . ' `catch`.`title` AS `tit`,'
-            . ' `seo`.`title`,'
-            . ' `seo`.`description`,'
-            . ' `seo`.`keywords`,'
-            . ' `seo`.`mode`'
-            . ' FROM `nodes_cache` as `catch` '
-            . ' LEFT JOIN `nodes_meta` AS `seo`'
-            . ' ON (`catch`.`url` = `seo`.`url`'
-            . '     AND `catch`.`lang` = `seo`.`lang`)'
-            . ' WHERE `catch`.`url` NOT LIKE "%/admin%"'
-            . '     AND `catch`.`url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"'
-            . '     AND `catch`.`lang` = "'.$_SESSION["Lang"].'"'
-            . ' ORDER BY `catch`.`'.$_SESSION["order"].'` '.$_SESSION["method"].''
-            . ' LIMIT '.($from-1).', '.$_SESSION["count"];
+        . ' `catch`.`id`,'
+        . ' `catch`.`interval`,'
+        . ' `catch`.`description` AS `desc`,'
+        . ' `catch`.`keywords` AS `key`,'
+        . ' `catch`.`title` AS `tit`,'
+        . ' `seo`.`title`,'
+        . ' `seo`.`description`,'
+        . ' `seo`.`keywords`,'
+        . ' `seo`.`mode`'
+        . ' FROM `nodes_cache` as `catch` '
+        . ' LEFT JOIN `nodes_meta` AS `seo`'
+        . ' ON (`catch`.`url` = `seo`.`url`'
+        . '     AND `catch`.`lang` = `seo`.`lang`)'
+        . ' WHERE `catch`.`url` NOT LIKE "%/admin%"'
+        . '     AND `catch`.`url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"'
+        . '     AND `catch`.`lang` = "'.$_SESSION["Lang"].'"'
+        . ' ORDER BY `catch`.`'.$_SESSION["order"].'` '.$_SESSION["method"].''
+        . ' LIMIT '.($from-1).', '.$_SESSION["count"];
     $requery = 'SELECT COUNT(*)'
-            . ' FROM `nodes_cache` as `catch` '
-            . ' LEFT JOIN `nodes_meta` AS `seo`'
-            . ' ON (`catch`.`url` = `seo`.`url`'
-            . '     AND `catch`.`lang` = `seo`.`lang`)'
-            . ' WHERE `catch`.`url` NOT LIKE "%/admin%"'
-            . '     AND `catch`.`url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"'
-            . '     AND `catch`.`lang` = "'.$_SESSION["Lang"].'"';
+        . ' FROM `nodes_cache` as `catch` '
+        . ' LEFT JOIN `nodes_meta` AS `seo`'
+        . ' ON (`catch`.`url` = `seo`.`url`'
+        . '     AND `catch`.`lang` = `seo`.`lang`)'
+        . ' WHERE `catch`.`url` NOT LIKE "%/admin%"'
+        . '     AND `catch`.`url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"'
+        . '     AND `catch`.`lang` = "'.$_SESSION["Lang"].'"';
     $table = '
         <div class="table">
         <table width=100% id="table">
@@ -159,7 +159,7 @@ function print_admin_pages($cms) {
                 />
             </td>
             <td align=left valign=middle>
-                <input id="page-keywords-'.$data["id"].'" type="text" '.($admin_access!=2?'disabled':'').' class="input" name="keywords" id="keywords_'.$data["id"].'"  placeHolder="'.$data["key"].'" value="'.$data["keywords"].'" 
+                <input id="page-keywords-'.$data["id"].'" type="text" '.($admin_access!=2?'disabled':'').' class="input" name="keywords" id="keywords_'.$data["id"].'" placeHolder="'.$data["key"].'" value="'.$data["keywords"].'" 
                     onChange=\'$id("button_'.$data["id"].'").style.display="block"; jQuery("#button_'.$data["id"].'").removeClass("hidden");\'
                 />
             </td>
@@ -198,7 +198,7 @@ function print_admin_pages($cms) {
         <br/>';
     if ($arr_count) {
         $fout .= $table.'
-    <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+    <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
     <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
     <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
     <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />

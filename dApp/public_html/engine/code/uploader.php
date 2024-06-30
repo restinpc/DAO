@@ -145,7 +145,7 @@ if (!empty($_POST["name"])) {
                     parent.document.getElementById("'.$new_img.'").appendChild(df_img);
                     parent.document.getElementById("'.$f1.'").style.width=('.($THUWIDTH+20).'+"px");
                     parent.document.getElementById("'.$f1.'").style.height=('.($THUHEIGHT+20).'+"px");
-                } catch(e) { console.log("error 1"); }     
+                } catch(e) { console.log("error 1"); }
                 try {
                     var ii = 0;
                     for (var i = 1; i < 5; i++) {
@@ -170,7 +170,7 @@ if (!empty($_POST["name"])) {
                             } catch(e) { };
                         }
                     }
-                } catch(e) { console.log("error 3");  };
+                } catch(e) { console.log("error 3"); };
                 try {
                     var img = parent.document.getElementById("result_file1");
                     if (img.value != "") {
@@ -291,8 +291,7 @@ if (!empty($_POST["name"])) {
     </form>
     <div id="messages"></div>
     <script>
-        //if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
-        // document.getElementById("fileselect").click();
+        // if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
     </script>
 </body>
 </html>';

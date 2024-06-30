@@ -151,10 +151,10 @@ function print_admin_content($cms) {
             $d = mysqli_fetch_array($r);
             if (!empty($img)) {
                 $query = 'INSERT INTO `nodes_catalog`(caption, text, url, lang, `order`, img, visible, date, public_date) '
-                        . 'VALUES("'.$caption.'", "'.$text.'", "'.$url.'", "'.$_SESSION["Lang"].'", "'.($d["order"] + 1).'", "'.$img.'", "'.$visible.'", "'.date("U").'", "'.date("U").'")';
+                    . 'VALUES("'.$caption.'", "'.$text.'", "'.$url.'", "'.$_SESSION["Lang"].'", "'.($d["order"] + 1).'", "'.$img.'", "'.$visible.'", "'.date("U").'", "'.date("U").'")';
             } else {
                 $query = 'INSERT INTO `nodes_catalog`(caption, text, url, lang, `order`, visible, date, public_date) '
-                        . 'VALUES("'.$caption.'", "'.$text.'", "'.$url.'", "'.$_SESSION["Lang"].'", "'.($d["order"] + 1).'", "'.$visible.'", "'.date("U").'", "'.date("U").'")';
+                    . 'VALUES("'.$caption.'", "'.$text.'", "'.$url.'", "'.$_SESSION["Lang"].'", "'.($d["order"] + 1).'", "'.$visible.'", "'.date("U").'", "'.date("U").'")';
             }engine::mysql($query);
         }
     }
@@ -259,12 +259,11 @@ function print_admin_content($cms) {
             <input id="input-article-url" type="text" class="input w600" name="url" placeHolder="URL" value="'.$data["url"].'" /><br/><br/>';
             if (!empty($data["img"])) {
                 $fout .= '<div id="delete_image_block"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$data["img"].'" /><br/><br/>'
-                        . '<input type="hidden" id="noimg" name="noimg" value="0" />'
-                        . '<input id="input-delete-image" type="button" onClick=\'  $id("noimg").value="1"; '
-                        . '                                 $id("edit_form").submit();\' '
-                        . 'class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
+                    . '<input type="hidden" id="noimg" name="noimg" value="0" />'
+                    . '<input id="input-delete-image" type="button" onClick=\'$id("noimg").value="1"; $id("edit_form").submit();\' '
+                    . 'class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
             }
-            for ($i = 1; $i <2; $i++) {
+            for ($i = 1; $i < 2; $i++) {
                 $fout .= '<div class="new_photo" id="new_photo_'.$i.'" title="none">
                 <input type="hidden" name="file'.$i.'" id="file'.$i.'" value="" />
                 </div>';
@@ -437,7 +436,7 @@ function print_admin_content($cms) {
             $table .= '</table></div>';
             if ($arr_count) {
                 $fout .= $table.'
-                <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+                <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
                 <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
                 <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -550,7 +549,7 @@ function print_admin_content($cms) {
             }
             $fout .= '
                 <div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/><br/>
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0, 0);\' /><br/><br/>
                 <div class="w600">
                     <textarea class="input w600" id="editable" name="text">'.$_POST["text"].'</textarea>
                 </div><br/><br/>
@@ -614,7 +613,7 @@ function print_admin_content($cms) {
                 </div><br/>';
         if ($arr_count) {
             $fout .= $table.'
-            <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+            <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
                 <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
                 <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -703,10 +702,10 @@ function print_admin_content($cms) {
             }
             $fout .= '
                 <div class="clear"><br/></div>
-                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280"  onClick=\'document.framework.showPhotoEditor(0, 0);\' />
+                <input type="button" id="upload_btn" value="'.engine::lang("Upload new image").'" class="btn w280" onClick=\'document.framework.showPhotoEditor(0, 0);\' />
                 <br/><br/>
                 <div class="w600">
-                    <textarea class="input w600" id="editable" name="text"  placeHolder="Text"></textarea>
+                    <textarea class="input w600" id="editable" name="text" placeHolder="Text"></textarea>
                 </div>
                 <br/>
                 <input id="input-submit" type="submit" value="'.engine::lang("Submit").'" class="btn w280" />

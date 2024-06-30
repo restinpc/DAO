@@ -85,7 +85,7 @@ if (!empty($_POST["id"])) {
             $message["name"] = $d["name"];
             $message["text"] = $data["text"];
             $message["date"] = date("d-m-Y H:i", $data["date"]);
-            $query = 'UPDATE `nodes_inbox` SET `inform` = 1  WHERE `to` = "'.intval($_SESSION["user"]["id"]).'"';
+            $query = 'UPDATE `nodes_inbox` SET `inform` = 1 WHERE `to` = "'.intval($_SESSION["user"]["id"]).'"';
             engine::mysql($query);
             die(json_encode($message));
         } else {
@@ -161,9 +161,9 @@ if (!empty($_POST["id"])) {
         engine::mysql($query);
     } else if (!empty($_POST["order_id"]) && isset($_POST["status"]) && $_SESSION["user"]["admin"] == "1") {
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "orders" '
-                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-                . 'AND `access`.`admin_id` = `admin`.`id`';
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "orders" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
         $admin_res = engine::mysql($query);
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
@@ -181,11 +181,11 @@ if (!empty($_POST["id"])) {
             engine::mysql($query);
             email::shipping_confirmation($data["order_id"]);
         }
-    } else if (!empty($_POST["product_id"]) && !empty($_POST["pos"])  && $_SESSION["user"]["admin"] == "1") {
+    } else if (!empty($_POST["product_id"]) && !empty($_POST["pos"]) && $_SESSION["user"]["admin"] == "1") {
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "products" '
-                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-                . 'AND `access`.`admin_id` = `admin`.`id`';
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "products" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
         $admin_res = engine::mysql($query);
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
@@ -260,18 +260,18 @@ if (!empty($_POST["id"])) {
             $data = mysqli_fetch_array($res);
             if (!empty($data)) {
                 $query = 'UPDATE `nodes_meta` SET '
-                        . '`title` = "'.$title.'", '
-                        . '`description` = "'.$description.'", '
-                        . '`keywords` = "'.$keywords.'", '
-                        . '`mode` = "'.$mode.'" '
-                        . ' WHERE `id` = "'.$data["id"].'"';
+                    . '`title` = "'.$title.'", '
+                    . '`description` = "'.$description.'", '
+                    . '`keywords` = "'.$keywords.'", '
+                    . '`mode` = "'.$mode.'" '
+                    . ' WHERE `id` = "'.$data["id"].'"';
             } else {
                 $query = 'INSERT INTO `nodes_meta`(url, lang, title, description, keywords, mode) '
-                . 'VALUES("'.$d["url"].'", "'.$d["lang"].'", "'.$title.'", "'.$description.'", "'.$keywords.'", "'.$mode.'")';
+                    . 'VALUES("'.$d["url"].'", "'.$d["lang"].'", "'.$title.'", "'.$description.'", "'.$keywords.'", "'.$mode.'")';
             }
             engine::mysql($query);
             $query = 'UPDATE `nodes_cache` SET `title` = "", `description` = "", `keywords` = "", `html` = "", `content` = "", `date` = 0, `time` = 0 '
-                    . 'WHERE `url` = "'.$d["url"].'" AND `lang` = "'.$d["lang"].'"';
+                . 'WHERE `url` = "'.$d["url"].'" AND `lang` = "'.$d["lang"].'"';
             engine::mysql($query);
         }
     }

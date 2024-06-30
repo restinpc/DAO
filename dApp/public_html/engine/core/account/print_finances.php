@@ -93,7 +93,7 @@ function print_finances($site) {
         if (floatval($_POST["amount"]) > 0) {
             $amount = floatval($_POST["amount"]);
             $query = 'INSERT INTO `nodes_invoice`(user_id, order_id, amount, date) '
-                    . 'VALUES("'.$_SESSION["user"]["id"].'", "-1", "'.$amount.'", "'.date("Y-m-d H:i:s").'")';
+                . 'VALUES("'.$_SESSION["user"]["id"].'", "-1", "'.$amount.'", "'.date("Y-m-d H:i:s").'")';
             engine::mysql($query);
             return engine::redirect("/invoice.php?id=". mysqli_insert_id($_SERVER["sql_connection"]));
         }
@@ -114,7 +114,7 @@ function print_finances($site) {
         }
         $fout.= engine::lang('Balance').': <b>$'.$balance."</b>";
         if ($pending > 0) {
-            $fout.= "  ".engine::lang("Pending").": <b>$".$pending.'</b>';
+            $fout.= " &nbsp; ".engine::lang("Pending").": <b>$".$pending.'</b>';
         }
         $fout.= '<br/><br/>'
             . '<form method="POST" class="hidden">'
@@ -128,7 +128,7 @@ function print_finances($site) {
         $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
         $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
         $query = 'SELECT * FROM `nodes_transaction` WHERE `status` > 0 AND `user_id` = "'.$_SESSION["user"]["id"].'"'
-                . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
+            . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
         $requery = 'SELECT COUNT(*) FROM `nodes_transaction` WHERE `status` > 0 AND `user_id` = "'.$_SESSION["user"]["id"].'"';
         $table = '
             <div class="table">
@@ -184,7 +184,7 @@ function print_finances($site) {
             }
             $button = '';
             if (intval($data["invoice_id"]) > 0) {
-                $button = '<a id="view-invoice" onClick=\'window.open("/invoice.php?id='.$data["invoice_id"].'");\' class="btn small">'.engine::lang("View invoice").'</a>';
+                $button = '<a id="view-invoice" onClick=\'window.open("'.$_SERVER["DIR"].'/invoice.php?id='.$data["invoice_id"].'");\' class="btn small">'.engine::lang("View invoice").'</a>';
             }
             $table .= '<tr>
                 <td align=left valign=middle>'.$type.'</td>
@@ -198,7 +198,7 @@ function print_finances($site) {
         </div>';
         if ($arr_count) {
             $fout.= $table.'
-            <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+            <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
             <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
             <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
             <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -244,7 +244,7 @@ function print_finances($site) {
                             $e = 0;
                             $fout.= '<li class="active-page">'.$i.'</li>';
                         } else {
-                            $fout.= '<li  id="list-page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
+                            $fout.= '<li id="list-page-'.$i.'" onClick=\'document.framework.goto_page('.($i).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.$i.'</a></li>';
                         }
                     } else if ((!$c || !$b) && !$f && $i < $pages) {
                         $f = 1; $e = 0;
@@ -257,7 +257,7 @@ function print_finances($site) {
                     }
                 }
                 if ($_SESSION["page"] < $pages) {
-                   $fout.= '<li  id="list-previous" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                   $fout.= '<li id="list-previous" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
                 }
                 $fout.= '
                 </ul>
@@ -270,7 +270,7 @@ function print_finances($site) {
         if ($balance > 0 && $is_withdrawal) {
             $fout.= '<a id="request_withdrawal" href="'.$_SERVER["DIR"].'/account/finances/withdrawal"><input type="button" class="btn w280" value="'.engine::lang("Request withdrawal").'" /></a><br/><br/>';
         }
-        $fout.=  '<input id="input-deposit" type="button" class="btn w280" value="'.engine::lang("Deposit money").'" onClick=\'document.framework.deposit("'.engine::lang("Amount to deposit").'");\' /><br/><br/>';
+        $fout .= '<input id="input-deposit" type="button" class="btn w280" value="'.engine::lang("Deposit money").'" onClick=\'document.framework.deposit("'.engine::lang("Amount to deposit").'");\' /><br/><br/>';
     }
     $fout .= '</div>';
     return $fout;

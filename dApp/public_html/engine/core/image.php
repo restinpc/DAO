@@ -234,12 +234,12 @@ static function resize_image($src, $dest, $width, $height, $rgb = 0x1d1d1d, $qua
     if ($proportions) {
         $x_ratio = $width / $size[0];
         $y_ratio = $height / $size[1];
-        $ratio       = min($x_ratio, $y_ratio);
+        $ratio = min($x_ratio, $y_ratio);
         $use_x_ratio = ($x_ratio == $ratio);
-        $new_width   = $use_x_ratio  ? $width  : round($size[0] * $ratio);
-        $new_height  = !$use_x_ratio ? $height : round($size[1] * $ratio);
-        $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
-        $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
+        $new_width = $use_x_ratio ? $width : round($size[0] * $ratio);
+        $new_height = !$use_x_ratio ? $height : round($size[1] * $ratio);
+        $new_left = $use_x_ratio ? 0 : round(($width - $new_width) / 2);
+        $new_top = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
         imagecopyresampled($idest, $isrc, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
     } else {
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
@@ -278,12 +278,12 @@ static function upload_plan($src, $dest, $ext, $width = 600, $height = 600, $rgb
     if ($proportions) {
         $x_ratio = $width / $size[0];
         $y_ratio = $height / $size[1];
-        $ratio       = min($x_ratio, $y_ratio);
+        $ratio = min($x_ratio, $y_ratio);
         $use_x_ratio = ($x_ratio == $ratio);
-        $new_width   = $use_x_ratio  ? $width  : round($size[0] * $ratio);
-        $new_height  = !$use_x_ratio ? $height : round($size[1] * $ratio);
-        $new_left    = $use_x_ratio  ? 0 : round(($width - $new_width) / 2);
-        $new_top     = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
+        $new_width = $use_x_ratio ? $width : round($size[0] * $ratio);
+        $new_height = !$use_x_ratio ? $height : round($size[1] * $ratio);
+        $new_left = $use_x_ratio ? 0 : round(($width - $new_width) / 2);
+        $new_top = !$use_x_ratio ? 0 : round(($height - $new_height) / 2);
         imagecopyresampled($idest, $isrc, $new_left, $new_top, 0, 0, $new_width, $new_height, $size[0], $size[1]);
     } else {
         imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);

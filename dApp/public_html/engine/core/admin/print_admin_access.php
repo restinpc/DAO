@@ -21,9 +21,9 @@
 
 function print_admin_access($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "access" '
-            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-            . 'AND `access`.`admin_id` = `admin`.`id`';
+        . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "access" '
+        . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+        . 'AND `access`.`admin_id` = `admin`.`id`';
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
@@ -153,36 +153,36 @@ function print_admin_access($cms) {
         $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
         $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
         $query = 'SELECT `user`.* FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_user` AS `user` ON `user`.`id` = `access`.`user_id` '
-                . 'GROUP BY `user`.`id` '
-                . 'ORDER BY `user`.`'.$_SESSION["order"].'` '.$_SESSION["method"].' '
-                . 'LIMIT '.($from-1).', '.$_SESSION["count"];
+            . 'LEFT JOIN `nodes_user` AS `user` ON `user`.`id` = `access`.`user_id` '
+            . 'GROUP BY `user`.`id` '
+            . 'ORDER BY `user`.`'.$_SESSION["order"].'` '.$_SESSION["method"].' '
+            . 'LIMIT '.($from-1).', '.$_SESSION["count"];
         $requery = 'SELECT COUNT(DISTINCT(`user`.`id`)) FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_user` AS `user` ON `user`.`id` = `access`.`user_id` ';
+            . 'LEFT JOIN `nodes_user` AS `user` ON `user`.`id` = `access`.`user_id` ';
         $table = '
             <div class="table">
             <table width=100% id="table">
             <thead>
             <tr>';
-                $array = array(
-                    "name" => "Name",
-                    "email" => "Email",
-                    "online" => "Last visit"
-                );
-                foreach ($array as $order => $value) {
-                    $table .= '<th>';
-                    if ($_SESSION["order"] == $order) {
-                        if ($_SESSION["method"] == "ASC") {
-                            $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
-                        } else {
-                            $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
-                        }
-                    } else {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
-                    }
-                    $table .= '</th>';
+        $array = array(
+            "name" => "Name",
+            "email" => "Email",
+            "online" => "Last visit"
+        );
+        foreach ($array as $order => $value) {
+            $table .= '<th>';
+            if ($_SESSION["order"] == $order) {
+                if ($_SESSION["method"] == "ASC") {
+                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+                } else {
+                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
                 }
-                $table .= '
+            } else {
+                $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
+            }
+            $table .= '</th>';
+        }
+        $table .= '
                 <th></th>
             </tr>
             </thead>';
@@ -230,16 +230,16 @@ function print_admin_access($cms) {
                     . '\'/>';
             }
             $table .= '<tr><td align=left class="nowrap">'.$flag.'&nbsp;<a id="link-user-'.$data["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$data["id"].'">'.$data["name"].'</a></td>'
-                    . '<td align=left><a href="mailto:'.$data["email"].'">'.$data["email"].'</a></td>'
-                    . '<td align=left>'.$online.'</td>'
-                    . '<td width=45 align=left>'.$select.'</td></tr>';
+                . '<td align=left><a href="mailto:'.$data["email"].'">'.$data["email"].'</a></td>'
+                . '<td align=left>'.$online.'</td>'
+                . '<td width=45 align=left>'.$select.'</td></tr>';
         }
         $table .= '</table>
     </div>
     <br/>';
         if ($arr_count) {
             $fout .= $table.'
-        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -316,7 +316,7 @@ function print_admin_access($cms) {
             $fout .= '
                 <input id="input-add-admin" type="button" class="btn w280" value="'.engine::lang("Add new admin").'" onClick=\'this.style.display="none"; jQuery("#new_admin").removeClass("hidden");\' />
                 <div class="document320 hidden" id="new_admin">
-                <select  class="input w280" id="admin_id">';
+                <select class="input w280" id="admin_id">';
             $query = 'SELECT * FROM `nodes_user` WHERE `ban` = 0 AND `admin` = 0';
             $res = engine::mysql($query);
             while ($user = mysqli_fetch_array($res)) {

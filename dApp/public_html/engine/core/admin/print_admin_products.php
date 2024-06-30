@@ -52,7 +52,7 @@ function print_admin_products($cms) {
             $description = trim(engine::escape_string($_POST["description"]));
             $date = date("U");
             $query = 'INSERT INTO `nodes_product`(`user_id`, `title`, `text`, `description`, `img`, `price`, `date`, `status`, `views`) '
-                    . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$title.'", "'.$text.'", "'.$description.'", "'.$_SESSION["photos"].'", "'.$price.'", "'.$date.'", "1", "0")';
+                . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$title.'", "'.$text.'", "'.$description.'", "'.$_SESSION["photos"].'", "'.$price.'", "'.$date.'", "1", "0")';
             engine::mysql($query);
             $query = 'SELECT * FROM `nodes_product` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" AND `date` = "'.date("U").'"';
             $res = engine::mysql($query);
@@ -82,7 +82,7 @@ function print_admin_products($cms) {
                     $data = mysqli_fetch_array($res);
                     if (empty($data)) {
                         $query = 'INSERT INTO `nodes_property_data`(product_id, property_id, data_id) '
-                                . 'VALUES("'.$_SESSION["product"].'", "'.$key.'", "'.$value.'")';
+                            . 'VALUES("'.$_SESSION["product"].'", "'.$key.'", "'.$value.'")';
                         engine::mysql($query);
                     }
                 }
@@ -97,7 +97,7 @@ function print_admin_products($cms) {
                 engine::mysql($query);
                 $data_id = mysqli_insert_id($_SERVER["sql_connection"]);
                 $query = 'INSERT INTO `nodes_property_data`(product_id, property_id, data_id) '
-                        . 'VALUES("'.$_SESSION["product"].'", "'.$id.'", "'.$data_id.'")';
+                    . 'VALUES("'.$_SESSION["product"].'", "'.$id.'", "'.$data_id.'")';
                 engine::mysql($query);
             }
         }
@@ -123,7 +123,7 @@ function print_admin_products($cms) {
             $data = mysqli_fetch_array($res);
             if (empty($data)) {
                 $query = 'INSERT INTO `nodes_shipping`(user_id, country, state, city, zip, street1, street2, phone)'
-                        . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
+                    . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
                 engine::mysql($query);
                 $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
                 $res = engine::mysql($query);
@@ -155,7 +155,7 @@ function print_admin_products($cms) {
                     <input id="product-price" type="text" class="input w280" name="price" placeHolder="$ 0.00" required /><br/><br/>';
             $query = 'SELECT * FROM `nodes_product_property` ORDER BY `id` ASC';
             $res = engine::mysql($query);
-            while ($data=  mysqli_fetch_array($res)) {
+            while ($data = mysqli_fetch_array($res)) {
                 $flag = 0;
                 $select = '<select id="select-product-data-'.$data["id"].'" class="input w280" style="margin-bottom: 15px;" name="property_'.$data["id"].'" onChange=\'if (this.value == "-1") {$id("new_value_'.$data["id"].'").style.display="block"; jQuery("#new_value_'.$data["id"].'").removeClass("hidden"); this.style.display="none";}\'>'
                 . '<option id="option-product-data-'.$data["id"].'-0" disabled selected>'.$data["value"].'</option>';
@@ -193,11 +193,11 @@ function print_admin_products($cms) {
                     <input type="hidden" name="shipping" value="1" />
                     <input id="product-shipping-country" type="text" class="input w280" placeHolder="'.engine::lang("Country").'" id="country_selector" name="country" required value="'.$data["country"].'" /><br/><br/>
                     <input id="product-shipping-state" type="text" class="input w280" placeHolder="'.engine::lang("State").'" name="state" required value="'.$data["state"].'" /><br/><br/>
-                    <input id="product-shipping-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'"  /><br/><br/>
-                    <input id="product-shipping-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'"  /><br/><br/>
-                    <input id="product-shipping-street1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'"  /><br/><br/>
-                    <input id="product-shipping-street2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'"  /><br/><br/>
-                    <input id="product-shipping-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'"  /><br/><br/>
+                    <input id="product-shipping-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'" /><br/><br/>
+                    <input id="product-shipping-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'" /><br/><br/>
+                    <input id="product-shipping-street1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'" /><br/><br/>
+                    <input id="product-shipping-street2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'" /><br/><br/>
+                    <input id="product-shipping-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'" /><br/><br/>
                     <br/>
                 </div>
                 <div class="clear"><br/></div>
@@ -208,7 +208,7 @@ function print_admin_products($cms) {
                 <input id="product-shipping-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/>
             </form>
             </div>
-            <style>.country-select{width: 280px;}</style>';  
+            <style>.country-select{ width: 280px; }</style>';
             $cms->onload .= '; jQuery("#country_selector").countrySelect({ defaultCountry: "us" }); ';
         }
     } else if ($_GET["action"] == "edit") {
@@ -232,7 +232,7 @@ function print_admin_products($cms) {
                             $d = mysqli_fetch_array($r);
                             if (!empty($d)) {
                                 $query = 'INSERT INTO `nodes_property_data`(product_id, property_id, data_id) '
-                                        . 'VALUES("'.$_GET["id"].'", "'.$key.'", "'.$d["id"].'")';
+                                    . 'VALUES("'.$_GET["id"].'", "'.$key.'", "'.$d["id"].'")';
                                 engine::mysql($query);
                             } else {
                                 $query = 'INSERT INTO `nodes_product_data`(cat_id, value) VALUES("'.$key.'", "'.$new_value.'")';
@@ -240,12 +240,12 @@ function print_admin_products($cms) {
                                 $dd = mysqli_fetch_array($rr);
                                 $id = mysqli_insert_id($_SERVER["sql_connection"]);
                                 $query = 'INSERT INTO `nodes_property_data`(product_id, property_id, data_id) '
-                                        . 'VALUES("'.$_GET["id"].'", "'.$key.'", "'.$id.'")';
+                                    . 'VALUES("'.$_GET["id"].'", "'.$key.'", "'.$id.'")';
                                 engine::mysql($query);
                             }
                         } else {
                             $query = 'INSERT INTO `nodes_property_data`(product_id, property_id, data_id) '
-                                    . 'VALUES("'.$_GET["id"].'", "'.$key.'", "'.$value.'")';
+                                . 'VALUES("'.$_GET["id"].'", "'.$key.'", "'.$value.'")';
                             engine::mysql($query);
                         }
                     }
@@ -260,7 +260,7 @@ function print_admin_products($cms) {
                     engine::mysql($query);
                     $data_id = mysqli_insert_id($_SERVER["sql_connection"]);
                     $query = 'INSERT INTO `nodes_property_data`(product_id, property_id, data_id) '
-                            . 'VALUES("'.$_GET["id"].'", "'.$id.'", "'.$data_id.'")';
+                        . 'VALUES("'.$_GET["id"].'", "'.$id.'", "'.$data_id.'")';
                     engine::mysql($query);
                 }
                 $title = trim(htmlspecialchars($_POST["title"]));
@@ -268,11 +268,11 @@ function print_admin_products($cms) {
                 $price = trim($_POST["price"]);
                 $description = engine::escape_string($_POST["description"]);
                 $query = 'UPDATE `nodes_product` SET '
-                        . '`title` = "'.$title.'", '
-                        . '`text` = "'.$text.'", '
-                        . '`price` = "'.$price.'", '
-                        . '`description` = "'.$description.'" '
-                        . 'WHERE `id` = "'.intval($_GET["id"]).'"';
+                    . '`title` = "'.$title.'", '
+                    . '`text` = "'.$text.'", '
+                    . '`price` = "'.$price.'", '
+                    . '`description` = "'.$description.'" '
+                    . 'WHERE `id` = "'.intval($_GET["id"]).'"';
                 engine::mysql($query);
                 $country = htmlspecialchars($_POST["country"]);
                 $state = htmlspecialchars($_POST["state"]);
@@ -282,20 +282,20 @@ function print_admin_products($cms) {
                 $street2 = htmlspecialchars($_POST["street2"]);
                 $phone = htmlspecialchars($_POST["phone"]);
                 $query = 'SELECT * FROM `nodes_shipping` WHERE '
-                        . '`user_id` = "'.$_SESSION["user"]["id"].'" AND '
-                        . '`country` = "'.$country.'" AND '
-                        . '`state` = "'.$state.'" AND '
-                        . '`city` = "'.$city.'" AND '
-                        . '`zip` = "'.$zip.'" AND '
-                        . '`street1` = "'.$street1.'" AND '
-                        . '`street2` = "'.$street2.'" AND '
-                        . '`phone` = "'.$phone.'" '
-                        . 'ORDER BY `id` DESC LIMIT 0, 1';
+                    . '`user_id` = "'.$_SESSION["user"]["id"].'" AND '
+                    . '`country` = "'.$country.'" AND '
+                    . '`state` = "'.$state.'" AND '
+                    . '`city` = "'.$city.'" AND '
+                    . '`zip` = "'.$zip.'" AND '
+                    . '`street1` = "'.$street1.'" AND '
+                    . '`street2` = "'.$street2.'" AND '
+                    . '`phone` = "'.$phone.'" '
+                    . 'ORDER BY `id` DESC LIMIT 0, 1';
                 $res = engine::mysql($query);
                 $data = mysqli_fetch_array($res);
                 if (empty($data)) {
                     $query = 'INSERT INTO `nodes_shipping`(user_id, country, state, city, zip, street1, street2, phone)'
-                            . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
+                        . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
                     engine::mysql($query);
                     $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
                     $res = engine::mysql($query);
@@ -316,12 +316,12 @@ function print_admin_products($cms) {
             foreach ($images as $img) {
                 $img = trim($img);
                 if (!empty($img)) {
-                    $i++;    
+                    $i++;
                     if ($i > 5) {
                         break;
                     }
                     $fout .= '<td id="block_'.$i.'" class="product_preview_image_small">'
-                    . '<img id="img-product-'.$i.'" class="img" src="'.$_SERVER["DIR"].'/img/data/thumb/'.$img.'" onClick=\'select_image("'.$i.'", "'.$img.'");\'/><br/>
+                        . '<img id="img-product-'.$i.'" class="img" src="'.$_SERVER["DIR"].'/img/data/thumb/'.$img.'" onClick=\'select_image("'.$i.'", "'.$img.'");\'/><br/>
                         <div id="div-product-'.$i.'" class="new_small_photo" onClick=\'document.framework.showPhotoEditor('.$product["id"].', '.$i.');\' > </div>';
                     if ($i > 1) {
                         $fout .= '<input id="product-delete-'.$product["id"].'" class="btn small del_button" type="button" value="'.engine::lang("Delete").'" onClick=\'document.framework.admin.deleteImage("'.$product["id"].'", "'.$i.'");\' />';
@@ -341,7 +341,7 @@ function print_admin_products($cms) {
                     <section class="double_column_block">
                         <input type="hidden" name="product" value="1" />
                         '.engine::lang("Please, describe this item").'<br/><br/>
-                        <input id="product-edit-title"  type="text" placeHolder="'.engine::lang("Title").'" title="'.engine::lang("Title").'"  class="input w280" name="title" required value="'.$product["title"].'" /><br/><br/>
+                        <input id="product-edit-title" type="text" placeHolder="'.engine::lang("Title").'" title="'.engine::lang("Title").'"  class="input w280" name="title" required value="'.$product["title"].'" /><br/><br/>
                         <textarea id="textarea-desc" class="input w280 h100" name="text" title="'.engine::lang("Description").'" placeHolder="'.engine::lang("Description (e.g. Blue Nike Vapor Cleats Size 10. Very comfortable and strong ankle support.)").'" required>'.$product["text"].'</textarea><br/><br/>'
                         . '<input id="product-edit-price" type="text" class="input w280" name="price" title="'.engine::lang("Price").'" placeHolder="$ 0.00" required value="'.$product["price"].'" /><br/>
                         <br/>';
@@ -365,16 +365,15 @@ function print_admin_products($cms) {
                         $fout .= '<option id="option-product-data-'.$fdata["id"].'-'.$d["id"].'" value="'.$d["id"].'">'.$d["value"].'</option>';
                     }
                 }
-$fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engine::lang("New value").'</option>
-                </select><input id="product-edit-'.$fdata["id"].'" type="text" class="input w280" style="display:none; margin: 0px auto;" name="new_value_'.$fdata["id"].'" id="new_value_'.$fdata["id"].'" placeHolder="'.$fdata["value"].'" />'
-                        . '<br/><br/>';
+                $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engine::lang("New value").'</option>
+                    </select><input id="product-edit-'.$fdata["id"].'" type="text" class="input w280" style="display:none; margin: 0px auto;" name="new_value_'.$fdata["id"].'" id="new_value_'.$fdata["id"].'" placeHolder="'.$fdata["value"].'" />'
+                    . '<br/><br/>';
             }
-            $fout .= '
-                        <div id="nodes_new_properties">
+            $fout .= '<div id="nodes_new_properties">
                             <input id="product-add-new-property" type="text" name="new_property" class="input w280" placeHolder="'.engine::lang("Property").'" /><br/><br/>
                             <input id="product-add-new-value" type="text" name="new_value" class="input w280" placeHolder="'.engine::lang("Value").'" /><br/>
                         </div>
-                        <input id="product-new-property-button"  type="button" value="'.engine::lang("Add new property").'" class="btn small w280" 
+                        <input id="product-new-property-button" type="button" value="'.engine::lang("Add new property").'" class="btn small w280" 
                             onClick=\'$id("nodes_new_properties").style.display="block";
                             jQuery("#nodes_new_properties").removeClass("hidden");
                             this.style.display="none";\' 
@@ -388,11 +387,11 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                         <input type="hidden" name="shipping" value="1" />
                         <input id="product-edit-country" type="text" class="input w280" placeHolder="'.engine::lang("Country").'" id="country_selector" name="country" required value="'.$data["country"].'" /><br/><br/>
                         <input id="product-edit-state" type="text" class="input w280" placeHolder="'.engine::lang("State").'" name="state" required value="'.$data["state"].'" /><br/><br/>
-                        <input id="product-edit-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'"  /><br/><br/>
-                        <input id="product-edit-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'"  /><br/><br/>
-                        <input id="product-edit-street1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'"  /><br/><br/>
-                        <input id="product-edit-street2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'"  /><br/><br/>
-                        <input id="product-edit-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'"  /><br/><br/>
+                        <input id="product-edit-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'" /><br/><br/>
+                        <input id="product-edit-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'" /><br/><br/>
+                        <input id="product-edit-street1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'" /><br/><br/>
+                        <input id="product-edit-street2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'" /><br/><br/>
+                        <input id="product-edit-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'" /><br/><br/>
                     </section>
                     <div class="clear"></div>
                     <div class="w600 tal">
@@ -404,7 +403,7 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                 </div>
                 </form>
             </div>
-            <style>.country-select{width: 280px;}</style>';  
+            <style>.country-select{ width: 280px; }</style>';
             $cms->onload .= '; jQuery("#country_selector").countrySelect({ defaultCountry: "us" }); ';
         } else {
             if (!empty($_POST["new_property"])) {
@@ -439,7 +438,8 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                         } else {
                             $query = 'INSERT INTO `nodes_product_data`(cat_id, value) '
                                 . 'VALUES ("'.$cat_id.'", "'.$value.'")';
-                        }engine::mysql($query);
+                        }
+                        engine::mysql($query);
                     }
                 } else if ($_POST["action"] == "edit_cat") {
                     $id = intval($_POST["id"]);
@@ -475,12 +475,12 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                     . '<span id="value_'.$data["id"].'">'.$data["value"].'</span> '
                     . '<span id="input_'.$data["id"].'" class="hidden">'
                     . ' <input type="text" class="input" id="save_value_'.$data["id"].'" value="'.$data["value"].'" />
-                        <input  id="button_save_value_'.$data["id"].'" type="button" class="btn small" value="'.engine::lang("Save").'" onClick=\'
-                    $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
-                    $id("category_action_'.$data["id"].'").value = "save_property";
-                    $id("category_value_'.$data["id"].'").value = $id("save_value_'.$data["id"].'").value;
-                    $id("category_'.$data["id"].'").submit();
-                    \' /> 
+                        <input id="button_save_value_'.$data["id"].'" type="button" class="btn small" value="'.engine::lang("Save").'" onClick=\'
+                            $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
+                            $id("category_action_'.$data["id"].'").value = "save_property";
+                            $id("category_value_'.$data["id"].'").value = $id("save_value_'.$data["id"].'").value;
+                            $id("category_'.$data["id"].'").submit();
+                        \' /> 
                         </span>'
                     . '<select id="select_'.$data["id"].'" class="input" name="action" onChange=\'
                         if (this.value == "1") {
@@ -490,7 +490,7 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                             $id("input_'.$data["id"].'").style.display = "block";
                                 jQuery("#input_'.$data["id"].'").removeClass("hidden");
                             $id("value_'.$data["id"].'").style.display = "none";
-                            $id("select_'.$data["id"].'").style.display = "none";    
+                            $id("select_'.$data["id"].'").style.display = "none";
                         } else if (this.value == "3") {
                             if (confirm("'.engine::lang("Are you sure?").'")) {
                                 $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
@@ -501,7 +501,7 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                         \'>'
                     . '<option id="option-action-'.$data["id"].'-0" selected disabled>'.engine::lang("Select option").'</option>'
                     . '<option id="option-action-'.$data["id"].'-1" value="1">'.engine::lang("Add value").'</option>'
-                    . '<option id="option-action-'.$data["id"].'-2" value="2">'.engine::lang("Edit property").'</option>';         
+                    . '<option id="option-action-'.$data["id"].'-2" value="2">'.engine::lang("Edit property").'</option>';
                 $query = 'SELECT * FROM `nodes_product_data` WHERE `cat_id` = "'.$data["id"].'"';
                 $r = engine::mysql($query);
                 $flag = 0;
@@ -518,15 +518,13 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                         $id("category_id_'.$data["id"].'").value = "'.$data["id"].'";
                         $id("category_action_'.$data["id"].'").value = "add";';
                         if ($data["id"] == "1") {
-                            $fout .= '
-                        try{
-                            $id("category_url_'.$data["id"].'").value = $id("cat_url_'.$d["id"].'").value;
-                        }catch(err) {;};';
+                            $fout .= 'try {
+                                    $id("category_url_'.$data["id"].'").value = $id("cat_url_'.$d["id"].'").value;
+                                } catch(err) {};';
                         }
-                        $fout .= '
-                        $id("category_value_'.$data["id"].'").value = $id("xcv_'.$d["id"].'").value;
-                        $id("category_'.$data["id"].'").submit();
-                        \' /></li>';
+                        $fout .= '$id("category_value_'.$data["id"].'").value = $id("xcv_'.$d["id"].'").value;
+                            $id("category_'.$data["id"].'").submit();
+                            \' /></li>';
                     }
                     $flag = 1;
                     $fout .= '<li>
@@ -538,7 +536,7 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
                                 \' 
                             /> 
                             <input id="cat_btn_delete_'.$d["id"].'" type="button" class="btn small" value="'.engine::lang("Delete").'" onClick=\''
-                            . 'if (confirm("'.engine::lang("Are you sure?").'")) {
+                                . 'if (confirm("'.engine::lang("Are you sure?").'")) {
                                     $id("category_id_'.$data["id"].'").value = "'.$d["id"].'";
                                     $id("category_action_'.$data["id"].'").value = "cat_delete";
                                     $id("category_'.$data["id"].'").submit();
@@ -604,7 +602,7 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
         if ($_SESSION["order"] == "id") {
             $_SESSION["order"] = "date";
         }
-        $arr_count = 0;    
+        $arr_count = 0;
         $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
         $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
         $query = 'SELECT * FROM `nodes_product` ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
@@ -678,7 +676,7 @@ $fout .= '<option id="option-product-data-'.$fdata["id"].'-0" value="-1">'.engin
             <br/>';
         if ($arr_count) {
             $fout .= $table.'
-        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />

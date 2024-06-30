@@ -22,7 +22,7 @@
 */
 
 function print_catalog($site, $data) {
-    $fout = '<div class="article" itemscope  itemtype="https://schema.org/Article">
+    $fout = '<div class="article" itemscope itemtype="https://schema.org/Article">
         <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
             <img class="hidden" itemprop="logo" src="'.$site->img.'" />
             <meta itemprop="name" content="'.$site->configs["name"].'" />

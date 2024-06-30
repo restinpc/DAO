@@ -48,7 +48,7 @@ if (!empty($_GET["invoice_id"]) && !empty($_POST["mc_gross"])) {
     if ($response == "VERIFIED") {
         $balance += $amount;
         $query = 'INSERT INTO `nodes_transaction`(user_id, invoice_id, order_id, amount, `txn_id`, `payment_date`, status, date, gateway, comment, ip) '
-                . 'VALUES("'.$user_id.'", "'.$invoice_id.'", "-1", "'.$amount.'", "'.$_POST["txn_id"].'", "'.$_POST["payment_date"].'", "2", "'.date("U").'", "'.$gateway.'", "Deposit", "'.$_SERVER["REMOTE_ADDR"].'")';
+            . 'VALUES("'.$user_id.'", "'.$invoice_id.'", "-1", "'.$amount.'", "'.$_POST["txn_id"].'", "'.$_POST["payment_date"].'", "2", "'.date("U").'", "'.$gateway.'", "Deposit", "'.$_SERVER["REMOTE_ADDR"].'")';
         engine::mysql($query);
         $query = 'UPDATE `nodes_user` SET `balance` = "'.$balance.'" WHERE `id` = "'.$user_id.'"';
         engine::mysql($query);

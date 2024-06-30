@@ -190,7 +190,7 @@ function print_admin_panoramas($cms) {
                     <div class="w600">
                     <textarea class="input w600" id="editable" name="text" placeHolder="Text" required></textarea>
                     </div><br/><br/>
-                    <input id="input-submit" type="submit" onClick=\'$id("new_project").submit();\' class="btn w280" value="'.engine::lang("Submit").'"  /><br/><br/>
+                    <input id="input-submit" type="submit" onClick=\'$id("new_project").submit();\' class="btn w280" value="'.engine::lang("Submit").'" /><br/><br/>
                     <br/>
                 </center>
             </form>
@@ -212,7 +212,7 @@ function print_admin_panoramas($cms) {
                         . 'VALUES("'.$project_id.'", "'.$name.'", "'.$text.'", "", "1")';
                 engine::mysql($query);
                 $ext = explode('.', $_FILES["image"]["name"]);
-                $file = "img/plans/".  mysqli_insert_id($_SERVER["sql_connection"]).'.'.$ext[count($ext) - 1];
+                $file = "img/plans/".mysqli_insert_id($_SERVER["sql_connection"]).'.'.$ext[count($ext) - 1];
                 $image = image::upload_plan($_FILES["image"]["tmp_name"], $file, $ext[count($ext) - 1]);
                 $query = 'UPDATE `nodes_vr_level` SET `image` = "/'.$file.'" WHERE `id` = "'.mysqli_insert_id($_SERVER["sql_connection"]).'"';
                 engine::mysql($query);
@@ -293,7 +293,7 @@ function print_admin_panoramas($cms) {
                 </div><br/>';
             if ($arr_count) {
                 $fout .= $table.'
-                <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+                <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
                 <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
                 <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -458,7 +458,7 @@ function print_admin_panoramas($cms) {
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     $img_size = getimagesize($file);
-                    mkdir($_SERVER["DOCUMENT_ROOT"].'/img/scenes/'.  $scene_id);
+                    mkdir($_SERVER["DOCUMENT_ROOT"].'/img/scenes/'.$scene_id);
                     for ($k = 0; $k < count($_FILES["images"]["name"]); $k++) {
                         if (strpos($_FILES["images"]["name"][$k], '_perspective_view_top')) {
                             $side = 'py';
@@ -597,7 +597,7 @@ function print_admin_panoramas($cms) {
             } else if ($_POST["action"] == "edit_level") {
                 $name = trim(htmlspecialchars($_POST["name"]));
                 $text = trim(engine::escape_string($_POST["text"]));
-                $query = 'UPDATE `nodes_vr_level` SET `name` = "'.$name.'", `text` = "'.$text.'"  WHERE `id` = "'.$level_id.'"';
+                $query = 'UPDATE `nodes_vr_level` SET `name` = "'.$name.'", `text` = "'.$text.'" WHERE `id` = "'.$level_id.'"';
                 engine::mysql($query);
             } else if (!empty($_POST) && $_POST["action"] == "delete" && !empty($_POST["id"])) {
                 $id = intval($_POST["id"]);
@@ -673,7 +673,7 @@ function print_admin_panoramas($cms) {
                     engine::mysql($query);
                 }
                 $fout = '<form method="POST" id="fx"><input type="hidden" name="action" value="upload_data" /></form>'
-                        . '<script> $id("fx").submit();</script>';
+                    . '<script> $id("fx").submit();</script>';
                 return $fout;
             } else if ($_POST["action"] == "upload_data") {
                 if (!empty($_FILES) && !empty($_POST["name"])) {
@@ -734,7 +734,6 @@ function print_admin_panoramas($cms) {
                         $img_size = getimagesize($_FILES["images"]["tmp_name"][$k]);
                         $width = $img_size[0];
                         $height = $img_size[1];
-                        //--------
                         $res = 32;
                         if ($height / 8 >= 64) {
                             $res = 64;
@@ -765,7 +764,6 @@ function print_admin_panoramas($cms) {
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_4_'.$side.'_'.$id, 'png', true, 100);
                             }
                         }
-                        //--------
                         $res = 32;
                         if ($height / 4 >= 64) {
                             $res = 64;
@@ -796,7 +794,6 @@ function print_admin_panoramas($cms) {
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_3_'.$side.'_'.$id, 'png', true, 80);
                             }
                         }
-                        //--------
                         $res = 32;
                         if ($height / 2 >= 64) {
                             $res = 64;
@@ -827,8 +824,7 @@ function print_admin_panoramas($cms) {
                                 $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_2_'.$side.'_'.$id, 'png', true, 60);
                             }
                         }
-                        //--------
-                         $res = 32;
+                        $res = 32;
                         if ($height >= 64) {
                             $res = 64;
                         }
@@ -864,7 +860,7 @@ function print_admin_panoramas($cms) {
                 while ($d = mysqli_fetch_array($r)) {
                     $flag = 1;
                     $fout .= '<div class="clear_block">Uploading an image of scene <b>'.$d["name"].'</b></div> 
-                    <form method="POST" ENCTYPE="multipart/form-data" id="next_pano"   >
+                    <form method="POST" ENCTYPE="multipart/form-data" id="next_pano">
                         <input type="hidden" name="action" value="upload_data" />
                         <input type="hidden" name="name" value="'.$d["name"].'" />
                         '.engine::lang("Upload 6 images of cubemap").' <input type="file" multiple name="images[]" /><br/>
@@ -915,7 +911,7 @@ function print_admin_panoramas($cms) {
                     <th>'.engine::lang("Scene Name").'</th>
                     <th>'.engine::lang("Objects").'</th>
                     <th>'.engine::lang("Portals").'</th>
-                    <th>'.engine::lang("Links").'</th>  
+                    <th>'.engine::lang("Links").'</th>
                     <th></th>
                 </tr>
                 </thead>';
@@ -967,7 +963,7 @@ function print_admin_panoramas($cms) {
                 </table></div><br/>';
             if ($arr_count) {
                 $fout .= $table.'
-                <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+                <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
                 <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
                 <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
                 <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -1067,9 +1063,9 @@ function print_admin_panoramas($cms) {
                     <input id="input-article-caption" type="file" class="input w600" name="json" required /><br/><br/>
                     <!--
                     Scene images:<br/>
-                    <input id="input-article-images" type="file" multiple class="input w600" name="file[]"  /><br/><br/>
+                    <input id="input-article-images" type="file" multiple class="input w600" name="file[]" /><br/><br/>
                     -->
-                    <center><input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
+                    <center><input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/>
                     <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a></center><br/><br/>
                     <br/>
                 </form>
@@ -1084,7 +1080,7 @@ function print_admin_panoramas($cms) {
                 />
                 <form method="POST" ENCTYPE="multipart/form-data" id="new_scene" style="display:none; text-align:left;" >
                     <input type="hidden" name="action" value="new_scene" />
-                    <center><h2 class="fs21">'.engine::lang("Add new scene").'</h2></center><br/>        
+                    <center><h2 class="fs21">'.engine::lang("Add new scene").'</h2></center><br/>
                     <main id="worker_wnd" class="lh2 w280 m0a">
                       <section>
                         <label>'.engine::lang("Upload a panoramic image").': <br/><br/><input id="imageInput" type="file" ></label>
@@ -1130,7 +1126,7 @@ function print_admin_panoramas($cms) {
                         <input id="input-article-floor-radius" type="number" class="input w600" name="floor_radius" required placeHolder="'.engine::lang("Floor radius").'" value="20" /><br/><br/>
                         '.engine::lang("Logo size").':<br/>
                         <input id="input-article-floor-radius" type="number" class="input w600" name="logo_size" required placeHolder="'.engine::lang("Logo size").'" value="4" /><br/><br/>
-                        <center><input id="input-submit-new-scene" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
+                        <center><input id="input-submit-new-scene" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/>
                             <a href="'.engine::href($_SERVER["DIR"].'/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id).'"><input type="button" class="btn w280" value="'.engine::lang("Cancel").'" /></a><br/>
                             </center><br/><br/>
                         <br/>
@@ -1153,7 +1149,7 @@ function print_admin_panoramas($cms) {
                     <div class="w600">
                     <textarea class="input w600" id="editable" name="text" placeHolder="'.engine::lang("Text").'" required>'.$project["text"].'</textarea>
                     </div><br/><br/>
-                    <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'"  /><br/>
+                    <input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" /><br/>
                     <a href="/admin/?mode=panoramas&project_id='.$project_id.'&level_id='.$level_id.'"><input type="button" class="btn w280" value="Cancel" /></a>
                     <br/>
                     <br/></center>

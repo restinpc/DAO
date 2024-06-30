@@ -54,14 +54,14 @@ function print_admin_outbox($cms) {
                 $fout .= '<script>alert("'.engine::lang("This bulk message already exist").'");</script>';
             } else {
                 $query = 'INSERT INTO `nodes_outbox`(caption, text, action, date) '
-                        . 'VALUES("'.$caption.'", "'.$text.'", "'.$action.'", "'.date("U").'")';
+                    . 'VALUES("'.$caption.'", "'.$text.'", "'.$action.'", "'.date("U").'")';
                 engine::mysql($query);
                 $id = mysqli_insert_id($_SERVER["sql_connection"]);
                 $query = 'SELECT * FROM `nodes_user` WHERE `bulk_ignore` = 0 AND `id` > 1';
                 $res = engine::mysql($query);
                 while ($user = mysqli_fetch_array($res)) {
                     $query = 'INSERT INTO `nodes_user_outbox`(user_id, outbox_id, date, status) '
-                            . 'VALUES("'.$user["id"].'", "'.$id.'", "0", "0")';
+                        . 'VALUES("'.$user["id"].'", "'.$id.'", "0", "0")';
                     engine::mysql($query);
                 }
                 $fout = '<script>alert("'.engine::lang("Bulk message is sending now").'"); window.location="'.$_SERVER["DIR"].'/admin?mode=outbox";</script>';
@@ -166,7 +166,7 @@ function print_admin_outbox($cms) {
             <br/>';
         if ($arr_count) {
             $fout .= $table.'
-            <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+            <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
             <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
             <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
             <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -236,7 +236,7 @@ function print_admin_outbox($cms) {
         }
         if ($admin_access == 2) {
             $fout .= '<br/><br/><a id="new_bulk" href="'.$_SERVER["DIR"].'/admin/?mode=outbox&act=new">'
-                    . '<input type="button" class="btn w280" value="'.engine::lang("New bulk message").'"></a>';
+                . '<input type="button" class="btn w280" value="'.engine::lang("New bulk message").'"></a>';
         }
     }
     $fout .= '</div>';

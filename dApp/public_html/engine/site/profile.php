@@ -36,9 +36,9 @@ if (empty($user) || empty($user["pass"])) {
     $this->content = engine::print_header($this, $user["id"]);
     if ($this->configs["free_message"]) {
         if (empty($_SESSION["user"]["id"])) {
-            $button = '<a id="link-send-message" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'"><input type="button" class="btn w280" value="' . engine::lang("Login to Send message") . '" /><br/><br/>';
+            $button = '<a id="link-send-message" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'"><input type="button" class="btn w280" value="'.engine::lang("Login to Send message").'" /><br/><br/>';
         } else {
-            $button = '<a id="link-send-message" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox/'.$user["id"]).'"><input type="button" class="btn w280" value="' . engine::lang("Send message") . '" /><br/><br/>';
+            $button = '<a id="link-send-message" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox/'.$user["id"]).'"><input type="button" class="btn w280" value="'.engine::lang("Send message").'" /><br/><br/>';
         }
     }
     $rating = number_format(($user["rating"] / $user["votes"]), 2);

@@ -1399,9 +1399,14 @@ h1,h2,h3,h4,h5,h6{
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.nodes .confirm_email {
+    line-height: 1.5;
+    padding: 0px 47px 0px 47px;
+}
 .nodes .profile_header{
     width:100%;
-    background-position: top center;
+    background-image: url(/img/profile.jpg);
+    background-color: #1e5056;
     background-size: cover;
     min-height: 300px;
     overflow: visible;
@@ -1438,8 +1443,6 @@ h1,h2,h3,h4,h5,h6{
 .nodes .profile_menu:hover .nav_button{
     display:none;
 }
-
-
 .nodes .profile_menu .toggle-button {
     height: auto;
     width: auto;
@@ -1455,12 +1458,10 @@ h1,h2,h3,h4,h5,h6{
     border: 1px solid transparent;
     border-radius: 4px;
 }
-
 .nodes .profile_menu .toggle-button .icon-bar {
     color: #fff;
     background: #fff;
 }
-
 .nodes .profile_menu .container{
     width: 100%;
     max-width: 1000px;

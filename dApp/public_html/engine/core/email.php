@@ -126,7 +126,7 @@ static function daily_report() {
         engine::mysql($query);
     }
 }
-//----------------------------------------------------
+
 /**
 * Sends a message after registration.
 *

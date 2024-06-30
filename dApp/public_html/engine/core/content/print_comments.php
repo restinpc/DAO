@@ -100,8 +100,7 @@ function print_comments($url) {
             $fout .= $fout1;
         }
         $fout .= '<br/>
-            <input id="add-comment-btn" type="button" class="btn w280" value="'.engine::lang("Add comment").'" onClick=\'document.framework.addComment("'.engine::lang("Add new comment").'", "'.engine::lang("Submit comment").'");\' /><br/>
-            ';
+            <input id="add-comment-btn" type="button" class="btn w280" value="'.engine::lang("Add comment").'" onClick=\'document.framework.addComment("'.engine::lang("Add new comment").'", "'.engine::lang("Submit comment").'");\' /><br/>';
     } else {
         $fout .= '<center>'.engine::lang("To post a comment, please").' <a id="sign-in" hreflang="'.$_SESSION["Lang"].'" href="'.engine::lang($_SERVER["DIR"].'/login').'">'.strtolower(engine::lang("sign in")).'</a> '.strtolower(engine::lang("or")).' <a id="register-now" href="'.$_SERVER["DIR"].'/register" target="account">'.strtolower(engine::lang("register now")).'</a>.</center>';
     }

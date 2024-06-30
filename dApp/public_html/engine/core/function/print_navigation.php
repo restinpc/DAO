@@ -28,8 +28,8 @@ function print_navigation($current, $arr) {
     foreach ($arr as $key => $value) {
         $i++;
         $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($current === $key ? "selected" : "").'" onclick=\'$id("profile_menu_link_'.$i.'").click();\'>
-            <a id="profile_menu_link_'.$i.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($value).'">'.$key.'</a>
-        </span>';
+                <a id="profile_menu_link_'.$i.'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($value).'">'.$key.'</a>
+            </span>';
     }
     $fout .= '
         </div>

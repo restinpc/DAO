@@ -26,7 +26,7 @@ function print_uploader($width, $count = 1) {
     }
     $fout .= ' <div class="clear"></div>
     <input id="input-upload-new" type="button" class="btn w280" id="uploading_button1" value="'.engine::lang("Upload new image").'" onClick=\' 
-        try{  
+        try{
             parent.$id("uploading_button1").style.display="none"; 
             parent.$id("new_img1").style.display="block"; 
         }catch(e) { }

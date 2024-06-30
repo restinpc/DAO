@@ -31,7 +31,7 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
         } else {
             $image_size = getimagesize($_SERVER["DOCUMENT_ROOT"].'/img/data/'.$file);
             $fout .= '<script>
-                    parent.tinymce.EditorManager.get("editable").execCommand(\'mceInsertContent\', false, "<p><img src=\"'.$_SERVER["PUBLIC_URL"].'/img/data/'.$file.'\" style=\"width: 100%; max-width: '.$image_size[0].'px; max-height: '.$image_size[1].'px; margin-left: auto; margin-right: auto; display: block;\" alt=\"'.$name.'\"  title=\"'.$name.'\"  /></p>");
+                    parent.tinymce.EditorManager.get("editable").execCommand(\'mceInsertContent\', false, "<p><img src=\"'.$_SERVER["PUBLIC_URL"].'/img/data/'.$file.'\" style=\"width: 100%; max-width: '.$image_size[0].'px; max-height: '.$image_size[1].'px; margin-left: auto; margin-right: auto; display: block;\" alt=\"'.$name.'\" title=\"'.$name.'\" /></p>");
                     parent.document.framework.hideWindow(); 
                 </script>';
         }

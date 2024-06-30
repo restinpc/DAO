@@ -152,9 +152,9 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
                 <div class="input-caption">'.engine::lang("Email").'</div>
                 <input id="input-email" autofocus required type="email" name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="'.engine::lang("Email").'" title="'.engine::lang("Email").'" /><br/>
                 <div class="input-caption">'.engine::lang("Password").'</div>
-                <input id="pass1" required type="password" name="pass" class="input reg_email" title="'.engine::lang("Password").'"  value="'.$_POST["pass"].'" /><br/>
+                <input id="pass1" required type="password" name="pass" class="input reg_email" title="'.engine::lang("Password").'" value="'.$_POST["pass"].'" /><br/>
                 <div class="input-caption">'.engine::lang("Repeat password").'</div>
-                <input id="pass2" required type="password" name="pass_repeat" class="input reg_email" title="'.engine::lang("Repeat password").'"  value="'.$_POST["pass_repeat"].'" /><br/>
+                <input id="pass2" required type="password" name="pass_repeat" class="input reg_email" title="'.engine::lang("Repeat password").'" value="'.$_POST["pass_repeat"].'" /><br/>
                 <div style="padding: 10px; padding-bottom: 5px; line-height: 1.5;">' .
                 engine::lang("By registering on the site, you accept the").'<br/> <a id="link-terms" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/content/terms_and_conditions').'" target="_blank">'.engine::lang("Terms & conditions").'</a> <br/>' .
                 engine::lang("and are familiar with the").' <a id="link-privacy" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/content/privacy_policy').'" target="_blank">'.engine::lang("Privacy policy").'</a>'.'</div>

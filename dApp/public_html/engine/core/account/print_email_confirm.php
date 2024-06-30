@@ -38,7 +38,7 @@ function print_email_confirm($site) {
     }
     $fout = '<div class="document640">
             <h3>'.engine::lang("Email confirmation").'</h3><br/>'
-            . '<p style="line-height:1.5; padding:0px 47px 0px 47px;">'.engine::lang("Please check your email and enter the code from the mail to activate your account").'</p><br/>'
+            . '<p class="confirm_email">'.engine::lang("Please check your email and enter the code from the mail to activate your account").'</p><br/>'
             . '<form method="POST">'
                 . '<input id="confirmation-code" type="text" class="input w280" required name="code" placeHolder="'.engine::lang("Confirmation code").'" />'
                 . '<br/><br/><br/>'

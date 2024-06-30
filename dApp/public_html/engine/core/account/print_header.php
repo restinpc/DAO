@@ -33,10 +33,10 @@ function print_header($site, $id) {
         $online .= $date;
         $online .= '<br/>';
     }
-    $fout = '<div class="profile_header" style="background-image:url(/img/profile.jpg);background-color:#1e5056;background-size:cover;">
-        <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" /><br/>
-        <h1>'.$user["name"].'</h1>
-        '.$online.'
-    </div>';
+    $fout = '<div class="profile_header">
+            <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" /><br/>
+            <h1>'.$user["name"].'</h1>
+            '.$online.'
+        </div>';
     return $fout;
 }

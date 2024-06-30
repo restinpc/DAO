@@ -126,16 +126,16 @@ static function upload($filename, $path, $md5 = 0) {
 private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
     $handle = opendir($folder);
     while (false !== ($f = readdir($handle))) {
-      if ($f != '.' && $f != '..') {
-        $filePath = "$folder/ $f";
-        $localPath = mb_substr($filePath, $exclusiveLength);
-        if (is_file($filePath)) {
-          $zipFile->addFile($filePath, $localPath);
-        } elseif (is_dir($filePath)) {
-          $zipFile->addEmptyDir($localPath);
-          self::zip_folder($filePath, $zipFile, $exclusiveLength);
+        if ($f != '.' && $f != '..') {
+            $filePath = "$folder/ $f";
+            $localPath = mb_substr($filePath, $exclusiveLength);
+            if (is_file($filePath)) {
+                $zipFile->addFile($filePath, $localPath);
+            } elseif (is_dir($filePath)) {
+                $zipFile->addEmptyDir($localPath);
+                self::zip_folder($filePath, $zipFile, $exclusiveLength);
+            }
         }
-      }
     }
     closedir($handle);
 }

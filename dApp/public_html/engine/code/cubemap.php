@@ -88,7 +88,7 @@ for ($i = 0; $i < 4; $i++) {
         );
         $id = ($i * 4 + $j);
         $img->resize($res, $res);
-        $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_3_'.$side.'_'.$id, 'png', true, 80); 
+        $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_3_'.$side.'_'.$id, 'png', true, 95); 
     }
 }
 $res = 32;
@@ -118,7 +118,7 @@ for ($i = 0; $i < 2; $i++) {
         );
         $id = ($i * 2 + $j);
         $img->resize($res, $res);
-        $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_2_'.$side.'_'.$id, 'png', true, 60); 
+        $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_2_'.$side.'_'.$id, 'png', true, 90); 
     }
 }
 $res = 32;
@@ -142,7 +142,7 @@ for ($i = 0; $i < 1; $i++) {
         $img = new image($file); 
         $id = ($i * 1 + $j);
         $img->resize($res, $res);
-        $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_1_'.$side.'_'.$id, 'png', true, 40); 
+        $img->save($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/scenes/'.$scene_id.'/', 'f_1_'.$side.'_'.$id, 'png', true, 85); 
     }
 }
 die(1);

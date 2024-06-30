@@ -64,18 +64,18 @@ function print_admin_language($cms) {
                 $id = base64_decode($id);
                 $id = trim($id);
                 if (!empty($id) &&
-                    $id!= "jQuery" &&
-                    $id!= "cache" &&
-                    $id!= "nocache" &&
-                    $id!= "lang" &&
-                    $id!= "language" &&
-                    $id!= ""
+                    $id != "jQuery" &&
+                    $id != "cache" &&
+                    $id != "nocache" &&
+                    $id != "lang" &&
+                    $id != "language" &&
+                    $id != ""
                 ) {
-                    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
+                    $query = 'SELECT * FROM `nodes_language` WHERE `name` LIKE "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                     $res = engine::mysql($query);
                     $data = mysqli_fetch_array($res);
                     if (!empty($data)) {
-                        $query = 'UPDATE `nodes_language` SET `value` = "'.$value.'" WHERE `name` LIKE  "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
+                        $query = 'UPDATE `nodes_language` SET `value` = "'.$value.'" WHERE `name` LIKE "'.$id.'" AND `lang` = "'.$_SESSION["Lang"].'"';
                         engine::mysql($query);
                     } else {
                         $query = 'INSERT INTO `nodes_language`(name, lang, value) VALUES("'.$id.'", "'.$_SESSION["Lang"].'", "'.$value.'")';
@@ -90,25 +90,26 @@ function print_admin_language($cms) {
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT * FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"'.
-            ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];;
+        ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];;
     $requery = 'SELECT COUNT(*) FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"';
     $fout .= '<form method="POST" id="new_form"><input type="hidden" name="name" value="" id="new_value" /></form>'
-            . '<form method="POST" id="delete_form"><input type="hidden" name="delete" value="" id="delete_value" /></form>'
-            . '<form method="POST"><input type="hidden" name="language" value="1" />';
+        . '<form method="POST" id="delete_form"><input type="hidden" name="delete" value="" id="delete_value" /></form>'
+        . '<form method="POST"><input type="hidden" name="language" value="1" />';
     $table = '
         <div class="table">
         <table id="table" class="mw100p">
         <thead>
         <tr>';
-            $array = array(
-                "name" => "Name",
-                "value" => "Value"
-            );
-            foreach ($array as $order => $value) {
-                $table .= '<th width=50%>';
-                $table .= engine::lang($value);
-                $table .= '</th>';
-            } $table .= '
+    $array = array(
+        "name" => "Name",
+        "value" => "Value"
+    );
+    foreach ($array as $order => $value) {
+        $table .= '<th width=50%>';
+        $table .= engine::lang($value);
+        $table .= '</th>';
+    }
+    $table .= '
         </tr>
         </thead>
         <tbody>';
@@ -117,7 +118,7 @@ function print_admin_language($cms) {
         $arr_count++;
         $table .= '<tr><td width=50% align=left>'.$data["name"].'</td>';
         if ($_SESSION["Lang"] == "en" && $admin_access == 2) {
-            $table .= '<td width=50% align=left><input id="input-lang-'.$arr_count.'" name="'.  base64_encode($data["name"]).'" type="text" value="'.$data["value"].'" class="input w100p mw100p" />'
+            $table .= '<td width=50% align=left><input id="input-lang-'.$arr_count.'" name="'.base64_encode($data["name"]).'" type="text" value="'.$data["value"].'" class="input w100p mw100p" />'
                 . '</td><td width=20><div id="div-delete-'.$arr_count.'" class="close_image"'
                 . 'onClick=\'if (confirm("'.engine::lang("Delete").' \"'.$data["name"].'\"?")) {$id("delete_value").value="'.base64_encode($data["name"]).'";'
                 . '$id("delete_form").submit();}\''
@@ -138,7 +139,7 @@ function print_admin_language($cms) {
     </form><br/>';
     if ($arr_count) {
         $fout .= $table.'
-        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />

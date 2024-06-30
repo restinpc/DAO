@@ -98,7 +98,8 @@ function print_order($site, $order_id) {
                     <strong>'.$status.'</strong></div>
                     <b>'.$product["title"].'</b><br/><br/>
                     <font class="print_order_price">$ '.$product["price"].'</font><br/><br/>
-                    '.engine::lang("Purchaser").': <a id="link-user-'.$order["user_id"].'-'.$d["id"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox/'.$order["user_id"]).'" target="_blank">'.$user["name"].'</a><br/><br/>
+                    '.engine::lang("Purchaser").': <a id="link-user-'.$order["user_id"].'-'.$d["id"].'" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/account/inbox/'.$order["user_id"]).'" target="_blank">'.$user["name"].'</a>
+                    <br/><br/>
                     '.engine::lang("Shipping address").': '.$addresstr.'
                 </div>
                 <div class="clear"></div>

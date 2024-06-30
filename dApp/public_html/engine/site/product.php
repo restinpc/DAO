@@ -24,7 +24,7 @@ if (intval($_GET[1]) > 0) {
     $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.intval($_GET[1]).'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    if (!empty($data)) {   
+    if (!empty($data)) {
         $query = 'SELECT `data`.`value` AS `caption` '
             . 'FROM `nodes_property_data` AS `property` '
             . 'LEFT JOIN `nodes_product_data` AS `data` ON `data`.`id` = `property`.`data_id` '
@@ -48,7 +48,7 @@ if (intval($_GET[1]) > 0) {
         $r = engine::mysql($requery);
         $d = mysqli_fetch_array($r);
         if (!empty($d)) {
-            $title  = $d["value"];
+            $title = $d["value"];
         }
     } else {
         $this->title = lang("Products").' - '.$this->title;

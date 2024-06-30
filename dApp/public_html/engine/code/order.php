@@ -50,23 +50,23 @@ if (empty($_SESSION["user"]["id"])) {
     $street2 = htmlspecialchars($_POST["street2"]);
     $phone = htmlspecialchars($_POST["phone"]);
     $query = 'SELECT * FROM `nodes_shipping` WHERE'
-            . ' `user_id` = "'.$_SESSION["user"]["id"].'" AND'
-            . ' `fname` = "'.$fname.'" AND'
-            . ' `lname` = "'.$lname.'" AND'
-            . ' `country` = "'.$country.'" AND'
-            . ' `state` = "'.$state.'" AND'
-            . ' `city` = "'.$city.'" AND'
-            . ' `zip` = "'.$zip.'" AND'
-            . ' `street1` = "'.$street1.'" AND'
-            . ' `street2` = "'.$street2.'" AND'
-            . ' `phone` = "'.$phone.'"';
+        . ' `user_id` = "'.$_SESSION["user"]["id"].'" AND'
+        . ' `fname` = "'.$fname.'" AND'
+        . ' `lname` = "'.$lname.'" AND'
+        . ' `country` = "'.$country.'" AND'
+        . ' `state` = "'.$state.'" AND'
+        . ' `city` = "'.$city.'" AND'
+        . ' `zip` = "'.$zip.'" AND'
+        . ' `street1` = "'.$street1.'" AND'
+        . ' `street2` = "'.$street2.'" AND'
+        . ' `phone` = "'.$phone.'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if (!empty($data)) {
         $shipment = intval($data["id"]);
     } else {
         $query = 'INSERT INTO `nodes_shipping`(user_id, fname, lname, country, state, city, zip, street1, street2, phone) '
-                . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$fname.'", "'.$lname.'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
+            . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$fname.'", "'.$lname.'", "'.$country.'", "'.$state.'", "'.$city.'", "'.$zip.'", "'.$street1.'", "'.$street2.'", "'.$phone.'")';
         engine::mysql($query);
         $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
         $res = engine::mysql($query);
@@ -122,7 +122,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
         $fout .= '<br/>'
             . '<div class="tar"><b class="fs21">'.engine::lang("Total price").': $'.$price.'</b></div>'
             . '<br/><br/>'
-            . '<input id="button-next"  type="submit" class="btn w280" value="'.engine::lang("Next").'" />';
+            . '<input id="button-next" type="submit" class="btn w280" value="'.engine::lang("Next").'" />';
     }
     $fout .= '
         </form>
@@ -143,20 +143,20 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             <input type="hidden" name="shipping_confirm" value="1" />
             <input id="input-fname" type="text" class="input w280" placeHolder="'.engine::lang("First name").'" name="fname" required value="'.$data["fname"].'" /><br/><br/>
             <input id="input-lname" type="text" class="input w280" placeHolder="'.engine::lang("Last name").'" name="lname" required value="'.$data["lname"].'" /><br/><br/>
-            <input id="input-country" type="text" placeHolder="'.engine::lang("Country").'" id="country_selector" name="country" required value="'.$data["country"].'" class="input w280"   /><br/><br/>
+            <input id="input-country" type="text" placeHolder="'.engine::lang("Country").'" id="country_selector" name="country" required value="'.$data["country"].'" class="input w280" /><br/><br/>
             <input id="input-state" type="text" class="input w280" placeHolder="'.engine::lang("State").'" name="state" value="'.$data["state"].'" required /><br/><br/>
-            <input id="input-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'"  /><br/><br/>
-            <input id="input-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'"  /><br/><br/>
-            <input id="input-s1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'"  /><br/><br/>
-            <input id="input-s2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'"  /><br/><br/>
-            <input id="input-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'"  /><br/><br/>
+            <input id="input-city" type="text" class="input w280" placeHolder="'.engine::lang("City").'" name="city" required value="'.$data["city"].'" /><br/><br/>
+            <input id="input-zip" type="text" class="input w280" placeHolder="'.engine::lang("Zip code").'" name="zip" required value="'.$data["zip"].'" /><br/><br/>
+            <input id="input-s1" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 1" name="street1" required value="'.$data["street1"].'" /><br/><br/>
+            <input id="input-s2" type="text" class="input w280" placeHolder="'.engine::lang("Street").' 2" name="street2" value="'.$data["street2"].'" /><br/><br/>
+            <input id="input-phone" type="text" class="input w280" placeHolder="'.engine::lang("Phone number").'" name="phone" required value="'.$data["phone"].'" /><br/><br/>
             <input id="input-next" type="submit" class="btn w280" value="'.engine::lang("Next").'" />
         </form><br/><br/>';
 } else if (!empty($_SESSION["user"]["id"])) {
     if (!empty($_POST["checkout"])) {
         unset($_SESSION["products"]);
         $query = 'INSERT INTO `nodes_invoice`(`user_id`, `order_id`, `amount`, `date`) '
-                . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$_SESSION["order_confirm"].'", "'.  floatval($_POST["checkout"]).'", "'.date("Y-m-d H:i:s").'")';
+                . 'VALUES("'.$_SESSION["user"]["id"].'", "'.$_SESSION["order_confirm"].'", "'.floatval($_POST["checkout"]).'", "'.date("Y-m-d H:i:s").'")';
         engine::mysql($query);
         die('<script>window.location = "'.$_SERVER["DIR"].'/invoice.php?id='. mysqli_insert_id($_SERVER["sql_connection"]).'";</script>');
     }
@@ -206,7 +206,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
         <h6>'.engine::lang("Total price").': $'.$price.'</h6><br/><br/>
         <form method="POST">
             <input type="hidden" name="checkout" value="'.$price.'" />
-            <input id="input-checkout"  type="submit" class="btn w280" value="'.engine::lang("Checkout").'" />
+            <input id="input-checkout" type="submit" class="btn w280" value="'.engine::lang("Checkout").'" />
         </form>';
     $fout .= '</div>';
 }
@@ -220,7 +220,7 @@ $fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" t
 <script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
 <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
 <script src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript"></script>
-<script>jQuery("#country_selector").countrySelect({  defaultCountry: "us" })</script>
+<script>jQuery("#country_selector").countrySelect({ defaultCountry: "ru" })</script>
 </body>
 <script>document.body.style.opacity = "1";</script>
 </html>';

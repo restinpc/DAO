@@ -25,7 +25,7 @@ function print_navigation($site, $title) {
     $fout = '<div class="profile_menu">
         <div class="container">
             <span class="profile_menu_item show_all selected" ><a>'.$title.'</a>
-                <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>    
+                <div class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>
             </span>';
     $query = 'SELECT COUNT(*) FROM `nodes_inbox` WHERE `to` = "'.$_SESSION["user"]["id"].'" AND `readed` = 0';
     $res = engine::mysql($query);

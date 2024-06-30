@@ -291,28 +291,28 @@ function getSqlKeysTable($table) {
     while ($row = mysqli_fetch_object($results)) {
         if (($row->Key_name == 'PRIMARY') AND ($row->Index_type == 'BTREE')) {
             if ($primary == "") {
-                $primary = "  PRIMARY KEY  (`{$row->Column_name}`";
+                $primary = " PRIMARY KEY (`{$row->Column_name}`";
             } else {
                 $primary .= ", `{$row->Column_name}`";
             }
         }
         if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '0') AND ($row->Index_type == 'BTREE')) {
             if ((!is_array($unique)) OR ($unique[$row->Key_name] == "")) {
-                $unique[$row->Key_name] = "  UNIQUE KEY `{$row->Key_name}` (`{$row->Column_name}`";
+                $unique[$row->Key_name] = " UNIQUE KEY `{$row->Key_name}` (`{$row->Column_name}`";
             } else {
                 $unique[$row->Key_name] .= ", `{$row->Column_name}`";
             }
         }
         if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'BTREE')) {
             if ((!is_array($index)) OR ($index[$row->Key_name] == "")) {
-                $index[$row->Key_name] = "  KEY `{$row->Key_name}` (`{$row->Column_name}`";
+                $index[$row->Key_name] = " KEY `{$row->Key_name}` (`{$row->Column_name}`";
             } else {
                 $index[$row->Key_name] .= ", `{$row->Column_name}`";
             }
         }
         if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'FULLTEXT')) {
             if ((!is_array($fulltext)) OR ($fulltext[$row->Key_name] == "")) {
-                $fulltext[$row->Key_name] = "  FULLTEXT `{$row->Key_name}` (`{$row->Column_name}`";
+                $fulltext[$row->Key_name] = " FULLTEXT `{$row->Key_name}` (`{$row->Column_name}`";
             } else {
                 $fulltext[$row->Key_name] .= ", `{$row->Column_name}`";
             }

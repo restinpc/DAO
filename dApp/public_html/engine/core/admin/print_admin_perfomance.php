@@ -113,7 +113,7 @@ function print_admin_perfomance($cms) {
         $next = ' + 0 days';
         $next2 = ' + 7 days';
         if (empty($_GET["date"])) {
-            $from = strtotime(date('Y-m-d')." 23:59:59  - 7 days");
+            $from = strtotime(date('Y-m-d')." 23:59:59 - 7 days");
             $to = date("U");
             $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev);
             $date1 = date('d.m', $timeStamp);
@@ -155,7 +155,7 @@ function print_admin_perfomance($cms) {
         $next = ' + 0 month';
         $next2 = ' + 1 month';
         if (empty($_GET["date"])) {
-            $from = strtotime(date('Y-m-d')." 23:59:59  - 1 month");
+            $from = strtotime(date('Y-m-d')." 23:59:59 - 1 month");
             $to = date("U");
             $timeStamp = strtotime(date('Y-m-d')."00:00:00".$prev);
             $date1 = date('m.Y', $timeStamp);

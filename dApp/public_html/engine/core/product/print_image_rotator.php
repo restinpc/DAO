@@ -32,7 +32,7 @@ function print_image_rotator($site, $caption, $images) {
     $fout = '
     <div id="jssor_1" style="position: relative; margin: 0 auto; left: 0px; width: 600px; height: 500px; overflow: hidden; visibility: hidden;">
         <div data-u="slides" id="slider_block" style="cursor: default; position: relative; width: 600px; top: 0px; left: 0px; height: 500px; overflow: hidden;">
-            <div><a id="link-g0" onClick=\'$id("g0").click();\'><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'"  /></a> </div>';
+            <div><a id="link-g0" onClick=\'$id("g0").click();\'><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" /></a> </div>';
     $size = getimagesize($_SERVER["DIR"].'/img/data/big/'.$images[0]);
     if (!$size[0]) {
         $size = getimagesize($images[0]);
@@ -47,7 +47,7 @@ function print_image_rotator($site, $caption, $images) {
             <a id="link-g00" target="_blank" href="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
                 <img id="g0" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[0].'" itemprop="thumbnail" alt="'.$caption.' 1" />
             </a>
-            <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
+            <figcaption itemprop="caption description">'.$caption.'</figcaption>
         </figure>';
     for ($i = 1; $i < count($images); $i++) {
         if (!empty($images[$i])) {
@@ -61,22 +61,21 @@ function print_image_rotator($site, $caption, $images) {
                 }
                 $fout .= '<div style="display:none;"> '
                     . '<a id="link-'.$i.'" onClick=\'$id("g'.$i.'").click();\'>'
-                    . '<img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'"  />'
+                    . '<img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" />'
                     . '</a></div>';
                 $gallery .= '
                     <figure itemprop="associatedMedia" itemscope itemtype="https://schema.org/ImageObject" >
                         <a id="link-g'.($i).'" target="_blank" href="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="contentUrl" data-size="'.$size[0].'x'.$size[1].'">
                             <img id="g'.($i).'" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" itemprop="thumbnail" alt="'.$caption.' '.($i + 1).'" />
                         </a>
-                        <figcaption itemprop="caption description">'.$caption.'</figcaption>                                 
+                        <figcaption itemprop="caption description">'.$caption.'</figcaption>
                     </figure>';
             } else {
                 $fout .= '<div class="hidden"><img data-u="image" src="'.$_SERVER["DIR"].'/img/data/big/'.$images[$i].'" /> </div>';
             }
         }
     }
-    $fout .= '                  
-        </div>
+    $fout .= '</div>
         <div data-u="navigator" class="jssorb13" style="bottom:16px;right:16px;" data-autocenter="1">
             <div data-u="prototype" style="width:21px;height:21px;"></div>
         </div>

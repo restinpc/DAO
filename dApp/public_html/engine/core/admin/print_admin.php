@@ -25,7 +25,7 @@ function print_admin($cms) {
             <section class="top_right_column">
                 <div class="right_column_block single_block admin_main_page_right">
                     <div class="admin_main_page_right_block">
-                        <b class="utc_date" alt="'.date("U").'">'.date("d/m/Y H:i").' '.  date_default_timezone_get().'</b><br/>
+                        <b class="utc_date" alt="'.date("U").'">'.date("d/m/Y H:i").' '.date_default_timezone_get().'</b><br/>
                         '.engine::lang("Total pages").': <b>'.$cms->statistic["pages"].'</b><br/>
                         '.engine::lang("Total users").': <b>'.$cms->statistic["users"].'</b><br/>
                         '.engine::lang("Total comments").': <b>'.$cms->statistic["comments"].'</b><br/>

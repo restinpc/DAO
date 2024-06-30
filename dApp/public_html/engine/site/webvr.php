@@ -64,13 +64,13 @@ if (!empty($_GET[1]) && $_GET[1] == "metaverse") {
     $this->content .= engine::print_panorama($this);
 } else if (!empty($_GET[1]) && $_GET[1] == "free-look") {
     $this->title = engine::lang("Free look mode");
-    $this->keywords = array("WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "AFrame", "VR");
+    $this->keywords = array("WebVR", "3D", engine::lang("Mansion"), "Web 3.0", "A-Frame", "VR");
     if ($_SESSION["Lang"] == "en") {
-        $this->description = '3D Mansion free-look mode viewer application with VR support powered by AFrame';
+        $this->description = '3D Mansion free-look mode viewer application with VR support powered by A-Frame';
     } else if ($_SESSION["Lang"] == "zh") {
         $this->description = '应用程序基于AFrame，可在自由飞行模式下查看3D Mansion。';
     } else {
-        $this->description = 'Приложение для просмотра 3D Mansion в режиме свободного полета на базе AFrame';
+        $this->description = 'Приложение для просмотра 3D Mansion в режиме свободного полета на базе A-Frame';
     }
     $this->content .= engine::print_webvr_navigation(engine::lang("Free look mode"));
     $this->content .= engine::print_free_look();

@@ -73,7 +73,7 @@ function print_order_confirm($site) {
                 <div class="delivery_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
                 <div>
                 <form method="POST">
-                    <input type="hidden" name="rating" id="nodes_rating" value="5" />    
+                    <input type="hidden" name="rating" id="nodes_rating" value="5" />
                     <div class="delivery_quality">'.engine::lang("Quality").':</div>
                     <div class="rating_star">
                         <div class="rating_stars" >

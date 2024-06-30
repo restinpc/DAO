@@ -50,8 +50,8 @@ function print_products($site) {
     $fout .= '<div class="document980 products">';
     $query = 'SELECT `product`.* FROM `nodes_product` AS `product`';
     if (!empty($_POST["request"])) {
-        $query .= ' AND (`product`.`title` LIKE "%'.  engine::escape_string($_POST["request"]).'%"'
-                . ' OR `product`.`text` LIKE "%'.  engine::escape_string($_POST["request"]).'%") ';
+        $query .= ' AND (`product`.`title` LIKE "%'.engine::escape_string($_POST["request"]).'%"'
+            . ' OR `product`.`text` LIKE "%'.engine::escape_string($_POST["request"]).'%")';
     }
     $i = 0;
     if (!empty($_SESSION["details"])) {
@@ -79,7 +79,7 @@ function print_products($site) {
         if (!empty($d)) {
             $i++;
             $site->title = $d["value"].' - '.$site->title;
-            $title  = $d["value"];
+            $title = $d["value"];
             $query .= ' INNER JOIN `nodes_property_data` AS `pd_'.$i.'` '
                 . 'ON ('
                     . '`pd_'.$i.'`.`product_id` = `product`.`id` '
@@ -114,7 +114,7 @@ function print_products($site) {
     $table .= '<div class="clear"></div><br/></div>';
     if ($arr_count) {
         $fout .= $table.' <div class="clear"></div>
-        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -132,8 +132,8 @@ function print_products($site) {
                  <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
                 </select> '.engine::lang("per page").'.</nobr></p>';
         }
-        $fout .= '
-        </div><div class="cr"></div>';
+        $fout .= '</div>
+            <div class="cr"></div>';
         if ($count > $_SESSION["count"]) {
            $fout .= '<div class="pagination" >';
             $pages = ceil($count / $_SESSION["count"]);

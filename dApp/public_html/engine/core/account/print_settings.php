@@ -114,7 +114,7 @@ function print_settings($site) {
                     </td>
                 </tr> 
                 <tr>
-                    <td align=right  class="settings_caption">'.engine::lang("Telegram").'</td>
+                    <td align=right class="settings_caption">'.engine::lang("Telegram").'</td>
                     <td align=left class="pl7">
                         <div class="settings_url">
                             <a href="https://t.me/'.str_replace('@', '', $_SESSION["user"]["url"]).'" target="_blank">'.$_SESSION["user"]["url"].'</a>
@@ -126,7 +126,13 @@ function print_settings($site) {
                 <tr>
                     <td class="pt20" colspan=2>
                         <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" /><br/><br/>
-                        <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'alertify.confirm("'.engine::lang("Are you sure you want to delete your account").'?", function() { window.location = "/account/settings/delete"; }, function() { alertify.confirm().destroy();} );\' />
+                        <input id="input-delete-account" type="button" class="btn w280" value="'.engine::lang("Delete account").'" onClick=\'
+                            alertify.confirm(
+                                "'.engine::lang("Are you sure you want to delete your account").'?",
+                                () => { window.location = "/account/settings/delete"; },
+                                () => { alertify.confirm().destroy(); }
+                            );\'
+                        />
                     </td>
                 </tr>
             </table>

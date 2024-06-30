@@ -31,17 +31,17 @@ function print_yandex_form($invoice_id, $sum, $return, $autopay=0) {
         $return = $_SERVER["PUBLIC_URL"].$return;
     }
     $fout .= '
-        <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml" id="yandex_form" target="_top">    
-            <input type="hidden" name="receiver" value="'.$id.'">    
-            <input type="hidden" name="formcomment" value="'.$paypal_desc.'">    
-            <input type="hidden" name="short-dest" value="'.$paypal_desc.'">    
-            <input type="hidden" name="label" value="'.$invoice_id.'">   
+        <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml" id="yandex_form" target="_top">
+            <input type="hidden" name="receiver" value="'.$id.'">
+            <input type="hidden" name="formcomment" value="'.$paypal_desc.'">
+            <input type="hidden" name="short-dest" value="'.$paypal_desc.'">
+            <input type="hidden" name="label" value="'.$invoice_id.'">
             <input type="hidden" name="targets" value="'.$invoice_id.'">
-            <input type="hidden" name="quickpay-form" value="shop">    
-            <input type="hidden" name="sum" value="'.floatval($sum).'">     
-            <input type="hidden" name="need-fio" value="false">    
-            <input type="hidden" name="need-email" value="false">    
-            <input type="hidden" name="need-phone" value="false">    
+            <input type="hidden" name="quickpay-form" value="shop">
+            <input type="hidden" name="sum" value="'.floatval($sum).'">
+            <input type="hidden" name="need-fio" value="false">
+            <input type="hidden" name="need-email" value="false">
+            <input type="hidden" name="need-phone" value="false">
             <input type="hidden" name="need-address" value="false"> 
             <input type="hidden" name="successURL" value="'.$return.'" />
             <button id="yandex-button-payment" type="submit" class="btn w280">'.engine::lang("Make a payment").'</button>

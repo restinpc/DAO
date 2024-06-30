@@ -50,7 +50,7 @@ function print_inbox($site, $target_id) {
             window.addEventListener("resize", () => {
                 try {
                     $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
-                } catch(E) {}
+                } catch(e) {}
             });
             document.framework.refreshChat("'.$target_id.'");
             setInterval(document.framework.refreshChat, 10000, "'.$target_id.'");
@@ -85,7 +85,7 @@ function print_inbox($site, $target_id) {
                     onkeypress=\'if (event.keyCode== 13&&!event.shiftKey) { event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
                 ></textarea>
                 <br/>
-                <input id="send-message" type="button" onClick=\'document.framework.postMessage("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'"  />
+                <input id="send-message" type="button" onClick=\'document.framework.postMessage("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'" />
             </div>
             <div class="clear"></div><br/>';
     } else {
@@ -102,7 +102,7 @@ function print_inbox($site, $target_id) {
             while ($u = mysqli_fetch_array($res)) {
                 if (!$site->configs["free_message"]) {
                     $query = 'SELECT COUNT(*) FROM `nodes_inbox` WHERE (`to` = "'.intval($u["id"]).'" AND `from` = "'.intval($_SESSION["user"]["id"]).'") OR '
-                            . '(`from` = "'.intval($u["id"]).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
+                        . '(`from` = "'.intval($u["id"]).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
                     $r = engine::mysql($query);
                     $d = mysqli_fetch_array($r);
                     if (!intval($d[0]) && $_SESSION["user"]["id"] != "1" && intval($u["id"]) != 1) {
@@ -146,7 +146,7 @@ function print_inbox($site, $target_id) {
             if ($count == 1 && $_SESSION["user"]["admin"] != "1") {
                 die('<script>window.location = "'.$_SERVER["DIR"].'/account/inbox/1";</script>');
             }
-            $fout .=  '<div class="clear"></div>'
+            $fout .= '<div class="clear"></div>'
                     . '<br/>';
         }
         $fout .= '<br/>';

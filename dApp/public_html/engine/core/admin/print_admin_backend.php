@@ -113,15 +113,16 @@ if (!empty($_GET[1])) {
         <table width=100% id="table" class="mw100p">
         <thead>
         <tr>';
-            $array = array(
-                "mode" => "Path",
-                "file" => "File"
-            );
-            foreach ($array as $order => $value) {
-                $table .= '<th>';
-                $table .= engine::lang($value);
-                $table .= '</th>';
-            } $table .= '<th>'.engine::lang("Action").'</th>
+    $array = array(
+        "mode" => "Path",
+        "file" => "File"
+    );
+    foreach ($array as $order => $value) {
+        $table .= '<th>';
+        $table .= engine::lang($value);
+        $table .= '</th>';
+    }
+    $table .= '<th>'.engine::lang("Action").'</th>
         </tr>
         </thead>
         <tbody>';
@@ -152,15 +153,14 @@ if (!empty($_GET[1])) {
                     </tr>
                 ';
         } else {
-            $table .= '
-                    <tr>
-                        <td width=35% align=left>
-                        <a id="backend-'.$data["mode"].'" title="'.engine::lang("Edit").'" onClick=\'var s = prompt("'.engine::lang("Edit").':", "'.$data["mode"].'"); if (s.length > 0 && s != "'.$data["mode"].'") {window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&act=edit&id='.$data["id"].'&target=mode&value="+encodeURI(s);}\'>/'.$data["mode"].'</a></td>
-                        <td width=35% align=left>'.$data["file"].'</td>
-                        <td width=30% align=left >
-                        <select id="select-action-'.$data["id"].'" class="input w100p" onChange=\'if (this.value == 1) {document.framework.showEditor("engine/site/'.$data["file"].'");} else if (this.value ==2 && confirm("'.engine::lang("Are you sure?").'")) {window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&delete='.$data["id"].'";}\'>
-                            <option id="option-action-0">'.engine::lang("Select an action").'</option>
-                            <option id="option-action-1" value="1">'.engine::lang("View source").'</option>';
+            $table .= '<tr>
+                <td width=35% align=left>
+                <a id="backend-'.$data["mode"].'" title="'.engine::lang("Edit").'" onClick=\'var s = prompt("'.engine::lang("Edit").':", "'.$data["mode"].'"); if (s.length > 0 && s != "'.$data["mode"].'") {window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&act=edit&id='.$data["id"].'&target=mode&value="+encodeURI(s);}\'>/'.$data["mode"].'</a></td>
+                <td width=35% align=left>'.$data["file"].'</td>
+                <td width=30% align=left >
+                <select id="select-action-'.$data["id"].'" class="input w100p" onChange=\'if (this.value == 1) {document.framework.showEditor("engine/site/'.$data["file"].'");} else if (this.value ==2 && confirm("'.engine::lang("Are you sure?").'")) {window.location="'.$_SERVER["DIR"].'/admin/?mode=backend&delete='.$data["id"].'";}\'>
+                    <option id="option-action-0">'.engine::lang("Select an action").'</option>
+                    <option id="option-action-1" value="1">'.engine::lang("View source").'</option>';
             if ($admin_access == 2) {
                 $table .= '<option id="option-action-2" value="2">'.engine::lang("Delete file").'</option>';
             }

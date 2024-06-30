@@ -53,33 +53,33 @@ function print_admin_errors($cms) {
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $query = 'SELECT * FROM `nodes_error` WHERE `url` NOT LIKE "%/admin%"'
-            . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
+        . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
     $requery = 'SELECT COUNT(*) FROM `nodes_error` WHERE `url` NOT LIKE "%/admin%"';
     $fout = '<div class="document980">';
     $table = '<div class="table">
         <table width=100% id="table" class="mw100p">
         <thead>
         <tr>';
-            $array = array(
-                "url" => "Link",
-                "ip" => "IP",
-                "date" => "Date",
-                "lang" => "Language"
-            );
-            foreach ($array as $order => $value) {
-                $table .= '<th>';
-                if ($_SESSION["order"] == $order) {
-                    if ($_SESSION["method"] == "ASC") {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
-                    } else {
-                        $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
-                    }
-                } else {
-                    $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
-                }
-                $table .= '</th>';
+    $array = array(
+        "url" => "Link",
+        "ip" => "IP",
+        "date" => "Date",
+        "lang" => "Language"
+    );
+    foreach ($array as $order => $value) {
+        $table .= '<th>';
+        if ($_SESSION["order"] == $order) {
+            if ($_SESSION["method"] == "ASC") {
+                $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "DESC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&uarr;</a>';
+            } else {
+                $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'&nbsp;&darr;</a>';
             }
-            $table .= '
+        } else {
+            $table .= '<a id="table-order-'.$order.'" class="link" href="#" onClick=\'$id("order").value = "'.$order.'"; $id("method").value = "ASC"; document.framework.submit_search_form();\'>'.engine::lang($value).'</a>';
+        }
+        $table .= '</th>';
+    }
+    $table .= '
         <th></th>
         </tr>
         </thead>';
@@ -110,7 +110,7 @@ function print_admin_errors($cms) {
         <br/>';
     if ($arr_count) {
         $fout .= $table.'
-        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />

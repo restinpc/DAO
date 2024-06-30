@@ -28,11 +28,11 @@ function print_articles($site, $data=array()) {
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     if (!empty($data)) {
         $query = 'SELECT * FROM `nodes_content` WHERE `cat_id` = "'.$data["id"].'" AND `lang` = "'.$_SESSION["Lang"].'"'
-                        . ' ORDER BY `order` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
+            . ' ORDER BY `order` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
         $requery = 'SELECT COUNT(*) FROM `nodes_content` WHERE `cat_id` = "'.$data["id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
     } else {
         $query = 'SELECT * FROM `nodes_content` WHERE `lang` = "'.$_SESSION["Lang"].'"'
-                . ' ORDER BY `order` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
+            . ' ORDER BY `order` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
         $requery = 'SELECT COUNT(*) FROM `nodes_content` WHERE `lang` = "'.$_SESSION["Lang"].'"';
     }
     $res = engine::mysql($requery);
@@ -48,7 +48,7 @@ function print_articles($site, $data=array()) {
     $table .= '</div><div class="clear"></div><br/>';
     if ($flag) {
         $fout .= $table.'
-        <form method="POST" id="query_form"  onSubmit="document.framework.submit_search_form();">
+        <form method="POST" id="query_form" onSubmit="document.framework.submit_search_form();">
         <input type="hidden" name="page" id="page_field" value="'.$_SESSION["page"].'" />
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
@@ -106,7 +106,7 @@ function print_articles($site, $data=array()) {
                 }
             }
             if ($_SESSION["page"] < $pages) {
-               $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
+                $fout .= '<li id="page-next" class="next" onClick=\'document.framework.goto_page('.($_SESSION["page"] + 1).')\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Next").'</a></li>';
             }
             $fout .= '
          </ul>
