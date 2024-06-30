@@ -24,7 +24,8 @@ function print_uploader($count = 1) {
             </div>
         </div>
         <script>
-            // document.getElementById("f1'.$i.'").style.height = (window.innerHeight - 25) + "px";
+            document.getElementById("f1'.$i.'").style.height = (window.innerHeight - 25) + "px";
+            document.getElementById("f1'.$i.'").style.width = (window.innerWidth - 25) + "px";
         </script>';
     }
     $fout .= ' <div class="clear"></div>
