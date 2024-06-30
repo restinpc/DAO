@@ -361,7 +361,9 @@ function print_admin_content($cms) {
                         $id("noimg").value = "1";
                         $id("edit_form").submit();
                     \'
-                    class="btn w280 mb3" value="'.engine::lang("Delete image").'" /><br/></div>';
+                    class="btn w280 mb3" value="'.engine::lang("Delete image").'" />
+                    <br/>
+                </div>';
             }
             for ($i = 1; $i < 2; $i++) {
                 $fout .= '<div class="new_photo" id="new_photo_'.$i.'" title="none">
