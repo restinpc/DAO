@@ -280,7 +280,8 @@ if (!empty($_POST["name"])) {
             <!-- <div id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Drop file here").'</div> -->
         </div>
         <div id="submitbutton">
-            <button class="btn w280" type="submit">'.engine::lang("Upload new image").'</button>
+            <button class="btn w280" type="button" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Upload new image").'</button>
+            <button class="btn" type="submit" style="display:none;">'.engine::lang("Upload Files").'</button>
         </div>
         <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
     </form>
@@ -290,7 +291,8 @@ if (!empty($_POST["name"])) {
     </form>
     <div id="messages"></div>
     <script>
-        // if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
+        //if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
+        // document.getElementById("fileselect").click();
     </script>
 </body>
 </html>';
