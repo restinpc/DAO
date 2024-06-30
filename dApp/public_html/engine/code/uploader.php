@@ -134,7 +134,7 @@ if (!empty($_POST["name"])) {
                     df_img.id = "d_img";
                     df_img.src = "//'.$_SERVER["HTTP_HOST"].$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.'";';
 
-        if (!empty($_GET["id"]) && $_GET["id"] < 6) {
+        if (!empty($_GET["id"]) && $_GET["id"] <6) {
             $fout .= '
                     var z = parent.document.getElementById("new_img'.(intval($_GET["id"]) + 1).'"); 
                     if (z) z.style.display = "block";
@@ -143,12 +143,8 @@ if (!empty($_POST["name"])) {
         $fout .= '
                     parent.document.getElementById("'.$result.'").style.display = "none";
                     parent.document.getElementById("'.$new_img.'").appendChild(df_img);
-                        console.error("there");
-                        console.error(width = '.($THUWIDTH+20).'+"px");
-                            console.error(height = '.($THUHEIGHT+20).'+"px");
                     parent.document.getElementById("'.$f1.'").style.width=('.($THUWIDTH+20).'+"px");
                     parent.document.getElementById("'.$f1.'").style.height=('.($THUHEIGHT+20).'+"px");
-                        console.error(parent.document.getElementById("'.$f1.'");
                 } catch(e) { console.log("error 1"); }     
                 try {
                     var ii = 0;
@@ -254,27 +250,21 @@ if (!empty($_POST["name"])) {
                             document.uploader.scale = s2;
                         }
                     }
-                    document.getElementById("image").style.width = (('.($width).'/scale)) +"px";
-                    document.getElementById("image").style.height = (('.($height).'/scale)) +"px";
-                    document.getElementById("img").style.width = ('.($width).'/scale) +"px";
-                    document.getElementById("img").style.height = ('.($height).'/scale) +"px";
-                    document.getElementById("frame").style.width = ('.($THUWIDTH).'/scale) +"px";
-                    document.getElementById("frame").style.height = ('.($THUHEIGHT).'/scale) +"px";
-                    document.getElementById("scale").value = scale;
+                    document.getElementById("image").style.width = (('.($width).'/document.uploader.scale)) +"px";
+                    document.getElementById("image").style.height = (('.($height).'/document.uploader.scale)) +"px";
+                    document.getElementById("img").style.width = ('.($width).'/document.uploader.scale) +"px";
+                    document.getElementById("img").style.height = ('.($height).'/document.uploader.scale) +"px";
+                    document.getElementById("frame").style.width = ('.($THUWIDTH).'/document.uploader.scale) +"px";
+                    document.getElementById("frame").style.height = ('.($THUHEIGHT).'/document.uploader.scale) +"px";
+                    document.getElementById("scale").value = document.uploader.scale;
                     addHandler(document.getElementById("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
                     addHandler(document.getElementById("frame"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
-                    try {
-                        console.error(parent.document);
-                        parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
-                        parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
-                            console.error(parent.document.getElementById("'.$f1.'").style.width);
-                                console.error(('.($width).'/scale+60) +"px");
-                    } catch(e) {
-                        console.error(e.message);
-                        console.error("it");
-                    }
+                    try{
+                        window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/document.uploader.scale+60) +"px";
+                        window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/document.uploader.scale+80) +"px";
+                    }catch(e) {}
                 </script>
             </body>
             </html>';
