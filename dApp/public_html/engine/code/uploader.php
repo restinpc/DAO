@@ -269,6 +269,8 @@ if (!empty($_POST["name"])) {
                         console.error(parent.document);
                         parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
                         parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
+                            console.error(parent.document.getElementById("'.$f1.'").style.width);
+                                console.error(('.($width).'/scale+60) +"px");
                     } catch(e) {
                         console.error(e.message);
                         console.error("it");
