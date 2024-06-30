@@ -45,17 +45,16 @@ if (!empty($_GET["id"])) {
     $result .= $_GET["id"];
 }
 if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
+    print_r($_SERVER);
+    print_r($_FILES);
+    die();
     $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
     if ($fn) {
         $ext = explode('.', $fn);
         $fn = md5($fn).'.'.$ext[count($ext) - 1];
-        print_r($_SERVER);
-        $file = file_get_contents('php://input');
-        die("it");
-        echo $file;
         if (file_put_contents(
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$fn,
-            $file
+            file_get_contents('php://input')
         )) {
             die($fn);
         } else {
@@ -187,11 +186,8 @@ if (!empty($_POST["name"])) {
         die($fout);
     } else if (!empty($_POST["new_image"])) {
         $file = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$_POST["new_image"];
-        print_r($file);
         $size = getimagesize($file);
-        print_r($size);
         if ($size[0] < $THUWIDTH || $size[1] < $THUHEIGHT) {
-            die("ie");
             die('<script type="text/javascript">alert("'.engine::lang("Image is too small. Minimal size is ".$THUWIDTH.'x'.$THUHEIGHT).'."); window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";</script></html>');
         }
         $f_name = "";
