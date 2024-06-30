@@ -48,7 +48,7 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
     $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
     if ($fn) {
         $ext = explode('.', $fn);
-        $fn = md5($fn).'.'.$ext[count($ext) - 1];        parallel
+        $fn = md5($fn).'.'.$ext[count($ext) - 1];
         print_r($_SERVER);
         $file = file_get_contents('php://input');
         die("it");
