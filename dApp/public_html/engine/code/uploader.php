@@ -49,9 +49,11 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
     if ($fn) {
         $ext = explode('.', $fn);
         $fn = md5($fn).'.'.$ext[count($ext) - 1];
+        $file = file_get_contents('php://input');
+        echo $file;
         if (file_put_contents(
             $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$fn,
-            file_get_contents('php://input')
+            $file
         )) {
             die($fn);
         } else {
