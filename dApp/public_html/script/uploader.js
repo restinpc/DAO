@@ -197,7 +197,7 @@ document.uploader.UploadFile = (file) => {
         return;
     }
     var xhr = new XMLHttpRequest();
-    if (xhr.upload && (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/gif" || file.type == "image/png")) {
+    if (xhr.upload && (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/gif" || file.type == "image/png") ) {
         var fname = file.name;
         xhr.onreadystatechange = (e) => {
             if (xhr.readyState == 4) {

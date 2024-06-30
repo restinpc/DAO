@@ -14,7 +14,7 @@
 
 require_once ("engine/nodes/session.php");
 
-function print_uploader($count=1) {
+function print_uploader($count = 1) {
     $fout = '';
     for ($i = 1; $i <= $count; $i++) {
         $fout .= '<div id="new_img'.$i.'" class="uploader">
@@ -24,10 +24,10 @@ function print_uploader($count=1) {
             </div>
         </div>
         <script>
-            document.getElementById("f1'.$i.'").style.height = (window.innerHeight - 25) + "px";
+            // document.getElementById("f1'.$i.'").style.height = (window.innerHeight - 25) + "px";
         </script>';
     }
-    $fout .= ' <div class="clear"></div><br/>
+    $fout .= ' <div class="clear"></div>
     <input id="input-upload-new" type="button" class="btn w280" id="uploading_button1" value="'.engine::lang("Upload new image").'" onClick=\' 
         try{  
             parent.$id("uploading_button1").style.display="none"; 
