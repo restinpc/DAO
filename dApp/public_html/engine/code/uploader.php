@@ -134,7 +134,7 @@ if (!empty($_POST["name"])) {
                     df_img.id = "d_img";
                     df_img.src = "//'.$_SERVER["HTTP_HOST"].$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.'";';
 
-        if (!empty($_GET["id"]) && $_GET["id"] <6) {
+        if (!empty($_GET["id"]) && $_GET["id"] < 6) {
             $fout .= '
                     var z = parent.document.getElementById("new_img'.(intval($_GET["id"]) + 1).'"); 
                     if (z) z.style.display = "block";
@@ -261,14 +261,17 @@ if (!empty($_POST["name"])) {
                     document.getElementById("frame").style.width = ('.($THUWIDTH).'/scale) +"px";
                     document.getElementById("frame").style.height = ('.($THUHEIGHT).'/scale) +"px";
                     document.getElementById("scale").value = scale;
+                    
                     addHandler(document.getElementById("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
                     addHandler(document.getElementById("frame"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
-                    try{
-                        window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
-                        window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
-                    }catch(e) {}
+                    try {
+                        parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
+                        parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
+                    } catch(e) {
+                        console.error("it);
+                    }
                 </script>
             </body>
             </html>';
