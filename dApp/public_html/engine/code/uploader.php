@@ -275,10 +275,12 @@ if (!empty($_POST["name"])) {
 } else {
     echo '<body class="nodes dragndrop_body"> 
     <form id="upload" method="POST" enctype="multipart/form-data">
+        <!--
         <div style="height: 100%;">
             <input type="file" id="fileselect" name="fileselect" onChange=\'document.getElementById("upload").submit();\' />
             <div id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Drop file here").'</div>
         </div>
+        -->
         <div id="submitbutton">
             <button class="btn" type="submit">'.engine::lang("Upload Files").'</button>
         </div>
@@ -289,7 +291,10 @@ if (!empty($_POST["name"])) {
         <input type="hidden" name="new_image" value="" id="new_image" />
     </form>
     <div id="messages"></div>
-    <script>if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }</script>
+    <script>
+        if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
+        document.getElementById("fileselect").click();
+    </script>
 </body>
 </html>';
 }
