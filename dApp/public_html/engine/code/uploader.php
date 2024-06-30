@@ -267,10 +267,11 @@ if (!empty($_POST["name"])) {
                     addHandler(document.getElementById("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
                     addHandler(document.getElementById("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
                     try {
-                        parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/scale+60) +"px";
-                        parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/scale+80) +"px";
+                        console.error(parent);
+                        parent.document.getElementById("'.$f1.'1").style.width = ('.($width).'/scale+60) +"px";
+                        parent.document.getElementById("'.$f1.'1").style.height = ('.($height).'/scale+80) +"px";
                     } catch(e) {
-                        console.error("it);
+                        console.error("it");
                     }
                 </script>
             </body>
