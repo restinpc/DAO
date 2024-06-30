@@ -22,11 +22,7 @@ function print_uploader($width, $count = 1) {
             <div id="result'.$i.'" style="overflow:hidden; overflow-x:auto;">
                 <iframe id="f1'.$i.'" frameborder=0 src="'.$_SERVER["DIR"].'/uploader.php?id='.$i.'" class="uploader_frame" scrolling="no"></iframe>
             </div>
-        </div>
-        <script>
-            // document.getElementById("f1'.$i.'").style.height = (window.innerHeight - 25) + "px";
-            // document.getElementById("f1'.$i.'").style.width = (window.innerWidth - 25) + "px";
-        </script>';
+        </div>';
     }
     $fout .= ' <div class="clear"></div>
     <input id="input-upload-new" type="button" class="btn w280" id="uploading_button1" value="'.engine::lang("Upload new image").'" onClick=\' 
