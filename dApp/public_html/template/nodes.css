@@ -180,7 +180,7 @@ h1,h2,h3,h4,h5,h6{
 #nodes_message{
     position: fixed;
     z-index: 5;
-    width: 240px;
+    width: 280px;
     height: 76px;
     bottom: 10px;
     left: 10px;
@@ -604,8 +604,10 @@ h1,h2,h3,h4,h5,h6{
     opacity: 1.0;
 }
 .nodes .new_msg_close{
-    float:right;
-    cursor:pointer;
+    float: right;
+    cursor: pointer;
+    padding: 10px;
+    margin: -10px;
 }
 .nodes .new_msg_name{
     font-weight: bold;

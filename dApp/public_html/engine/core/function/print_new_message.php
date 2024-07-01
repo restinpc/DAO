@@ -32,8 +32,8 @@ function print_new_message() {
                 <div id="new_msg_img" class="new_msg_img" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <img src="'.$_SERVER["DIR"].'/img/pic/'.$user["photo"].'" width=50 /><br/>'.$online.'
                 </div>
-                <div class="new_msg_close">
-                    <div id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'" onClick=\'$id("nodes_message").style.display="none";\'> </div>
+                <div class="new_msg_close" onClick=\'$id("nodes_message").style.display="none";\'>
+                    <div id="new_msg_close" class="close_image" title="'.engine::lang("Close window").'"> </div>
                 </div>
                 <div id="new_msg_name" class="pointer" onClick=\'window.location="'.$_SERVER["DIR"].'/account/inbox/'.$data["from"].'";\'>
                     <div class="new_msg_name">'.$user["name"].'</div>'

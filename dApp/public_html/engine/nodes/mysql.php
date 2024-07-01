@@ -20,7 +20,7 @@ mysqli_query($_SERVER["sql_connection"], "SET SESSION wait_timeout = 4000");
 $query = 'SELECT value FROM nodes_config WHERE name = "timezone"';
 $res = mysqli_query($_SERVER["sql_connection"], $query);
 $data = mysqli_fetch_array($res);
-$query = 'SET time_zone = "'.$d["value"].'"';
+mysqli_query($_SERVER["sql_connection"], 'SET time_zone = "'.$data["value"].'"');
 if (function_exists("date_default_timezone_set")) {
-    date_default_timezone_set($d["value"]);
+    date_default_timezone_set($data["value"]);
 }

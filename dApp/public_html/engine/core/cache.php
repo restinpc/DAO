@@ -95,7 +95,7 @@ public function __construct() {
                     $html = str_replace('<content/>', $data["content"], $data["html"]);
                 }
                 die($html.engine::print_new_message()."
-<!-- Time loading from cache (1): ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
+<!-- Time loading from cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
             $fout .= "<!-- Cache is empty -->";
         } else if (empty($data)) {
@@ -114,7 +114,7 @@ public function __construct() {
                     $html = str_replace('<content/>', $data["content"], $data["html"]);
                 }
                 die($html.engine::print_new_message()."
-<!-- Time loading form cache (2): ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
+<!-- Time loading form cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
         }
     // cacheing for asinc jquery requests
@@ -126,8 +126,10 @@ public function __construct() {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
             } else if (!empty($data["html"])) {
-                die('<title>'.$data["title"].'</title>'.$data["content"].engine::print_new_message()."
-<!-- Time loading from cache (3): ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
+                die('<title>'.$data["title"].'</title>'
+                    .$data["content"]
+                    .engine::print_new_message()."
+<!-- Time loading from cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
             $fout .= "<!-- Cache is empty -->";
         } else if (empty($data)) {
@@ -140,8 +142,10 @@ public function __construct() {
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
                 }
-                die('<title>'.$data["title"].'</title>'.$data["content"].engine::print_new_message()."
-<!-- Time loading form cache (4): ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
+                die('<title>'.$data["title"].'</title>'
+                    .$data["content"]
+                    .engine::print_new_message()."
+<!-- Time loading form cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
         }
     }
