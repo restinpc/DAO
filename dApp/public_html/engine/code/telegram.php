@@ -27,6 +27,7 @@ echo '<!DOCTYPE html>
     <title>Telegram: Contact @'.$url.'</title>
     <script>window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement&&document.documentElement.classList&&document.documentElement.classList.add("theme_dark");</script>
     <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/bootstrap.min.css?3" rel="stylesheet">
+    <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/telegram.css?236" rel="stylesheet" media="screen">
 </head>
 <body class="no_transition">
 <div class="tgme_background_wrap">
