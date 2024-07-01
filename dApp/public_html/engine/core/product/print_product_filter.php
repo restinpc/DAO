@@ -22,10 +22,9 @@
 
 function print_product_filter($site) {
     $filter = '<div class="product_filter">
-    <form method="POST" id="filer_form">
-    <input type="hidden" name="details" value="1" />
-    <input type="hidden" name="reset" value="0" id="reset" />
-    <b>'.engine::lang("FILTER RESULTS").'</b> &nbsp; ';
+        <form method="POST" id="filer_form">
+            <input type="hidden" name="details" value="1" />
+            <b>'.engine::lang("FILTER RESULTS").'</b> &nbsp; ';
     $query = 'SELECT * FROM `nodes_product_property` WHERE `id` > 1 ORDER BY `id` ASC';
     $res = engine::mysql($query);
     $flag = 0;

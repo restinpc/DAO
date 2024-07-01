@@ -177,7 +177,6 @@ function print_admin_users($cms) {
             <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
             <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
             <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-            <input type="hidden" name="reset" id="query_reset" value="0" />
             <div class="total-entry">';
         $res = engine::mysql($requery);
         $data = mysqli_fetch_array($res);

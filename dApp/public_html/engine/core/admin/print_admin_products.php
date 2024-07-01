@@ -681,7 +681,6 @@ function print_admin_products($cms) {
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
         <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-        <input type="hidden" name="reset" id="query_reset" value="0" />
         <div class="total-entry">';
         $res = engine::mysql($requery);
         $data = mysqli_fetch_array($res);
@@ -697,10 +696,10 @@ function print_admin_products($cms) {
                  <option id="option-pagination-100"'; if ($_SESSION["count"] == "100") { $fout.= ' selected'; } $fout.= '>100</option>
                 </select> '.engine::lang("per page").'.</nobr></p>';
         }
-        $fout .= '
-        </div><div class="cr"></div>';
-        if ($count > $_SESSION["count"]) {
-            $fout .= '<div class="pagination" >';
+        $fout .= '</div>
+            <div class="cr"></div>';
+            if ($count > $_SESSION["count"]) {
+                $fout .= '<div class="pagination" >';
                 $pages = ceil($count / $_SESSION["count"]);
                 if ($_SESSION["page"] > 1) {
                     $fout .= '<span id="page-prev" onClick=\'document.framework.goto_page('.($_SESSION["page"] - 1).');\'><a hreflang="'.$_SESSION["Lang"].'" href="#">'.engine::lang("Previous").'</a></span>';

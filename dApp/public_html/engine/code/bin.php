@@ -73,7 +73,7 @@ if (!empty($_POST["id"])) {
 } else if (!empty($_SESSION["user"]["id"])) {
     if (!empty($_POST["check_message"])) {
         $query = 'SELECT * FROM `nodes_inbox` WHERE `to` = "'.intval($_SESSION["user"]["id"]).'" '
-                . 'AND `readed` = 0 AND `inform` = 0 ORDER BY `date` DESC LIMIT 0, 1';
+            . 'AND `readed` = 0 AND `inform` = 0 ORDER BY `date` DESC LIMIT 0, 1';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
         if (!empty($data)) {
@@ -131,15 +131,15 @@ if (!empty($_POST["id"])) {
             die(engine::lang("Withdrawal already requested"));
         }
         $query = 'INSERT INTO `nodes_transaction`(user_id, order_id, amount, status, date, comment)'
-                . 'VALUES("'.$_SESSION["user"]["id"].'", "0", "'.$user["balance"].'", "1", "'.date("U").'", "'.$paypal.'" )';
+            . 'VALUES("'.$_SESSION["user"]["id"].'", "0", "'.$user["balance"].'", "1", "'.date("U").'", "'.$paypal.'" )';
         engine::mysql($query);
         email::new_withdrawal($user["id"], $user["balance"], "PayPal", $paypal);
         die(engine::lang("Withdrawal request accepted"));
     } else if (!empty($_POST["transaction"]) && !empty($_POST["user_id"]) && $_SESSION["user"]["admin"] == "1") {
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "users" '
-                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-                . 'AND `access`.`admin_id` = `admin`.`id`';
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "users" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
         $admin_res = engine::mysql($query);
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
@@ -218,9 +218,9 @@ if (!empty($_POST["id"])) {
         engine::mysql($query);
     } else if (!empty($_POST["archive_id"]) && $_SESSION["user"]["admin"] == "1") {
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "products" '
-                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-                . 'AND `access`.`admin_id` = `admin`.`id`';
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "products" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
         $admin_res = engine::mysql($query);
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
@@ -231,9 +231,9 @@ if (!empty($_POST["id"])) {
         engine::mysql($query);
     } else if (!empty($_POST["seo_id"]) && $_SESSION["user"]["admin"] == "1") {
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "pages" '
-                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-                . 'AND `access`.`admin_id` = `admin`.`id`';
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "pages" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
         $admin_res = engine::mysql($query);
         $admin_data = mysqli_fetch_array($admin_res);
         $admin_access = intval($admin_data["access"]);
@@ -241,9 +241,9 @@ if (!empty($_POST["id"])) {
             die(engine::lang("Error"));
         }
         $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "Pages" '
-                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-                . 'AND `access`.`admin_id` = `admin`.`id`';
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "Pages" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
         $admin_res = engine::mysql($query);
         $admin_data = mysqli_fetch_array($admin_res);
         $id = intval($_POST["seo_id"]);

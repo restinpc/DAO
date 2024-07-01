@@ -36,9 +36,7 @@ function print_products($site) {
     if (!empty($_POST["method"])) {
         $_SESSION["method"] = $_POST["method"];
     }
-    if (!empty($_POST["reset"])) {
-        unset($_SESSION["details"]);
-    } else if (!empty($_POST["details"])) {
+    if (!empty($_POST["details"])) {
         foreach ($_POST as $key => $value) {
             $_SESSION["details"][$key] = $value;
         }
@@ -119,7 +117,6 @@ function print_products($site) {
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
         <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-        <input type="hidden" name="reset" id="query_reset" value="0" />
         <div class="total-entry">';
         if ($to > $count) {
             $to = $count;

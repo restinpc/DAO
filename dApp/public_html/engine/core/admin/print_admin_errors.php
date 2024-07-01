@@ -115,7 +115,6 @@ function print_admin_errors($cms) {
         <input type="hidden" name="count" id="count_field" value="'.$_SESSION["count"].'" />
         <input type="hidden" name="order" id="order" value="'.$_SESSION["order"].'" />
         <input type="hidden" name="method" id="method" value="'.$_SESSION["method"].'" />
-        <input type="hidden" name="reset" id="query_reset" value="0" />
         <div class="total-entry">';
         $res = engine::mysql($requery);
         $data = mysqli_fetch_array($res);
@@ -178,8 +177,7 @@ function print_admin_errors($cms) {
         }
         $fout .= '<div class="clear"></div><br/>';
         if ($admin_access == 2) {
-            $fout .= '
-            <a id="clear-logs" href="'.$_SERVER["DIR"].'/admin/?mode=errors&act=reset"><input type="button" class="btn w280" value="'.engine::lang("Clear logs").'" /></a><br/>';
+            $fout .= '<a id="clear-logs" href="'.$_SERVER["DIR"].'/admin/?mode=errors&act=reset"><input type="button" class="btn w280" value="'.engine::lang("Clear logs").'" /></a><br/>';
         }
         $fout .= '
         </form>
