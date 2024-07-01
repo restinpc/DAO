@@ -17,7 +17,7 @@ require_once("engine/nodes/session.php");
 $flag = 0;
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_exec"';
 engine::mysql($query);
-$server = floatval(microtime(1) - $GLOBALS["time"], 2);
+$server = floatval(microtime(1) - $GLOBALS["time"]);
 /*
  * Sends bulk mail messages every minute if exists.
  */
