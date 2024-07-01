@@ -227,14 +227,16 @@ function __construct() {
 <meta name="keywords" itemprop="keywords" content="'.str_replace('"', "", $keywords).'" />
 <meta name="apple-mobile-web-app-title" content="'.$this->configs["name"].'" />
 <meta name="application-name" content="'.$this->configs["name"].'" />
-<link rel="canonical" itemprop="url" href="'.$canonical.'" />
+<meta name="msapplication-config" content="'.$_SERVER["DIR"].'/favicon/browserconfig.xml" />
+<meta name="theme-color" content="#ffffff" />
 <meta name="copyright" content="Copyright '.$_SERVER["HTTP_HOST"].', '.date("Y").'" />
+<link rel="canonical" itemprop="url" href="'.$canonical.'" />
 <link rel="apple-touch-icon" sizes="180x180" href="'.$_SERVER["DIR"].'/apple-touch-icon.png" />
 <link rel="manifest" crossorigin="use-credentials" href="'.$_SERVER["DIR"].'/favicon/manifest.json" />
 <link rel="mask-icon" href="'.$_SERVER["DIR"].'/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+<link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon-32x32.png" type="image/png" />
 <link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
-<meta name="msapplication-config" content="'.$_SERVER["DIR"].'/favicon/browserconfig.xml" />
-<meta name="theme-color" content="#ffffff" />
 <style>.material-icons{ visibility:hidden; }</style>';
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
