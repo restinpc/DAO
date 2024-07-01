@@ -17,3 +17,10 @@ $_SERVER["sql_connection"] = mysqli_connect(
 );
 mysqli_select_db($_SERVER["sql_connection"], $_SERVER["config"]["sql_db"]);
 mysqli_query($_SERVER["sql_connection"], "SET SESSION wait_timeout = 4000");
+$query = 'SELECT value FROM nodes_config WHERE name = "timezone"';
+$res = mysqli_query($_SERVER["sql_connection"], $query);
+$data = mysqli_fetch_array($res);
+$query = 'SET time_zone = "'.$d["value"].'"';
+if (function_exists("date_default_timezone_set")) {
+    date_default_timezone_set($d["value"]);
+}

@@ -7,23 +7,14 @@
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
-* @var $site->title - Page title.
-* @var $site->content - Page HTML data.
-* @var $site->keywords - Array meta keywords.
-* @var $site->description - Page meta description.
-* @var $site->img - Page meta image.
-* @var $site->onload - Page executable JavaScript code.
-* @var $site->configs - Array MySQL configs.
-*
-* @param object $site Site class object.
 * @return string Returns content of block on success, or die with error.
-* @usage <code> engine::print_new_message($site); </code>
+* @usage <code> engine::print_new_message(); </code>
 */
 
-function print_new_message($site) {
+function print_new_message() {
     $fout = '';
     $query = 'SELECT * FROM `nodes_inbox` WHERE `to` = "'.intval($_SESSION["user"]["id"]).'" '
-            . 'AND `readed` = 0 AND `inform` = 0 ORDER BY `date` DESC LIMIT 0, 1';
+        . 'AND `readed` = 0 AND `inform` = 0 ORDER BY `date` DESC LIMIT 0, 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
     if (!empty($data)) {

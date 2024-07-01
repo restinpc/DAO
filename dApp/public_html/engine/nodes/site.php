@@ -322,7 +322,7 @@ $fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" t
                 parent.window.location = "'.$_SERVER["DIR"].'/";
             </script>');
         } else {
-            $fout .= engine::print_new_message($this);
+            $fout .= engine::print_new_message();
         }
     }
     if (!empty($_POST["jQuery"])) {
