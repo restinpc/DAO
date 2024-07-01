@@ -54,6 +54,7 @@ function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1) {
     imagefilledpolygon($image, $points, 4, $color);
     return imagepolygon($image, $points, 4, $color);
 }
+
 if ($_SESSION["user"]["id"] != 1) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "lastreport"';
     $res = engine::mysql($query);

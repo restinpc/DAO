@@ -38,7 +38,7 @@ echo '<!DOCTYPE html>
     <div class="tgme_body_wrap">
         <div class="tgme_page">
             <div class="tgme_page_photo">
-                <a href="tg://resolve?domain='.$url.'"><img class="tgme_page_photo_image" src="./img/logo.png"></a>
+                <a href="tg://resolve?domain='.$url.'"><img class="tgme_page_photo_image" src="'.$_SERVER["DIR"].'/img/logo.png"></a>
             </div>
             <div class="tgme_page_title" dir="auto">
                 <span dir="auto">'.$name.'</span>

@@ -805,6 +805,27 @@ document.framework.materialIcons = () => {
     } catch(e){}
 }
 
+document.framework.changeLang = (lang) => {
+    const href = window.location.href;
+    if (href.indexOf("?") > 0) {
+        let pos = href.indexOf("?lang=");
+        if (pos > 0) {
+            let replace  = href[pos + 6] + href[pos + 7];
+            window.location = href.replace("?lang=" + replace, "?lang=" + lang);
+        } else {
+            pos = href.indexOf("&lang=");
+            if (pos > 0) {
+                let replace = href[pos + 6] + href[pos + 7];
+                window.location = href.replace("&lang=" + replace, "&lang=" + lang);
+            } else {
+                window.location = href + "&lang=" + lang;
+            }
+        }
+    } else {
+        window.location = href + "?lang=" + lang;
+    }
+}
+
 /**
 * Displays an image viewer.
 */

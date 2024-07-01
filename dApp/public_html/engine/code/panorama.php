@@ -318,7 +318,7 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="3" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="3" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="'.$_SERVER["DIR"].'/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }
@@ -363,7 +363,7 @@ if (!empty($_GET["id"])) {
                     $i_1.' -'.$x.' '.$j_1
                 );
                 $position_img = $positions[$l];
-                $fout .= '<a-image zoom="4" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
+                $fout .= '<a-image zoom="4" class="mesh load_later" side="'.$side.'" id="cubemap_'.$side.'_'.$t.'_'.$id.'" position="'.$position_img.'" rotation="'.$rotation_img.'" width="'.$s.'" height="'.$s.'" side="front" src="#pixel" xsrc="'.$_SERVER["DIR"].'/img/scenes/'.$_GET["id"].'/f_'.$t.'_'.$side.'_'.$id.'.png"></a-image>';
             }
         }
     }

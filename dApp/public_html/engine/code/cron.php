@@ -17,7 +17,7 @@ require_once("engine/nodes/session.php");
 $flag = 0;
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_exec"';
 engine::mysql($query);
-$server = floatval(microtime(1) - $GLOBALS["time"]);
+$server = floatval(microtime(1) - $GLOBALS["time"], 2);
 /*
  * Sends bulk mail messages every minute if exists.
  */
@@ -46,7 +46,7 @@ if (empty($data)) {
         $html = engine::curl_get_query($data["url"]);
         $now = floatval(microtime(1) - $current);
         $query = 'INSERT INTO `nodes_perfomance`(`cache_id`, `server_time`, `script_time`, `date`) '
-                . 'VALUES("'.$data["id"].'", "'.$server.'", "'.$now.'", "'.date("U").'")';
+                . 'VALUES("'.$data["id"].'", "'.round($server, 3).'", "'.round($now, 3).'", "'.date("U").'")';
         engine::mysql($query);
     }
 }

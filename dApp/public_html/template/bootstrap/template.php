@@ -116,9 +116,9 @@ $header = '
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a hreflang="ru" href="?lang=ru" target="_parent">'.($_SESSION["Lang"]=="ru"?'<noindex class="material-icons">done</noindex>':'').' Русский </a></li>
-                        <li><a hreflang="zh" href="?lang=zh" target="_parent">'.($_SESSION["Lang"]=="zh"?'<noindex class="material-icons">done</noindex>':'').' 中國人 </a></li>
-                        <li><a hreflang="en" href="?lang=en" target="_parent">'.($_SESSION["Lang"]=="en"?'<noindex class="material-icons">done</noindex>':'').' English </a></li>
+                        <li><a onClick=\'document.framework.changeLang("ru");\'>'.($_SESSION["Lang"] == "ru" ? '<noindex class="material-icons">done</noindex>' : '').' Русский </a></li>
+                        <li><a onClick=\'document.framework.changeLang("zh");\'>'.($_SESSION["Lang"] == "zh" ? '<noindex class="material-icons">done</noindex>' : '').' 中國人 </a></li>
+                        <li><a onClick=\'document.framework.changeLang("en");\'>'.($_SESSION["Lang"] == "en" ? '<noindex class="material-icons">done</noindex>' : '').' English </a></li>
                     </ul>
                 </li>
                 <div id="header-app" lang="'.$_SESSION["Lang"].'" dir="'.$_SERVER["DIR"].'" isApp="'.($_SERVER["app"]=="TRUE").'"></div>
