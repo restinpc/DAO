@@ -26,7 +26,6 @@ echo '<!DOCTYPE html>
     <meta charset="utf-8">
     <title>Telegram: Contact @'.$url.'</title>
     <script>window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement&&document.documentElement.classList&&document.documentElement.classList.add("theme_dark");</script>
-    <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/font-roboto.css?1" rel="stylesheet" type="text/css">
     <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/bootstrap.min.css?3" rel="stylesheet">
     <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/telegram.css?236" rel="stylesheet" media="screen">
 </head>
@@ -60,32 +59,6 @@ echo '<!DOCTYPE html>
 <div id="tgme_frame_cont"></div>
 <script src="'.$_SERVER["PUBLIC_URL"].'/res/files/tgwallpaper.min.js?3"></script>
 <script type="text/javascript">
-    var protoUrl = "tg:\/\/resolve?domain='.$url.'";
-    if (false) {
-        var iframeContEl = document.getElementById("tgme_frame_cont") || document.body;
-        var iframeEl = document.createElement("iframe");
-        iframeContEl.appendChild(iframeEl);
-        var pageHidden = false;
-        window.addEventListener("pagehide", function () {
-            pageHidden = true;
-        }, false);
-        window.addEventListener("blur", function () {
-            pageHidden = true;
-        }, false);
-        if (iframeEl !== null) {
-            iframeEl.src = protoUrl;
-        }
-        !false && setTimeout(function() {
-            if (!pageHidden) {
-                window.location = protoUrl;
-            }
-        }, 2000);
-    }
-    else if (protoUrl) {
-        setTimeout(function() {
-            window.location = protoUrl;
-        }, 100);
-    }
     var tme_bg = document.getElementById("tgme_background");
     if (tme_bg) {
         TWallpaper.init(tme_bg);
