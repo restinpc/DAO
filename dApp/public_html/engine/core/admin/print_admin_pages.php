@@ -279,7 +279,7 @@ function print_admin_pages($cms) {
         $fout .= '<div class="clear_block">'.engine::lang("Pages not found").'</div>';
     }
     if ($admin_access == 2) {
-        $fout .= '<input type="button" class="btn w280" value="'.engine::lang("Reset cache").'" onClick=\'$id("query_reset").value = "1"; $id("query_form").submit();\' /><br/>';
+        $fout .= '<input type="button" class="btn w280" value="'.engine::lang("Reset cache").'" onClick=\'if(confirm("'.engine::lang("Are you sure?").'")){ $id("query_reset").value = "1"; $id("query_form").submit(); }\' /><br/>';
     }
     $fout .= '</div>';
     return $fout;
