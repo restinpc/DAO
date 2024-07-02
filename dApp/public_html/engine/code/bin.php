@@ -71,26 +71,8 @@ if (!empty($_POST["id"])) {
     $query = 'DELETE FROM `nodes_vr_navigation` WHERE `scene_id` = "'.$id.'"';
     engine::mysql($query);
 } else if (!empty($_SESSION["user"]["id"])) {
-    if (!empty($_POST["check_message"])) {
-        $query = 'SELECT * FROM `nodes_inbox` WHERE `to` = "'.intval($_SESSION["user"]["id"]).'" '
-            . 'AND `readed` = 0 AND `inform` = 0 ORDER BY `date` DESC LIMIT 0, 1';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        if (!empty($data)) {
-            $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$data["from"].'"';
-            $res = engine::mysql($query);
-            $d = mysqli_fetch_array($res);
-            $message = array();
-            $message["id"] = $d["id"];
-            $message["name"] = $d["name"];
-            $message["text"] = $data["text"];
-            $message["date"] = date("d-m-Y H:i", $data["date"]);
-            $query = 'UPDATE `nodes_inbox` SET `inform` = 1 WHERE `to` = "'.intval($_SESSION["user"]["id"]).'"';
-            engine::mysql($query);
-            die(json_encode($message));
-        } else {
-            die();
-        }
+    if (!empty($_REQUEST["check_message"])) {
+        die(engine::print_new_message());
     } else if (!empty($_GET["message"])) {
         if (!empty($_POST["text"])) {
             $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));

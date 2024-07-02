@@ -273,10 +273,13 @@ if (!isset($_POST["jQuery"])) {
             return;
         }
         try {
-            document.framework.materialIcons();
-            document.framework.preload();
-            document.framework.loading_state=5;
-            setTimeout(document.framework.display, 1000);
+            if (!document.framework.messageInterval) {
+                document.framework.materialIcons();
+                document.framework.preload();
+                document.framework.loading_state = 5;
+                setTimeout(document.framework.display, 1000);
+                document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
+            }
         } catch(e) {};
         clearTimeout(document.framework.timeout);
     }

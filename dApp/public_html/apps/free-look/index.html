@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8">
-  <title>Mansion</title>
-  <meta name="description" content="DAO Mansion">
+  <title>Free-look viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <script src="aframe-master.js"></script>
   <script src="animation-mixer.js"></script>
   <script src="ar-shadows.js"></script>
   <script src="model-viewer.js"></script>
   <script src="background-gradient.js"></script>
-  <script src="https://cdn.rawgit.com/mrturck/aframe-joystick/master/joystick.min.js"></script>
+  <script src="joystick.min.js"></script>
   <style>
     #np {
       position: fixed;
@@ -32,13 +31,14 @@
     renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true;"
 >
     <a-entity id="camera" camera look-controls wasd-controls="acceleration:100" position="0 1.5 0" rotation="0 0 0" ></a-entity>
-  <a-assets timeout="120000">
-    <a-asset-item id="mansion"
-      src="../../file/mansion2.glb"
-      response-type="arraybuffer"
-      crossorigin="anonymous"></a-asset-item>
-  </a-assets>
-  <a-entity id="mansion-model" gltf-model="#mansion" scale="10 10 10" rotation="0 130 0"></a-entity>
+    <a-assets timeout="120000">
+        <a-asset-item id="mansion"
+            src="../../file/mansion2.glb"
+            response-type="arraybuffer"
+            crossorigin="anonymous"
+        ></a-asset-item>
+    </a-assets>
+    <a-entity id="mansion-model" gltf-model="#mansion" scale="10 10 10" rotation="0 130 0"></a-entity>
 </a-scene>
 </body>
 </html>

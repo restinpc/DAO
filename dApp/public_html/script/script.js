@@ -28,8 +28,9 @@ if (!document.panorama) {
 document.framework.ua = navigator.userAgent.toLowerCase();
 document.framework.isOpera = (document.framework.ua.indexOf('opera') > -1);
 document.framework.isIE = (document.framework.ua.indexOf('msie') > -1);
-document.framework.arrowKeys = {37: 1, 38: 1, 39: 1, 40: 1}; 
+document.framework.arrowKeys = { 37: 1, 38: 1, 39: 1, 40: 1 }; 
 document.framework.window_state = 0;
+document.framework.messageInterval = null;
 
 /**
 * Gets a document height in px.
@@ -706,6 +707,26 @@ document.framework.refreshChat = (id) => {
             chat.innerHTML = data;
             if (flag || (!flag && chat.scrollHeight > height)) {
                 chat.scrollTop = chat.scrollHeight;
+            }
+        }
+    });
+}
+
+/**
+* Check for new messages.
+*/
+document.framework.checkMessage = (id) => {
+    jQuery.ajax({
+        type: "POST",
+        data: { "check_message" : 1 },
+        url: document.framework.root_dir + '/bin.php',
+        success: (data) => {
+            if (data && data.length) {
+                if (!$id("nodes_message")) {
+                    const div = document.createElement('div');
+                    div.innerHTML = data;
+                    document.body.appendChild(div);
+                }
             }
         }
     });

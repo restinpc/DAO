@@ -181,11 +181,14 @@ h1,h2,h3,h4,h5,h6{
     position: fixed;
     z-index: 5;
     width: 280px;
-    height: 76px;
+    min-height: 76px;
+    height: auto;
+    word-wrap: break-word;
     bottom: 10px;
     left: 10px;
-    background: rgba(46,49,55, .8);
-    border: rgba(255,255,255, .1) 1px solid;
+    line-height: 1.2;
+    background: rgba(46, 49, 55, 0.9);
+    border: rgba(255, 255, 255, .1) 1px solid;
     border-radius:7px;
     padding: 7px;
     color: #fff;
@@ -592,11 +595,11 @@ h1,h2,h3,h4,h5,h6{
     margin: 0px auto;
 }
 .nodes .new_msg_img{
-    float:left;
+    float: left;
     padding-right: 7px;
-    text-align:center;
-    height: 70px;
-    cursor:pointer;
+    text-align: center;
+    height: 62px;
+    cursor: pointer;
 }
 .nodes .new_msg_img img{
     border: #d0d0d0 4px solid;
@@ -611,7 +614,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .nodes .new_msg_name{
     font-weight: bold;
-    padding-bottom: 5px;
+    padding-bottom: 2px;
 }
 /* -------------------------------------------------------------------------- */
 
@@ -1410,6 +1413,7 @@ h1,h2,h3,h4,h5,h6{
     background-image: url(/img/profile.jpg);
     background-color: #1e5056;
     background-size: cover;
+    background-position: center;
     min-height: 300px;
     overflow: visible;
     padding-top: 50px;

@@ -23,7 +23,7 @@ if (empty($_SESSION["user"]["id"])) {
     $site = new site(1);
 } else if (!empty($_POST["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
     $query = 'INSERT INTO `nodes_order`(user_id, date, status) '
-            . 'VALUES("'.$_SESSION["user"]["id"].'", "'.date("U").'", "0")';
+        . 'VALUES("'.$_SESSION["user"]["id"].'", "'.date("U").'", "0")';
     engine::mysql($query);
     $query = 'SELECT * FROM `nodes_order` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `id` DESC LIMIT 0, 1';
     $res = engine::mysql($query);
@@ -105,14 +105,14 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
             $images = explode(";", $product["img"]);
             $addr = $shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"].'");\' title="'.$shipping["country"].', '.$shipping["state"].', '.$shipping["city"].', '.$shipping["street1"].', '.$shipping["street2"];
             $fout .= '<div class="order_detail">
-                <div class="order_detail_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
-                    <b class="fs18">'.$product["title"].'</b><br/><br/>
-                    <font class="fs18">$ '.$product["price"].'</font><br/><br/>
-                    '.engine::lang("Shipping from").': <a id="link-shipping" onClick=\'alert("'.$addr.'">'.$shipping["country"].'</a><br/>
-                    <div class="order_detail_button">
-                        <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if (confirm("'.engine::lang("Are you sure?").'")) { document.framework.removeFromCart("'.$key.'"); }\' />
-                    </div>
-                <div class="clear"></div>
+                    <div class="order_detail_image" style="background-image: url('.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].');">&nbsp;</div>
+                        <b class="fs18">'.$product["title"].'</b><br/><br/>
+                        <font class="fs18">$ '.$product["price"].'</font><br/><br/>
+                        '.engine::lang("Shipping from").': <a id="link-shipping" onClick=\'alert("'.$addr.'">'.$shipping["country"].'</a><br/>
+                        <div class="order_detail_button">
+                            <input id="remove-product-'.$key.'" type="button" class="btn small w150" name="remove" value="'.engine::lang("Remove product").'" onClick=\'if (confirm("'.engine::lang("Are you sure?").'")) { document.framework.removeFromCart("'.$key.'"); }\' />
+                        </div>
+                    <div class="clear"></div>
                 </div>';
         }
     }
