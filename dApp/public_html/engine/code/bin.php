@@ -72,7 +72,19 @@ if (!empty($_POST["id"])) {
     engine::mysql($query);
 } else if (!empty($_SESSION["user"]["id"])) {
     if (!empty($_REQUEST["check_message"])) {
-        die(engine::print_new_message());
+        $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
+        $res = engine::mysql($query);
+        $user = mysqli_fetch_array($res);
+        if ($user["ban"] == "1") {
+            unset($_SESSION["user"]);
+            die('<script type="text/javascript">
+                window.alert("'.engine::lang("Your account was banned").'");
+                parent.window.location = "'.$_SERVER["DIR"].'/";
+            </script>');
+        } else {
+            die(engine::print_new_message());
+        }
+        
     } else if (!empty($_GET["message"])) {
         if (!empty($_POST["text"])) {
             $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));

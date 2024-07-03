@@ -64,7 +64,6 @@ document.framework.error = (text) => {
     }
 }
 
-
 document.framework.display = () => {
     document.framework.log(`document.framework.display()`);
     document.body.style.display = "contents";
