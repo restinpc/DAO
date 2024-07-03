@@ -43,10 +43,10 @@ $header = '
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/free-look').'" target="_parent">'.engine::lang("Free look mode") .'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/orbital').'" target="_parent">'.engine::lang("Orbital preview") .'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/panorama').'" target="_parent">'.engine::lang("Panorama viewer") .'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/metaverse').'" target="_parent">'.engine::lang("Metaverse") .'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/free-look').'">'.engine::lang("Free look mode") .'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/orbital').'">'.engine::lang("Orbital preview") .'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/panorama').'">'.engine::lang("Panorama viewer") .'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/webvr/metaverse').'">'.engine::lang("Metaverse") .'</a></li>
                     </ul>
                 </li>
                 <li id="menu_1" class="dropdown">
@@ -60,7 +60,7 @@ $header = '
     $query = 'SELECT * FROM `nodes_catalog` WHERE `visible` = "1" AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY `order` DESC';
     $res = engine::mysql($query);
     while($data = mysqli_fetch_array($res)){
-        $header .= '<li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["PUBLIC_URL"].'/content/'.$data["url"]).'" target="_parent">'.$data["caption"].'</a></li>';
+        $header .= '<li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["PUBLIC_URL"].'/content/'.$data["url"]).'">'.$data["caption"].'</a></li>';
     }
     $header .= '   
                     </ul>
@@ -72,12 +72,12 @@ $header = '
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/git').'" target="_parent">'.engine::lang("Git repository").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/capitalization').'" target="_parent">'.engine::lang("Capitalization").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/git').'">'.engine::lang("Git repository").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/capitalization').'">'.engine::lang("Capitalization").'</a></li>
                         <!--
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/monitor').'" target="_parent">'.engine::lang("Blockchain monitor").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/management').'" target="_parent">'.engine::lang("Decentralized management").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/market').'" target="_parent">'.engine::lang("P2P marketplace").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/monitor').'">'.engine::lang("Blockchain monitor").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/management').'">'.engine::lang("Decentralized management").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/dao/market').'">'.engine::lang("P2P marketplace").'</a></li>
                         -->
                     </ul>
                 </li>
@@ -88,12 +88,12 @@ $header = '
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/graph'). '" target="_parent">'.engine::lang("Social graph").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/telegram'). '" target="_parent">'.engine::lang("Telegram group").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/constitution'). '" target="_parent">'.engine::lang("Digital constitution").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/graph'). '">'.engine::lang("Social graph").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/telegram'). '">'.engine::lang("Telegram group").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/constitution'). '">'.engine::lang("Digital constitution").'</a></li>
                         <!--
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/democracy'). '" target="_parent">'.engine::lang("Crypto democracy").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/crowdfunding'). '" target="_parent">'. engine::lang("Crowdfunding").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/democracy'). '">'.engine::lang("Crypto democracy").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/social/crowdfunding'). '">'. engine::lang("Crowdfunding").'</a></li>
                         -->
                     </ul>
                 </li>
@@ -104,9 +104,9 @@ $header = '
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/developer'). '" target="_parent">'.engine::lang("Developed by").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/content/privacy_policy'). '" target="_parent">'.engine::lang("Privacy policy").'</a></li>
-                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/content/terms_and_conditions'). '" target="_parent">'.engine::lang("Terms & conditions").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/developer'). '">'.engine::lang("Developed by").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/content/privacy_policy'). '">'.engine::lang("Privacy policy").'</a></li>
+                        <li><a hreflang="'.$_SESSION["Lang"].'" href="' .engine::href($_SERVER["DIR"].'/content/terms_and_conditions'). '">'.engine::lang("Terms & conditions").'</a></li>
                     </ul>
                 </li>
                 <li id="menu_5" class="dropdown">

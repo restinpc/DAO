@@ -437,16 +437,6 @@ echo '<!DOCTYPE html>
 <html style="background-color:#fff;">
 <head>
 <meta charset="UTF-8" />
-<script>
-    if (!document.framework) {
-        document.framework = {};
-    }
-    document.framework.loading_site = () => {};
-    document.framework.root_dir = "'.$_SERVER["DIR"].'";
-    // todo remove legacy 4 july
-    const loading_site = () => {};
-    const root_dir = "'.$_SERVER["DIR"].'";
-</script>
 <style>
     .a-enter-vr {
         position: fixed !important;
@@ -455,11 +445,16 @@ echo '<!DOCTYPE html>
         display: none;
     }
 </style>
-<link href="'.$_SERVER["DIR"].'/template/bootstrap/template.css" rel="stylesheet" type="text/css" />
-<script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/script/aframe-master.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript"></script>
+<link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script>
+    document.framework.loadEvents = false;
+    document.framework.loadSite = () => {};
+    document.framework.rootDir = "'.$_SERVER["DIR"].'";
+</script>
 </head>
 <body class="nodes">
     '.$fout.'

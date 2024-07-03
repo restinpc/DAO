@@ -41,8 +41,7 @@ if ($_SESSION["Lang"] == "ru") {
         "Timeshare",
         "Аренда"
     );
-    $this->content .= '
-    <div class="document980 article">
+    $this->content .= '<div class="document980 article">
         <div class="whitepaper text">
         <h1>DAO</h1>
         <p>
@@ -147,8 +146,7 @@ if ($_SESSION["Lang"] == "ru") {
         "Timeshare",
         "租"
     );
-    $this->content .= '
-    <div class="document980 article">
+    $this->content .= '<div class="document980 article">
         <div class="whitepaper text">
         <h1>DAO 別墅</h1>
         <p>
@@ -241,8 +239,7 @@ if ($_SESSION["Lang"] == "ru") {
         "Timeshare",
         "Rent"
     );
-    $this->content .= '
-    <div class="document980 article">
+    $this->content .= '<div class="document980 article">
         <div class="whitepaper text">
         <h1>DAO Mansion</h1>
         <p>
@@ -323,12 +320,14 @@ if ($_SESSION["Lang"] == "ru") {
     </div>';
 }
 
-$this->onload .= '
-    try {
-        window.addEventListener("click", () => {
+$this->onload .= 'try {
+    let outro_flag = false;
+    if (!outro_flag) {
+        $id("outro").addEventListener("click", () => {
+            outro_flag = true;
             $id("outro").addEventListener("ended", () => {
                 window.location = "'.$_SERVER["DIR"].'/webvr/panorama";
             }, false);
         });
-    } catch(e) { }
-';
+    }
+} catch(e) { }';

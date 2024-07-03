@@ -7110,8 +7110,8 @@ function navScroll() {
 
 function search(event){
     var result = document.getElementById("search_text").value;
-    if(result!=""){
-        window.location=document.framework.root_dir+"/search/"+encodeURIComponent(result);
+    if(result != ""){
+        window.location = document.framework.rootDir + "/search/"+encodeURIComponent(result);
     }
     if(event.preventDefault){
         event.preventDefault();
@@ -7142,7 +7142,7 @@ function show_search_form(){
     if (window.jQuery) {
         jQuery(() => {
             navScroll();
-            if (document.framework.load_events) {
+            if (document.framework.loadEvents) {
                 jQuery(window).scroll(navScroll).resize(navScroll);
                 jQuery('.navbar-toggle').click(show_menu);
                 jQuery('#sectionsNav a').not('.dropdown_item').click(hide_dropdown_menu);

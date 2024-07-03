@@ -90,7 +90,7 @@ echo '<!DOCTYPE html>
     if (!document.framework) {
         document.framework = {};
     }
-    document.framework.root_dir = "'.$_SERVER["DIR"].'";
+    document.framework.rootDir = "'.$_SERVER["DIR"].'";
     document.uploader = {
         width: '.$THUWIDTH.',
         height: '.$THUHEIGHT.',

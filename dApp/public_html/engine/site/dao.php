@@ -58,7 +58,7 @@ if (!empty($_GET[2])) {
         $this->description = "График истории капитализации проекта";
     }
     $this->content .= engine::print_dao_navigation(engine::lang("Capitalization"));
-    $this->content .= '<iframe id="capital" src="'.$_SERVER["DIR"].'/apps/capital/" class="app" onLoad="document.framework.loading_site();"></iframe>';
+    $this->content .= '<iframe id="capital" src="'.$_SERVER["DIR"].'/apps/capital/" class="app"></iframe>';
 } else if (!empty($_GET[1]) && $_GET[1] == "market") {
     $this->title = engine::lang("P2P marketplace");
     $this->keywords = array("DAO", "P2P", engine::lang("Decentralized organization"), "Web 3.0");
@@ -82,7 +82,7 @@ if (!empty($_GET[2])) {
         $this->description = "Публичный Git репозиторий проекта";
     }
     $this->content .= engine::print_dao_navigation(engine::lang("Git repository"));
-    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/git.php" onLoad="document.framework.loading_site();" width="100%" class="app"></iframe>';
+    $this->content .= '<iframe src="'.$_SERVER["DIR"].'/git.php" width="100%" class="app"></iframe>';
 } else {
     $this->content = engine::error();
     return;

@@ -9,7 +9,7 @@
 */
 
 function print_free_look() {
-    return '<iframe id="free-look" src="'.$_SERVER["DIR"].'/apps/free-look/" class="app" onLoad="document.framework.loading_site();" width="100%"></iframe>
+    return '<iframe id="free-look" src="'.$_SERVER["DIR"].'/apps/free-look/" class="app" width="100%"></iframe>
     <button class="vr icon" id="vr">
         <img id="icon vr_icon" src="'.$_SERVER["DIR"].'/img/vr/vr.png" width="100%" onClick="document.panorama.vrMode();" /> 
     </button>

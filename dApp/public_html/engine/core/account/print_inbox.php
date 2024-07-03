@@ -45,17 +45,18 @@ function print_inbox($site, $target_id) {
         if ($target["ban"] == 1) {
             return '<div class="clear_block">'.engine::lang("User banned").'</div>';
         }
-        $site->onload .= '
-            $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
+        $site->onload .= '$id("nodes_chat").style.height = (document.documentElement.clientHeight - 195) + "px";
             window.addEventListener("resize", () => {
                 try {
                     $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
                 } catch(e) {}
             });
+            if (document.framework.chatInterval) {
+                clearInterval(document.framework.chatInterval);
+            }
             document.framework.refreshChat("'.$target_id.'");
-            setInterval(document.framework.refreshChat, 10000, "'.$target_id.'");
-        ';
-        $fout .= '<div id="nodes_chat"></div>';
+            document.framework.chatInterval = setInterval(document.framework.refreshChat, 10000, "'.$target_id.'");';
+        $fout .= '<div id="nodes_chat" target="'.$target_id.'"></div>';
         $query = 'UPDATE `nodes_inbox` SET `readed` = "'.date("U").'" WHERE `to` = "'.$_SESSION["user"]["id"].'" AND `readed` = 0';
         engine::mysql($query);
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.$_SESSION["user"]["id"];
@@ -82,7 +83,7 @@ function print_inbox($site, $target_id) {
             </div>
             <div class="chat_center">
                 <textarea name="text" id="nodes_message_text" class="input" placeHolder="'.engine::lang("Your message here").'"
-                    onkeypress=\'if (event.keyCode== 13&&!event.shiftKey) { event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
+                    onkeypress=\'if (event.keyCode == 13 && !event.shiftKey) { event.preventDefault(); document.framework.postMessage("'.$target_id.'"); } \'
                 ></textarea>
                 <br/>
                 <input id="send-message" type="button" onClick=\'document.framework.postMessage("'.$target_id.'");\' class="btn" value="&crarr;" title="'.engine::lang("Send message").'" />

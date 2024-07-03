@@ -27,7 +27,7 @@ function print_panorama($site) {
         window.addEventListener("resize", document.panorama.scaleMap);
         document.panorama.scaleMap();
     ';
-    $fout = '<iframe id="panorama" src="'.$_SERVER["DIR"].'/panorama.php?id=1#1.7188733853924727;167.87663397333137" class="app" onLoad="document.framework.loading_site();"></iframe>
+    $fout = '<iframe id="panorama" src="'.$_SERVER["DIR"].'/panorama.php?id=1#1.7188733853924727;167.87663397333137" class="app"></iframe>
     <div id="map_frame">
         <div class="close_button close_wnd" style="position: fixed; top: 100px; z-index:3;" onclick=\'$id("map_frame").style.display = "none";\'>&nbsp;</div>
         <iframe id="map_iframe" sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" src="'.$_SERVER["DIR"].'/level.php?id=1" width=600 height=600></iframe>

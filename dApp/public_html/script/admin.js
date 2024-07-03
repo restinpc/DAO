@@ -32,7 +32,7 @@ document.framework.admin.editSeo = (id) => {
             "keywords": keywords,
             "mode": mode
         },
-        url: document.framework.root_dir + "/bin.php",
+        url: document.framework.rootDir + "/bin.php",
         success: () => {
             jQuery('#button_'+id).css("opacity","1");
             jQuery('#button_'+id).css("display","none");
@@ -57,18 +57,18 @@ document.framework.admin.confirmOrder = (id, text, shipment, soldout) =>{
                         jQuery.ajax({
                             type: "POST",
                             data: { "order_id" : id, "status" : "0", "track" : str },
-                            url: document.framework.root_dir + "/bin.php",
+                            url: document.framework.rootDir + "/bin.php",
                             success: () => {
-                                window.location = document.framework.root_dir + "/admin/?mode=orders";
+                                window.location = document.framework.rootDir + "/admin/?mode=orders";
                             }
                         });
                     } else {
                         jQuery.ajax({
                             type: "POST",
                             data: { "order_id" : id, "status" : "1", "track" : str },
-                            url: document.framework.root_dir+"/bin.php",
+                            url: document.framework.rootDir + "/bin.php",
                             success: () => {
-                                window.location = document.framework.root_dir + "/admin/?mode=orders";
+                                window.location = document.framework.rootDir + "/admin/?mode=orders";
                             }
                         });
                     }
@@ -89,7 +89,7 @@ document.framework.admin.deleteImage = (id, pos) => {
     jQuery.ajax({
         type: "POST",
         data: {	"product_id" : id, "pos" : pos },
-        url: document.framework.root_dir + "/bin.php",
+        url: document.framework.rootDir + "/bin.php",
         success: () => {
             document.getElementById("edit_product_form").submit();
         }
@@ -108,7 +108,7 @@ document.framework.admin.newTransaction = (id, text) => {
             jQuery.ajax({
                 type: "POST",
                 data: {"user_id": id, "transaction" : str },
-                url: document.framework.root_dir + "/bin.php",
+                url: document.framework.rootDir + "/bin.php",
                 success: (data) => {
                     alert(data);
                     window.location.reload();
@@ -131,9 +131,9 @@ document.framework.admin.archiveOrder = (id, text) => {
                 jQuery.ajax({
                     type: "POST",
                     data: { "archive_id" : id },
-                    url: document.framework.root_dir + "/bin.php",
+                    url: document.framework.rootDir + "/bin.php",
                     success: () => {
-                        window.location = document.framework.root_dir + "/admin/?mode=orders";
+                        window.location = document.framework.rootDir + "/admin/?mode=orders";
                     }
                 });
             }

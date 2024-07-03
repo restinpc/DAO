@@ -23,8 +23,6 @@ document.panorama.coordinatesVR = null;
 document.panorama.mouse = new THREE.Vector2();
 document.panorama.ray = null;
 document.panorama.mouseImg = null;
-document.panorama.cubemap = null; // todo delete
-document.panorama.content = null; // todo delete
 document.panorama.canvas = null;
 document.panorama.scene = null;
 document.panorama.camera = null;
@@ -38,6 +36,7 @@ document.panorama.sceneState = 0;
 document.panorama.levelId = 0;
 
 document.panorama.pcMode = () => {
+    document.framework.log(`document.panorama.pcMode()`);
     document.panorama.sceneState = 1;
     document.panorama.mouseControlState = 1;
     document.panorama.canvas.addEventListener('mousemove', document.panorama.mouseListner);
@@ -76,6 +75,7 @@ document.panorama.pcMode = () => {
 }
 
 document.panorama.mobileMode = () => {
+    document.framework.log(`document.panorama.mobileMode()`);
     document.panorama.sceneState = 2;
     $id("nodes_vr_scene").style.opacity = "1";
     document.panorama.logo.setAttribute("opacity", "0");
@@ -93,6 +93,7 @@ document.panorama.mobileMode = () => {
 }
 
 document.panorama.loadVR = (levelId) => {
+    document.framework.log(`document.panorama.loadVR(${levelId})`);
     document.panorama.levelId = levelId;
     if (!document.panorama.vrLoadState) {
         try {
@@ -189,6 +190,7 @@ document.panorama.loadVR = (levelId) => {
 }
 
 document.panorama.clickVR = (object) => {
+    document.framework.log(`document.panorama.clickVR(${object.name})`);
     try {
         let func = object.getAttribute("action");
         try {
@@ -199,14 +201,15 @@ document.panorama.clickVR = (object) => {
 }
 
 document.panorama.showSceneEditor = () => {
+    document.framework.log(`document.panorama.showSceneEditor()`);
     $id("add_area").style.display = "block";
     $id("scene_editor").style.display="block";
     $id("scene_show_editor").style.display="none";
     $id("floor").setAttribute("opacity", "0.1");
-    // $id("scene_map").style.display = "none";
 }
 
 document.panorama.deleteNavigation = (id) => {
+    document.framework.log(`document.panorama.deleteNavigation(${id})`);
     if (confirm("Are you sure?")) {
         $id("action_"+id).value = "delete_point";
         $id("object_"+id+"_form").submit();
@@ -214,6 +217,7 @@ document.panorama.deleteNavigation = (id) => {
 }
 
 document.panorama.deleteURL = (id) => {
+    document.framework.log(`document.panorama.deleteURL(${id})`);
     if (confirm("Are you sure?")) {
         $id("action_"+id).value = "delete_url";
         $id("url_"+id+"_form").submit();
@@ -221,16 +225,19 @@ document.panorama.deleteURL = (id) => {
 }
 
 document.panorama.applyChangesURL = (id) => {
+    document.framework.log(`document.panorama.applyChangesURL(${id})`);
     $id("url_"+id).setAttribute("position", $id("url_"+id+"_position").value);
     $id("url_"+id).setAttribute("scale", $id("url_"+id+"_scale").value);
 }
 
 document.panorama.applyChangesNavigation = (id) => {
+    document.framework.log(`document.panorama.applyChangesNavigation(${id})`);
     $id("point_"+id).setAttribute("position", $id("point_"+id+"_position").value);
     $id("point_"+id).setAttribute("scale", $id("point_"+id+"_scale").value);
 }
 
 document.panorama.deleteObject = (id) => {
+    document.framework.log(`document.panorama.deleteObject(${id})`);
     if (confirm("Are you sure?")) {
         $id("action_"+id).value = "delete_object";
         $id("object_"+id+"_form").submit();
@@ -238,6 +245,7 @@ document.panorama.deleteObject = (id) => {
 }
 
 document.panorama.applyChangesObject = (id) => {
+    document.framework.log(`document.panorama.applyChangesObject(${id})`);
     $id("object_"+id).setAttribute("color", $id("object_"+id+"_color").value);
     $id("object_"+id).setAttribute("position", $id("object_"+id+"_position").value);
     $id("object_"+id).setAttribute("rotation", $id("object_"+id+"_rotation").value);
@@ -245,12 +253,14 @@ document.panorama.applyChangesObject = (id) => {
 }
 
 document.panorama.resizeScene = () => {
+    document.framework.log(`document.panorama.resizeScene()`);
     try {
         $id("nodes_vr_scene").style.height = (document.framework.getViewportHeight() - parseInt($id("sectionsNav").clientHeight)) + "px";
     } catch(e) {}
 }
 
 document.panorama.applySceneChanges = () => {
+    document.framework.log(`document.panorama.applySceneChanges()`);
     try {
         document.panorama.rig.setAttribute("position", $id("camera_position").value);
         document.panorama.rig.setAttribute("rotation", $id("camera_rotation").value);
@@ -264,6 +274,7 @@ document.panorama.applySceneChanges = () => {
 }
 
 document.panorama.defaultSettings = () => {
+    document.framework.log(`document.panorama.defaultSettings()`);
     if (confirm("Are you sure you want to restore default scene configuration?")) {
         $id("act").name = "default";
         $id("scene_form").submit();
@@ -271,6 +282,7 @@ document.panorama.defaultSettings = () => {
 }
 
 document.panorama.navigate = () => {
+    document.framework.log(`document.panorama.navigate()`);
     const position = document.panorama.movePoint.object3D.getWorldPosition();
     const points = document.getElementsByClassName("hotpoint");
     let point_id = null;
@@ -278,9 +290,9 @@ document.panorama.navigate = () => {
     for (let i = 0; i < points.length; i++){
         const point = points[i].object3D.getWorldPosition();
         const distance = Math.sqrt(
-            (position.x-point.x) * (position.x-point.x) +
-            (position.y-point.y) * (position.y-point.y) +
-            (position.z-point.z) * (position.z-point.z)
+            (position.x - point.x) * (position.x - point.x) +
+            (position.y - point.y) * (position.y - point.y) +
+            (position.z - point.z) * (position.z - point.z)
         );
         if (lowest == 0 || distance < lowest) {
             lowest = distance;
@@ -293,6 +305,7 @@ document.panorama.navigate = () => {
 }
 
 document.panorama.zoomScene = (e) => {
+    document.framework.log(`document.panorama.zoomScene()`);
     try {
         e = e || window.event;
         const delta = e.deltaY || e.detail || e.wheelDelta;
@@ -384,6 +397,7 @@ document.panorama.zoomScene = (e) => {
 }
 
 document.panorama.startFuse = (object) => {
+    document.framework.log(`document.panorama.startFuse(${object.name})`);
     if (object != document.panorama.currentObject && document.panorama.vrLoadState) {
         document.panorama.currentObject = object;
         document.panorama.currentFunction = setTimeout((object) => {
@@ -394,6 +408,7 @@ document.panorama.startFuse = (object) => {
 }
 
 document.panorama.endFuse = () => {
+    document.framework.log(`document.panorama.endFuse()`);
     if (document.panorama.currentFunction) {
         $id("fuse").emit('cursor-stop-fusing');
         $id("fuse").emit('cursor-unfusing');
@@ -403,6 +418,7 @@ document.panorama.endFuse = () => {
 }
 
 document.panorama.addObject = () => {
+    document.framework.log(`document.panorama.addObject()`);
     $id("add_area").style.display = "none";
     jQuery(".vr_object_window").css("display", "none");
     $id("object_new_obj").setAttribute("opacity", "1");
@@ -411,12 +427,22 @@ document.panorama.addObject = () => {
 }
 
 document.panorama.addNavigation = () => {
+    document.framework.log(`document.panorama.addNavigation()`);
     $id("add_area").style.display = "none";
     $id("point_new_nav_window").style.display = "block";
     document.panorama.objectId = "new_nav";
 }
 
+document.panorama.addURL = () => {
+    document.framework.log(`document.panorama.addURL()`);
+    $id("add_area").style.display = "none";
+    $id("url_new_google").setAttribute("opacity", "1");
+    $id("url_new_google_window").style.display = "block";
+    document.panorama.objectId = "new_google";
+}
+
 document.panorama.rotateCamera = () => {
+    document.framework.log(`document.panorama.rotateCamera()`);
     if (window.location.hash) {
         let hash = window.location.hash.replace("#", "");
         hash = hash.split(";");
@@ -429,14 +455,8 @@ document.panorama.rotateCamera = () => {
     }
 }
 
-document.panorama.addURL = () => {
-    $id("add_area").style.display = "none";
-    $id("url_new_google").setAttribute("opacity", "1");
-    $id("url_new_google_window").style.display = "block";
-    document.panorama.objectId = "new_google";
-}
-
 document.panorama.mouseListner = (event) => {
+    document.framework.log(`document.panorama.mouseListner()`);
     document.panorama.mouseListnerFlag = 1;
     const rect = document.panorama.canvas.getBoundingClientRect();
     document.panorama.mouse.x = ((event.clientX - rect.left) / rect.width ) * 2 - 1;
@@ -471,40 +491,42 @@ document.panorama.mouseListner = (event) => {
     }
     try {
         if (document.panorama.ray.components.raycaster.intersections[h].object.el.id != "cursor_img" &&
-            document.panorama.ray.components.raycaster.intersections[h].object.el.id != "move_point") {
+            document.panorama.ray.components.raycaster.intersections[h].object.el.id != "move_point"
+        ) {
             let pos = document.panorama.ray.components.raycaster.intersections[h].point;
             if (document.panorama.ray.components.raycaster.intersections[h].distance > 100){
-                let k = 0.9 * 100/(document.panorama.ray.components.raycaster.intersections[h].distance);
+                let k = 0.9 * 100 / (document.panorama.ray.components.raycaster.intersections[h].distance);
             }else{
                 let k = 0.9;
             }
-            pos.x = parseFloat(pos.x)*k;
-            pos.y = parseFloat(pos.y)*k;
-            pos.z = parseFloat(pos.z)*k;
+            pos.x = parseFloat(pos.x) * k;
+            pos.y = parseFloat(pos.y) * k;
+            pos.z = parseFloat(pos.z) * k;
             document.panorama.mouseImg.setAttribute("position", pos);
         }
     } catch(e) {
         try {
             pos = document.panorama.ray.components.raycaster.intersections[h].point;
             if (document.panorama.ray.components.raycaster.intersections[h].distance > 100) {
-                let k = 0.9 * 100/(document.panorama.ray.components.raycaster.intersections[h].distance);
+                let k = 0.9 * 100 / (document.panorama.ray.components.raycaster.intersections[h].distance);
             } else {
                 let k = 0.9;
             }
-            pos.x = parseFloat(pos.x)*k;
-            pos.y = parseFloat(pos.y)*k;
-            pos.z = parseFloat(pos.z)*k;
+            pos.x = parseFloat(pos.x) * k;
+            pos.y = parseFloat(pos.y) * k;
+            pos.z = parseFloat(pos.z) * k;
             document.panorama.mouseImg.setAttribute("position", pos);
         } catch(e) {}
     }
 }
 
 document.panorama.resetSceneObjects = (id) => {
+    document.framework.log(`document.panorama.resetSceneObjects(${id})`);
     if (confirm("Are you sure you want to remove all custom objects from this scene?")) {
         jQuery.ajax({
             type: "POST",
             data: { "scene_reset" : id },
-            url: document.framework.root_dir + "/bin.php",
+            url: document.framework.rootDir + "/bin.php",
             success: () => {
                 window.location.reload();
             }
@@ -513,6 +535,7 @@ document.panorama.resetSceneObjects = (id) => {
 }
 
 document.panorama.loadScene = (id, object_id) => {
+    document.framework.log(`document.panorama.loadScene(${id}, ${object_id})`);
     if (!document.panorama.navigationState) {
         return;
     }
@@ -577,12 +600,12 @@ document.panorama.loadScene = (id, object_id) => {
     Object.keys(animationData).forEach(function (attr) {
         animation.setAttribute(attr, animationData[attr]);
     });
-    // jQuery(".vr_hidden").attr("opacity", "0");
-    // document.getElementById("rig").appendChild(animation);
-    // document.getElementById("rig").emit('move_rig');
+    jQuery(".vr_hidden").attr("opacity", "0");
+    document.getElementById("rig").appendChild(animation);
+    document.getElementById("rig").emit('move_rig');
     setTimeout(function(){
         jQuery("#vr-sound").trigger('play');
-        // window.location = '/panorama.php?id=' + id;
+        window.location = '/panorama.php?id=' + id;
      }, 1000);
      */
     jQuery("#vr-sound").trigger('play');
@@ -601,7 +624,7 @@ document.panorama.loadScene = (id, object_id) => {
     jQuery.ajax({
         type: "POST",
         data: {	"scene" : id },
-        url: document.framework.root_dir + "/bin.php",
+        url: document.framework.rootDir + "/bin.php",
         success: (data) => {
             const json = JSON.parse(data);
             const new_scene = json.children[0].children[0];
@@ -659,8 +682,8 @@ AFRAME.registerComponent("nodes-camera", {
         try {
             document.panorama.logo.object3D.rotation.y = document.panorama.camera.object3D.rotation.y+document.panorama.rig.object3D.rotation.y;
             let rotation = (document.panorama.camera.getAttribute("rotation").x
-                    + document.panorama.rig.getAttribute("rotation").x) + ";"
-                    + (document.panorama.camera.getAttribute("rotation").y + document.panorama.rig.getAttribute("rotation").y);
+                + document.panorama.rig.getAttribute("rotation").x) + ";"
+                + (document.panorama.camera.getAttribute("rotation").y + document.panorama.rig.getAttribute("rotation").y);
             if (rotation != document.panorama.cameraDegree){
                 document.panorama.cameraDegree = rotation;
                 window.history.replaceState( {} , 'Panorama Viewer', '/panorama.php?id='+document.panorama.scene.getAttribute("scene-id")+"#"+rotation);

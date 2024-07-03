@@ -240,80 +240,40 @@ function __construct() {
 <style>.material-icons{ visibility:hidden; }</style>';
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
-    window.stateChangeIsLocal = true;
-    History.enabled = true;
-    if (!document.framework) {
-        document.framework = {};
-    }
-    document.framework.loading_stages = 6;
-    document.framework.loading_state = 0;
-    document.framework.preloaded = 0;
-    document.framework.display = () => {
-        if (!window.jQuery) { 
-            setTimeout(() => {
-                document.body.style.opacity = "1";
-                document.body.style.display = "contents";
-            }, 1000);
-        } else {
-            jQuery("html, body").animate({ opacity: 1 }, 1000);
-            document.body.style.display = "contents";
+        if (!document.framework) {
+            document.framework = {};
         }
-    }
-    document.framework.timeout = setTimeout(document.framework.display, 5000);
-    document.framework.preload = () => {
-        if (!document.framework.preloaded) {
-            '.$this->onload.';
-            document.framework.preloaded = 1;
-        }
-        return 0;
-    }
-    document.framework.loading_site = () => {
-        document.framework.loading_state++;
-        if (document.framework.loading_state != document.framework.loading_stages) {
-            return;
-        }
-        try {
-            if (!document.framework.messageInterval) {
-                document.framework.materialIcons();
-                document.framework.preload();
-                document.framework.loading_state = 5;
-                setTimeout(document.framework.display, 1000);
-                document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
+        document.framework.rootDir = "'.$_SERVER["DIR"].'";
+        document.framework.preload = () => {
+            if (!document.framework.preloaded) {
+                '.$this->onload.';
+                document.framework.preloaded = 1;
             }
-        } catch(e) {};
-        clearTimeout(document.framework.timeout);
-    }
-    window.onload = document.framework.loading_site;
-    document.framework.root_dir = "'.$_SERVER["DIR"].'";
-    document.framework.load_events = true;
-    // todo remove legacy 4 july
-    const loading_site = document.framework.loading_site();
-    let root_dir = "'.$_SERVER["DIR"].'";
-    let load_events = true;
-</script>';
+        }
+    </script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+    <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" />
+    <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
+    <link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
+    <style>
+        @font-face {
+            font-family: "Material Icons";
+            font-style: normal;
+            font-weight: 400;
+            src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
+        }
+    </style>';
 }
-$fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
-<link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" onLoad=\'document.framework.loading_site();\' />
-<style>
-@font-face {
-    font-family: "Material Icons";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
-}
-</style>
-</head>
-<body style="opacity: 0; display: contents !important;" class="nodes">
-<img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loading_site();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+$fout .= '</head>
+<body style="display: none;" class="nodes">
+<img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
     } else {
         $fout = '<title>'.$this->title.'</title>
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
     }
-    $fout .= $this->content.'
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
-<script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" onLoad=\'document.framework.loading_site();\'></script>
-<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loading_site();\' />';
+    $fout .= $this->content;
     if (!empty($_SESSION["user"]["id"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
         $res = engine::mysql($query);
@@ -329,7 +289,7 @@ $fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" t
         }
     }
     if (!empty($_POST["jQuery"])) {
-        $fout .= '<script>document.framework.loading_site();</script>';
+        $fout .= '<script>document.framework.loadSite();</script>';
     }
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron"';
     $res = engine::mysql($query);
@@ -346,14 +306,15 @@ $fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" t
         </script>';
     }
     if (!isset($_POST["jQuery"])) {
-        $fout .= '
+        $fout .= '<script>
+            document.framework.timeout = setTimeout(document.framework.display, 5000);
+            window.onload = document.framework.loadSite;
+        </script>
 </body>
 </html>';
     } else {
         $fout .= '<script type="text/javascript">
-            document.framework.load_events = false;
-            // todo remove legacy 4 july
-            load_events = false;
+            document.framework.loadEvents = false;
             '.$this->onload.'
         </script>';
     }

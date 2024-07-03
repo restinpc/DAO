@@ -47,14 +47,14 @@ a{
 html{
     min-width: 300px;
 }
-body{
+body {
     line-height: 1;
     font-family: 'Open Sans', 'Roboto', Tahoma, Sans Serif;
     -webkit-font-smoothing: antialiased;
     text-align: center;
     overflow-x: hidden;
     min-width: 320px;
-    opacity: 0;
+    color: #c0c0c0;
 }
 ::-moz-selection {
     background: rgba(39,117,115,0.2);
@@ -382,7 +382,7 @@ h1,h2,h3,h4,h5,h6{
     font-size: 14px;
 }
 .nodes .input{
-    color: #c0c0c0;
+    color: #333;
     background: #1a1d1d;
     border: #333 1px solid;
     border-radius: 5px;
@@ -614,7 +614,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .nodes .new_msg_name{
     font-weight: bold;
-    padding-bottom: 2px;
+    padding-bottom: 3px;
 }
 /* -------------------------------------------------------------------------- */
 
@@ -1042,11 +1042,11 @@ h1,h2,h3,h4,h5,h6{
     overflow: hidden;
 }
 .nodes .chat_user_name_font{
-    font-size: 12px;
+    font-size: 11px;
     color: #c0c0c0;
 }
 .nodes .chat_font{
-    font: bold 11px Tahoma;
+    font: bold 9px Tahoma;
     color: #c0c0c0;
 }
 .nodes .new_message{

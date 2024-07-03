@@ -13,6 +13,18 @@ require_once("engine/nodes/session.php");
 
 echo '<!DOCTYPE html>
 <html>
+<head>
+    <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
+    <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script>
+        document.framework.loadEvents = false;
+        document.framework.loadSite = () => {};
+        document.framework.rootDir = "'.$_SERVER["DIR"].'";
+    </script>
+</head>
 <body class="nodes">';
 if (empty($_SESSION["user"]["id"])) {
     $_SESSION["redirect"] = $_SERVER["DIR"]."/order.php";
@@ -210,17 +222,7 @@ if (empty($_SESSION["order_confirm"]) && !empty($_SESSION["user"]["id"])) {
         </form>';
     $fout .= '</div>';
 }
-$fout .= '<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
-<link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-    document.framework.root_dir = "'.$_SERVER["DIR"].'";
-    // todo remove legacy 4 july
-    const root_dir = "'.$_SERVER["DIR"].'";
-</script>
-<script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript"></script>
-<script src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript"></script>
-<script>jQuery("#country_selector").countrySelect({ defaultCountry: "ru" })</script>
+$fout .= '<script>jQuery("#country_selector").countrySelect({ defaultCountry: "ru" })</script>
 </body>
 <script>document.body.style.opacity = "1";</script>
 </html>';
