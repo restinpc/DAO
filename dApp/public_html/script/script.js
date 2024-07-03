@@ -817,6 +817,8 @@ document.framework.refreshChat = (id) => {
                 }
             });
         }
+    } else {
+        clearInterval(document.framework.chatInterval);
     }
 }
 
