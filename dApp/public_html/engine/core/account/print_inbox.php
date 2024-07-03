@@ -29,7 +29,7 @@ function print_inbox($site, $target_id) {
         }
         if (!$site->configs["free_message"]) {
             $query = 'SELECT COUNT(*) FROM `nodes_inbox` WHERE (`to` = "'.intval($target_id).'" AND `from` = "'.intval($_SESSION["user"]["id"]).'") OR '
-                    . '(`from` = "'.intval($target_id).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
+                . '(`from` = "'.intval($target_id).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
             $r = engine::mysql($query);
             $d = mysqli_fetch_array($r);
             if (!intval($d[0]) && $_SESSION["user"]["id"] != "1" && $target_id != "1") {
@@ -51,11 +51,18 @@ function print_inbox($site, $target_id) {
                     $id("nodes_chat").style.height = (document.documentElement.clientHeight -195) + "px";
                 } catch(e) {}
             });
-            if (document.framework.chatInterval) {
-                clearInterval(document.framework.chatInterval);
-            }
-            document.framework.refreshChat("'.$target_id.'");
-            document.framework.chatInterval = setInterval(document.framework.refreshChat, 10000, "'.$target_id.'");';
+            try {
+                if (document.framework.chatInterval) {
+                    clearInterval(document.framework.chatInterval);
+                }
+                document.framework.refreshChat("'.$target_id.'");
+                document.framework.chatInterval = setInterval(document.framework.refreshChat, 10000, "'.$target_id.'");
+            } catch (e) {}
+            // todo remove
+            try {
+                refreshChat("'.$target_id.'");
+                setInterval(refreshChat, 10000, "'.$target_id.'");
+            } catch (e) {}';
         $fout .= '<div id="nodes_chat" target="'.$target_id.'"></div>';
         $query = 'UPDATE `nodes_inbox` SET `readed` = "'.date("U").'" WHERE `to` = "'.$_SESSION["user"]["id"].'" AND `readed` = 0';
         engine::mysql($query);

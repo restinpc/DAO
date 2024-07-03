@@ -57,10 +57,15 @@ php_value client_max_body_size 512M;
     Header unset Last-Modified
     Header set Cache-Control "max-age=0, pre-check=0, no-cache, no-store, must-revalidate"
     Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
-    <FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf|ttf|svg|woff2|FLV|GIF|JPG|JPEG|PNG|ICO|SWF|JS|CSS|PDF|TTF|SVG|WOFF2)$">
+    <FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|swf|pdf|ttf|svg|woff2|FLV|GIF|JPG|JPEG|PNG|ICO|SWF|PDF|TTF|SVG|WOFF2)$">
         Header unset Cache-Control
         Header unset Expires
-        Header set Cache-Control "max-age=604800"
+        Header set Cache-Control "max-age=2592000"
+    </FilesMatch>
+    <FilesMatch "\.(js|css|JS|CSS)$">
+        Header unset Cache-Control
+        Header unset Expires
+        Header set Cache-Control "max-age=86400"
     </FilesMatch>
     <FilesMatch "\.(obj|mtl|ply|dae|jpg|jpeg|gif|png|avi|mp4|webm|mss|json|OBJ|MTL|PLY|DAE|JPG|JPEG|GIF|PNG|AVI|MP4|WEBM|MSS|JSON)$">
         Header set Access-Control-Allow-Origin *
