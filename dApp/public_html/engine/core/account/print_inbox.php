@@ -60,8 +60,8 @@ function print_inbox($site, $target_id) {
             } catch (e) {}
             // todo remove
             try {
-                refreshChat("'.$target_id.'");
-                setInterval(refreshChat, 10000, "'.$target_id.'");
+                refresh_chat("'.$target_id.'");
+                setInterval(refresh_chat, 10000, "'.$target_id.'");
             } catch (e) {}';
         $fout .= '<div id="nodes_chat" target="'.$target_id.'"></div>';
         $query = 'UPDATE `nodes_inbox` SET `readed` = "'.date("U").'" WHERE `to` = "'.$_SESSION["user"]["id"].'" AND `readed` = 0';
