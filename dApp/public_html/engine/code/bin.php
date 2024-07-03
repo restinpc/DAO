@@ -86,33 +86,43 @@ if (!empty($_POST["id"])) {
         }
         
     } else if (!empty($_GET["message"])) {
-        if (!empty($_POST["text"])) {
-            $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));
-            $text = str_replace("\n", "<br/>", $text);
-            $query = 'SELECT * FROM `nodes_inbox` WHERE `from` = "'.intval($_SESSION["user"]["id"]).'" AND `to` = "'.intval($_GET["message"]).'" AND `text` LIKE "'.$text.'" AND `date` > "'.(date("U") - 600).'"';
-            $res = engine::mysql($query);
-            $message = mysqli_fetch_array($res);
-            if (empty($message)) {
-                $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.intval($_GET["message"]).'"';
+        $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
+        $res = engine::mysql($query);
+        $user = mysqli_fetch_array($res);
+        if ($user["ban"] == "1") {
+            unset($_SESSION["user"]);
+            die('<script type="text/javascript">
+                window.alert("'.engine::lang("Your account was banned").'");
+                parent.window.location = "'.$_SERVER["DIR"].'/";
+            </script>');
+        } else {
+            if (!empty($_POST["text"])) {
+                $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));
+                $text = str_replace("\n", "<br/>", $text);
+                $query = 'SELECT * FROM `nodes_inbox` WHERE `from` = "'.intval($_SESSION["user"]["id"]).'" AND `to` = "'.intval($_GET["message"]).'" AND `text` LIKE "'.$text.'" AND `date` > "'.(date("U") - 600).'"';
                 $res = engine::mysql($query);
-                $target = mysqli_fetch_array($res);
-                $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`) VALUES("'.intval($_SESSION["user"]["id"]).'", "'.intval($_GET["message"]).'", "'.$text.'", "'.date("U").'")';
-                engine::mysql($query);
-                $query = 'SELECT * FROM `nodes_config` WHERE `name` = "send_message_email"';
-                $r_conf = engine::mysql($query);
-                $d_conf = mysqli_fetch_array($r_conf);
-                $query = 'SELECT * FROM `nodes_config` WHERE `name` = "	email_signature"';
-                $r_sign = engine::mysql($query);
-                $d_sign = mysqli_fetch_array($r_sign);
-                if ($d_conf["value"]) {
-                    if ($target["online"] < date("U") - 600) {
-                        email::new_message($target["id"], $_SESSION["user"]["id"]);
+                $message = mysqli_fetch_array($res);
+                if (empty($message)) {
+                    $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.intval($_GET["message"]).'"';
+                    $res = engine::mysql($query);
+                    $target = mysqli_fetch_array($res);
+                    $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`) VALUES("'.intval($_SESSION["user"]["id"]).'", "'.intval($_GET["message"]).'", "'.$text.'", "'.date("U").'")';
+                    engine::mysql($query);
+                    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "send_message_email"';
+                    $r_conf = engine::mysql($query);
+                    $d_conf = mysqli_fetch_array($r_conf);
+                    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "email_signature"';
+                    $r_sign = engine::mysql($query);
+                    $d_sign = mysqli_fetch_array($r_sign);
+                    if ($d_conf["value"]) {
+                        if ($target["online"] < date("U") - 600) {
+                            email::new_message($target["id"], $_SESSION["user"]["id"]);
+                        }
                     }
                 }
             }
+            die(engine::print_chat($_GET["message"]));
         }
-        $fout = engine::print_chat($_GET["message"]);
-        echo $fout;
     } else if (!empty($_POST["paypal"])) {
         $paypal = engine::escape_string($_POST["paypal"]);
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$_SESSION["user"]["id"].'"';
