@@ -84,7 +84,6 @@ if (!empty($_POST["id"])) {
         } else {
             die(engine::print_new_message());
         }
-        
     } else if (!empty($_GET["message"])) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
         $res = engine::mysql($query);

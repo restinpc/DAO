@@ -1442,12 +1442,16 @@ h1,h2,h3,h4,h5,h6{
     position: absolute;
     z-index: 1;
 }
+.nodes .profile_menu .nav_button{
+    display: block;
+    position: relative;
+}
 .nodes .profile_menu:hover {
     position: fixed;
     z-index: 2;
 }
 .nodes .profile_menu:hover .nav_button{
-    display:none;
+    display: none;
 }
 .nodes .profile_menu .toggle-button {
     height: auto;
@@ -1457,7 +1461,7 @@ h1,h2,h3,h4,h5,h6{
     padding-top: 0px;
     float: right;
     padding: 0px 10px;
-    padding-right: 2px;
+    padding-right: 5px;
     margin-bottom: 0px;
     background-color: transparent;
     background-image: none;

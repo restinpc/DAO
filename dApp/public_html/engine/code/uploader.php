@@ -108,7 +108,9 @@ echo '<!DOCTYPE html>
         scale: 1
     }
 </script>
-<script src="'.$_SERVER["DIR"].'/script/uploader.js" type="text/javascript"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/uploader.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
 </head>';
 if (!empty($_POST["name"])) {
     if (!empty($_POST["url"])) {
@@ -152,7 +154,7 @@ if (!empty($_POST["name"])) {
                         ii = i + 1;
                         try {
                             var el = top.document.getElementById("new_photo_" + i);
-                            if (el.title == "none") {
+                            if (el && el.title == "none") {
                                 el.style.background = "url('.$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.') center no-repeat";
                                 el.style.backgroundSize = "cover";
                                 el.style.display = "block";
@@ -160,7 +162,11 @@ if (!empty($_POST["name"])) {
                                 top.document.getElementById("file"+i).value = "'. $name.'.'.$ext.'";
                                 break;
                             }
-                        } catch(e) { console.log("error 2"); break; };
+                        } catch(e) { 
+                            window.alert(e.message);
+                            console.log("error 2");
+                            break;
+                        };
                     }
                     if (ii > 0) {
                         var new_photo_el = top.document.getElementById("file"+ii);
@@ -250,17 +256,17 @@ if (!empty($_POST["name"])) {
                             document.uploader.scale = s2;
                         }
                     }
-                    document.getElementById("image").style.width = (('.($width).'/document.uploader.scale)) +"px";
-                    document.getElementById("image").style.height = (('.($height).'/document.uploader.scale)) +"px";
-                    document.getElementById("img").style.width = ('.($width).'/document.uploader.scale) +"px";
-                    document.getElementById("img").style.height = ('.($height).'/document.uploader.scale) +"px";
-                    document.getElementById("frame").style.width = ('.($THUWIDTH).'/document.uploader.scale) +"px";
-                    document.getElementById("frame").style.height = ('.($THUHEIGHT).'/document.uploader.scale) +"px";
-                    document.getElementById("scale").value = document.uploader.scale;
-                    addHandler(document.getElementById("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
-                    addHandler(document.getElementById("frame"), "touchend", () => { document.uploader.dragMode = 0; });
-                    addHandler(document.getElementById("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
-                    addHandler(document.getElementById("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
+                    $id("image").style.width = (('.($width).'/document.uploader.scale)) +"px";
+                    $id("image").style.height = (('.($height).'/document.uploader.scale)) +"px";
+                    $id("img").style.width = ('.($width).'/document.uploader.scale) +"px";
+                    $id("img").style.height = ('.($height).'/document.uploader.scale) +"px";
+                    $id("frame").style.width = ('.($THUWIDTH).'/document.uploader.scale) +"px";
+                    $id("frame").style.height = ('.($THUHEIGHT).'/document.uploader.scale) +"px";
+                    $id("scale").value = document.uploader.scale;
+                    document.framework.addHandler($id("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
+                    document.framework.addHandler($id("frame"), "touchend", () => { document.uploader.dragMode = 0; });
+                    document.framework.addHandler($id("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
+                    document.framework.addHandler($id("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
                     try{
                         window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/document.uploader.scale+60) +"px";
                         window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/document.uploader.scale+80) +"px";
@@ -276,11 +282,11 @@ if (!empty($_POST["name"])) {
     echo '<body class="nodes dragndrop_body"> 
     <form id="upload" method="POST" enctype="multipart/form-data">
         <div style="height: 100%;">
-            <input type="file" id="fileselect" name="fileselect" onChange=\'document.getElementById("upload").submit();\' />
-            <!-- <div id="filedrag" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Drop file here").'</div> -->
+            <input type="file" id="fileselect" name="fileselect" onChange=\'$id("upload").submit();\' />
+            <!-- <div id="filedrag" onClick=\'$id("fileselect").click();\'>'.engine::lang("Drop file here").'</div> -->
         </div>
         <div id="submitbutton">
-            <button class="btn w280" type="button" onClick=\'document.getElementById("fileselect").click();\'>'.engine::lang("Upload new image").'</button>
+            <button class="btn w280" type="button" onClick=\'$id("fileselect").click();\'>'.engine::lang("Upload new image").'</button>
             <button class="btn" type="submit" style="display:none;">'.engine::lang("Upload Files").'</button>
         </div>
         <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />

@@ -16,14 +16,16 @@ $fout = '<!DOCTYPE html>
 <head>
     <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
     <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
+    <script>
+        if (!document.framework) {
+            document.framework = {};
+        }
+        document.framework.loadEvents = false;
+        document.framework.rootDir = "'.$_SERVER["DIR"].'";
+    </script>
     <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
     <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
     <script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-    <script>
-        document.framework.loadEvents = false;
-        document.framework.loadSite = () => {};
-        document.framework.rootDir = "'.$_SERVER["DIR"].'";
-    </script>
 </head>
 <body class="nodes">
     '.engine::print_level_plan($_GET["id"]).'

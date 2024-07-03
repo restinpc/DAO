@@ -20,6 +20,16 @@ $fout = '<!DOCTYPE html>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css">
     <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css">
+        <script>
+        if (!document.framework) {
+            document.framework = {};
+        }
+        document.framework.loadEvents = false;
+        document.framework.rootDir = "'.$_SERVER["DIR"].'";
+    </script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
 </head>
 <body class="body_images nodes">';
 if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {

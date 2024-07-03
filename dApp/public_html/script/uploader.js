@@ -30,37 +30,12 @@ if (!document.uploader) {
 }
 
 /**
-* Gets an DOM element using id.
-*
-* @param {string} id Element id.
-* @return {object} Returns a DOM elemnt on success, or die with error.
-* @usage <code> let id = $id("content"); </code>
-*/
-function $id(id) {
-    return document.getElementById(id);
-}
-
-/**
-* Attaches an event handler to the specified element.
-*
-* @param {object} object DOM Element.
-* @param {string} event A String that specifies the name of the event.
-* @param {function} handler Callback function.
-* @param {bool} useCapture Flag to execute in the capturing or in the bubbling phase.
-* @usage <code> addHandler(window, "resize", resize_footer); </code>
-*/
-function addHandler(object, event, handler, useCapture) {
-     if (object.addEventListener) {
-         object.addEventListener(event, handler, useCapture ? useCapture : false);
-     } else if (object.attachEvent) {
-         object.attachEvent('on' + event, handler);
-     } else alert("Add handler is not supported");
-}
-
-/**
 * Positions a crop-frame on image.
 */
 document.uploader.drag = (e) => {
+    if (document.uploader.dragMode != 0) {
+        document.framework.log(`document.uploader.drag()`);
+    }
     if (!e) {
         e = window.event;
     }
@@ -125,6 +100,7 @@ document.uploader.drag = (e) => {
 * Submits image and crop details.
 */
 document.uploader.submitImg = () => {
+    document.framework.log(`document.uploader.submitImg()`);
     if (confirm(document.uploader.confirmUpload)) {
         $id("form").submit();
     }
@@ -134,6 +110,7 @@ document.uploader.submitImg = () => {
 * Positions a crop-frame on image.
 */
 document.uploader.load = () => {
+    document.framework.log(`document.uploader.load()`);
     if ($id("img").clientHeight < document.uploader.height) {
         document.uploader.height = $id("img").clientHeight;
         document.uploader.width = parseInt(document.uploader.thumbWidth / document.uploader.thumbHeight * document.uploader.height);
@@ -150,6 +127,7 @@ document.uploader.load = () => {
 * Disables dragging mode.
 */
 document.uploader.undrag = () => {
+    document.framework.log(`document.uploader.undrag()`);
     document.uploader.dragMode = 0;
 }
 
@@ -157,6 +135,7 @@ document.uploader.undrag = () => {
 * Stops dragging mode.
 */
 document.uploader.FileDragHover = (e) => {
+    document.framework.log(`document.uploader.FileDragHover()`);
     e.stopPropagation();
     e.preventDefault();
     e.target.className = (e.type == "dragover" ? "hover" : "");
@@ -166,6 +145,7 @@ document.uploader.FileDragHover = (e) => {
 * Drag-n-drop handler.
 */
 document.uploader.FileSelectHandler = (e) => {
+    document.framework.log(`document.uploader.FileSelectHandler()`);
     document.uploader.FileDragHover(e);
     var files = e.target.files || e.dataTransfer.files;
     for (let i = 0, f; f = files[i]; i++) {
@@ -177,6 +157,7 @@ document.uploader.FileSelectHandler = (e) => {
 * Parse file details.
 */
 document.uploader.ParseFile = (file) => {
+    document.framework.log(`document.uploader.ParseFile()`);
     if (file.type.indexOf("image") == 0) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -190,6 +171,7 @@ document.uploader.ParseFile = (file) => {
 * Uploads image to server.
 */
 document.uploader.UploadFile = (file) => {
+    document.framework.log(`document.uploader.UploadFile(${file.name})`);
     if (location.host.indexOf("sitepointstatic") >= 0) {
         return;
     }
@@ -211,7 +193,6 @@ document.uploader.UploadFile = (file) => {
                 }
             }
         };
-        console.error(file);
         xhr.open("POST", document.framework.rootDir + "/uploader.php?dragndrop=1", true);
         xhr.setRequestHeader("X-FILENAME", file.name);
         xhr.setRequestHeader("X_FILENAME", file.name);
@@ -225,6 +206,7 @@ document.uploader.UploadFile = (file) => {
 * Initialize file drag-n-drop field.
 */
 document.uploader.Init = () => {
+    document.framework.log(`document.uploader.Init()`);
     const fileselect = $id("fileselect");
     const filedrag = $id("filedrag");
     const submitbutton = $id("submitbutton");
@@ -243,10 +225,10 @@ document.uploader.Init = () => {
 * Initialize event functions.
 */
 if (document.uploader.postNewImage) {
-    addHandler(window, "load", document.uploader.load);
-    addHandler(window, "touchmove", document.uploader.drag);
-    addHandler(window, "mousemove", document.uploader.drag);
-    addHandler(window, "mouseup", document.uploader.undrag);
-    addHandler(top, "mouseup", document.uploader.undrag);
-    addHandler(window, "dblclick", document.uploader.submitImg);
+    document.framework.addHandler(window, "load", document.uploader.load);
+    document.framework.addHandler(window, "touchmove", document.uploader.drag);
+    document.framework.addHandler(window, "mousemove", document.uploader.drag);
+    document.framework.addHandler(window, "mouseup", document.uploader.undrag);
+    document.framework.addHandler(top, "mouseup", document.uploader.undrag);
+    document.framework.addHandler(window, "dblclick", document.uploader.submitImg);
 }
