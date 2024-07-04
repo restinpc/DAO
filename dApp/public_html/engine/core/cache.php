@@ -87,7 +87,7 @@ public function __construct() {
         $data = mysqli_fetch_array($res);
         if (!empty($data) && $data["interval"] > 0) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
-                selft::addAttendance($data["id"]);
+                self::addAttendance($data["id"]);
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 0, $data["lang"]));
             } else if (!empty($data["html"])) {
                 if (!empty($data["content"])) {
@@ -95,7 +95,7 @@ public function __construct() {
                 } else {
                     $html = str_replace('<content/>', $data["content"], $data["html"]);
                 }
-                selft::addAttendance($data["id"]);
+                self::addAttendance($data["id"]);
                 die($html.engine::print_new_message()."
 <!-- Time loading from cache: ".(floatval(microtime(1)) - $GLOBALS["time"])." -->");
             }
@@ -107,7 +107,7 @@ public function __construct() {
             engine::mysql($query);
         } else if ($data["interval"] == "0") {
             if ($is_cache) {
-                selft::addAttendance($data["id"]);
+                self::addAttendance($data["id"]);
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 0, $data["lang"]));
                 }
@@ -127,10 +127,10 @@ public function __construct() {
         $data = mysqli_fetch_array($res);
         if (!empty($data) && $data["interval"] > 0) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
-                selft::addAttendance($data["id"]);
+                self::addAttendance($data["id"]);
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
             } else if (!empty($data["html"])) {
-                selft::addAttendance($data["id"]);
+                self::addAttendance($data["id"]);
                 die('<title>'.$data["title"].'</title>'
                     .$data["content"]
                     .engine::print_new_message()."
@@ -145,7 +145,7 @@ public function __construct() {
         } else if ($data["interval"] == "0") {
             if ($is_cache) {
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
-                    selft::addAttendance($data["id"]);
+                    self::addAttendance($data["id"]);
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
                 }
                 die('<title>'.$data["title"].'</title>'
