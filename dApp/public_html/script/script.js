@@ -73,7 +73,7 @@ document.framework.display = () => {
 }
 
 /**
-* Loads site data and calling requered function after
+* Loads site data and calls requered function after
 */
 document.framework.loadSite = () => {
     document.framework.log(`document.framework.loadSite()`);
