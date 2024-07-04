@@ -20,7 +20,7 @@
 */
 
 function print_admin($cms) {
-    $fout = '<div class="document980">
+    $fout = '<div class="document980" style="margin-top: -40px;">
         <div class="two_columns">
             <section class="top_right_column">
                 <div class="right_column_block single_block admin_main_page_right">
