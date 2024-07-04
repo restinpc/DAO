@@ -76,33 +76,62 @@ if (!empty($_REQUEST["lang"])) {
         }
     }
 }
-$query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
+$query = 'SELECT * FROM `nodes_config` WHERE `name` = "token_limit"';
 $res = engine::mysql($query);
-$ref = mysqli_fetch_array($res);
-if (!empty($_SERVER["HTTP_REFERER"])) {
-    if (empty($ref) && strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
-        $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$_SERVER["HTTP_REFERER"].'")';
-        engine::mysql($query);
-        $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
+$data = mysqli_fetch_array($res);
+$query = 'SELECT * FROM `nodes_attendance` WHERE `token` = "'.$_COOKIE["token"].'" ORDER BY `date` DESC LIMIT '.($data["value"]-1).', 1';
+$res = engine::mysql($query);
+$data= mysqli_fetch_array($res);
+$date = $data["date"];
+if (date("U") - $date < 60) {
+    header('HTTP/ 429 Too Many Requests', true, 429);
+    die("Too many requests in this session. Try again after ".(60 - (date("U") - $date))." seconds.");
+} else if (!empty($_SERVER["REMOTE_ADDR"]) && !intval($_SERVER["CRON"])) {
+    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "ip_limit"';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    $query = 'SELECT * FROM `nodes_attendance` WHERE `ip` = "'.$_SERVER["REMOTE_ADDR"].'" ORDER BY `date` DESC LIMIT '.($data["value"]-1).', 1';
+    $res = engine::mysql($query);
+    $data= mysqli_fetch_array($res);
+    $date = $data["date"];
+    if (date("U") - $date < 60) {
+        header('HTTP/ 429 Too Many Requests', true, 429);
+        die("Too many requests from your IP. Try again after ".(60 - (date("U") - $date))." seconds.");
     } else {
-        $ref_id = -1;
+        $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
+        $res = engine::mysql($query);
+        $ref = mysqli_fetch_array($res);
+        if (!empty($_SERVER["HTTP_REFERER"])) {
+            if (empty($ref) && strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
+                $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$_SERVER["HTTP_REFERER"].'")';
+                engine::mysql($query);
+                $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
+            } else {
+                $ref_id = -1;
+            }
+        } else {
+            $ref_id = 0;
+        }
+        if (strpos($_SERVER["SCRIPT_URI"], "/search") === false
+            && strpos($_SERVER["SCRIPT_URI"], "/account") === false
+            && strpos($_SERVER["SCRIPT_URI"], "/admin") === false
+            && strpos($_SERVER["SCRIPT_URI"], ".php") === false
+            && strpos($_SERVER["SCRIPT_URI"], ".xml") === false
+            && strpos($_SERVER["SCRIPT_URI"], ".js") === false
+            && strpos($_SERVER["SCRIPT_URI"], ".txt") === false
+            && strpos($_SERVER["HTTP_HOST"], "dev.") === false
+        ) {
+            if (empty($_SERVER["SCRIPT_URI"])) {
+                $_SERVER["SCRIPT_URI"] = '/';
+            }
+            $cache = new cache();
+            $cache_id = $cache->page_id();
+            engine::mysql($query);
+            $date_now = date("U");
+            if ($cache_id) {
+                $query = 'INSERT INTO `nodes_attendance`(cache_id, user_id, token, ref_id, ip, date, display) '
+                    . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.$date_now.'", "'.intval($_SESSION["display"]).'")';
+            }
+        }
     }
-} else {
-    $ref_id = 0;
-}
-if (strpos($_SERVER["SCRIPT_URI"], "/search") === false
-    && strpos($_SERVER["SCRIPT_URI"], "/account") === false
-    && strpos($_SERVER["SCRIPT_URI"], "/admin") === false
-    && strpos($_SERVER["SCRIPT_URI"], ".php") === false
-    && strpos($_SERVER["SCRIPT_URI"], ".xml") === false
-    && strpos($_SERVER["SCRIPT_URI"], ".js") === false
-    && strpos($_SERVER["SCRIPT_URI"], ".txt") === false
-    && strpos($_SERVER["HTTP_HOST"], "dev.") === false
-) {
-    if (empty($_SERVER["SCRIPT_URI"])) {
-        $_SERVER["SCRIPT_URI"] = '/';
-    }
-    $cache = new cache();
-    $cache_id = $cache->page_id();
-    engine::mysql($query);
 }

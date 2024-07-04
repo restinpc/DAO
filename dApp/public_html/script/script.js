@@ -64,12 +64,18 @@ document.framework.error = (text) => {
     }
 }
 
+/**
+* Displays body after loading
+*/
 document.framework.display = () => {
     document.framework.log(`document.framework.display()`);
     document.body.style.display = "contents";
 }
 
- document.framework.loadSite = () => {
+/**
+* Loads site data and calling requered function after
+*/
+document.framework.loadSite = () => {
     document.framework.log(`document.framework.loadSite()`);
     document.framework.loading_state++;
     if (document.framework.loading_state != document.framework.loading_stages) {
@@ -83,6 +89,15 @@ document.framework.display = () => {
             document.framework.loading_state = 4;
             setTimeout(document.framework.display, 1000);
             document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
+            setTimeout(() => {
+                jQuery.ajax({
+                    url: document.framework.rootDir + '/timeout.php?ref='+encodeURI(document.referrer),
+                    type: "GET",
+                    success: (data) => {
+                        console.error(data);
+                    }
+                });
+            }, 3000);
         }
     } catch(e) {};
     clearTimeout(document.framework.timeout);
