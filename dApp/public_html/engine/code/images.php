@@ -20,7 +20,7 @@ $fout = '<!DOCTYPE html>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css">
     <link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css">
-        <script>
+    <script>
         if (!document.framework) {
             document.framework = {};
         }
@@ -95,8 +95,8 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';
         $fout .= engine::print_uploader(1);
         $fout .= '<script> 
-                document.getElementById("input-upload-new").style.display="none";
-                document.getElementById("new_img1").style.display="block"; 
+                document.getElementById("input-upload-new").style.display = "none";
+                document.getElementById("new_img1").style.display = "block"; 
             </script>
             </center>
             </form>';
@@ -105,10 +105,10 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
     if (!empty($_POST)) {
         $fout .= '<script>
                 try { 
-                    parent.document.getElementById("delete_image_block").style.display="none"; 
+                    parent.document.getElementById("delete_image_block").style.display = "none"; 
                 } catch(e) {};
-                try{ 
-                    parent.document.getElementById("new_profile_picture").value="'.$_POST["file1"].'"; 
+                try {
+                    parent.document.getElementById("new_profile_picture").value = "'.$_POST["file1"].'"; 
                     parent.document.getElementById("edit_profile_form").submit();
                 } catch(e) {};
                 top.document.framework.hideWindow();
@@ -117,8 +117,8 @@ if (!empty($_GET["editor"]) && $_SESSION["user"]["admin"] == 1) {
         $fout .= '<form method="POST" id="edit_photos_form"><center>';
         $fout .= engine::print_uploader(1);
         $fout .= '<script> 
-                document.getElementById("input-upload-new").style.display="none";
-                document.getElementById("new_img1").style.display="block"; 
+                document.getElementById("input-upload-new").style.display = "none";
+                document.getElementById("new_img1").style.display = "block"; 
             </script>
             </center>
             </form>';

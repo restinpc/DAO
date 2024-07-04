@@ -278,13 +278,13 @@ document.framework.showEditor = (file) => {
 */
 document.framework.addComment = (caption, submit, reply) => {
     document.framework.log(`document.framework.addComment(${caption})`);
-    document.framework.showPopup('<form method="POST">'+'\n'+
-        '<div id="new_comment">'+'\n'+
-        '<input type="hidden" name="reply" value="'+reply+'" />'+'\n'+
-            '<strong>'+caption+'</strong><br/><br/>'+'\n'+
-            '<textarea id="comment_textarea" name="comment" cols=50 class="comment_textarea"></textarea><br/><br/>'+'\n'+
-            '<center><input id="submit-comment" type="submit" class="btn w280" value="'+submit+'" /></center><br/>'+'\n'+
-        '</div>'+'\n'+
+    document.framework.showPopup('<form method="POST">'+
+        '<div id="new_comment">'+
+            '<input type="hidden" name="reply" value="'+reply+'" />'+
+            '<strong>'+caption+'</strong><br/><br/>'+
+            '<textarea id="comment_textarea" name="comment" cols=50 class="comment_textarea"></textarea><br/><br/>'+
+            '<center><input id="submit-comment" type="submit" class="btn w280" value="'+submit+'" /></center><br/>'+
+        '</div>'+
     '</form>');
 }
 

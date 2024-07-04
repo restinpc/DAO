@@ -44,37 +44,6 @@ if (!empty($_GET["id"])) {
 if (!empty($_GET["id"])) {
     $result .= $_GET["id"];
 }
-if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
-    $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
-    if ($fn) {
-        $ext = explode('.', $fn);
-        $fn = md5($fn).'.'.$ext[count($ext) - 1];
-        if (file_put_contents(
-            $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$fn,
-            file_get_contents('php://input')
-        )) {
-            die($fn);
-        } else {
-            die('error');
-        }
-    } else if (isset($_FILES['fileselect'])) {
-        $files = $_FILES['fileselect'];
-        $ext = explode('.', $files['name']);
-        $fn = md5($files['name']).'.'.$ext[count($ext) - 1];
-        if (copy(
-            $files['tmp_name'],
-            $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/' . $fn
-        )) {
-            die('<form method="POST" id="new_image_form">
-                <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
-                <input type="hidden" name="new_image" value="'.$fn.'" id="new_image" />
-            </form>
-            <script>document.getElementById("new_image_form").submit();</script>');
-        } else {
-            die('error');
-        }
-    }
-}
 $query = 'SELECT * FROM `nodes_config` WHERE `name` = "template"';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
@@ -99,13 +68,7 @@ echo '<!DOCTYPE html>
         noDragDrop: "'.engine::lang("Error! Drag-n-drop disabled on this server").'",
         uploading: "'.engine::lang("Uploading").'",
         confirmUpload: "'.engine::lang("Upload selection as thumb?").'",
-        postNewImage: '.(!empty($_POST["new_image"]) ? '1' : '0').',
-        posX: 30,
-        posY: 30,
-        fx: 0,
-        fy: 0,
-        dragMode: 0,
-        scale: 1
+        postNewImage: '.(!empty($_POST["new_image"]) ? '1' : '0').'
     }
 </script>
 <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
@@ -136,17 +99,19 @@ if (!empty($_POST["name"])) {
                     df_img.id = "d_img";
                     df_img.src = "//'.$_SERVER["HTTP_HOST"].$_SERVER["DIR"].'/img/data/thumb/'. $name.'.'.$ext.'";';
 
-        if (!empty($_GET["id"]) && $_GET["id"] <6) {
+        if (!empty($_GET["id"]) && $_GET["id"] < 6) {
             $fout .= '
                     var z = parent.document.getElementById("new_img'.(intval($_GET["id"]) + 1).'"); 
-                    if (z) z.style.display = "block";
+                    if (z) {
+                        z.style.display = "block";
+                    }
                     parent.document.getElementById("new_img'.(intval($_GET["id"])).'").style.width = "'.$THUWIDTH.'px";';
         }
         $fout .= '
                     parent.document.getElementById("'.$result.'").style.display = "none";
                     parent.document.getElementById("'.$new_img.'").appendChild(df_img);
-                    parent.document.getElementById("'.$f1.'").style.width=('.($THUWIDTH+20).'+"px");
-                    parent.document.getElementById("'.$f1.'").style.height=('.($THUHEIGHT+20).'+"px");
+                    parent.document.getElementById("'.$f1.'").style.width = ('.($THUWIDTH + 20).' + "px");
+                    parent.document.getElementById("'.$f1.'").style.height = ('.($THUHEIGHT + 20).' + "px");
                 } catch(e) { console.log("error 1"); }
                 try {
                     var ii = 0;
@@ -197,7 +162,7 @@ if (!empty($_POST["name"])) {
         $a = md5(date('U').$file);
         $ext = strtolower(array_pop(explode(".", $file)));
         if ($ext != "jpeg" && $ext != "jpg" && $ext != "png" && $ext != "gif") {
-             die(engine::lang("Error").'<script type="text/javascript">setTimeout(function() {window.location="'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 1000);</script>');
+             die(engine::lang("Error").'<script type="text/javascript">setTimeout(function() {window.location = "'.$_SERVER["DIR"].'/uploader.php?id='.$_GET["id"].'";}, 1000);</script>');
         }
         if ($ext == "jpeg") {
             $ext = "jpg";
@@ -256,34 +221,33 @@ if (!empty($_POST["name"])) {
                             document.uploader.scale = s2;
                         }
                     }
-                    $id("image").style.width = (('.($width).'/document.uploader.scale)) +"px";
-                    $id("image").style.height = (('.($height).'/document.uploader.scale)) +"px";
-                    $id("img").style.width = ('.($width).'/document.uploader.scale) +"px";
-                    $id("img").style.height = ('.($height).'/document.uploader.scale) +"px";
-                    $id("frame").style.width = ('.($THUWIDTH).'/document.uploader.scale) +"px";
-                    $id("frame").style.height = ('.($THUHEIGHT).'/document.uploader.scale) +"px";
+                    $id("image").style.width = (('.($width).' / document.uploader.scale)) +"px";
+                    $id("image").style.height = (('.($height).' / document.uploader.scale)) +"px";
+                    $id("img").style.width = ('.($width).' / document.uploader.scale) +"px";
+                    $id("img").style.height = ('.($height).' / document.uploader.scale) +"px";
+                    $id("frame").style.width = ('.($THUWIDTH).' / document.uploader.scale) +"px";
+                    $id("frame").style.height = ('.($THUHEIGHT).' / document.uploader.scale) +"px";
                     $id("scale").value = document.uploader.scale;
                     document.framework.addHandler($id("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
                     document.framework.addHandler($id("frame"), "touchend", () => { document.uploader.dragMode = 0; });
                     document.framework.addHandler($id("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
                     document.framework.addHandler($id("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
                     try{
-                        window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).'/document.uploader.scale+60) +"px";
-                        window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).'/document.uploader.scale+80) +"px";
+                        window.parent.document.getElementById("'.$f1.'").style.width = ('.($width).' / document.uploader.scale + 60) +"px";
+                        window.parent.document.getElementById("'.$f1.'").style.height = ('.($height).' / document.uploader.scale + 80) +"px";
                     }catch(e) {}
                 </script>
             </body>
             </html>';
             die($fout);
         }
-        die(engine::lang("Error").'<script type="text/javascript">setTimeout(function() { window.location="'.$_SERVER["DIR"].'/uploader.php?id = '.$_GET["id"].'"; }, 5000);</script></html>');
+        die(engine::lang("Error").'<script type="text/javascript">setTimeout(() => { window.location="'.$_SERVER["DIR"].'/uploader.php?id = '.$_GET["id"].'"; }, 5000);</script></html>');
     }
 } else {
     echo '<body class="nodes dragndrop_body"> 
     <form id="upload" method="POST" enctype="multipart/form-data">
         <div style="height: 100%;">
             <input type="file" id="fileselect" name="fileselect" onChange=\'$id("upload").submit();\' />
-            <!-- <div id="filedrag" onClick=\'$id("fileselect").click();\'>'.engine::lang("Drop file here").'</div> -->
         </div>
         <div id="submitbutton">
             <button class="btn w280" type="button" onClick=\'$id("fileselect").click();\'>'.engine::lang("Upload new image").'</button>
@@ -295,10 +259,6 @@ if (!empty($_POST["name"])) {
         <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
         <input type="hidden" name="new_image" value="" id="new_image" />
     </form>
-    <div id="messages"></div>
-    <script>
-        // if (window.File && window.FileList && window.FileReader) { document.uploader.Init(); }
-    </script>
 </body>
 </html>';
 }

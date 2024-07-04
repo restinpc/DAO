@@ -53,7 +53,7 @@ function __construct() {
             $this->img = $this->configs["image"];
         } else {
             if (strpos($this->configs["image"], $_SERVER["DIR"]) !== FALSE) {
-                $this->img = $_SERVER["PROTOCOL"].'://'.$_SERVER["HTTP_HOST"].$this->configs["image"];
+                $this->img = $_SERVER["PUBLIC_URL"].$this->configs["image"];
             } else {
                 if ($this->configs["image"][0] == "/") {
                     $this->img = $_SERVER["PUBLIC_URL"].$this->configs["image"];
@@ -282,7 +282,7 @@ $fout .= '</head>
             unset($_SESSION["user"]);
             die('<script type="text/javascript">
                 window.alert("'.engine::lang("Your account was banned").'");
-                parent.window.location = "'.$_SERVER["DIR"].'/";
+                parent.window.location = "'.$_SERVER["PUBLIC_URL"].'";
             </script>');
         } else {
             $fout .= engine::print_new_message();
@@ -296,14 +296,14 @@ $fout .= '</head>
     $data = mysqli_fetch_array($res);
     if ($data["value"] == "1") {
         $fout .= '<script type="text/javascript">
-            if (window.jQuery) {
-                jQuery.ajax({
-                    url: "'.$_SERVER["DIR"].'/cron.php",
-                    async: true,
-                    type: "GET"
-                });
-            }
-        </script>';
+                if (window.jQuery) {
+                    jQuery.ajax({
+                        url: "'.$_SERVER["DIR"].'/cron.php",
+                        async: true,
+                        type: "GET"
+                    });
+                }
+            </script>';
     }
     if (!isset($_POST["jQuery"])) {
         $fout .= '<script>
@@ -314,9 +314,9 @@ $fout .= '</head>
 </html>';
     } else {
         $fout .= '<script type="text/javascript">
-            document.framework.loadEvents = false;
-            '.$this->onload.'
-        </script>';
+                document.framework.loadEvents = false;
+                '.$this->onload.'
+            </script>';
     }
     if ($this->configs["debug"]) {
         $fout .= '<script type="text/javascript">';

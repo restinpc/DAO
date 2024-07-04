@@ -14,6 +14,7 @@ public $title;          // Page title.
 public $content;        // Page HTML data.
 public $onload;         // Page executable JavaScript code.
 public $statistic;      // Array CMS statistic.
+
 /**
 * Admin class constructor.
 * @param object $site Admin Site object.
@@ -39,10 +40,6 @@ function admin($site) {
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
         $this->statistic["articles"] = $d[0];
-        $query = 'SELECT COUNT(`id`) FROM `nodes_product`';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        $this->statistic["products"] = $d[0];
         $query = 'SELECT COUNT(`id`) FROM `nodes_comment`';
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
@@ -74,16 +71,16 @@ function admin($site) {
         if (!empty($_GET["mode"])) {
             $this->title = engine::lang(ucfirst($_GET["mode"]));
             $function = 'print_admin_'.$_GET["mode"];
+            $site->content = '<div class="profile_menu fs10">
+                <div class="container">'.engine::print_admin_navigation($this).'</div>
+            </div>';
         } else {
             $this->title = engine::lang("Admin");
             $function = 'print_admin';
         }
         $this->content = engine::$function($this);
         $site->title = $this->title." - ".$site->title;
-        $site->content = '<div class="profile_menu fs10">
-            <div class="container">'.engine::print_admin_navigation($this).'</div>
-        </div>
-        <div class="admin_content">
+        $site->content .= '<div class="admin_content">
             '.$this->content.'
         </div>';
         $site->onload .= 'document.framework.admin_init(); '.$this->onload;

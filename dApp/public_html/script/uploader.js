@@ -7,27 +7,15 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-if (!document.framework) {
-    document.framework = {};
-}
 if (!document.uploader) {
-    document.uploader = {
-        width: 400,
-        height: 400,
-        thumbWidth: 400,
-        thumbHeight: 400,
-        noDragDrop: "Error! Drag-n-drop disabled on this server",
-        uploading: "Uploading",
-        confirmUpload: "Upload selection as thumb?",
-        postNewImage: 0,
-        posX: 30,
-        posY: 30,
-        fx: 0,
-        fy: 0,
-        dragMode: 0,
-        scale: 1
-    };
-}
+    window.alert("Uploader not initialized");
+} else {
+document.uploader.posX = 30;
+document.uploader.posY = 30;
+document.uploader.fx = 0;
+document.uploader.fy = 0;
+document.uploader.dragMode = 0;
+document.uploader.scale = 1;
 
 /**
 * Positions a crop-frame on image.
@@ -132,96 +120,6 @@ document.uploader.undrag = () => {
 }
 
 /**
-* Stops dragging mode.
-*/
-document.uploader.FileDragHover = (e) => {
-    document.framework.log(`document.uploader.FileDragHover()`);
-    e.stopPropagation();
-    e.preventDefault();
-    e.target.className = (e.type == "dragover" ? "hover" : "");
-}
-
-/**
-* Drag-n-drop handler.
-*/
-document.uploader.FileSelectHandler = (e) => {
-    document.framework.log(`document.uploader.FileSelectHandler()`);
-    document.uploader.FileDragHover(e);
-    var files = e.target.files || e.dataTransfer.files;
-    for (let i = 0, f; f = files[i]; i++) {
-        document.uploader.ParseFile(f);
-    }
-}
-
-/**
-* Parse file details.
-*/
-document.uploader.ParseFile = (file) => {
-    document.framework.log(`document.uploader.ParseFile()`);
-    if (file.type.indexOf("image") == 0) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.uploader.UploadFile(file);
-        }
-        reader.readAsDataURL(file);
-    }
-}
-
-/**
-* Uploads image to server.
-*/
-document.uploader.UploadFile = (file) => {
-    document.framework.log(`document.uploader.UploadFile(${file.name})`);
-    if (location.host.indexOf("sitepointstatic") >= 0) {
-        return;
-    }
-    if ($id("fileselect").value != "") {
-        return;
-    }
-    var xhr = new XMLHttpRequest();
-    if (xhr.upload && (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/gif" || file.type == "image/png") ) {
-        var fname = file.name;
-        xhr.onreadystatechange = (e) => {
-            if (xhr.readyState == 4) {
-                if (xhr.responseText == "error") {
-                    $id("fileselect").style.display = "block";
-                    $id("filedrag").style.display = "none";
-                    alert(document.uploader.noDragDrop);
-                } else {
-                    $id("new_image").value = fname;
-                    $id("new_image_form").submit();
-                }
-            }
-        };
-        xhr.open("POST", document.framework.rootDir + "/uploader.php?dragndrop=1", true);
-        xhr.setRequestHeader("X-FILENAME", file.name);
-        xhr.setRequestHeader("X_FILENAME", file.name);
-        xhr.setRequestHeader("HTTP_X_FILENAME", file.name);
-        xhr.send(file);
-        $id("filedrag").innerHTML = document.uploader.uploading + "..";
-    }
-}
-
-/**
-* Initialize file drag-n-drop field.
-*/
-document.uploader.Init = () => {
-    document.framework.log(`document.uploader.Init()`);
-    const fileselect = $id("fileselect");
-    const filedrag = $id("filedrag");
-    const submitbutton = $id("submitbutton");
-    fileselect.addEventListener("change", document.uploader.FileSelectHandler, false);
-    const xhr = new XMLHttpRequest();
-    if (xhr.upload) {
-        filedrag.addEventListener("dragover", document.uploader.FileDragHover, false);
-        filedrag.addEventListener("dragleave", document.uploader.FileDragHover, false);
-        filedrag.addEventListener("drop", document.uploader.FileSelectHandler, false);
-        filedrag.style.display = "block";
-        submitbutton.style.display = "none";
-    }
-}
-
-/**
 * Initialize event functions.
 */
 if (document.uploader.postNewImage) {
@@ -231,4 +129,5 @@ if (document.uploader.postNewImage) {
     document.framework.addHandler(window, "mouseup", document.uploader.undrag);
     document.framework.addHandler(top, "mouseup", document.uploader.undrag);
     document.framework.addHandler(window, "dblclick", document.uploader.submitImg);
+}
 }
