@@ -187,15 +187,11 @@ public function page_id() {
 
 public function addAttendance($cache_id) {
     $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
-    echo $query;
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    $ref_id = $data[0];   
-    $date_now = date("U");
+    $ref_id = $data[0];
     $query = 'INSERT INTO `nodes_attendance`(cache_id, user_id, token, ref_id, ip, date, display) '
-        . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.$date_now.'", "'.intval($_SESSION["display"]).'")';
-    echo $query;
-    die();
+        . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.date("U").'", "'.intval($_SESSION["display"]).'")';
     engine::mysql($query);
 }
 }
