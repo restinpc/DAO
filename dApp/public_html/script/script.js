@@ -74,14 +74,15 @@ document.framework.display = () => {
 }
 
 document.framework.confirmAlive = () => {
+    document.framework.log(`document.framework.confirmAlive()`);
     if (!document.framework.confirmed) {
         document.framework.confirmed = true;
         setTimeout(() => {
             jQuery.ajax({
                 url: document.framework.rootDir + '/timeout.php?ref='+encodeURI(document.referrer),
                 type: "GET",
-                success: (data) => {
-                    console.error(data);
+                success: () => {
+                    document.framework.log(`document.framework.confirmAlive().success()`);
                 }
             });
         }, 3000);
@@ -89,6 +90,7 @@ document.framework.confirmAlive = () => {
 }
 
 document.framework.handleUserEvents = () => {
+    document.framework.log(`document.framework.handleUserEvents()`);
     if (!document.framework.confirmed) {
         document.framework.addHandler(window, "mousemove", document.framework.confirmAlive);
         document.framework.addHandler(document.body, "mousemove", document.framework.confirmAlive);
