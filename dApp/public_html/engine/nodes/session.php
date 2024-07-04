@@ -129,9 +129,7 @@ if (date("U") - $date < 60) {
             engine::mysql($query);
             $date_now = date("U");
             if ($cache_id) {
-                $query = 'INSERT INTO `nodes_attendance`(cache_id, user_id, token, ref_id, ip, date, display) '
-                    . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.$date_now.'", "'.intval($_SESSION["display"]).'")';
-                engine::mysql($query);
+                $cache->addAttendance($cache_id, $ref_id);
             }
         }
     }

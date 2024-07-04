@@ -12,6 +12,7 @@ error_reporting(0);
 date_default_timezone_set('UTC');
 $GLOBALS["time"] = floatval(microtime(1));
 $_SERVER["PROTOCOL"] = "https";
+$_SESSION["display"] = 0;
 if (!isset($_SERVER["SCRIPT_URI"])) {
     $_SERVER["SCRIPT_URI"] = '';
 }
