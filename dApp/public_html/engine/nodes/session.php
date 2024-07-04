@@ -126,7 +126,6 @@ if (date("U") - $date < 60) {
             }
             $cache = new cache();
             $cache_id = $cache->page_id();
-            die($cache_id);
             engine::mysql($query);
             $date_now = date("U");
             if ($cache_id) {
