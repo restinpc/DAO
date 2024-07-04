@@ -14,6 +14,7 @@ require_once("engine/nodes/headers.php");
 require_once("engine/nodes/mysql.php");
 require_once("engine/nodes/session.php");
 
+$_SERVER["CRON"] = 1;
 $flag = 0;
 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_exec"';
 engine::mysql($query);

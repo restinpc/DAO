@@ -10,15 +10,10 @@
 
 require_once("engine/nodes/session.php");
 
-if(!empty($_COOKIE["token"]) && !isset($_SERVER["CRON"])){
+if (!empty($_COOKIE["token"]) && !isset($_SERVER["CRON"])) {
     $_SESSION["display"] = "1";
-    $query = 'SELECT `id`, `display`, `ref_id` FROM `nodes_attendance` WHERE `token` = "'.$_COOKIE["token"].'" ORDER BY `id` DESC LIMIT 0, 1';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if (!$data["display"]) {
-        $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `id` = "'.$data["id"].'"';
-        engine::mysql($query);
-    }
+    $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `token` = "'.$_COOKIE["token"].'"';
+    engine::mysql($query);
     if (!$data["ref_id"] && !empty($_GET["ref"])) {
         $ref = engine::escape_string(urldecode($_GET["ref"]));
         if (mb_strpos($ref, $_SERVER["HTTP_HOST"]) === FALSE) {
@@ -29,5 +24,6 @@ if(!empty($_COOKIE["token"]) && !isset($_SERVER["CRON"])){
             engine::mysql($query);
         }
     }
-}engine::error(504);
+}
+engine::error(504);
 

@@ -86,7 +86,7 @@ $date = $data["date"];
 if (date("U") - $date < 60) {
     header('HTTP/ 429 Too Many Requests', true, 429);
     die("Too many requests in this session. Try again after ".(60 - (date("U") - $date))." seconds.");
-} else if (!empty($_SERVER["REMOTE_ADDR"]) && !intval($_SERVER["CRON"])) {
+} else if (!empty($_SERVER["REMOTE_ADDR"]) && !isset($_SERVER["CRON"])) {
     $query = 'SELECT * FROM `nodes_config` WHERE `name` = "ip_limit"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);

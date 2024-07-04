@@ -18,5 +18,6 @@ if(!isset($argv[2])) {
 $_SERVER["DOCUMENT_ROOT"] = $argv[1];
 $_SERVER["HTTP_HOST"] = $argv[2];
 $_SERVER["REQUEST_URI"] = "/cron.php";
+$_SERVER["CRON"] = 1;
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"]);
 require_once("engine/nodes/autoload.php");
