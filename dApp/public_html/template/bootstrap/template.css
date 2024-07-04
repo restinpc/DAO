@@ -15237,8 +15237,6 @@ body{
     background: #1a1d1d;
     min-height: calc(100% - 50px);
     position: relative;
-    padding-top: 1px;
-    padding-bottom: 1px;
 }
 .nodes .wrapper{
     height: 49px;
