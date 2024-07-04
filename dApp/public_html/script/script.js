@@ -88,6 +88,21 @@ document.framework.confirmAlive = () => {
     }
 }
 
+document.framework.handleUserEvents = () => {
+    if (!document.framework.confirmed) {
+        document.framework.addHandler(window, "mousemove", document.framework.confirmAlive);
+        document.framework.addHandler(document.body, "mousemove", document.framework.confirmAlive);
+        document.framework.addHandler(window, "scroll", document.framework.confirmAlive);
+        document.framework.addHandler(document.body, "scroll", document.framework.confirmAlive);
+        document.framework.addHandler(window, 'DOMMouseScroll', document.framework.confirmAlive);
+        document.framework.addHandler(document.body, "DOMMouseScroll", document.framework.confirmAlive);
+        document.framework.addHandler(window, 'touchstart', document.framework.confirmAlive);
+        document.framework.addHandler(window, 'touchmove', document.framework.confirmAlive);
+        document.framework.addHandler(document.body, 'touchstart', document.framework.confirmAlive);
+        document.framework.addHandler(document.body, 'touchmove', document.framework.confirmAlive);
+    }
+}
+
 /**
 * Loads site data and calls requered function after
 */
@@ -102,19 +117,10 @@ document.framework.loadSite = () => {
             document.framework.materialIcons();
             document.framework.preload();
             document.framework.ajaxing();
+            document.framework.handleUserEvents();
             document.framework.loading_state = 4;
             setTimeout(document.framework.display, 1000);
             document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
-            document.framework.addHandler(window, "mousemove", document.framework.confirmAlive);
-            document.framework.addHandler(document.body, "mousemove", document.framework.confirmAlive);
-            document.framework.addHandler(window, "scroll", document.framework.confirmAlive);
-            document.framework.addHandler(document.body, "scroll", document.framework.confirmAlive);
-            document.framework.addHandler(window, 'DOMMouseScroll', document.framework.confirmAlive);
-            document.framework.addHandler(document.body, "DOMMouseScroll", document.framework.confirmAlive);
-            document.framework.addHandler(window, 'touchstart', document.framework.confirmAlive);
-            document.framework.addHandler(window, 'touchmove', document.framework.confirmAlive);
-            document.framework.addHandler(document.body, 'touchstart', document.framework.confirmAlive);
-            document.framework.addHandler(document.body, 'touchmove', document.framework.confirmAlive);
         }
     } catch(e) {};
     clearTimeout(document.framework.timeout);
