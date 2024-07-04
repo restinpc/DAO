@@ -654,7 +654,7 @@ document.framework.admin_init = () => {
     document.body.appendChild(js);
     const func = () => {
         try {
-            document.getElementsByClassName("admin_content")[0].style.minHeight = (window.innerHeight - 51) + "px";
+            document.getElementsByClassName("admin_content")[0].style.minHeight = (window.innerHeight - 49) + "px";
         } catch (e) {}
     }
     document.framework.addHandler(window, "resize", (e) => func(), true);

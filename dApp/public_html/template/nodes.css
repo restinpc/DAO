@@ -3336,22 +3336,21 @@ a.pswp__share--download:hover {
 }
 
 .material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  word-wrap: normal;
-  -moz-font-feature-settings: 'liga';
-       font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased; }
-
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    word-wrap: normal;
+    -moz-font-feature-settings: 'liga';
+         font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased; 
+}
 
 /* -------------------------------------------------------------------------- */
-
 
 @media (max-width: 1000px) {
     .nodes .product_left{ max-width: 500px; }
@@ -3379,11 +3378,10 @@ a.pswp__share--download:hover {
 @media (max-width: 850px) {
     .nodes .product_right{ width: 100%; }
     .nodes .product_left{ width: 100%;  max-width: none; }
-
     .nodes .profile_menu{ font-size: 12px !important; }
     .nodes .profile_menu_item{ display:none; }
-    .nodes .selected{ display:none !important; }
-    .nodes .profile_menu:hover .profile_menu_item{ display: block; }
+    .nodes .selected{ display:none !important; padding-top: 12px !important; padding-bottom: 12px !important; }
+    .nodes .profile_menu:hover .profile_menu_item{ display: block; padding-top: 10px; padding-bottom: 10px; }
     .nodes .profile_menu .selected{ background: rgba(46,174,179, 0.6); border-color: transparent; }
     .nodes .profile_menu .selected a{ color: #fff !important; }
     .nodes .show_all{ display:block !important; }
@@ -3411,7 +3409,6 @@ a.pswp__share--download:hover {
     #nodes_popup{ left: 20px; right: 20px; margin-left: 0px; min-width: auto;}
     .nodes .article h1{ font-size: 28px; }
 }
-
 @media (max-width: 550px){
     .alertify{
         top: 75px;
@@ -3427,7 +3424,6 @@ a.pswp__share--download:hover {
     .nodes .two_columns{ max-width: 300px; }
     .nodes .top_right_column{ margin-left: 0px; max-width: 300px; width: 300px; margin-top: 0px; }
 }
-
 
 /* -------------------------------------------------------------------------- */
 

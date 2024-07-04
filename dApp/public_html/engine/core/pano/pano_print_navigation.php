@@ -76,7 +76,7 @@ function pano_print_navigation($site, $object, $new=0) {
         $fout .= '</select>
                 <br/>
                 <br/>
-                <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesNavigation("'.$object["id"].'");\' />';
+                <input type="button" class="btn w100p" value="'.engine::lang("Apply changes").'" onClick=\'document.panorama.applyChangesNavigation("'.$object["id"].'");\' />';
         if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete point").'" onClick=\'document.panorama.deleteNavigation("'.$object["id"].'")\' />';
         }

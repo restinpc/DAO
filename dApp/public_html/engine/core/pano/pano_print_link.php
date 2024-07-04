@@ -66,7 +66,7 @@ function pano_print_link($site, $object, $new=0) {
                 <br/> 
                 <br/>
                 <br/>
-                <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesURL("'.$object["id"].'");\' />';
+                <input type="button" class="btn w100p" value="'.engine::lang("Apply changes").'" onClick=\'document.panorama.applyChangesURL("'.$object["id"].'");\' />';
         if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete Link").'" onClick=\'document.panorama.deleteURL("'.$object["id"].'")\' />';
         }

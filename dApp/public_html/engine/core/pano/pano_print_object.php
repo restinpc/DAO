@@ -90,7 +90,7 @@ function pano_print_object($site, $object, $new = 0) {
                 '.engine::lang("Scale").':<br/>
                 <input required id="object_'.$object["id"].'_scale" name="scale" type="text" class="input w100p" value="'.$object["scale"].'" /><br/>
                 <br/> 
-                <input type="button" class="btn w100p" value="'.engine::lang("Apply chages").'" onClick=\'document.panorama.applyChangesObject("'.$object["id"].'");\' />';
+                <input type="button" class="btn w100p" value="'.engine::lang("Apply changes").'" onClick=\'document.panorama.applyChangesObject("'.$object["id"].'");\' />';
         if (!$new) {
             $fout .= '<input type="button" class="btn w100p" value="'.engine::lang("Delete object").'" onClick=\'document.panorama.deleteObject("'.$object["id"].'")\' />';
         }
