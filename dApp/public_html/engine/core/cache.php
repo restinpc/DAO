@@ -193,6 +193,8 @@ public function addAttendance($cache_id) {
     $date_now = date("U");
     $query = 'INSERT INTO `nodes_attendance`(cache_id, user_id, token, ref_id, ip, date, display) '
         . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.$date_now.'", "'.intval($_SESSION["display"]).'")';
+    echo $query;
+    die();
     engine::mysql($query);
 }
 }
