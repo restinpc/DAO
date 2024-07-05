@@ -8,8 +8,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/headers.php");
-
 if (empty($_SESSION["user"]["email"])) {
     die(engine::error(401));
 }
@@ -43,6 +41,38 @@ if (!empty($_GET["id"])) {
 if (!empty($_GET["id"])) {
     $result .= $_GET["id"];
 }
+if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
+    $fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
+    if ($fn) {
+        $ext = explode('.', $fn);
+        $fn = md5($fn).'.'.$ext[count($ext)-1];
+        if (file_put_contents(
+            $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/'.$fn,
+            file_get_contents('php://input')
+        )) {
+            die($fn);
+        } else {
+            die('error');
+        }
+    } else if (isset($_FILES['fileselect'])) {
+        $files = $_FILES['fileselect'];
+        $ext = explode('.', $files['name']);
+        $fn = md5($files['name']).'.'.$ext[count($ext)-1];
+        if (copy(
+            $files['tmp_name'],
+            $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/img/data/big/' . $fn
+        )) {
+            die('<form method="POST" id="new_image_form">
+                <input type="hidden" name="name" value="'.engine::lang("Uploaded").' '.date("Y-m-d H:i:s").'" />
+                <input type="hidden" name="new_image" value="'.$fn.'" id="new_image" />
+            </form>
+            <script>document.getElementById("new_image_form").submit();</script>');
+        } else {
+            die('error');
+        }
+    }
+}
+
 $query = 'SELECT * FROM `nodes_config` WHERE `name` = "template"';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
@@ -246,7 +276,7 @@ if (!empty($_POST["name"])) {
     echo '<body class="nodes dragndrop_body"> 
     <form id="upload" method="POST" enctype="multipart/form-data">
         <div style="height: 100%;">
-            <input type="file" id="fileselect" name="fileselect" onChange=\'$id("upload").submit();\' />
+            <input type="file" id="fileselect" name="fileselect" onChange=\'document.getElementById("upload").submit();\' />
         </div>
         <div id="submitbutton">
             <button class="btn w280" type="button" onClick=\'$id("fileselect").click();\'>'.engine::lang("Upload new image").'</button>

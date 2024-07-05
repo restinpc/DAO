@@ -234,6 +234,7 @@ h1,h2,h3,h4,h5,h6{
     line-height: 1.2;
     resize: vertical;
     max-height: 75px;
+    color: #333;
 }
 #nodes_cart{
     position:fixed;
@@ -382,7 +383,7 @@ h1,h2,h3,h4,h5,h6{
     font-size: 14px;
 }
 .nodes .input{
-    color: #333;
+    color: #c0c0c0;
     background: #1a1d1d;
     border: #333 1px solid;
     border-radius: 5px;

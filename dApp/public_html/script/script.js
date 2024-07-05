@@ -198,7 +198,7 @@ document.framework.addHandler = (object, event, handler, useCapture) => {
         name = 'window';
     } else if (object == document) {
         name = 'document';
-    } else if (object == documnt.body) {
+    } else if (object == document.body) {
         name = 'body';
     } else if (object.name) {
         name = object.name;
@@ -206,6 +206,8 @@ document.framework.addHandler = (object, event, handler, useCapture) => {
         name = object.id;
     } else if (object.tag) {
         name = object.tag;
+    } else {
+        name = object.toString();
     }
     document.framework.log(`document.framework.addHandler(${name}, ${event})`);
     if (object.addEventListener) {
