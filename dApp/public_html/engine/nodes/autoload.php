@@ -44,8 +44,8 @@ $_SERVER["DIR"] = str_replace("/cron.php", "",
 $_SERVER["PUBLIC_URL"] = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$_SERVER["DIR"];
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]);
 require_once('engine/core/engine.php');
-die("1");
 require_once('engine/nodes/session.php');
+die('2');
 if (!file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/nodes/config.php")
     && !file_exists("engine/nodes/config.php")
 ) {
