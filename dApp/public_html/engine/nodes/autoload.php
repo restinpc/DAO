@@ -44,7 +44,6 @@ $_SERVER["DIR"] = str_replace("/cron.php", "",
 $_SERVER["PUBLIC_URL"] = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$_SERVER["DIR"];
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]);
 require_once('engine/core/engine.php');
-require_once('engine/nodes/session.php');
 if (!file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/nodes/config.php")
     && !file_exists("engine/nodes/config.php")
 ) {
@@ -103,6 +102,7 @@ foreach ($files as $file) {
         }
     }
 }
+require_once('engine/nodes/session.php');
 if (strpos($_GET[0], "robots.txt") !== FALSE) {
     $_GET[0] = str_replace("robots.txt", "robots.php", $_GET[0]);
 }
