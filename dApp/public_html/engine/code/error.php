@@ -8,8 +8,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/session.php");
-
 $fout = '
 <style>
 #div{

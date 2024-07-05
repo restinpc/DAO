@@ -8,7 +8,9 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/session.php");
+require_once("engine/nodes/header.php");
+
+header("Content-Type: image/gif");
 
 $W = 600;       // Width
 $H = 300;       // Height
@@ -31,7 +33,7 @@ $county = 10;   // Lines count
 * @usage <code> engine::draw_line($image, 0, 0, 100, 100, 0xf00, 20); </code>
 */
 function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1){
-    array_push($_SERVER["CONSOLE"], "draw_line(..)");
+    engine::log('attandance.draw_line()');
     $t = $thick / 2 - 0.5;
     if ($x1 == $x2 || $y1 == $y2) {
         return imagefilledrectangle(
@@ -196,6 +198,5 @@ while ($i > $X0) {
     }
     $i -= $RW / $count;
 }
-header("Content-Type: image/gif");
 imagegif($im);
 imagedestroy($im);

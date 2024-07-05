@@ -8,8 +8,6 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require_once("engine/nodes/session.php");
-
 if (!isset($_SERVER["CRON"])) {
     $_SESSION["display"] = "1";
     $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `token` = "'.session_id().'"';

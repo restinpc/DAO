@@ -12,8 +12,6 @@
 * @usage <code> engine::print_cart(1); </code>
 */
 
-require_once("engine/nodes/session.php");
-
 function print_cart($count) {
     $fout = '<div class="buy_cart">
         <div id="nodes_cart" class="'.($count > 0 ? '' : 'hidden').'" onClick=\'document.framework.showOrder();\'>

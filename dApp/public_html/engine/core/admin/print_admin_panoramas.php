@@ -1039,7 +1039,7 @@ function print_admin_panoramas($cms) {
                    $id("add_new_scene_button").style.display="none";
                    $id("level_plan").style.display="block";
                    try{ $id("listing").style.display="none"; }catch(e) {}
-                   document.framework.admin.showLevelPlan();\'
+                   document.admin.showLevelPlan();\'
                 />
                 <div id="level_plan">
                     '.engine::pano_level_plan($level_id).'

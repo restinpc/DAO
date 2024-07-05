@@ -134,7 +134,7 @@ function print_admin_users($cms) {
                     $id("delete_value").value="'.$data["id"].'";
                     $id("delete_form").submit();
                 } else if (this.value == "5") {
-                    document.framework.admin.newTransaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
+                    document.admin.newTransaction('.$data["id"].', "'.engine::lang("Transfer amount").'");
                 }
             } else {
                 this.selectedIndex=0;

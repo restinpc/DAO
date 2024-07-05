@@ -7,22 +7,20 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!document.framework) {
-    document.framework = {};
-}
-document.framework.admin = {
+document.admin = {
     camera: null
 }
 
 /**
  * Submits page meta information from admin.
  */
-document.framework.admin.editSeo = (id) => {
-    jQuery('#button_'+id).css("opacity","0.5");
-    const title = jQuery("#page-title-"+id).val();
-    const description = jQuery("#page-desc-"+id).val();
-    const keywords = jQuery("#page-keywords-"+id).val();
-    const mode = jQuery("#mode_"+id).val();
+document.admin.editSeo = (id) => {
+    document.framework.log(`document.admin.editSeo(${id})`);
+    jQuery('#button_'+id).css("opacity", "0.5");
+    const title = jQuery("#page-title-" + id).val();
+    const description = jQuery("#page-desc-" + id).val();
+    const keywords = jQuery("#page-keywords-" + id).val();
+    const mode = jQuery("#mode_" + id).val();
     jQuery.ajax({
         type:"POST",
         data: {
@@ -34,8 +32,9 @@ document.framework.admin.editSeo = (id) => {
         },
         url: document.framework.rootDir + "/bin.php",
         success: () => {
-            jQuery('#button_'+id).css("opacity","1");
-            jQuery('#button_'+id).css("display","none");
+            document.framework.log(`document.admin.editSeo(${id}).success()`);
+            jQuery('#button_' + id).css("opacity","1");
+            jQuery('#button_' + id).css("display","none");
         }
     });
 }
@@ -48,10 +47,11 @@ document.framework.admin.editSeo = (id) => {
  * @param {string} shipment Text of button 1.
  * @param {string} soldout Text of button 2.
  */
-document.framework.admin.confirmOrder = (id, text, shipment, soldout) =>{
-    alertify.prompt('<h3>'+text+'</h3><br/>', (e, str) => {
+document.admin.confirmOrder = (id, text, shipment, soldout) => {
+    document.framework.log(`document.admin.confirmOrder(${id})`);
+    alertify.prompt('<h3>' + text + '</h3><br/>', (e, str) => {
         if (e) {
-            alertify.confirm('<h3>'+shipment+'</h3><br/>'+soldout+'<br/><br/>',
+            alertify.confirm('<h3>' + shipment + '</h3><br/>' + soldout + '<br/><br/>',
                 (e, str1) => {
                     if (e) {
                         jQuery.ajax({
@@ -59,6 +59,7 @@ document.framework.admin.confirmOrder = (id, text, shipment, soldout) =>{
                             data: { "order_id" : id, "status" : "0", "track" : str },
                             url: document.framework.rootDir + "/bin.php",
                             success: () => {
+                                document.framework.log(`document.admin.confirmOrder(${id}).success()`);
                                 window.location = document.framework.rootDir + "/admin/?mode=orders";
                             }
                         });
@@ -68,6 +69,7 @@ document.framework.admin.confirmOrder = (id, text, shipment, soldout) =>{
                             data: { "order_id" : id, "status" : "1", "track" : str },
                             url: document.framework.rootDir + "/bin.php",
                             success: () => {
+                                document.framework.log(`document.admin.confirmOrder(${id}).success()`);
                                 window.location = document.framework.rootDir + "/admin/?mode=orders";
                             }
                         });
@@ -85,12 +87,14 @@ document.framework.admin.confirmOrder = (id, text, shipment, soldout) =>{
  * @param {int} id @mysql[nodes_product]->id.
  * @param {int} pos Number of picture in product image list.
  */
-document.framework.admin.deleteImage = (id, pos) => {
+document.admin.deleteImage = (id, pos) => {
+    document.framework.log(`document.admin.deleteImage(${id}, ${pos})`);
     jQuery.ajax({
         type: "POST",
         data: {	"product_id" : id, "pos" : pos },
         url: document.framework.rootDir + "/bin.php",
         success: () => {
+            document.framework.log(`document.admin.deleteImage(${id}, ${pos}).success()`);
             document.getElementById("edit_product_form").submit();
         }
     });
@@ -102,14 +106,16 @@ document.framework.admin.deleteImage = (id, pos) => {
  * @param {int} id Target @mysql[nodes_user]->id.
  * @param {int} pos Text of message.
  */
-document.framework.admin.newTransaction = (id, text) => {
-    alertify.prompt('<h3>'+text+'</h3><br/>', (e, str) => {
+document.admin.newTransaction = (id, text) => {
+    document.framework.log(`document.admin.newTransaction(${id})`);
+    alertify.prompt('<h3>' + text + '</h3><br/>', (e, str) => {
         if (e) {
             jQuery.ajax({
                 type: "POST",
                 data: {"user_id": id, "transaction" : str },
                 url: document.framework.rootDir + "/bin.php",
                 success: (data) => {
+                    document.framework.log(`document.admin.newTransaction(${id}).success()`);
                     alert(data);
                     window.location.reload();
                 }
@@ -124,8 +130,9 @@ document.framework.admin.newTransaction = (id, text) => {
  * @param {int} id @mysql[nodes_product]->id.
  * @param {string} text Text of message.
  */
-document.framework.admin.archiveOrder = (id, text) => {
-    alertify.confirm('<h3>'+text+'?<br/><br/>',
+document.admin.archiveOrder = (id, text) => {
+    document.framework.log(`document.admin.archiveOrder(${id})`);
+    alertify.confirm('<h3>' + text + '?<br/><br/>',
         (e, str1) => {
             if (e) {
                 jQuery.ajax({
@@ -133,6 +140,7 @@ document.framework.admin.archiveOrder = (id, text) => {
                     data: { "archive_id" : id },
                     url: document.framework.rootDir + "/bin.php",
                     success: () => {
+                        document.framework.log(`document.admin.archiveOrder(${id}).success()`);
                         window.location = document.framework.rootDir + "/admin/?mode=orders";
                     }
                 });
@@ -141,17 +149,18 @@ document.framework.admin.archiveOrder = (id, text) => {
     "");
 }
 
-document.framework.admin.handleDragStart = (e) => {
+document.admin.handleDragStart = (e) => {
+    document.framework.log(`document.admin.handleDragStart()`);
     e.dataTransfer.effectAllowed = 'move';
     let dragIcon = new Image();
     try {
         dragIcon.src = e.srcElement.src;
-        document.framework.admin.camera = e.srcElement.id;
+        document.admin.camera = e.srcElement.id;
     } catch(x) {
         dragIcon.src = e.target.src;
-        document.framework.admin.camera = e.target.id;
+        document.admin.camera = e.target.id;
     }
-    $id(document.framework.admin.camera).style.opacity = "0.1";
+    $id(document.admin.camera).style.opacity = "0.1";
     dragIcon.width = 20;
     dragIcon.height = 20;
     try {
@@ -159,37 +168,42 @@ document.framework.admin.handleDragStart = (e) => {
     } catch(x){}
 }
 
-document.framework.admin.handleDragDrop = (e) => {
-    let camera = $id(document.framework.admin.camera);
+document.admin.handleDragDrop = (e) => {
+    document.framework.log(`document.admin.handleDragDrop()`);
+    let camera = $id(document.admin.camera);
     camera.style.opacity = "1";
     camera.style.top = parseInt(camera.style.top)+parseInt(e.layerY)+"px";
     camera.style.left = parseInt(camera.style.left)+parseInt(e.layerX)+"px";
     let elems = document.getElementsByClassName("dragable");
     let fout = '';
-    for(let i = 0; i < elems.length; i++){
+    for (let i = 0; i < elems.length; i++) {
         let elem = elems[i];
         if (fout != '') {
             fout += ',';
         }
-        fout += '{"id":"'+elem.getAttribute("g")+'", "t":"'+(parseInt(elem.style.top)-elem.getAttribute("t"))+'", "l":"'+(parseInt(elem.style.left)-elem.getAttribute("l"))+'"}';
+        fout += '{"id":"'
+            + elem.getAttribute("g")
+            + '", "t":"'
+            + (parseInt(elem.style.top) - elem.getAttribute("t"))
+            + '", "l":"'
+            + (parseInt(elem.style.left) - elem.getAttribute("l"))
+            + '"}';
     }
-    fout = '{"points":['+fout+"]}";
+    fout = '{"points":[' + fout + "]}";
     $id("points_json").value = fout;
 }
 
-document.framework.admin.allowDrop = (ev) => {
-  ev.preventDefault();
-}
-
-document.framework.admin.levelApplyChages = () => {
-    let transform = "rotate("+parseInt($id("level_plan_rotation").value)+"deg) scale("+$id("level_plan_scale").value+")";
+document.admin.levelApplyChages = () => {
+    document.framework.log(`document.admin.levelApplyChages()`);
+    let transform = "rotate(" + parseInt($id("level_plan_rotation").value) + "deg) scale(" + $id("level_plan_scale").value + ")";
     $id("level_plan_img").style.transform = transform;
 }
 
-document.framework.admin.showLevelPlan = () => {
+document.admin.showLevelPlan = () => {
+    document.framework.log(`document.admin.showLevelPlan()`);
     let data = document.getElementsByClassName("dragable");
     for (let i = 0; i < data.length; i++) {
-        document.framework.addHandler(data[i], 'dragstart', document.framework.admin.handleDragStart, false);
-        document.framework.addHandler(data[i], 'dragend', document.framework.admin.handleDragDrop, false);
+        document.framework.addHandler(data[i], 'dragstart', document.admin.handleDragStart, false);
+        document.framework.addHandler(data[i], 'dragend', document.admin.handleDragDrop, false);
     }
 }

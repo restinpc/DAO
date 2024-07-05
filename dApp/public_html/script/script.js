@@ -48,20 +48,35 @@ document.framework.confirmed = false;
 */
 document.framework.log = (text) => {
     text = `${typeof(text) === "string" ? text : JSON.stringify(text)}`;
-    document.framework.traceStack.push(`${new Date().toLocaleString()} log ${text}`);
+    let d = new Date();
+    let date = d.getFullYear()
+        + "-" + ("0" + (d.getMonth()+1)).slice(-2) 
+        + "-"
+        + ("0" + d.getDate()).slice(-2) 
+        + " " 
+        + ("0" + d.getHours()).slice(-2)
+        + ":"
+        + ("0" + d.getMinutes()).slice(-2)
+        + ":"
+        + ("0" + d.getSeconds()).slice(-2);
+    if (document.framework.traceStack[date + '.000000']) {
+        let flag = 0;
+        let i = 1;
+        do {
+            let n = '000000';
+            n = n.substr(0, 6 - (i.toString().length)) + i.toString();
+            if (!document.framework.traceStack[date + '.' + n]) {
+                document.framework.traceStack[date + '.' + n] = text;
+                flag = 1;
+            } else {
+                i++;
+            }
+        } while(!flag);
+    } else {
+        document.framework.traceStack[date + '.000000'] = text;
+    }
     if (document.framework.DEBUG){
         console.log(text);
-    }
-}
-
-/**
-* Console error function wrapper
-*/
-document.framework.error = (text) => {
-    text = `${typeof(text) === "string" ? text : JSON.stringify(text)}`;
-    document.framework.traceStack.push(`${new Date().toLocaleString()} error ${text}`);
-    if (document.framework.DEBUG){
-        console.error(text);
     }
 }
 
@@ -74,8 +89,8 @@ document.framework.display = () => {
 }
 
 document.framework.confirmAlive = () => {
-    document.framework.log(`document.framework.confirmAlive()`);
     if (!document.framework.confirmed) {
+        document.framework.log(`document.framework.confirmAlive()`);
         document.framework.confirmed = true;
         setTimeout(() => {
             jQuery.ajax({
@@ -178,7 +193,21 @@ document.framework.getViewportWidth = () => {
 * @usage <code> document.framework.addHandler(window, "resize", resize_footer); </code>
 */
 document.framework.addHandler = (object, event, handler, useCapture) => {
-    document.framework.log(`document.framework.getViewportWidth(${object.name}, ${event})`);
+    let name = '';
+    if (object == window) {
+        name = 'window';
+    } else if (object == document) {
+        name = 'document';
+    } else if (object == documnt.body) {
+        name = 'body';
+    } else if (object.name) {
+        name = object.name;
+    } else if (object.id) {
+        name = object.id;
+    } else if (object.tag) {
+        name = object.tag;
+    }
+    document.framework.log(`document.framework.addHandler(${name}, ${event})`);
     if (object.addEventListener) {
         object.addEventListener(event, handler, useCapture ? useCapture : false);
     } else if (object.attachEvent) {
@@ -646,8 +675,8 @@ document.framework.goto_page = (page) => {
 /**
 * Initialize admin functions.
 */
-document.framework.admin_init = () => {
-    document.framework.log(`document.framework.admin_init()`);
+document.framework.adminInit = () => {
+    document.framework.log(`document.framework.adminInit()`);
     let js = document.createElement("script");
     js.type = "text/javascript";
     js.src = document.framework.rootDir + "/script/admin.js";
@@ -1138,5 +1167,25 @@ document.panorama.scaleMap = () => {
     let size = width > height ? height : width;
     let scale = size / 650;
     $id("map_iframe").style.scale = scale;
-}       
+}
+
+/**
+* Method to get backend trace logs.
+*/
+document.framework.getLogs = () => {
+    document.framework.log(`document.framework.getLogs()`);
+    jQuery.ajax({
+        type: "GET",
+        url: document.framework.rootDir + "/log.php",
+        success: (data) => {
+            document.framework.log(`document.framework.getLogs().success()`);
+            let logs = {...document.framework.traceStack, ...JSON.parse(data)};
+            const fout = {};
+            Object.keys(logs).sort().forEach((key) => {
+                fout[key] = logs[key];
+            });
+            console.error(fout);
+        }
+    });
+}
 }

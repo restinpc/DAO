@@ -83,7 +83,7 @@ function admin($site) {
         $site->content .= '<div class="admin_content">
             '.$this->content.'
         </div>';
-        $site->onload .= 'document.framework.admin_init(); '.$this->onload;
+        $site->onload .= 'document.framework.adminInit(); '.$this->onload;
     } else {
         $this->content = engine::error(401);
     }

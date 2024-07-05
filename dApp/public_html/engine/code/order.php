@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 echo '<!DOCTYPE html>
 <html>

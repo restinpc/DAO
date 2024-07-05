@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 header('Content-Type: application/json; charset=utf-8');
 $query = 'SELECT * FROM nodes_relations';

@@ -12,9 +12,6 @@
 * @usage <code> engine::print_comments("/"); </code>
 */
 
-require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
-
 function print_comment($id, $noreply = 0) {
     $fout = '';
     $fout1 = '';

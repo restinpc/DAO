@@ -324,7 +324,7 @@ function print_admin_products($cms) {
                         . '<img id="img-product-'.$i.'" class="img" src="'.$_SERVER["DIR"].'/img/data/thumb/'.$img.'" onClick=\'select_image("'.$i.'", "'.$img.'");\'/><br/>
                         <div id="div-product-'.$i.'" class="new_small_photo" onClick=\'document.framework.showPhotoEditor('.$product["id"].', '.$i.');\' > </div>';
                     if ($i > 1) {
-                        $fout .= '<input id="product-delete-'.$product["id"].'" class="btn small del_button" type="button" value="'.engine::lang("Delete").'" onClick=\'document.framework.admin.deleteImage("'.$product["id"].'", "'.$i.'");\' />';
+                        $fout .= '<input id="product-delete-'.$product["id"].'" class="btn small del_button" type="button" value="'.engine::lang("Delete").'" onClick=\'document.admin.deleteImage("'.$product["id"].'", "'.$i.'");\' />';
                     }
                     $fout .= '</td>';
                 }

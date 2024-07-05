@@ -197,7 +197,7 @@ function print_admin_pages($cms) {
             </td>
             <td width=40 align=left valign=middle>';
         if ($admin_access == 2) {
-            $table .= '<input id="button_'.$data["id"].'" type="button" onClick=\'document.framework.admin.editSeo("'.intval($data["id"]).'");\' class="btn small hidden" value="&#10004;" />';
+            $table .= '<input id="button_'.$data["id"].'" type="button" onClick=\'document.admin.editSeo("'.intval($data["id"]).'");\' class="btn small hidden" value="&#10004;" />';
         }
         $table .= '
             </td>

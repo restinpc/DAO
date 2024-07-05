@@ -8,8 +8,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/session.php");
-
 if (!empty($_GET["invoice_id"]) && !empty($_POST["mc_gross"])) {
     $amount = floatval($_POST["mc_gross"]);
     $invoice_id = intval($_GET["invoice_id"]);

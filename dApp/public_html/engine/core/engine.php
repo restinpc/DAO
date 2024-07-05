@@ -24,7 +24,7 @@ class engine {
 * </code>
 */
 public static function __callStatic($name, $arguments) {
-    array_push($_SERVER["CONSOLE"], "engine::".$name);
+    engine::log('engine::'.$name.'('.json_decode($arguments).')');
     $exec = function_exists($name);
     if (!$exec && !empty($_SERVER["CORE_PATH"])) {
         if (is_file('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php')) {
@@ -106,6 +106,24 @@ public static function __callStatic($name, $arguments) {
     }
 }
 
+static function log($text) {
+    if (!empty($_SESSION["LOG"][date("Y-m-d H:i:s").'.000000'])) {
+        $flag = 0;
+        $i = 1;
+        do {
+            $n = substr('000000', 0, 6 - strlen($i)).$i;
+            if (empty($_SESSION["LOG"][date("Y-m-d H:i:s").'.'.$n])) {
+                $_SESSION["LOG"][date("Y-m-d H:i:s").'.'.$n] = $text;
+                $flag = 1;
+            } else {
+                $i++;
+            }
+        } while(!$flag);
+    } else {
+        $_SESSION["LOG"][date("Y-m-d H:i:s").'.000000'] = $text;
+    }
+}
+
 static function lang($key) {
     if ($_SESSION["Lang"] && $_SESSION["Lang"] == "en") {
         return $key;
@@ -149,7 +167,7 @@ static function href($url) {
 * @usage <code> engine::error(401); </code>
 */
 static function error($error_code = '0') {
-    array_push($_SERVER["CONSOLE"], "engine::error(".$error_code.")");
+    engine::log('engine::error('.$error_code.')');
     $my_error = mysqli_error($_SERVER["sql_connection"]);
     $query = 'SELECT `value` FROM `nodes_config` WHERE `name` = "debug"';
     $res = self::mysql($query);
@@ -161,7 +179,7 @@ static function error($error_code = '0') {
         echo "\n"."----------------------------------------"."\n"."MySQL:"."\n";
         print_r($my_error);
         echo "\n"."----------------------------------------"."\n"."Console:"."\n";
-        print_r($_SERVER["CONSOLE"]);
+        print_r($_SESSION["LOG"]);
         echo "\n"."----------------------------------------"."\n";
     }
     if ($error_code != 0) {
@@ -237,7 +255,7 @@ static function error($error_code = '0') {
 * </code>
 */
 static function mysql($query) {
-    array_push($_SERVER["CONSOLE"], "engine::mysql(".str_replace('"', '\"', $query).")");
+    engine::log('engine::mysql('.str_replace('"', '\"', $query).')');
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error(500));
@@ -245,6 +263,7 @@ static function mysql($query) {
 }
 
 static function escape_string($string) {
+    engine::log("engine::escape_string(".$string.")");
     return strip_tags(mysqli_real_escape_string($_SERVER["sql_connection"], trim($string)));
 }
 
@@ -261,7 +280,7 @@ static function escape_string($string) {
 * </code>
 */
 static function send_mail($email, $header, $theme, $message) {
-    array_push($_SERVER["CONSOLE"], 'engine::send_mail("'.$email.'", "'.$header.'", "'.$theme.'")');
+    engine::log('engine::send_mail('.$email.', '.$header.', '.$theme.')');
     $text = "To: ".$email."\n";
     $text .= "Theme: ".$theme."\n";
     $text .= "Text: ".$message;
@@ -283,7 +302,7 @@ static function send_mail($email, $header, $theme, $message) {
 * @usage <code> engine::url_translit("Hello world!"); </code>
 */
 static function url_translit($str) {
-    array_push($_SERVER["CONSOLE"], 'engine::url_translit("'.$str.'")');
+    engine::log('engine::url_translit("'.$str.'")');
     $translit = array(
         "А"=>"A", "Б"=>"B", "В"=>"V", "Г"=>"G", "Д"=>"D", "Е"=>"E", "Ж"=>"J",
         "З"=>"Z", "И"=>"I", "Й"=>"Y", "К"=>"K", "Л"=>"L", "М"=>"M", "Н"=>"N",
@@ -309,8 +328,8 @@ static function url_translit($str) {
 * @return string Returns result of request.
 * @usage <code> engine::curl_get_query("http://google.com"); </code>
 */
-static function curl_get_query($url, $format=0) {
-    array_push($_SERVER["CONSOLE"], "engine::curl_get_query(".$url.")");
+static function curl_get_query($url, $format = 0) {
+    engine::log('engine::curl_get_query('.$url.')');
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -347,8 +366,8 @@ static function curl_get_query($url, $format=0) {
 * @return string Returns result of request.
 * @usage <code> engine::curl_post_query("http://google.com", 'foo=1&bar=2'); </code>
 */
-static function curl_post_query($url, $query, $format=0) {
-    array_push($_SERVER["CONSOLE"], "engine::curl_post_query(".$url.")");
+static function curl_post_query($url, $query, $format = 0) {
+    engine::log('engine::curl_post_query('.$url.', '.$query.')');
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -379,13 +398,13 @@ static function curl_post_query($url, $query, $format=0) {
 }
 
 static function redirect($url) {
-    array_push($_SERVER["CONSOLE"], "engine::redirect");
+    engine::log('engine::redirect('.$url.')');
     header( 'Location: '.$url );
     die('<script>window.location = "'.$url.'";</script>');
 }
 
 static function encode_password($password) {
-    array_push($_SERVER["CONSOLE"], "engine::encode_password(".$password.")");
+    engine::log('engine::encode_password('.$password.')');
     return password_hash($password, PASSWORD_BCRYPT, [
         'cost' => 11,
         'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
@@ -393,7 +412,7 @@ static function encode_password($password) {
 }
 
 static function match_passwords($password, $hashed_password) {
-    array_push($_SERVER["CONSOLE"], "engine::match_passwords(".$password.", ".$hashed_password.")");
+    engine::log('engine::match_passwords('.$password.', '.$hashed_password.')');
     return password_verify($password, $hashed_password);
 }
 }

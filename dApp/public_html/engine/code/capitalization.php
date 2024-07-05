@@ -10,6 +10,7 @@
 
 require_once("engine/nodes/config2.php");
 
+header('Content-Type: application/json; charset=utf-8');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Request-Method: GET, OPTIONS");
 header("Access-Control-Allow-Headers: *");

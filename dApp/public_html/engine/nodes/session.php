@@ -14,6 +14,12 @@ $session_lifetime = 2592000;
 session_set_cookie_params($session_lifetime, '/', '.'.$_SERVER["HTTP_HOST"]);
 session_name('token');
 session_start();
+if (strpos($_SERVER["REQUEST_URI"], ".php") === false && !isset($_POST["jQuery"])) {
+    $_SESSION["LOG"] = array();
+} else if (!is_array($_SESSION["LOG"])) {
+    $_SESSION["LOG"] = array();
+}
+engine::log($_SERVER["SCRIPT_URI"]);
 $_SESSION["user"] = array();
 $query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0, 1';
 $res = engine::mysql($query);
@@ -44,7 +50,7 @@ if (empty($_SESSION["user"]) || !intval($_SESSION["user"]["id"])) {
     }
 }
 if (!empty($_SESSION["user"]["id"])) {
-    $query = 'UPDATE `nodes_user` SET `online`='.date("U").' WHERE `id` = '.intval($_SESSION["user"]["id"]);
+    $query = 'UPDATE `nodes_user` SET `online` = '.date("U").' WHERE `id` = '.intval($_SESSION["user"]["id"]);
     engine::mysql($query);
 }
 if (!empty($_POST["template"])) {

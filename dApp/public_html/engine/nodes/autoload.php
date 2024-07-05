@@ -9,10 +9,20 @@
 */
 
 error_reporting(0);
-date_default_timezone_set('UTC');
+ini_set('error_reporting', 0);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+ini_set("upload_max_filesize", "1024M");
+ini_set("post_max_size", "1024M");
+ini_set("max_input_time", "180");
+ini_set("max_execution_time", "180");
+ini_set("mbstring.func_overload", "2");
 $GLOBALS["time"] = floatval(microtime(1));
 $_SERVER["PROTOCOL"] = "https";
 $_SESSION["display"] = 0;
+if (function_exists("date_default_timezone_set")) {
+    date_default_timezone_set('UTC');
+}
 if (!isset($_SERVER["SCRIPT_URI"])) {
     $_SERVER["SCRIPT_URI"] = '';
 }
@@ -27,7 +37,6 @@ if (!isset($_GET[0])) {
 }
 $_SERVER["SCRIPT_URI"] = str_replace("http://", "https://", $_SERVER["SCRIPT_URI"]);
 $_SERVER["PROTOCOL"] = "https";
-$_SERVER["CONSOLE"] = array();
 $_SERVER["DIR"] = str_replace("/cron.php", "",
     str_replace("index.php", "", str_replace("/index.php", "",
     str_replace($_SERVER["DOCUMENT_ROOT"], "", $_SERVER["SCRIPT_FILENAME"])))
@@ -35,6 +44,7 @@ $_SERVER["DIR"] = str_replace("/cron.php", "",
 $_SERVER["PUBLIC_URL"] = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$_SERVER["DIR"];
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]);
 require_once('engine/core/engine.php');
+require_once('engine/nodes/session.php');
 if (!file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/nodes/config.php")
     && !file_exists("engine/nodes/config.php")
 ) {
@@ -109,7 +119,6 @@ if (!empty($_GET[0]) && strpos($_GET[0], ".php") && (
 ) {
     die(require_once ("engine/code/".$_GET[0]));
 } else {
-    require_once("engine/nodes/session.php");
     if (!isset($_POST) && !strpos($_SERVER["REQUEST_URI"], "lang=".$_SESSION["Lang"])) {
         if (!empty($_SESSION["Lang"]) && $_SESSION["Lang"] != "ru") {
             $url = $_SERVER["REQUEST_URI"];

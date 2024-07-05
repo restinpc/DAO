@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 if (empty($_SESSION["user"]["email"])) {
     die(engine::error(401));

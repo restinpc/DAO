@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"])) {
     $email = urldecode($_GET["email"]);

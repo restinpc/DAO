@@ -9,10 +9,8 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 if (strpos($_SERVER["REQUEST_URI"], ".xml") === false) {
-    header('Content-Type: text/html; charset=utf-8');
     echo '<!DOCTYPE html>
 <html>
 <head>

@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 $query = 'SELECT value FROM `nodes_config` WHERE `name` = "telegram_url"';
 $res = engine::mysql($query);

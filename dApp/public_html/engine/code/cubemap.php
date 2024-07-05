@@ -8,9 +8,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
-
 $side = $_GET["name"];
 $image_parts = explode(";base64,", $_POST["url"]);
 if (intval($_GET["img_id"]) > 0) {

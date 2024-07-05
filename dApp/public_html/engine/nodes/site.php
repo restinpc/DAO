@@ -21,9 +21,8 @@ public $debug;
 * Output HTML data of website or die with error.
 */
 function __construct() {
-    array_push($_SERVER["CONSOLE"], "new site()");
+    engine::log("site.__construct()");
     require_once("engine/nodes/headers.php");
-    require_once("engine/nodes/session.php");
     require_once("engine/nodes/config.php");
     $this->keywords = array();
     $this->onload = '';
@@ -240,31 +239,31 @@ function __construct() {
 <style>.material-icons{ visibility:hidden; }</style>';
 if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
-        if (!document.framework) {
-            document.framework = {};
+    if (!document.framework) {
+        document.framework = {};
+    }
+    document.framework.rootDir = "'.$_SERVER["DIR"].'";
+    document.framework.preload = () => {
+        if (!document.framework.preloaded) {
+            '.$this->onload.';
+            document.framework.preloaded = 1;
         }
-        document.framework.rootDir = "'.$_SERVER["DIR"].'";
-        document.framework.preload = () => {
-            if (!document.framework.preloaded) {
-                '.$this->onload.';
-                document.framework.preloaded = 1;
-            }
-        }
-    </script>
-    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
-    <script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
-    <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" />
-    <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
-    <link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
-    <style>
-        @font-face {
-            font-family: "Material Icons";
-            font-style: normal;
-            font-weight: 400;
-            src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
-        }
-    </style>';
+    }
+</script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" />
+<link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
+<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
+<style>
+    @font-face {
+        font-family: "Material Icons";
+        font-style: normal;
+        font-weight: 400;
+        src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
+    }
+</style>';
 }
 $fout .= '</head>
 <body style="display: none;" class="nodes">
@@ -296,14 +295,14 @@ $fout .= '</head>
     $data = mysqli_fetch_array($res);
     if ($data["value"] == "1") {
         $fout .= '<script type="text/javascript">
-                if (window.jQuery) {
-                    jQuery.ajax({
-                        url: "'.$_SERVER["DIR"].'/cron.php",
-                        async: true,
-                        type: "GET"
-                    });
-                }
-            </script>';
+            if (window.jQuery) {
+                jQuery.ajax({
+                    url: "'.$_SERVER["DIR"].'/cron.php",
+                    async: true,
+                    type: "GET"
+                });
+            }
+        </script>';
     }
     if (!isset($_POST["jQuery"])) {
         $fout .= '<script>
@@ -318,13 +317,7 @@ $fout .= '</head>
                 '.$this->onload.'
             </script>';
     }
-    if ($this->configs["debug"]) {
-        $fout .= '<script type="text/javascript">';
-        foreach ($_SERVER["CONSOLE"] as $value) {
-            $fout .= 'console.log("'.$value.'");'."\r\n";
-        }
-        $fout .= '</script>';
-    }
+    die($fout);
     if ($this->configs["compress"] || $_POST["nocache"]) {
         $search = array('#>[\s]+<#si', '#>[\s]+([^\s]+)#si', '#([^\s]+)[\s]+<#si');
         $replace = array('> <', '> $1', '$1 <');

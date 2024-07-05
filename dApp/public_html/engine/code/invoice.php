@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 if (!empty($_GET["id"])) {
     $id = intval($_GET["id"]);

@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 class site { public $content; }
 $_SESSION["redirect"] = $_SERVER["SCRIPT_URI"];

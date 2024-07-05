@@ -9,7 +9,6 @@
 */
 
 require_once("engine/nodes/headers.php");
-require_once("engine/nodes/session.php");
 
 if (!empty($_GET["file"]) && $_SESSION["user"]["admin"] == "1") {
     echo '<!DOCTYPE html>

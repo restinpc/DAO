@@ -10,9 +10,7 @@
 
 set_time_limit(60);
 ini_set('max_execution_time', "60");
-require_once("engine/nodes/headers.php");
 require_once("engine/nodes/mysql.php");
-require_once("engine/nodes/session.php");
 
 $_SERVER["CRON"] = 1;
 $flag = 0;

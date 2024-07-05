@@ -11,8 +11,6 @@
 * @usage <code> engine::print_uploader(); </code>
 */
 
-require_once ("engine/nodes/session.php");
-
 function print_uploader() {
     $fout = '<div id="new_img1" class="uploader">
         <input type="hidden" id="result_file1" name="file1" value="" />

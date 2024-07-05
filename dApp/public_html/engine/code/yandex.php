@@ -8,8 +8,6 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/session.php");
-
 $validate = $_POST["notification_type"].'&'
     .$_POST["operation_id"].'&'
     .$_POST["amount"].'&'
