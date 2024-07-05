@@ -19,6 +19,7 @@ if (strpos($_SERVER["REQUEST_URI"], ".php") === false && !isset($_POST["jQuery"]
 } else if (!is_array($_SESSION["LOG"])) {
     $_SESSION["LOG"] = array();
 }
+die('4');
 engine::log($_SERVER["SCRIPT_URI"]);
 $_SESSION["user"] = array();
 $query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0, 1';
