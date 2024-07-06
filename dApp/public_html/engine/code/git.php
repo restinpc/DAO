@@ -13,6 +13,11 @@ $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
 $git = $data["value"];
 $url = parse_url($git);
+if ($_SESSION["Lang"] == "en") {
+    $git .= "?lang=en-US";
+} else if ($_SESSION["Lang"] == "zh") {
+    $git .= "?lang=zh-CN";
+}
 $content = engine::curl_get_query($git);
 $content = str_replace('<link rel="shortcut icon" href="/img/favicon.png" />', '<link rel="shortcut icon" href="'.$_SERVER["PUBLIC_URL"].'/res/files/favicon.png" />', $content);
 $content = str_replace('<link rel="stylesheet" href="/css/index.css', '<link rel="stylesheet" href="'.$_SERVER["PUBLIC_URL"].'/res/files/index.css', $content);

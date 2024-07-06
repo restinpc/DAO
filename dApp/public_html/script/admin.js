@@ -35,6 +35,10 @@ document.admin.editSeo = (id) => {
             document.framework.log(`document.admin.editSeo(${id}).success()`);
             jQuery('#button_' + id).css("opacity","1");
             jQuery('#button_' + id).css("display","none");
+        },
+        error: (response, exception) => {
+            document.framework.ajaxError(`document.admin.editSeo(${id})`, response, exception);
+            document.framework.submitTraceStack();
         }
     });
 }
@@ -56,21 +60,29 @@ document.admin.confirmOrder = (id, text, shipment, soldout) => {
                     if (e) {
                         jQuery.ajax({
                             type: "POST",
-                            data: { "order_id" : id, "status" : "0", "track" : str },
+                            data: { "order_id": id, "status": "0", "track": str },
                             url: document.framework.rootDir + "/bin.php",
                             success: () => {
-                                document.framework.log(`document.admin.confirmOrder(${id}).success()`);
+                                document.framework.log(`document.admin.confirmOrder(${id}, true).success()`);
                                 window.location = document.framework.rootDir + "/admin/?mode=orders";
+                            },
+                            error: (response, exception) => {
+                                document.framework.ajaxError(`document.admin.confirmOrder(${id}, true)`, response, exception);
+                                document.framework.submitTraceStack();
                             }
                         });
                     } else {
                         jQuery.ajax({
                             type: "POST",
-                            data: { "order_id" : id, "status" : "1", "track" : str },
+                            data: { "order_id": id, "status": "1", "track": str },
                             url: document.framework.rootDir + "/bin.php",
                             success: () => {
-                                document.framework.log(`document.admin.confirmOrder(${id}).success()`);
+                                document.framework.log(`document.admin.confirmOrder(${id}, false).success()`);
                                 window.location = document.framework.rootDir + "/admin/?mode=orders";
+                            },
+                            error: (response, exception) => {
+                                document.framework.ajaxError(`document.admin.confirmOrder(${id}, false)`, response, exception);
+                                document.framework.submitTraceStack();
                             }
                         });
                     }
@@ -91,11 +103,15 @@ document.admin.deleteImage = (id, pos) => {
     document.framework.log(`document.admin.deleteImage(${id}, ${pos})`);
     jQuery.ajax({
         type: "POST",
-        data: {	"product_id" : id, "pos" : pos },
+        data: {	"product_id": id, "pos": pos },
         url: document.framework.rootDir + "/bin.php",
         success: () => {
             document.framework.log(`document.admin.deleteImage(${id}, ${pos}).success()`);
             document.getElementById("edit_product_form").submit();
+        },
+        error: (response, exception) => {
+            document.framework.ajaxError(`document.admin.deleteImage(${id}, ${pos})`, response, exception);
+            document.framework.submitTraceStack();
         }
     });
 }
@@ -112,12 +128,16 @@ document.admin.newTransaction = (id, text) => {
         if (e) {
             jQuery.ajax({
                 type: "POST",
-                data: {"user_id": id, "transaction" : str },
+                data: { "user_id": id, "transaction" : str },
                 url: document.framework.rootDir + "/bin.php",
                 success: (data) => {
                     document.framework.log(`document.admin.newTransaction(${id}).success()`);
                     alert(data);
                     window.location.reload();
+                },
+                error: (response, exception) => {
+                    document.framework.ajaxError(`document.admin.newTransaction(${id})`, response, exception);
+                    document.framework.submitTraceStack();
                 }
             });
         }
@@ -137,11 +157,15 @@ document.admin.archiveOrder = (id, text) => {
             if (e) {
                 jQuery.ajax({
                     type: "POST",
-                    data: { "archive_id" : id },
+                    data: { "archive_id": id },
                     url: document.framework.rootDir + "/bin.php",
                     success: () => {
                         document.framework.log(`document.admin.archiveOrder(${id}).success()`);
                         window.location = document.framework.rootDir + "/admin/?mode=orders";
+                    },
+                    error: (response, exception) => {
+                        document.framework.ajaxError(`document.admin.archiveOrder(${id})`, response, exception);
+                        document.framework.submitTraceStack();
                     }
                 });
             }

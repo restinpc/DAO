@@ -71,9 +71,9 @@ function admin($site) {
         if (!empty($_GET["mode"])) {
             $this->title = engine::lang(ucfirst($_GET["mode"]));
             $function = 'print_admin_'.$_GET["mode"];
-            $site->content = '<div class="profile_menu fs10">
-                <div class="container">'.engine::print_admin_navigation($this).'</div>
-            </div>';
+            $site->content = '<div class="profile_menu fs9">
+                    <div class="container">'.engine::print_admin_navigation($this).'</div>
+                </div>';
         } else {
             $this->title = engine::lang("Admin");
             $function = 'print_admin';
@@ -81,9 +81,11 @@ function admin($site) {
         $this->content = engine::$function($this);
         $site->title = $this->title." - ".$site->title;
         $site->content .= '<div class="admin_content">
-            '.$this->content.'
-        </div>';
-        $site->onload .= 'document.framework.adminInit(); '.$this->onload;
+                '.$this->content.'
+            </div>';
+        $site->onload .= ' document.framework.adminInit();'
+            . ' document.framework.browserTime();'
+            . $this->onload;
     } else {
         $this->content = engine::error(401);
     }

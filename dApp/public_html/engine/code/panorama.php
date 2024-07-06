@@ -462,13 +462,13 @@ echo '<!DOCTYPE html>
             const scene = $id("nodes_scene");
             scene.addEventListener("enter-vr", () => {
                 try {
-                    parent.document.panorama.permission();
-                    parent.document.panorama.fullScreen();
+                    parent.document.framework.permission();
+                    parent.document.framework.fullScreen();
                 } catch (e) {}
             });
             scene.addEventListener("exit-vr", () => {
                 try {
-                    parent.document.panorama.hideFullScreen();
+                    parent.document.framework.hideFullScreen();
                 } catch (e) {}
             });
             '.$onload.' 

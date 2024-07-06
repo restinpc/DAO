@@ -10,6 +10,7 @@
 if (!document.uploader) {
     window.alert("Uploader not initialized");
 } else {
+    
 document.uploader.posX = 30;
 document.uploader.posY = 30;
 document.uploader.fx = 0;

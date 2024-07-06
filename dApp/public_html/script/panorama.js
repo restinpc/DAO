@@ -528,7 +528,12 @@ document.panorama.resetSceneObjects = (id) => {
             data: { "scene_reset" : id },
             url: document.framework.rootDir + "/bin.php",
             success: () => {
+                document.framework.log(`document.panorama.resetSceneObjects(${id}).success()`);
                 window.location.reload();
+            },
+            error: (response, exception) => {
+                document.framework.ajaxError(`document.panorama.resetSceneObjects(${id})`, response, exception);
+                document.framework.submitTraceStack();
             }
         });
     }
@@ -581,6 +586,7 @@ document.panorama.loadScene = (id, object_id) => {
         } catch(e) {}
     }
     /*
+    // Camera moving animation
     let camera = document.getElementById("camera").object3D.getWorldPosition(new THREE.Vector3());
     let rig = document.getElementById("rig").object3D.position;
     try {
@@ -626,6 +632,7 @@ document.panorama.loadScene = (id, object_id) => {
         data: {	"scene" : id },
         url: document.framework.rootDir + "/bin.php",
         success: (data) => {
+            document.framework.log(`document.panorama.loadScene(${id}, ${object_id}).success()`);
             const json = JSON.parse(data);
             const new_scene = json.children[0].children[0];
             $id("nodes_scene").setAttribute("scene-id", new_scene["scene-id"]);
@@ -671,6 +678,10 @@ document.panorama.loadScene = (id, object_id) => {
                 jQuery(".vr_hidden").attr("opacity", "1");
                 jQuery(".hidden_layer").attr("opacity", "0");
             }, 1000 - (parseInt(new Date().getTime()) - nav_time));
+        },
+        error: (response, exception) => {
+            document.framework.ajaxError(`document.panorama.loadScene(${id}, ${object_id})`, response, exception);
+            document.framework.submitTraceStack();
         }
     });
 }

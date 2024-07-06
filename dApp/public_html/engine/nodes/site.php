@@ -243,6 +243,7 @@ if (!isset($_POST["jQuery"])) {
         document.framework = {};
     }
     document.framework.rootDir = "'.$_SERVER["DIR"].'";
+    document.framework.blackBox = "'.$this->configs["exceptions_handler"].'";
     document.framework.preload = () => {
         if (!document.framework.preloaded) {
             '.$this->onload.';

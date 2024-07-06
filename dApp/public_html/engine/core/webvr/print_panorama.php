@@ -24,8 +24,8 @@
 
 function print_panorama($site) {
     $site->onload .= '
-        window.addEventListener("resize", document.panorama.scaleMap);
-        document.panorama.scaleMap();
+        window.addEventListener("resize", document.framework.scaleMap);
+        document.framework.scaleMap();
     ';
     $fout = '<iframe id="panorama" src="'.$_SERVER["DIR"].'/panorama.php?id=1#1.7188733853924727;167.87663397333137" class="app"></iframe>
     <div id="map_frame">
@@ -33,13 +33,13 @@ function print_panorama($site) {
         <iframe id="map_iframe" sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" src="'.$_SERVER["DIR"].'/level.php?id=1" width=600 height=600></iframe>
     </div>
     <button class="map icon" id="map">
-        <img id="map_icon" src="'.$_SERVER["DIR"].'/img/vr/map.png" width="100%" onClick="document.panorama.showMap();" /> 
+        <img id="map_icon" src="'.$_SERVER["DIR"].'/img/vr/map.png" width="100%" onClick="document.framework.showMap();" /> 
     </button>
     <button class="vr icon" id="vr">
-        <img id="icon vr_icon" src="'.$_SERVER["DIR"].'/img/vr/vr.png" width="100%" onClick="document.panorama.vrMode();" /> 
+        <img id="icon vr_icon" src="'.$_SERVER["DIR"].'/img/vr/vr.png" width="100%" onClick="document.framework.vrMode();" /> 
     </button>
     <button class="icon" id="fullscreen">
-        <img id="fullscreen_icon" src="'.$_SERVER["DIR"].'/img/vr/fullscreen.png" width="100%" onClick="document.panorama.toggleScreen();" /> 
+        <img id="fullscreen_icon" src="'.$_SERVER["DIR"].'/img/vr/fullscreen.png" width="100%" onClick="document.framework.toggleScreen();" /> 
     </button>';
     return $fout;
 }

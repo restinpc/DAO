@@ -247,7 +247,7 @@ function print_admin_perfomance($cms) {
         $avg_val = $sum / $c;
         $table = '';
         foreach ($pages as $page => $count) {
-            $query = 'SELECT `url` FROM `nodes_cache` WHERE `id` = "'.$page.'"';
+            $query = 'SELECT `url`, `lang` FROM `nodes_cache` WHERE `id` = "'.$page.'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             if ($count > $avg_val) {
@@ -255,7 +255,11 @@ function print_admin_perfomance($cms) {
             } else {
                 $color = 'blue';
             }
-            $table .= '<tr><td align=left><a id="link-'.$page.'" href="'.$data["url"].'" class="'.$color.'" target="_blank">'.$data["url"].'</a></td>'
+            $url = $data["url"];
+            if ($data["lang"] != "ru") {
+                $url .= '?lang='.$data["lang"];
+            }
+            $table .= '<tr><td align=left><a id="link-'.$page.'" href="'.$data["url"].'" class="'.$color.'" target="_blank">'.$url.'</a></td>'
                     . '<td>'.$count.' '.engine::lang("seconds").'</td></tr>';
         }
         $table = '<div class="table">
