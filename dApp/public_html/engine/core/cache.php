@@ -44,15 +44,12 @@ public static function update_cache($url, $jQuery = 0, $lang="en") {
     } else {
         $fout='<!DOCTYPE'.$c[1];
     }
-    if (!empty($content)) {
-        $html = str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($html)));
-        $content = str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($content)));
-        $query = 'UPDATE `nodes_cache` SET `html` = "'.$html.'", '
+    if (!empty($content)) {$query = 'UPDATE `nodes_cache` SET `html` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($html))).'", '
             . '`date` = "'.date("U").'", '
             . '`title` = "'.$title.'", '
             . '`description` = "'.$description.'", '
             . '`keywords` = "'.$keywords.'", '
-            . '`content` = "'.$content.'", '
+            . '`content` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($content))).'", '
             . '`time` = "'.$load_time.'" '
             . 'WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
         engine::mysql($query);
