@@ -1199,10 +1199,7 @@ document.framework.scaleSlider = () => {
         }else {
             window.setTimeout(document.framework.scaleSlider, 30);
         }
-    } catch(e) {
-        console.error(e.message);
-        // document.framework.throw(`document.framework.scaleSlider()`, e);
-    }
+    } catch(e) {}
 }
 
 /**
@@ -1246,17 +1243,12 @@ document.framework.showRotator = (obj) => {
     }
     try {
         document.framework.scaleSlider();
-    } catch(e) {
-        console.error(e.message);
-    }
-    try {
         document.framework.addHandler(window, "load", document.framework.scaleSlider);
         document.framework.addHandler(window, "resize", document.framework.scaleSlider);
         document.framework.addHandler(window, "orientationchange", document.framework.scaleSlider);
         initPhotoSwipeFromDOM(obj);
     } catch(e) {
-        console.error(e.message);
-        ///document.framework.throw(`document.framework.showRotator()`, e);
+        document.framework.throw(`document.framework.showRotator()`, e);
     }
 }
 
@@ -1532,7 +1524,7 @@ document.framework.submitTraceStack = () => {
             url: document.framework.rootDir + "/trace.php",
             data: { "logs": logs },
             success: () => {
-                window.location = document.framework.rootDir + "/error.php?500=1";
+                // window.location = document.framework.rootDir + "/error.php?500=1";
             },
             error: (response, exception) => {
                 document.framework.ajaxError('document.framework.submitTraceStack()', response, exception);
@@ -1545,14 +1537,14 @@ document.framework.submitTraceStack = () => {
                         processData: false,
                         dataType: 'json',
                         success: () => {
-                            window.location = document.framework.rootDir + "/error.php?500=1";
+                            // window.location = document.framework.rootDir + "/error.php?500=1";
                         },
                         error: () => {
-                            window.location = document.framework.rootDir + "/error.php?500=1";
+                            // window.location = document.framework.rootDir + "/error.php?500=1";
                         }
                     });
                 } else {
-                    window.location = document.framework.rootDir + "/error.php?500=1";
+                    // window.location = document.framework.rootDir + "/error.php?500=1";
                 }
             }
         });
