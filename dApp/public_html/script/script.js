@@ -727,7 +727,7 @@ document.framework.goto = (href) => {
                             }
                             let url = jQuery(data).filter('link[itemprop="url"]');
                             console.error(url);
-                            if (url) {
+                            if (url && url.length) {
                                 history.replaceState({}, null, url[0].getAttribute("href"));
                             }
                             setTimeout(document.framework.ajaxing, 1);
