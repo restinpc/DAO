@@ -239,6 +239,13 @@ function __construct() {
     }
     document.framework.rootDir = "'.$_SERVER["DIR"].'";
     document.framework.blackBox = "'.$_SERVER["configs"]["exceptions_handler"].'";
+    document.framework.preload = () => {
+        if (!document.framework.preloaded) {
+            '.$this->onload.';
+            document.framework.handleUserEvents();
+            document.framework.preloaded = 1;
+        }
+    }
 </script>
 <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
 <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
@@ -262,15 +269,7 @@ function __construct() {
             $fout = '<title>'.$this->title.'</title>
     <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
         }
-        $fout .= '<script>  
-    document.framework.preload = () => {
-        if (!document.framework.preloaded) {
-            '.$this->onload.';
-            document.framework.handleUserEvents();
-            document.framework.preloaded = 1;
-        }
-    }
-</script>'.$this->content;
+        $fout .= $this->content;
         if (!empty($_SESSION["user"]["id"])) {
             $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
             $res = engine::mysql($query);
