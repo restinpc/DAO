@@ -15,7 +15,7 @@ if (!document.framework) {
 if (!document.framework.preload) {
     document.framework.preload = () => {}
 }
-document.framework.loading_stages = 5;
+document.framework.loading_stages = 6;
 document.framework.loading_state = 0;
 document.framework.preloaded = 0;
 document.framework.screenState = 0;
@@ -1247,7 +1247,7 @@ document.framework.showRotator = (obj) => {
         initPhotoSwipeFromDOM(obj);
     } catch(e) {
         console.error(e.message);
-        console.error(e.stack)
+        console.error(e.stack);
         ///document.framework.throw(`document.framework.showRotator()`, e);
     }
 }

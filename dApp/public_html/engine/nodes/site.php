@@ -247,6 +247,12 @@ function __construct() {
         }
     }
 </script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+<link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" />
+<link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
+<link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
 <style>
     @font-face {
         font-family: "Material Icons";
@@ -258,7 +264,7 @@ function __construct() {
             }
             $fout .= '</head>
 <body style="display: none;" class="nodes">
-    <img src="'.$loader.'" style="display:none;" width=64 height=64 alt="'.engine::lang("Loading").'" />';
+    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
         } else {
             $fout = '<title>'.$this->title.'</title>
     <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
@@ -293,17 +299,10 @@ function __construct() {
             </script>';
         }
         if (!isset($_POST["jQuery"])) {
-            $fout .= '
-    <script src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-    <script src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'
-        document.framework.loadSite();
+            $fout .= '<script>
         document.framework.timeout = setTimeout(document.framework.display, 5000);
         window.onload = document.framework.loadSite;
-    \'></script>
-    <script src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
-    <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" />
-    <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
-    <link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
+    </script>
 </body>
 </html>';
         } else {
