@@ -1247,6 +1247,7 @@ document.framework.showRotator = (obj) => {
         initPhotoSwipeFromDOM(obj);
     } catch(e) {
         console.error(e.message);
+        console.error(e.stack)
         ///document.framework.throw(`document.framework.showRotator()`, e);
     }
 }
