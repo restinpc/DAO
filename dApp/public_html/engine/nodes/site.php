@@ -247,9 +247,6 @@ function __construct() {
         }
     }
 </script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
 <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" />
 <link href="'.$_SERVER["DIR"].'/template/'.$template.'/template.css" rel="stylesheet" type="text/css" as="style" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
 <link rel="preload" href="'.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\' />
@@ -299,7 +296,11 @@ function __construct() {
             </script>';
         }
         if (!isset($_POST["jQuery"])) {
-            $fout .= '<script>
+            $fout .= '
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+    <script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$template.'/template.js" type="text/javascript" as="script" crossorigin="anonymous" onLoad=\'document.framework.loadSite();\'></script>
+    <script>
         document.framework.timeout = setTimeout(document.framework.display, 5000);
         window.onload = document.framework.loadSite;
     </script>
