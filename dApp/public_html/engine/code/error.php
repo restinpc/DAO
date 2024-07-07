@@ -10,6 +10,9 @@
 
 $fout = '
 <style>
+html {
+    background: rgb(26, 29, 29);
+}
 #div{
     text-align: center; 
     color: #2e3137;  

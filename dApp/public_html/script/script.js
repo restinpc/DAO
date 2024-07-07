@@ -703,8 +703,7 @@ document.framework.goto = (href) => {
                 document.framework.window_state = 1;
                 jQuery("#content").animate({opacity: 0}, 100);
                 let to = setTimeout(() => {
-                    jQuery("#content").html(error);
-                    jQuery("#content").animate({opacity: 1}, 300);
+                    window.location = document.framework.rootDir + "/error.php";
                 }, 30000);
                 let anchor = '';
                 let details = href.split('#');
