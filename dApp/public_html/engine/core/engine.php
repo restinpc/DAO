@@ -275,7 +275,11 @@ static function mysql($query, $throw = 1) {
     engine::log('engine::mysql('.str_replace('"', '\"', $query).')');
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
-    $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error());
+    if ($throw) {
+        $res = mysqli_query($_SERVER["sql_connection"], $query) or engine::throw($query.' -> '.mysqli_error($_SERVER["sql_connection"]));
+    } else {
+        $res = mysqli_query($_SERVER["sql_connection"], $query) or throw new Error($_SERVER["sql_connection"]);
+    }
     return $res;
 }
 
