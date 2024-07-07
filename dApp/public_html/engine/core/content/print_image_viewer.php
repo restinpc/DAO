@@ -56,7 +56,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
     }
     if (!empty($gallery)) {
         $fout = $text.'
-        <div class="nodes_gallery hidden" data-jssor-slider="1" itemscope itemtype="https://schema.org/ImageGallery">
+        <div id="nodes_gallery" class="nodes_gallery hidden" data-jssor-slider="1" itemscope itemtype="https://schema.org/ImageGallery">
             '.$gallery.'
         </div>
         <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -94,7 +94,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
                 </div>
             </div>
         </div>';
-        $site->onload .= '; document.framework.showRotator(".nodes_gallery"); ';
+        $site->onload .= '; document.framework.showRotator("#nodes_gallery"); ';
         return $fout;
     } else {
         return $text;
