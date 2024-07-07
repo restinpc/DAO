@@ -1200,7 +1200,8 @@ document.framework.scaleSlider = () => {
             window.setTimeout(document.framework.scaleSlider, 30);
         }
     } catch(e) {
-        document.framework.throw(`document.framework.scaleSlider()`, e);
+        console.error(e.message);
+        // document.framework.throw(`document.framework.scaleSlider()`, e);
     }
 }
 
@@ -1241,17 +1242,20 @@ document.framework.showRotator = (obj) => {
             }
         });
     } catch(e) {
-        console.error("there");
+        console.error(e.message);
     }
     try {
         document.framework.scaleSlider();
+    } catch(e) {
+        console.error(e.message);
+    }
+    try {
         document.framework.addHandler(window, "load", document.framework.scaleSlider);
         document.framework.addHandler(window, "resize", document.framework.scaleSlider);
         document.framework.addHandler(window, "orientationchange", document.framework.scaleSlider);
         initPhotoSwipeFromDOM(obj);
     } catch(e) {
         console.error(e.message);
-        console.error(e.stack);
         ///document.framework.throw(`document.framework.showRotator()`, e);
     }
 }
