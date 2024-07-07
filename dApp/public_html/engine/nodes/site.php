@@ -231,9 +231,8 @@ function __construct() {
 <link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon.ico" type="image/x-icon" />
 <link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon-32x32.png" type="image/png" />
 <link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
-<style>.material-icons{ visibility:hidden; }</style>';
-            if (!isset($_POST["jQuery"])) {
-    $fout .= '<script>
+<style>.material-icons{ visibility:hidden; }</style>
+<script>
     if (!document.framework) {
         document.framework = {};
     }
@@ -260,14 +259,14 @@ function __construct() {
         font-weight: 400;
         src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
     }
-</style>';
-            }
-            $fout .= '</head>
+</style>
+</head>
 <body style="display: none;" class="nodes">
     <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
         } else {
             $fout = '<title>'.$this->title.'</title>
-    <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
+    <link rel="canonical" itemprop="url" href="'.$canonical.'" />
+    <script type="text/javascript">document.framework.loadEvents = false; '.$this->onload.' </script>';
         }
         $fout .= $this->content;
         if (!empty($_SESSION["user"]["id"])) {
@@ -305,8 +304,6 @@ function __construct() {
     </script>
 </body>
 </html>';
-        } else {
-            $fout .= '<script type="text/javascript">document.framework.loadEvents = false; '.$this->onload.' </script>';
         }
         if ($_SERVER["configs"]["compress"] || $_POST["nocache"]) {
             $search = array('#>[\s]+<#si', '#>[\s]+([^\s]+)#si', '#([^\s]+)[\s]+<#si');

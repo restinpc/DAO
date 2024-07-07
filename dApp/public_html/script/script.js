@@ -1238,9 +1238,7 @@ document.framework.showRotator = (obj) => {
               $Class: $JssorBulletNavigator$
             }
         });
-    } catch(e) {
-        console.error(e.message);
-    }
+    } catch(e) {}
     try {
         document.framework.scaleSlider();
         document.framework.addHandler(window, "load", document.framework.scaleSlider);
