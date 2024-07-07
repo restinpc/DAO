@@ -703,7 +703,7 @@ document.framework.goto = (href) => {
                 document.framework.window_state = 1;
                 jQuery("#content").animate({opacity: 0}, 100);
                 let to = setTimeout(() => {
-                    window.location = document.framework.rootDir + "/error.php";
+                    window.location = document.framework.rootDir + "/error.php?504=1";
                 }, 30000);
                 let anchor = '';
                 let details = href.split('#');
@@ -1933,7 +1933,7 @@ document.framework.submitTraceStack = () => {
             url: document.framework.rootDir + "/trace.php",
             data: { "logs": logs },
             success: () => {
-                console.log("Debug information successfully submitted");
+                window.location = document.framework.rootDir + "/error.php?500=1";
             },
             error: (response, exception) => {
                 document.framework.ajaxError('document.framework.submitTraceStack()', response, exception);
@@ -1946,18 +1946,14 @@ document.framework.submitTraceStack = () => {
                         processData: false,
                         dataType: 'json',
                         success: () => {
-                            console.log("Debug information successfully submitted");
+                            window.location = document.framework.rootDir + "/error.php?500=1";
                         },
-                        error: (response) => {
-                            if (response.responseText != 'Ok') {
-                                console.error("Unable to submit debug information. Black Box is not working");
-                            } else {
-                                console.log("Debug information successfully submitted");
-                            }
+                        error: () => {
+                            window.location = document.framework.rootDir + "/error.php?500=1";
                         }
                     });
                 } else {
-                    console.error("Unable to submit debug information. Black Box is not defined");
+                    window.location = document.framework.rootDir + "/error.php?500=1";
                 }
             }
         });

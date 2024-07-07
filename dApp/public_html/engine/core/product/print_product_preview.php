@@ -13,7 +13,6 @@
 * @var $site->description - Page meta description.
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
-* @var $site->configs - Array MySQL configs.
 *
 * @param object $site Site class object.
 * @param array $data @mysql[nodes_product].

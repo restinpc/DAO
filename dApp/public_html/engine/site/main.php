@@ -13,7 +13,6 @@
 * @var $this->description - Page meta description.
 * @var $this->img - Page meta image.
 * @var $this->onload - Page executable JavaScript code.
-* @var $this->configs - Array MySQL configs.
 */
 
 if (!empty($_GET[0])) {
@@ -22,10 +21,6 @@ if (!empty($_GET[0])) {
 }
 $this->title = "DAO";
 // $this->content .= engine::print_site_navigation(engine::lang("Project whitepaper"));
-$query = 'SELECT value FROM nodes_config WHERE name = "git"';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-$git = $data["value"];
 if ($_SESSION["Lang"] == "ru") {
     $this->description = 'Цель проекта - построить сообщество, объект недвижимости и цифровую инфраструктуру для комфортного существования участников согласно принципам DAO (децентрализованной автономной организации).';
     $this->keywords = array(
@@ -118,7 +113,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>Проектная область</h2>
         <a name="6"></a>
-        <p><a target="_blank" href="'.$git.'">Публичный DAO репозиторий</a></p>
+        <p><a target="_blank" href="'.$_SERVER["configs"]["git"].'">Публичный DAO репозиторий</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">Исходники макета здания</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">Демо-версия с поддержкой VR</a> </p>
         <br/>
@@ -212,7 +207,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>项目领域</h2>
         <a name="6"></a>
-        <p><a target="_blank" href="'.$git.'">公共 DAO 儲存庫</a></p>
+        <p><a target="_blank" href="'.$_SERVER["configs"]["git"].'">公共 DAO 儲存庫</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">建筑设计源文件</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">支持虚拟现实的演示版本</a> </p>
         <br/>
@@ -305,7 +300,7 @@ if ($_SESSION["Lang"] == "ru") {
         </p>
         <h2>Project Scope</h2>
         <a name="6"></a>
-        <p><a target="_blank" href="'.$git.'">Public DAO repository</a></p>
+        <p><a target="_blank" href="'.$_SERVER["configs"]["git"].'">Public DAO repository</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion">Mansion VR sources</a></p>
         <p><a target="_blank" href="https://github.com/restinpc/Mansion-build">Mansion VR demo version</a> </p>
         <br/>

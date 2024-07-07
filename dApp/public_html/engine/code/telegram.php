@@ -10,20 +10,11 @@
 
 require_once("engine/nodes/headers.php");
 
-$query = 'SELECT value FROM `nodes_config` WHERE `name` = "telegram_url"';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-$url = $data["value"];
-$query = 'SELECT value FROM `nodes_config` WHERE `name` = "telegram_name"';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-$name = $data["value"];
-
 echo '<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Telegram: Contact @'.$url.'</title>
+    <title>Telegram: Contact @'.$_SERVER["configs"]["telegram_url"].'</title>
     <script>window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement&&document.documentElement.classList&&document.documentElement.classList.add("theme_dark");</script>
     <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/bootstrap.min.css?3" rel="stylesheet">
     <link href="'.$_SERVER["PUBLIC_URL"].'/res/files/telegram.css?236" rel="stylesheet" media="screen">
@@ -37,20 +28,20 @@ echo '<!DOCTYPE html>
     <div class="tgme_body_wrap">
         <div class="tgme_page">
             <div class="tgme_page_photo">
-                <a href="tg://resolve?domain='.$url.'"><img class="tgme_page_photo_image" src="'.$_SERVER["DIR"].'/img/logo.png"></a>
+                <a href="tg://resolve?domain='.$_SERVER["configs"]["telegram_url"].'"><img class="tgme_page_photo_image" src="'.$_SERVER["DIR"].'/img/logo.png"></a>
             </div>
             <div class="tgme_page_title" dir="auto">
-                <span dir="auto">'.$name.'</span>
+                <span dir="auto">'.$_SERVER["configs"]["telegram_name"].'</span>
             </div>
             <div class="tgme_page_extra"></div>
             <div class="tgme_page_action">
-                <a class="tgme_action_button_new shine" target="_blank" href="https://t.me/'.$url.'">View in Telegram</a>
+                <a class="tgme_action_button_new shine" target="_blank" href="https://t.me/'.$_SERVER["configs"]["telegram_url"].'">View in Telegram</a>
             </div>
             <div class="tgme_page_action tgme_page_web_action">
-                <a class="tgme_action_button_new tgme_action_web_button" href="https://web.telegram.org/z/#?tgaddr=tg%3A%2F%2Fresolve%3Fdomain%3D'.$url.'" target="_blank"><span class="tgme_action_button_label">Open in Web</span></a>
+                <a class="tgme_action_button_new tgme_action_web_button" href="https://web.telegram.org/z/#?tgaddr=tg%3A%2F%2Fresolve%3Fdomain%3D'.$_SERVER["configs"]["telegram_url"].'" target="_blank"><span class="tgme_action_button_label">Open in Web</span></a>
             </div>
             <div class="tgme_page_additional">
-                If you have <strong>Telegram</strong>, you can view and join <br><strong>'.$name.'</strong> right away.
+                If you have <strong>Telegram</strong>, you can view and join <br><strong>'.$_SERVER["configs"]["telegram_name"].'</strong> right away.
             </div>
         </div>
     </div>

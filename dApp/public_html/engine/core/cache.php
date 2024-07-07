@@ -73,10 +73,7 @@ public static function update_cache($url, $jQuery = 0, $lang="en") {
 * $usage <code> $cache = new cache(); </code>
 */
 public function __construct() {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $is_cache = intval($data["value"]);
+    $is_cache = intval($_SERVER["configs"]["cache"]);
     $fout = '';
     if (empty($_POST) || !empty($_POST["cache"])) {
         $query = 'SELECT * FROM `nodes_cache` WHERE `url` LIKE "'.$_SERVER["SCRIPT_URI"].'" AND `lang` LIKE "'.$_SESSION["Lang"].'"';

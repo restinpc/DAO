@@ -56,10 +56,7 @@ function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1) {
 }
 
 if ($_SESSION["user"]["id"] != 1) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "lastreport"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if ($data["value"] >= date("U") - 26000) {
+    if (intval($_SERVER["configs"]["lastreport"]) >= date("U") - 26000) {
         die(engine::error(401));
     }
 }

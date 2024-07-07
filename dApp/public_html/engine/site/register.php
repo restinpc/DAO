@@ -13,7 +13,6 @@
 * @var $this->description - Page meta description.
 * @var $this->img - Page meta image.
 * @var $this->onload - Page executable JavaScript code.
-* @var $this->configs - Array MySQL configs.
 */
 
 if (!empty($_GET[1])) {
@@ -55,7 +54,7 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
         $telegram = strtolower(engine::escape_string($_POST["telegram"]));
         $code = mb_substr(md5(date("U")), 0, 4);
         $password = engine::encode_password(trim(strtolower($_POST["pass"])));
-        $confirm = !$this->configs["confirm_signup_email"];
+        $confirm = !$_SERVER["configs"]["confirm_signup_email"];
         $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
         $r = engine::mysql($query);
         $d = mysqli_fetch_array($r);
@@ -83,9 +82,9 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
             $d = mysqli_fetch_array($r);
             $data["session_id"] = $d["id"];
             $_SESSION["user"] = $data;
-            if ($this->configs["confirm_signup_email"]) {
+            if ($_SERVER["configs"]["confirm_signup_email"]) {
                 email::confirmation($email, $name, $code);
-            } else if ($this->configs["send_registration_email"]) {
+            } else if ($_SERVER["configs"]["send_registration_email"]) {
                 email::registration($email, $name);
             }
             if (empty($_SESSION["redirect"])) {

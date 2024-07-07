@@ -13,7 +13,6 @@
  * @var $this->description - Page meta description.
  * @var $this->img - Page meta image.
  * @var $this->onload - Page executable JavaScript code.
- * @var $this->configs - Array MySQL configs.
  */
 
 if (!empty($_GET[2])) {

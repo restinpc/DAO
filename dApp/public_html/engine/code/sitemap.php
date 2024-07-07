@@ -24,10 +24,7 @@ if (strpos($_SERVER["REQUEST_URI"], ".xml") === false) {
     <div class="content">
         <center><form method="POST" id="admin_lang_select" class="white">'.engine::lang("Select your language").': 
         <select id="select-lang" class="input" name="lang" onChange=\'document.getElementById("admin_lang_select").submit();\'>';
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $arr = explode(";", $data["value"]);
+    $arr = explode(";", $_SERVER["configs"]["languages"]);
     $fout = '';
     foreach ($arr as $value) {
         $value = trim($value);

@@ -4,15 +4,15 @@
 * @path /template/bootstrap/template.php
 *
 * @name    DAO Mansion    @version 1.0.3
-* @license http://www.apache.org/licenses/LICENSE-2.0 GNU Public License
+* @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
+* @license http://www.apache.org/licenses/LICENSE-2.0
 *
-* @var $this->title - Page title
-* @var $this->content - Page HTML data
-* @var $this->keywords - Array meta keywords
-* @var $this->description - Page meta description
-* @var $this->img - Page meta image
-* @var $this->onload - Page executable JavaScript code
-* @var $this->configs - Array MySQL configs
+* @var $this->title - Page title.
+* @var $this->content - Page HTML data.
+* @var $this->keywords - Array meta keywords.
+* @var $this->description - Page meta description.
+* @var $this->img - Page meta image.
+* @var $this->onload - Page executable JavaScript code.
 */
 
 if(!isset($_POST["jQuery"])){

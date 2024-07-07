@@ -109,7 +109,7 @@ FROM ewall_data as data
 WHERE data.user_id = 1
 ORDER BY data.id ASC';
 @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
-$res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error(500));
+$res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::error());
 $fout = array();
 while ($data = mysqli_fetch_array($res)) {
     array_push($fout, $data);

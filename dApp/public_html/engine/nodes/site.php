@@ -22,191 +22,186 @@ public $debug;
 */
 function __construct() {
     engine::log("site.__construct()");
-    require_once("engine/nodes/headers.php");
-    require_once("engine/nodes/config.php");
-    $this->keywords = array();
-    $this->onload = '';
-    $this->content = '';
-    $this->configs = array();
-    $this->debug = true;
-    $query = 'SELECT * FROM `nodes_config`';
-    $res = engine::mysql($query);
-    while ($data = mysqli_fetch_array($res)) {
-        $this->configs[$data["name"]] = $data["value"];
-    }
-    if ($this->configs["debug"] &&
-        empty($_SESSION["user"]["id"]) &&
-        empty($_POST["nocache"])) {
-        die(engine::error(204));
-    }
-    $config = array();
-    $_SESSION["temp_template"] = "";
-    $this->description = $this->configs["description"];
-    if (!empty($this->configs["name"])) {
-        $this->title = $this->configs["name"];
-    } else {
-        $this->title = $config["name"];
-    }
-    if (!empty($this->configs['image'])) {
-        if (strpos($this->configs["image"], "http") !== FALSE) {
-            $this->img = $this->configs["image"];
+    try {
+        require_once("engine/nodes/headers.php");
+        require_once("engine/nodes/config.php");
+        $this->keywords = array();
+        $this->onload = '';
+        $this->content = '';
+        $this->debug = true;
+        if ($_SERVER["configs"]["debug"] &&
+            empty($_SESSION["user"]["id"]) &&
+            empty($_POST["nocache"])) {
+            die(engine::error(204));
+        }
+        $config = array();
+        $_SESSION["temp_template"] = "";
+        $this->description = $_SERVER["configs"]["description"];
+        if (!empty($_SERVER["configs"]["name"])) {
+            $this->title = $_SERVER["configs"]["name"];
         } else {
-            if (strpos($this->configs["image"], $_SERVER["DIR"]) !== FALSE) {
-                $this->img = $_SERVER["PUBLIC_URL"].$this->configs["image"];
+            $this->title = $config["name"];
+        }
+        if (!empty($_SERVER["configs"]['image'])) {
+            if (strpos($_SERVER["configs"]["image"], "http") !== FALSE) {
+                $this->img = $_SERVER["configs"]["image"];
             } else {
-                if ($this->configs["image"][0] == "/") {
-                    $this->img = $_SERVER["PUBLIC_URL"].$this->configs["image"];
+                if (strpos($_SERVER["configs"]["image"], $_SERVER["DIR"]) !== FALSE) {
+                    $this->img = $_SERVER["PUBLIC_URL"].$_SERVER["configs"]["image"];
                 } else {
-                    $this->img = $_SERVER["PUBLIC_URL"].'/'.$this->configs["image"];
+                    if ($_SERVER["configs"]["image"][0] == "/") {
+                        $this->img = $_SERVER["PUBLIC_URL"].$_SERVER["configs"]["image"];
+                    } else {
+                        $this->img = $_SERVER["PUBLIC_URL"].'/'.$_SERVER["configs"]["image"];
+                    }
                 }
             }
-        }
-    } else {
-        $this->img = $_SERVER["PUBLIC_URL"].'/img/outro.jpg';
-    }
-    if (empty($_SESSION["REQUEST_URI"])) {
-        $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
-    }
-    if (empty($_SESSION["Lang"])) {
-        $_SESSION["Lang"] = $config["lang"];
-    }
-    if (!empty($_POST["from"])) {
-        $_SESSION["from"] = $_POST["from"];
-    }
-    if (!empty($_POST["to"])) {
-        $_SESSION["to"] = $_POST["to"];
-    }
-    if (!empty($_POST["count"])) {
-        $_SESSION["count"] = intval($_POST["count"]);
-    }
-    if (!empty($_POST["page"])) {
-        $_SESSION["page"] = intval($_POST["page"]);
-    }
-    if (!empty($_POST["method"])) {
-        $_SESSION["method"] = $_POST["method"];
-    }
-    if (!empty($_POST["order"])) {
-        $_SESSION["order"] = $_POST["order"];
-    }
-    if (empty($_SESSION["count"])) {
-        $_SESSION["count"] = 20;
-    }
-    if (empty($_SESSION["page"])) {
-        $_SESSION["page"] = 1;
-    }
-    if (empty($_SESSION["method"])) {
-        $_SESSION["method"] = "ASC";
-    }
-    if (empty($_SESSION["order"])) {
-        $_SESSION["order"] = "id";
-    }
-    if ($_SESSION["REQUEST_URI"] != $_SERVER["REQUEST_URI"]) {
-        $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
-        $_SESSION["count"] = 20;
-        $_SESSION["page"] = 1;
-        $_SESSION["method"] = "ASC";
-        $_SESSION["order"] = "id";
-    }
-    if (!isset($_POST["jQuery"])) {
-        unset($_SESSION["redirect"]);
-    }
-    if (!empty($_SESSION["user"]["id"])
-        && empty($_SESSION["user"]["email"]) 
-        && ($_GET[0] != "account" || $_GET[1] != "settings")
-    ) {
-        $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
-    } else {
-        if ($_GET[0] == "admin") {
-            $_SERVER["CORE_PATH"] = $_GET[0];
-            require_once("engine/nodes/admin.php");
-            new admin($this);
         } else {
-            $query = 'SELECT * FROM `nodes_backend` WHERE `mode` = "'.$_GET[0].'"';
-            $res = engine::mysql($query);
-            $object = mysqli_fetch_object($res);
-            if (!empty($object->file)) {
-                $_SERVER["CORE_PATH"] = $object->mode;
-                require_once("engine/site/".$object->file);
+            $this->img = $_SERVER["PUBLIC_URL"].'/img/outro.jpg';
+        }
+        if (empty($_SESSION["REQUEST_URI"])) {
+            $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
+        }
+        if (empty($_SESSION["Lang"])) {
+            $_SESSION["Lang"] = $config["lang"];
+        }
+        if (!empty($_POST["from"])) {
+            $_SESSION["from"] = $_POST["from"];
+        }
+        if (!empty($_POST["to"])) {
+            $_SESSION["to"] = $_POST["to"];
+        }
+        if (!empty($_POST["count"])) {
+            $_SESSION["count"] = intval($_POST["count"]);
+        }
+        if (!empty($_POST["page"])) {
+            $_SESSION["page"] = intval($_POST["page"]);
+        }
+        if (!empty($_POST["method"])) {
+            $_SESSION["method"] = $_POST["method"];
+        }
+        if (!empty($_POST["order"])) {
+            $_SESSION["order"] = $_POST["order"];
+        }
+        if (empty($_SESSION["count"])) {
+            $_SESSION["count"] = 20;
+        }
+        if (empty($_SESSION["page"])) {
+            $_SESSION["page"] = 1;
+        }
+        if (empty($_SESSION["method"])) {
+            $_SESSION["method"] = "ASC";
+        }
+        if (empty($_SESSION["order"])) {
+            $_SESSION["order"] = "id";
+        }
+        if ($_SESSION["REQUEST_URI"] != $_SERVER["REQUEST_URI"]) {
+            $_SESSION["REQUEST_URI"] = $_SERVER["REQUEST_URI"];
+            $_SESSION["count"] = 20;
+            $_SESSION["page"] = 1;
+            $_SESSION["method"] = "ASC";
+            $_SESSION["order"] = "id";
+        }
+        if (!isset($_POST["jQuery"])) {
+            unset($_SESSION["redirect"]);
+        }
+        if (!empty($_SESSION["user"]["id"])
+            && empty($_SESSION["user"]["email"]) 
+            && ($_GET[0] != "account" || $_GET[1] != "settings")
+        ) {
+            $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
+        } else {
+            if ($_GET[0] == "admin") {
+                $_SERVER["CORE_PATH"] = $_GET[0];
+                require_once("engine/nodes/admin.php");
+                new admin($this);
             } else {
-                if ($this->configs["default"] != "site.php") {
-                    $query = 'SELECT * FROM `nodes_backend` WHERE `file` = "'.$this->configs["default"].'"';
-                    $res = engine::mysql($query);
-                    $object = mysqli_fetch_object($res);
-                    if (!empty($object->file)) {
-                        $_SERVER["CORE_PATH"] = $object->mode;
-                        require_once("engine/site/".$object->file);
+                $query = 'SELECT * FROM `nodes_backend` WHERE `mode` = "'.$_GET[0].'"';
+                $res = engine::mysql($query);
+                $object = mysqli_fetch_object($res);
+                if (!empty($object->file)) {
+                    $_SERVER["CORE_PATH"] = $object->mode;
+                    require_once("engine/site/".$object->file);
+                } else {
+                    if ($_SERVER["configs"]["default"] != "site.php") {
+                        $query = 'SELECT * FROM `nodes_backend` WHERE `file` = "'.$_SERVER["configs"]["default"].'"';
+                        $res = engine::mysql($query);
+                        $object = mysqli_fetch_object($res);
+                        if (!empty($object->file)) {
+                            $_SERVER["CORE_PATH"] = $object->mode;
+                            require_once("engine/site/".$object->file);
+                        } else {
+                            $_SERVER["CORE_PATH"] = "profile";
+                            require_once("engine/site/profile.php");
+                        }
                     } else {
                         $_SERVER["CORE_PATH"] = "profile";
                         require_once("engine/site/profile.php");
                     }
-                } else {
-                    $_SERVER["CORE_PATH"] = "profile";
-                    require_once("engine/site/profile.php");
                 }
             }
+            require_once("template/".$_SESSION["template"]."/template.php");
+            $template = $_SESSION["template"];
         }
-        require_once("template/".$_SESSION["template"]."/template.php");
-        $template = $_SESSION["template"];
-    }
-    $canonical = $_SERVER["SCRIPT_URI"];
-    if ($_SESSION["Lang"] != "ru" && !strpos($canonical, "lang=".$_SESSION["Lang"])) {
-        if (strpos($canonical, '?')) {
-            $canonical .= '&lang='.$_SESSION["Lang"];
-        } else {
-            $canonical .= '?lang='.$_SESSION["Lang"];
-        }
-    } else if ($_SESSION["Lang"] == "ru") {
-        $canonical = str_replace("?lang=ru", "", $canonical);
-        $canonical = str_replace("&lang=ru", "", $canonical);
-    }
-    if (!isset($_POST["jQuery"])) {
-        $query = 'SELECT * FROM `nodes_meta` WHERE `url` LIKE "'.$_SERVER["SCRIPT_URI"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        $this->description = trim(strip_tags($this->description));
-        if (!empty($data)) {
-            if (!$data["mode"]) {
-                $this->description .= $data["description"];
-            } else if (!empty($data["description"])) {
-                $this->description = $data["description"];
-            }
-        }
-        if (strlen($this->description) > 198) {
-            $description = mb_substr($this->description, 0, 198);
-            $this->description = $description.(strcmp($description, $this->description) ? '..' : '');
-        }
-        $this->title = trim(strip_tags($this->title));
-        if (!empty($data)) {
-            if (!$data["mode"]) {
-                $this->title .= $data["title"];
-            } else if (!empty($data["title"])) {
-                $this->title = $data["title"];
-            }
-        }
-        if (strlen($this->title) > 100) {
-            $this->title = mb_substr($this->title, 0, 100).'..';
-        }
-        $keywords = "";
-        foreach ($this->keywords as $keyword) {
-            if (empty($keywords)) {
-                $keywords .= $keyword;
+        $canonical = $_SERVER["SCRIPT_URI"];
+        if ($_SESSION["Lang"] != "ru" && !strpos($canonical, "lang=".$_SESSION["Lang"])) {
+            if (strpos($canonical, '?')) {
+                $canonical .= '&lang='.$_SESSION["Lang"];
             } else {
-                $keywords .= ', '.$keyword;
+                $canonical .= '?lang='.$_SESSION["Lang"];
             }
+        } else if ($_SESSION["Lang"] == "ru") {
+            $canonical = str_replace("?lang=ru", "", $canonical);
+            $canonical = str_replace("&lang=ru", "", $canonical);
         }
-        $keywords = trim(strip_tags($keywords));
-        if (!empty($data)) {
-            if (!$data["mode"]) {
-                $keywords .= $data["keywords"];
-            } else if (!empty($data["keywords"])) {
-                $keywords = $data["keywords"];
+        if (!isset($_POST["jQuery"])) {
+            $query = 'SELECT * FROM `nodes_meta` WHERE `url` LIKE "'.$_SERVER["SCRIPT_URI"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
+            $res = engine::mysql($query);
+            $data = mysqli_fetch_array($res);
+            $this->description = trim(strip_tags($this->description));
+            if (!empty($data)) {
+                if (!$data["mode"]) {
+                    $this->description .= $data["description"];
+                } else if (!empty($data["description"])) {
+                    $this->description = $data["description"];
+                }
             }
-        }
-        if (strlen($keywords) > 300) {
-            $keywords = mb_substr($keywords, 0, 300) . '..';
-        }
-        $loader = $_SERVER["DIR"]."/img/load.gif";
-        $fout = '<!DOCTYPE html>
+            if (strlen($this->description) > 198) {
+                $description = mb_substr($this->description, 0, 198);
+                $this->description = $description.(strcmp($description, $this->description) ? '..' : '');
+            }
+            $this->title = trim(strip_tags($this->title));
+            if (!empty($data)) {
+                if (!$data["mode"]) {
+                    $this->title .= $data["title"];
+                } else if (!empty($data["title"])) {
+                    $this->title = $data["title"];
+                }
+            }
+            if (strlen($this->title) > 100) {
+                $this->title = mb_substr($this->title, 0, 100).'..';
+            }
+            $keywords = "";
+            foreach ($this->keywords as $keyword) {
+                if (empty($keywords)) {
+                    $keywords .= $keyword;
+                } else {
+                    $keywords .= ', '.$keyword;
+                }
+            }
+            $keywords = trim(strip_tags($keywords));
+            if (!empty($data)) {
+                if (!$data["mode"]) {
+                    $keywords .= $data["keywords"];
+                } else if (!empty($data["keywords"])) {
+                    $keywords = $data["keywords"];
+                }
+            }
+            if (strlen($keywords) > 300) {
+                $keywords = mb_substr($keywords, 0, 300) . '..';
+            }
+            $loader = $_SERVER["DIR"]."/img/load.gif";
+            $fout = '<!DOCTYPE html>
 <html itemscope itemtype="https://schema.org/WebSite" lang="'.$_SESSION["Lang"].'" style="background: #1a1d1d url('.$_SERVER["DIR"].$loader.') no-repeat center center fixed; min-height: 400px; background-size: 45px;">
 <head>
 <title>'.$this->title.'</title>
@@ -224,8 +219,8 @@ function __construct() {
 <meta property="og:description" content="'.str_replace('"', "", $this->description).'" />
 <meta property="og:url" content="'.$_SERVER["SCRIPT_URI"].'" />
 <meta name="keywords" itemprop="keywords" content="'.str_replace('"', "", $keywords).'" />
-<meta name="apple-mobile-web-app-title" content="'.$this->configs["name"].'" />
-<meta name="application-name" content="'.$this->configs["name"].'" />
+<meta name="apple-mobile-web-app-title" content="'.$_SERVER["configs"]["name"].'" />
+<meta name="application-name" content="'.$_SERVER["configs"]["name"].'" />
 <meta name="msapplication-config" content="'.$_SERVER["DIR"].'/favicon/browserconfig.xml" />
 <meta name="theme-color" content="#ffffff" />
 <meta name="copyright" content="Copyright '.$_SERVER["HTTP_HOST"].', '.date("Y").'" />
@@ -237,13 +232,13 @@ function __construct() {
 <link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon-32x32.png" type="image/png" />
 <link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
 <style>.material-icons{ visibility:hidden; }</style>';
-if (!isset($_POST["jQuery"])) {
+            if (!isset($_POST["jQuery"])) {
     $fout .= '<script>
     if (!document.framework) {
         document.framework = {};
     }
     document.framework.rootDir = "'.$_SERVER["DIR"].'";
-    document.framework.blackBox = "'.$this->configs["exceptions_handler"].'";
+    document.framework.blackBox = "'.$_SERVER["configs"]["exceptions_handler"].'";
     document.framework.preload = () => {
         if (!document.framework.preloaded) {
             '.$this->onload.';
@@ -266,65 +261,61 @@ if (!isset($_POST["jQuery"])) {
         src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
     }
 </style>';
-}
-$fout .= '</head>
-<body style="display: none;" class="nodes">
-<img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
-    } else {
-        $fout = '<title>'.$this->title.'</title>
-<link rel="canonical" itemprop="url" href="'.$canonical.'" />';
-    }
-    $fout .= $this->content;
-    if (!empty($_SESSION["user"]["id"])) {
-        $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
-        $res = engine::mysql($query);
-        $user = mysqli_fetch_array($res);
-        if ($user["ban"] == "1") {
-            unset($_SESSION["user"]);
-            die('<script type="text/javascript">
-                window.alert("'.engine::lang("Your account was banned").'");
-                parent.window.location = "'.$_SERVER["PUBLIC_URL"].'";
-            </script>');
-        } else {
-            $fout .= engine::print_new_message();
-        }
-    }
-    if (!empty($_POST["jQuery"])) {
-        $fout .= '<script>document.framework.loadSite();</script>';
-    }
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if ($data["value"] == "1") {
-        $fout .= '<script type="text/javascript">
-            if (window.jQuery) {
-                jQuery.ajax({
-                    url: "'.$_SERVER["DIR"].'/cron.php",
-                    async: true,
-                    type: "GET"
-                });
             }
-        </script>';
-    }
-    if (!isset($_POST["jQuery"])) {
-        $fout .= '<script>
-            document.framework.timeout = setTimeout(document.framework.display, 5000);
-            window.onload = document.framework.loadSite;
-        </script>
+            $fout .= '</head>
+<body style="display: none;" class="nodes">
+    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+        } else {
+            $fout = '<title>'.$this->title.'</title>
+    <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
+        }
+        $fout .= $this->content;
+        if (!empty($_SESSION["user"]["id"])) {
+            $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
+            $res = engine::mysql($query);
+            $user = mysqli_fetch_array($res);
+            if ($user["ban"] == "1") {
+                unset($_SESSION["user"]);
+                die('<script type="text/javascript">
+                    window.alert("'.engine::lang("Your account was banned").'");
+                    parent.window.location = "'.$_SERVER["PUBLIC_URL"].'";
+                </script>');
+            } else {
+                $fout .= engine::print_new_message();
+            }
+        }
+        if (!empty($_POST["jQuery"])) {
+            $fout .= '<script>document.framework.loadSite();</script>';
+        }
+        if ($_SERVER["configs"]["cron"] == "1") {
+            $fout .= '<script type="text/javascript">
+                if (window.jQuery) {
+                    jQuery.ajax({
+                        url: "'.$_SERVER["DIR"].'/cron.php",
+                        async: true,
+                        type: "GET"
+                    });
+                }
+            </script>';
+        }
+        if (!isset($_POST["jQuery"])) {
+            $fout .= '<script>
+        document.framework.timeout = setTimeout(document.framework.display, 5000);
+        window.onload = document.framework.loadSite;
+    </script>
 </body>
 </html>';
-    } else {
-        $fout .= '<script type="text/javascript">
-                document.framework.loadEvents = false;
-                '.$this->onload.'
-            </script>';
+        } else {
+            $fout .= '<script type="text/javascript">document.framework.loadEvents = false; '.$this->onload.' </script>';
+        }
+        if ($_SERVER["configs"]["compress"] || $_POST["nocache"]) {
+            $search = array('#>[\s]+<#si', '#>[\s]+([^\s]+)#si', '#([^\s]+)[\s]+<#si');
+            $replace = array('> <', '> $1', '$1 <');
+            $fout = preg_replace($search, $replace, $fout);
+        }
+        echo $fout;
+    } catch(Exception $e) {
+        engine::throw($e);
     }
-    die($fout);
-    if ($this->configs["compress"] || $_POST["nocache"]) {
-        $search = array('#>[\s]+<#si', '#>[\s]+([^\s]+)#si', '#([^\s]+)[\s]+<#si');
-        $replace = array('> <', '> $1', '$1 <');
-        $fout = preg_replace($search, $replace, $fout);
-    }
-    echo $fout;
 }
 }

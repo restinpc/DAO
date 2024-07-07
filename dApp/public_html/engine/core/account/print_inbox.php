@@ -13,7 +13,6 @@
 * @var $site->description - Page meta description.
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
-* @var $site->configs - Array MySQL configs.
 *
 * @param object $site Site class object.
 * @return string Returns content of page on success, or die with error.
@@ -27,7 +26,7 @@ function print_inbox($site, $target_id) {
         if (!$target_id) {
             $target_id = $_GET[2];
         }
-        if (!$site->configs["free_message"]) {
+        if (!$_SERVER["configs"]["free_message"]) {
             $query = 'SELECT COUNT(*) FROM `nodes_inbox` WHERE (`to` = "'.intval($target_id).'" AND `from` = "'.intval($_SESSION["user"]["id"]).'") OR '
                 . '(`from` = "'.intval($target_id).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
             $r = engine::mysql($query);
@@ -101,7 +100,7 @@ function print_inbox($site, $target_id) {
             $res = engine::mysql($query);
             $count = 0;
             while ($u = mysqli_fetch_array($res)) {
-                if (!$site->configs["free_message"]) {
+                if (!$_SERVER["configs"]["free_message"]) {
                     $query = 'SELECT COUNT(*) FROM `nodes_inbox` WHERE (`to` = "'.intval($u["id"]).'" AND `from` = "'.intval($_SESSION["user"]["id"]).'") OR '
                         . '(`from` = "'.intval($u["id"]).'" AND `to` = "'.intval($_SESSION["user"]["id"]).'")';
                     $r = engine::mysql($query);

@@ -19,10 +19,7 @@ function print_paypal_form($invoice_id, $sum, $return, $autopay=0) {
     if (empty($_SESSION["user"]["id"])) {
         return engine::error(401);
     }
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "paypal_test"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if ($data["value"]) {
+    if ($_SERVER["configs"]["paypal_test"]) {
         $domain = 'www.sandbox.paypal.com';
     } else { 
         $domain = 'www.paypal.com';
@@ -30,18 +27,10 @@ function print_paypal_form($invoice_id, $sum, $return, $autopay=0) {
     if (strpos("http", $return) != 0) {
         $return = $_SERVER["PROTOCOL"].'://'.$_SERVER['HTTP_HOST'].$_SERVER["DIR"].$return;
     }
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "paypal_id"';
-    $res = engine::mysql($query);
-    $paypal = mysqli_fetch_array($res);
-    $paypal_id = $paypal["value"];
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "payment_description"';
-    $res = engine::mysql($query);
-    $paypal = mysqli_fetch_array($res);
-    $paypal_desc = $paypal["value"];
     $fout .= '<form id="paypal_form" action="https://'.$domain.'/cgi-bin/webscr" method="post" target="_top" '.($autopay?' class="hidden"':'').'>			
         <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="'.$paypal_id.'">
-        <input type="hidden" name="item_name" value="'.$paypal_desc.'">
+        <input type="hidden" name="business" value="'.$_SERVER["configs"]["paypal_id"].'">
+        <input type="hidden" name="item_name" value="'.$_SERVER["configs"]["payment_description"].'">
         <input type="hidden" name="currency_code" value="USD">
         <input type="hidden" name="amount" value="'.floatval($sum).'">
         <input type="hidden" name="cancel_return" value="'.$return.'">

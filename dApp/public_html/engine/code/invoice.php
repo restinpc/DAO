@@ -12,10 +12,7 @@ require_once("engine/nodes/headers.php");
 
 if (!empty($_GET["id"])) {
     $id = intval($_GET["id"]);
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "sandbox"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $sandbox = intval($data["value"]);
+    $sandbox = intval($_SERVER["configs"]["sandbox"]);
     $query = 'SELECT * FROM `nodes_invoice` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -100,12 +97,6 @@ if (!empty($_GET["id"])) {
         }
         $options = 0;
         $payment = '';
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "yandex_money"';
-        $res = engine::mysql($query);
-        $yandex = mysqli_fetch_array($res);
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "paypal_id"';
-        $res = engine::mysql($query);
-        $paypal = mysqli_fetch_array($res);
         if ($data["order_id"] > 0) {
             $atb = $amount- $sum- $user["balance"];
         } else {
@@ -116,22 +107,22 @@ if (!empty($_GET["id"])) {
         } else if ($sum > 0) {
             $script = '<script>setTimeout(function() { window.location="'.$_SERVER["DIR"].'/invoice.php?id='.$id.'"; }, 30000);</script>';
             $status = '<span style="color:#00f;">'.engine::lang("Partially paid").'</span>';
-            if (!empty($paypal["value"])) {
+            if (!empty($_SERVER["configs"]["paypal_id"])) {
                 $payment .= engine::print_paypal_form($id, $atb, $_SERVER["PUBLIC_URL"].'/invoice.php?id='.$id);
                 $options++;
             }
-            if (!empty($yandex["value"])) {
+            if (!empty($_SERVER["configs"]["yandex_money"])) {
                 $options++;
                 $payment .= engine::print_yandex_form($id, $atb, $_SERVER["PUBLIC_URL"].'/invoice.php?id='.$id);
             }
         } else {
             $script = '<script>setTimeout(function() {window.location="'.$_SERVER["DIR"].'/invoice.php?id='.$id.'";}, 30000);</script>';
             $status = '<span style="color:#f00;">'.engine::lang("Pending payment").'</span>';
-            if (!empty($paypal["value"])) {
+            if (!empty($_SERVER["configs"]["paypal_id"])) {
                 $options++;
                 $payment .= engine::print_paypal_form($id, $atb, $_SERVER["PUBLIC_URL"].'/invoice.php?id='.$id);
             }
-            if (!empty($yandex["value"])) {
+            if (!empty($_SERVER["configs"]["yandex_money"])) {
                 $options++;
                 $payment .= engine::print_yandex_form($id, $atb, $_SERVER["PUBLIC_URL"].'/invoice.php?id='.$id);
             }
@@ -145,18 +136,18 @@ if (!empty($_GET["id"])) {
                     </form>';
                 } else {
                     if ($options == 1) {
-                        if (!empty($paypal["value"])) {
+                        if (!empty($_SERVER["configs"]["paypal_id"])) {
                             $button = '<br/><input id="make-payment-input" type="button" onClick=\'document.getElementById("paypal_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
-                        } else if (!empty($yandex["value"])) {
+                        } else if (!empty($_SERVER["configs"]["yandex_money"])) {
                             $button = '<br/><input id="make-payment-input" type="button" onClick=\'document.getElementById("yandex_form").submit();\' class="btn w280" value="'.engine::lang("Make payment").'" />';
                         }
                     } else {
                         $button = '<br/>
                             <select class="input w280" id="payment_method">';
-                        if (!empty($paypal["value"])) {
+                        if (!empty($_SERVER["configs"]["paypal_id"])) {
                             $button .= '<option id="option-paypal" value="paypal">PayPal</option>';
                         }
-                        if (!empty($yandex["value"])) {
+                        if (!empty($_SERVER["configs"]["yandex_money"])) {
                             $button .= '<option id="option-yandex" value="yandex">Yandex Money</option>';
                         }
                         $button .= '</select><br/>
@@ -179,16 +170,10 @@ if (!empty($_GET["id"])) {
         } else {
             $button = '<br/><a id="back-to-admin" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/admin').'" target="_top" class="btn w280">'.engine::lang("Back to admin").'</a>';
         }
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "invoice_image"';
-        $r = engine::mysql($query);
-        $d = mysqli_fetch_array($r);
-        if (!empty($d)) {
-            $logo = '<img src="'.$d["value"].'" />';
+        if (!empty($_SERVER["configs"]["invoice_image"])) {
+            $logo = '<img src="'.$_SERVER["configs"]["invoice_image"].'" />';
         } else {
-            $query = 'SELECT * FROM `nodes_config` WHERE `name` = "name"';
-            $r = engine::mysql($query);
-            $d = mysqli_fetch_array($r);
-            $logo = $d["value"];
+            $logo = $_SERVER["configs"]["name"];
         }
         $fout = '<!DOCTYPE html>
 <html>

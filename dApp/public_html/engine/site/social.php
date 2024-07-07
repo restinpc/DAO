@@ -13,7 +13,6 @@
 * @var $this->description - Page meta description.
 * @var $this->img - Page meta image.
 * @var $this->onload - Page executable JavaScript code.
-* @var $this->configs - Array MySQL configs.
 */
 
 if (!empty($_GET[2])) {
@@ -45,10 +44,7 @@ if (!empty($_GET[2])) {
         $this->description = "Публичная внутренняя конституция с принципами и правилами сообщества";
         $this->keywords = array("Общество", "Конституция", "Web 3.0", "Сообщество");
     }
-    $query = 'SELECT value FROM nodes_config WHERE name = "git"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $url = parse_url($data["value"]);
+    $url = parse_url($_SERVER["configs"]["git"]);
     $link = $url["scheme"].'://'.$url["host"].':'.$url["port"].'/restinpc/DAO/raw/branch/master/Rules/'.$_SESSION["Lang"].'.md';
     $content = engine::curl_get_query($link);
     $content = str_replace("  ", "<br/>", $content);

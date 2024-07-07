@@ -15,26 +15,18 @@
 * @usage <code> engine::print_yandex_form(1, 100, $_SERVER["PUBLIC_URL"]); </code>
 */
 
-function print_yandex_form($invoice_id, $sum, $return, $autopay=0) {
+function print_yandex_form($invoice_id, $sum, $return, $autopay = 0) {
     if (empty($_SESSION["user"]["id"])) {
         return engine::error(401);
     }
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "yandex_money"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $id = $data["value"];
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "payment_description"';
-    $res = engine::mysql($query);
-    $paypal = mysqli_fetch_array($res);
-    $paypal_desc = $paypal["value"];
     if (strpos("http", $return) !== false) {
         $return = $_SERVER["PUBLIC_URL"].$return;
     }
     $fout .= '
         <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml" id="yandex_form" target="_top">
-            <input type="hidden" name="receiver" value="'.$id.'">
-            <input type="hidden" name="formcomment" value="'.$paypal_desc.'">
-            <input type="hidden" name="short-dest" value="'.$paypal_desc.'">
+            <input type="hidden" name="receiver" value="'.$_SERVER["configs"]["yandex_money"].'">
+            <input type="hidden" name="formcomment" value="'.$_SERVER["configs"]["payment_description"].'">
+            <input type="hidden" name="short-dest" value="'.$_SERVER["configs"]["payment_description"].'">
             <input type="hidden" name="label" value="'.$invoice_id.'">
             <input type="hidden" name="targets" value="'.$invoice_id.'">
             <input type="hidden" name="quickpay-form" value="shop">

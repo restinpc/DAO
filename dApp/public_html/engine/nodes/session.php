@@ -53,52 +53,45 @@ if (!empty($_SESSION["user"]["id"])) {
     $query = 'UPDATE `nodes_user` SET `online` = '.date("U").' WHERE `id` = '.intval($_SESSION["user"]["id"]);
     engine::mysql($query);
 }
+if (!$_SERVER["configs"]) {
+    $_SERVER["configs"] = array();
+    $query = 'SELECT * FROM `nodes_config`';
+    $res = engine::mysql($query);
+    while($data = mysqli_fetch_array($res)) {
+        $_SERVER["configs"][$data["name"]] = $data["value"];
+    }
+}
 if (!empty($_POST["template"])) {
     $_SESSION["template"] = $_POST["template"];
 } else if (empty($_SESSION["template"])) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "template"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $_SESSION["template"] = $template = $data["value"];
+    $_SESSION["template"] = $_SERVER["configs"]["template"];
 }
 if (empty($_SESSION["Lang"])) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "language"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $_SESSION["Lang"] = $data["value"];
+    $_SESSION["Lang"] = $_SERVER["configs"]["language"];
 }
 if (!empty($_REQUEST["lang"])) {
     if (strlen($_REQUEST["lang"]) != 2) {
         engine::error();
     } else {
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
         $lang = substr(strtolower($_REQUEST["lang"]), 0, 2);
-        if (strpos($data["value"], $lang) !== false) {
+        if (strpos($_SERVER["configs"]["languages"], $lang) !== false) {
             $_SESSION["Lang"] = $lang;
         } else {
             engine::error();
         }
     }
 }
-$query = 'SELECT * FROM `nodes_config` WHERE `name` = "token_limit"';
+$query = 'SELECT * FROM `nodes_attendance` WHERE `token` = "'.$_COOKIE["token"].'" ORDER BY `date` DESC LIMIT '.($_SERVER["configs"]["token_limit"]-1).', 1';
 $res = engine::mysql($query);
 $data = mysqli_fetch_array($res);
-$query = 'SELECT * FROM `nodes_attendance` WHERE `token` = "'.$_COOKIE["token"].'" ORDER BY `date` DESC LIMIT '.($data["value"]-1).', 1';
-$res = engine::mysql($query);
-$data= mysqli_fetch_array($res);
 $date = $data["date"];
 if (date("U") - $date < 60) {
     header('HTTP/ 429 Too Many Requests', true, 429);
     die("Too many requests in this session. Try again after ".(60 - (date("U") - $date))." seconds.");
 } else if (!empty($_SERVER["REMOTE_ADDR"]) && !isset($_SERVER["CRON"])) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "ip_limit"';
+    $query = 'SELECT * FROM `nodes_attendance` WHERE `ip` = "'.$_SERVER["REMOTE_ADDR"].'" ORDER BY `date` DESC LIMIT '.($_SERVER["configs"]["ip_limit"] - 1).', 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
-    $query = 'SELECT * FROM `nodes_attendance` WHERE `ip` = "'.$_SERVER["REMOTE_ADDR"].'" ORDER BY `date` DESC LIMIT '.($data["value"]-1).', 1';
-    $res = engine::mysql($query);
-    $data= mysqli_fetch_array($res);
     $date = $data["date"];
     if (date("U") - $date < 60) {
         header('HTTP/ 429 Too Many Requests', true, 429);

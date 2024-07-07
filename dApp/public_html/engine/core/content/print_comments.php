@@ -70,10 +70,7 @@ function print_comments($url) {
             $query = 'INSERT INTO `nodes_comment` (`url`, `reply`, `user_id`, `text`, `date`) '
                 . 'VALUES("'.$url.'", "'.intval($_POST["reply"]).'", "'.$_SESSION["user"]["id"].'", "'.$text.'", "'.date("U").'")';
             engine::mysql($query);
-            $query = 'SELECT * FROM `nodes_config` WHERE `name` = "send_comments_email"';
-            $r_conf = engine::mysql($query);
-            $d_conf = mysqli_fetch_array($r_conf);
-            if (intval($d_conf["value"])) {
+            if (intval($_SERVER["configs"]["send_comments_email"])) {
                 email::new_comment($_SESSION["user"]["id"], $url);
             }
             $fout .= '<script>alert("'.engine::lang("Comment submited!").'");</script>';

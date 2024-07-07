@@ -20,10 +20,7 @@ $server = floatval(microtime(1) - $GLOBALS["time"]);
 /*
  * Sends bulk mail messages every minute if exists.
  */
-$query = 'SELECT `value` FROM `nodes_config` WHERE `name` = "outbox_limit"';
-$r = engine::mysql($query);
-$d = mysqli_fetch_array($r);
-$limit = $d[0];
+$limit = $_SERVER["configs"]["outbox_limit"];
 $query = 'SELECT * FROM `nodes_user_outbox` WHERE `status` > -2 AND `status` < 1 ORDER BY RAND() DESC LIMIT 0, '.$limit;
 $res = engine::mysql($query);
 while ($data = mysqli_fetch_array($res)) {
@@ -45,7 +42,7 @@ if (empty($data)) {
         $html = engine::curl_get_query($data["url"]);
         $now = floatval(microtime(1) - $current);
         $query = 'INSERT INTO `nodes_perfomance`(`cache_id`, `server_time`, `script_time`, `date`) '
-                . 'VALUES("'.$data["id"].'", "'.round($server, 3).'", "'.round($now, 3).'", "'.date("U").'")';
+            . 'VALUES("'.$data["id"].'", "'.round($server, 3).'", "'.round($now, 3).'", "'.date("U").'")';
         engine::mysql($query);
     }
 }
@@ -54,14 +51,8 @@ if (empty($data)) {
  */
 if (!$flag) {
     if (date("H") >= 23) {
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "daily_report"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        if (intval($data["value"])) {
-            $query = 'SELECT * FROM `nodes_config` WHERE `name` = "lastreport"';
-            $res = engine::mysql($query);
-            $data = mysqli_fetch_array($res);
-            if ($data["value"] < date("U") - 86000) {
+        if (intval($_SERVER["configs"]["daily_report"])) {
+            if ($_SERVER["configs"]["lastreport"] < date("U") - 86000) {
                 $flag = 2;
                 email::daily_report();
                 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "lastreport"';
@@ -74,10 +65,7 @@ if (!$flag) {
  * Unlinks temp images once a day.
  */
 if (!$flag) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_images"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if ($data["value"] < date("U") - 86400) {
+    if ($_SERVER["configs"]["cron_images"] < date("U") - 86400) {
         $flag = 3;
         $images = array();
         $query = 'SELECT * FROM `nodes_product`';
@@ -179,10 +167,7 @@ if (!$flag) {
  * Deletes an expired sessions once a day
  */
 if (!$flag) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_sessions"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if ($data["value"] < date("U") - 86400) {
+    if (intval($_SERVER["configs"]["cron_sessions"]) < date("U") - 86400) {
         $flag = 4;
         $query = 'DELETE FROM nodes_session WHERE expire_at < NOW()';
         engine::mysql($query);
@@ -194,10 +179,7 @@ if (!$flag) {
  * Updates a cache info for "cached" pages.
  */
 if (!$flag) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $is_cache = intval($data["value"]);
+    $is_cache = intval($_SERVER["configs"]["cache"]);
     if ($is_cache) {
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `interval` > 0 AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%"';
         $res = engine::mysql($query);
@@ -221,10 +203,7 @@ if (!$flag) {
  * Updates a cache info for new pages.
  */
 if (!$flag) {
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cache"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $is_cache = intval($data["value"]);
+    $is_cache = intval($_SERVER["configs"]["cache"]);
     if ($is_cache) {
         $query = 'SELECT * FROM `nodes_cache` WHERE `title` = "" AND `url` NOT LIKE "cron.php" AND `url` LIKE "%'.$_SERVER["HTTP_HOST"].'%" ORDER BY `date` ASC LIMIT 0, 1';
         $res = engine::mysql($query);

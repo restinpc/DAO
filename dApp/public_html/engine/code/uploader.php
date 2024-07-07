@@ -73,10 +73,6 @@ if (!empty($_GET["dragndrop"]) || !empty($_FILES)) {
     }
 }
 
-$query = 'SELECT * FROM `nodes_config` WHERE `name` = "template"';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-$template = $data["value"];
 echo '<!DOCTYPE html>
 <html style="background-color:#fff;">
 <head>

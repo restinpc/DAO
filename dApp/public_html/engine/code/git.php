@@ -8,10 +8,7 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-$query = 'SELECT value FROM nodes_config WHERE name = "git"';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-$git = $data["value"];
+$git = $_SERVER["configs"]["git"];
 $url = parse_url($git);
 if ($_SESSION["Lang"] == "en") {
     $git .= "?lang=en-US";

@@ -24,10 +24,7 @@ if (!empty($_GET["invoice_id"]) && !empty($_POST["mc_gross"])) {
         $postdata .= $key."=".urlencode($value)."&";
     }
     $postdata .= "cmd=_notify-validate";
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "paypal_test"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    if ($data["value"]) {
+    if (intval($_SERVER["configs"]["paypal_test"])) {
         $domain = 'ipnpb.sandbox.paypal.com';
         $gateway = "Paypal Sandbox";
     } else {

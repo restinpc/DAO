@@ -158,23 +158,7 @@ function print_admin_content($cms) {
             }engine::mysql($query);
         }
     }
-    $fout .= '<div class="document640">
-        <form method="POST" action="'.$_SERVER["DIR"].'/admin/?mode=content" id="admin_lang_select">'.engine::lang("Select your language").': 
-        <select id="select-lang" class="input" name="lang" onChange=\'$id("admin_lang_select").submit();\'>';
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $arr = explode(";", $data["value"]);
-    foreach ($arr as $value) {
-        if (!empty($value)) {
-            if (!empty($_SESSION["Lang"]) && $_SESSION["Lang"] == $value) {
-                $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'" selected>'.$value.'</option>';
-            } else {
-                $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'">'.$value.'</option>';
-            }
-        }
-    }
-    $fout .= '</select></form><br/>';
+    $fout .= '<div class="document640">';
     if (!empty($_GET["id"])) {
         if ($_GET["act"] == "remove") {
             if ($admin_access != 2) {
@@ -413,10 +397,7 @@ function print_admin_content($cms) {
                     $table .= '<select id="select-action-'.$arr_count.'" class="input" onChange=\'if (confirm("'.engine::lang("Are you sure?").'")) {window.location=this.value;} else {this.selectedIndex=0;}\'>
                         <option id="option-action-0" disabled selected>'.engine::lang("Select an action").'</option>
                         <option id="option-action-1" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'&id='.$data["id"].'&act=edit">'.engine::lang("Edit article").'</option>';
-                    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-                    $rr = engine::mysql($query);
-                    $dd = mysqli_fetch_array($rr);
-                    $arr = explode(";", $dd["value"]);
+                    $arr = explode(";", $_SERVER["configs"]["value"]);
                     foreach ($arr as $value) {
                         if (!empty($value)) {
                             if ($_SESSION["Lang"] != $value) {
@@ -588,10 +569,7 @@ function print_admin_content($cms) {
                 if ($admin_access == 2) {
                     $table .= '
                     <option id="option-action-2" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$data["id"].'">'.engine::lang("Add article").'</option>';
-                    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-                    $rr = engine::mysql($query);
-                    $dd = mysqli_fetch_array($rr);
-                    $arr = explode(";", $dd["value"]);
+                    $arr = explode(";", $_SERVER["configs"]["languages"]);
                     foreach ($arr as $value) {
                         if (!empty($value)) {
                             if ($_SESSION["Lang"] != $value) {

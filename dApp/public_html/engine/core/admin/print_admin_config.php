@@ -36,8 +36,9 @@ function print_admin_config($cms) {
             engine::error(401);
             return;
         }
-        foreach ($_POST as $arr => $value) {
-            $query = 'UPDATE `nodes_config` SET `value` = "'.engine::escape_string($value).'" WHERE `name` = "'.$arr.'"';
+        foreach ($_POST as $key => $value) {
+            $_SERVER["configs"][$key] = engine::escape_string($value);
+            $query = 'UPDATE `nodes_config` SET `value` = "'.engine::escape_string($value).'" WHERE `name` = "'.$key.'"';
             engine::mysql($query);
         }
     }

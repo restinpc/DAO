@@ -105,13 +105,7 @@ if (!empty($_POST["id"])) {
                     $target = mysqli_fetch_array($res);
                     $query = 'INSERT INTO `nodes_inbox`(`from`, `to`, `text`, `date`) VALUES("'.intval($_SESSION["user"]["id"]).'", "'.intval($_GET["message"]).'", "'.$text.'", "'.date("U").'")';
                     engine::mysql($query);
-                    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "send_message_email"';
-                    $r_conf = engine::mysql($query);
-                    $d_conf = mysqli_fetch_array($r_conf);
-                    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "email_signature"';
-                    $r_sign = engine::mysql($query);
-                    $d_sign = mysqli_fetch_array($r_sign);
-                    if ($d_conf["value"]) {
+                    if ($_SERVER["configs"]["send_message_email"]) {
                         if ($target["online"] < date("U") - 600) {
                             email::new_message($target["id"], $_SESSION["user"]["id"]);
                         }

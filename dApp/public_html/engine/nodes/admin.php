@@ -31,7 +31,7 @@ function admin($site) {
     }
     if (!empty($_SESSION["user"]["email"]) && $_SESSION["user"]["admin"] == "1") {
         $this->statistic = array();
-        $this->statistic["version"] = $site->configs["version"];
+        $this->statistic["version"] = $_SERVER["configs"]["version"];
         $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `title` <> ""';
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
@@ -52,18 +52,12 @@ function admin($site) {
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
         $this->statistic["perfomance"] = round($d[0], 2);
-        if ($site->configs["cron"]) {
+        if ($_SERVER["configs"]["cron"]) {
             $this->statistic["cron"] = 'jQuery ';
         }
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_exec"';
-        $res = engine::mysql($query);
-        $exec = mysqli_fetch_array($res);
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "cron_done"';
-        $res = engine::mysql($query);
-        $done = mysqli_fetch_array($res);
-        if ($exec["value"] <date("U") - 3600) {
+        if (intval($_SERVER["configs"]["cron_exec"]) < date("U") - 3600) {
             $this->statistic["cron"] .= engine::lang("Disabled");
-        } else if ($exec["value"] > $done["value"] + 300) {
+        } else if (intval($_SERVER["configs"]["cron_exec"]) > intval($_SERVER["configs"]["cron_done"]) + 300) {
             $this->statistic["cron"] .= engine::lang("Error");
         } else {
             $this->statistic["cron"] .= engine::lang("Ok");

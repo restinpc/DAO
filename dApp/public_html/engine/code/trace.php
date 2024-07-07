@@ -15,7 +15,6 @@ if (!empty($_POST["logs"])) {
     $data = mysqli_fetch_array($res);
     if (!empty($data)) {
         $query = 'UPDATE `nodes_exceptions` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
-        echo $query;
         engine::mysql($query);
     } else {
         $query = 'INSERT INTO `nodes_exceptions`(name, data, date) '

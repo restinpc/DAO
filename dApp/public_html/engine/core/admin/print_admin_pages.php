@@ -63,23 +63,7 @@ function print_admin_pages($cms) {
             WHERE 1';
         engine::mysql($query);
     }
-    $fout = '<div class="document980" style="max-width: 1200px;">
-        <form method="POST" id="admin_lang_select">'.engine::lang("Select your language").': 
-        <select id="select-lang" class="input" name="lang" onChange=\'$id("admin_lang_select").submit();\'>';
-    $query = 'SELECT * FROM `nodes_config` WHERE `name` = "languages"';
-    $res = engine::mysql($query);
-    $data = mysqli_fetch_array($res);
-    $arr = explode(";", $data["value"]);
-    foreach ($arr as $value) {
-        if (!empty($value)) {
-            if (!empty($_SESSION["Lang"]) && $_SESSION["Lang"] == $value) {
-                $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'" selected>'.$value.'</option>';
-            } else {
-                $fout .= '<option id="option-lang-'.$value.'" value="'.$value.'">'.$value.'</option>';
-            }
-        }
-    }
-    $fout .= '</select></form><br/>';
+    $fout = '<div class="document980" style="max-width: 1200px;">';
     if ($_SESSION["order"] == "id") {
         $_SESSION["order"] = "date";
     }

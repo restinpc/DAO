@@ -13,7 +13,6 @@
 * @var $this->description - Page meta description.
 * @var $this->img - Page meta image.
 * @var $this->onload - Page executable JavaScript code.
-* @var $this->configs - Array MySQL configs.
 */
 
 if (!empty($_GET[1]) || $_GET[0][0] !== "@") {
@@ -34,7 +33,7 @@ if (empty($user) || empty($user["pass"])) {
         $user["email"], $user["url"]
     );
     $this->content = engine::print_header($this, $user["id"]);
-    if ($this->configs["free_message"]) {
+    if ($_SERVER["configs"]["free_message"]) {
         if (empty($_SESSION["user"]["id"])) {
             $button = '<a id="link-send-message" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'"><input type="button" class="btn w280" value="'.engine::lang("Login to Send message").'" /><br/><br/>';
         } else {

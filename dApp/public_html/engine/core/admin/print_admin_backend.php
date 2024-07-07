@@ -68,7 +68,6 @@ function print_admin_backend($cms) {
 * @var \$this->description - Page meta description.
 * @var \$this->img - Page meta image.
 * @var \$this->onload - Page executable JavaScript code.
-* @var \$this->configs - Array MySQL configs.
 */
 
 if (!empty($_GET[1])) {
@@ -179,15 +178,11 @@ if (!empty($_GET[1])) {
             $query = 'UPDATE `nodes_config` SET `value` = "'.$_POST["default"].'" WHERE `name` = "default"';
             engine::mysql($query);
         }
-        $query = 'SELECT * FROM `nodes_config` WHERE `name` = "default"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        $default = $data["value"];
         $query = 'SELECT * FROM `nodes_backend` ORDER BY `id` ASC';
         $res = engine::mysql($query);
         while ($data = mysqli_fetch_array($res)) {
             if ($data["file"] != "admin.php") {
-                if ($data["file"] != $default) {
+                if ($data["file"] != $_SERVER["configs"]["default"]) {
                     $table .= '<option id="option-file-'.$data["id"].'" value="'.$data["file"].'">'.$data["file"].'</option>';
                 } else {
                     $table .= '<option id="option-file-'.$data["id"].'" selected disabled value="'.$data["file"].'">'.$data["file"].'</option>';

@@ -13,7 +13,6 @@
 * @var $site->description - Page meta description.
 * @var $site->img - Page meta image.
 * @var $site->onload - Page executable JavaScript code.
-* @var $site->configs - Array MySQL configs.
 *
 * @param object $site Site class object.
 * @param int $data @mysql[nodes_catalog].
@@ -25,11 +24,11 @@ function print_catalog($site, $data) {
     $fout = '<div class="article" itemscope itemtype="https://schema.org/Article">
         <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
             <img class="hidden" itemprop="logo" src="'.$site->img.'" />
-            <meta itemprop="name" content="'.$site->configs["name"].'" />
+            <meta itemprop="name" content="'.$_SERVER["configs"]["name"].'" />
         </div>
         <meta itemprop="datePublished" content="'.date("Y-m-d", $data["public_date"]).'" />
         <meta itemprop="dateModified" content="'.date("Y-m-d", $data["date"]).'" />
-        <meta itemprop="author" content="'.$site->configs["email"].'" />';
+        <meta itemprop="author" content="'.$_SERVER["configs"]["email"].'" />';
     if (!empty($data["img"])) {
         $fout .= '<div class="article_image">
             <img itemprop="image" src="'.$_SERVER["PUBLIC_URL"].'/img/data/big/'.$data["img"].'" class="img" />
