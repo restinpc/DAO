@@ -278,7 +278,11 @@ static function mysql($query, $throw = 1) {
     if ($throw) {
         $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::throw($query.' -> '.mysqli_error($_SERVER["sql_connection"])));
     } else {
-        $res = mysqli_query($_SERVER["sql_connection"], $query) or throw new Error($_SERVER["sql_connection"]);
+        $res = mysqli_query($_SERVER["sql_connection"], $query);
+        if (!$res) {
+            throw new Error($_SERVER["sql_connection"]);
+            return;
+        }
     }
     return $res;
 }
