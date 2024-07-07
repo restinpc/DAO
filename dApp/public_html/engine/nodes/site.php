@@ -258,7 +258,7 @@ function __construct() {
             }
             $fout .= '</head>
 <body style="display: none;" class="nodes">
-    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+    <img src="'.$loader.'" style="display:none;" width=64 height=64 alt="'.engine::lang("Loading").'" />';
         } else {
             $fout = '<title>'.$this->title.'</title>
     <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
