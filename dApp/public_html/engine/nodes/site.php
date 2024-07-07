@@ -247,6 +247,7 @@ if (!isset($_POST["jQuery"])) {
     document.framework.preload = () => {
         if (!document.framework.preloaded) {
             '.$this->onload.';
+            document.framework.handleUserEvents();
             document.framework.preloaded = 1;
         }
     }

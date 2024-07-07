@@ -6,8 +6,14 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
+if (!jQuery) {
+    throw new Error("jQuery not initialized");
+}
 if (!document.framework) {
     document.framework = {};
+}
+if (!document.framework.preload) {
+    document.framework.preload = () => {}
 }
 document.framework.loading_stages = 6;
 document.framework.loading_state = 0;
@@ -26,26 +32,6 @@ document.framework.chatInterval = null;
 document.framework.confirmed = false;
 window.stateChangeIsLocal = true;
 History.enabled = true;
-
-if (!jQuery) {
-    let js = document.createElement("script");
-    js.type = "text/javascript";
-    js.src = document.framework.rootDir + "/script/jquery.js";
-    document.body.appendChild(js);
-}
-jQuery(() => {
-    if (!alertify) {
-        alert = (text) => {
-            document.framework.showPopup('<br/><p>'+text+'</p><br/><br/><input id="input-ok-btn" type="button" value="OK" onClick=\'document.framework.hideWindow();\' class="btn w130" /><br/><br/>');
-            return false;
-        };
-    } else {
-        alert = alertify.alert;
-    }
-    window.onpopstate = () => {
-        document.framework.goto(window.location.href);
-    }
-});
 
 /**
 * Gets an DOM element using id.
@@ -137,6 +123,30 @@ document.framework.confirmAlive = () => {
     }
 }
 
+document.framework.getObjectName = (object) => {
+    try {
+        let name = '';
+        if (object == window) {
+            name = 'window';
+        } else if (object == document) {
+            name = 'document';
+        } else if (object == document.body) {
+            name = 'body';
+        } else if (object.name) {
+            name = object.name;
+        } else if (object.id) {
+            name = object.id;
+        } else if (object.tag) {
+            name = object.tag;
+        } else {
+            name = object.toString();
+        }
+        return name;
+    } catch(e) {
+        document.framework.throw(`document.framework.getObjectName()`, e);
+    }
+}
+
 document.framework.handleUserEvents = () => {
     document.framework.log(`document.framework.handleUserEvents()`);
     try {
@@ -172,7 +182,6 @@ document.framework.loadSite = () => {
             document.framework.materialIcons();
             document.framework.preload();
             document.framework.ajaxing();
-            document.framework.handleUserEvents();
             document.framework.checkAnchors();
             setTimeout(document.framework.display, 1000);
             document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
@@ -255,22 +264,7 @@ document.framework.getViewportWidth = () => {
 * @usage <code> document.framework.addHandler(window, "resize", resize_footer); </code>
 */
 document.framework.addHandler = (object, event, handler, useCapture) => {
-    let name = '';
-    if (object == window) {
-        name = 'window';
-    } else if (object == document) {
-        name = 'document';
-    } else if (object == document.body) {
-        name = 'body';
-    } else if (object.name) {
-        name = object.name;
-    } else if (object.id) {
-        name = object.id;
-    } else if (object.tag) {
-        name = object.tag;
-    } else {
-        name = object.toString();
-    }
+    let name = document.framework.getObjectName(object);
     document.framework.log(`document.framework.addHandler(${name}, ${event})`);
     try {
         if (object.addEventListener) {
@@ -286,38 +280,8 @@ document.framework.addHandler = (object, event, handler, useCapture) => {
 }
 
 document.framework.insertAfter = (node, referenceNode) => {
-    let name = '';
-    if (node == window) {
-        name = 'window';
-    } else if (node == document) {
-        name = 'document';
-    } else if (node == document.body) {
-        name = 'body';
-    } else if (node.name) {
-        name = node.name;
-    } else if (node.id) {
-        name = node.id;
-    } else if (node.tag) {
-        name = node.tag;
-    } else {
-        name = node.toString();
-    }
-    let reference = '';
-    if (referenceNode == window) {
-        reference = 'window';
-    } else if (referenceNode == document) {
-        reference = 'document';
-    } else if (referenceNode == document.body) {
-        reference = 'body';
-    } else if (referenceNode.name) {
-        reference = referenceNode.name;
-    } else if (referenceNode.id) {
-        reference = referenceNode.id;
-    } else if (referenceNode.tag) {
-        reference = referenceNode.tag;
-    } else {
-        reference = referenceNode.toString();
-    }
+    let name = document.framework.getObjectName(node);
+    let reference = document.framework.getObjectName(referenceNode);
     document.framework.log(`document.framework.insertAfter(${name}, ${reference})`);
     try {
         if (!node || !referenceNode) {
@@ -761,7 +725,11 @@ document.framework.goto = (href) => {
                             if (jQuery('.site_title')) {
                                 jQuery('.site_title').text(title);
                             }
-                            history.replaceState({}, null, jQuery(data).filter('link[itemprop="url"]')[0].getAttribute("href"));
+                            let url = jQuery(data).filter('link[itemprop="url"]');
+                            console.error(url);
+                            if (url) {
+                                history.replaceState({}, null, url[0].getAttribute("href"));
+                            }
                             setTimeout(document.framework.ajaxing, 1);
                             setTimeout(document.framework.checkAnchors, 1);
                             setTimeout(() => {
@@ -1587,3 +1555,21 @@ document.framework.submitTraceStack = () => {
         });
     });
 }
+
+setTimeout(() => {
+    try {
+        if (!alertify) {
+            alert = (text) => {
+                document.framework.showPopup('<br/><p>'+text+'</p><br/><br/><input id="input-ok-btn" type="button" value="OK" onClick=\'document.framework.hideWindow();\' class="btn w130" /><br/><br/>');
+                return false;
+            };
+        } else {
+            alert = alertify.alert;
+        }
+        window.onpopstate = () => {
+            document.framework.goto(window.location.href);
+        }
+    } catch(e) {
+        document.framework.throw(`document.framework.setTimeout()`, e);
+    }
+}, 1);

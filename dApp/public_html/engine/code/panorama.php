@@ -152,11 +152,12 @@ if (!empty($_GET["id"])) {
     }
     $onload = '';
     $fout = '<div id="nodes_vr_scene">
-    <a-scene id="nodes_scene" scene-id="'.$data["id"].'" vr-mode-ui="enabled: true;" device-orientation-permission-ui background="color: #fff;" >
+    <a-scene cursor="rayOrigin: mouse" id="nodes_scene" scene-id="'.$data["id"].'" vr-mode-ui="enabled: true;" device-orientation-permission-ui background="color: #fff;" >
         <a-assets>
             <img id="logo" src="'.$_SERVER["PUBLIC_URL"].'/img/vr_logo.png" crossorigin="anonymous" />
             <img id="hotspot" src="'.$_SERVER["PUBLIC_URL"].'/img/hotpoint.png" crossorigin="anonymous" />
             <img id="google" src="'.$_SERVER["PUBLIC_URL"].'/img/gsv.png" crossorigin="anonymous" />
+            <img id="arrow" src="'.$_SERVER["PUBLIC_URL"].'/img/arrow.png" crossorigin="anonymous" />
             <img id="pixel" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />';
     $query = 'SELECT * FROM `nodes_vr_scene` WHERE `id` = "'.$data["id"].'"';
     $r = engine::mysql($query);
@@ -178,7 +179,7 @@ if (!empty($_GET["id"])) {
             rotation="'.$data["rotation"].'"
         >
             <a-camera id="camera" 
-                look-controls
+                look-controls="reverseMouseDrag: true"
                 mouse-cursor
                 nodes-camera
                 wasd-controls-enabled="false"
@@ -411,7 +412,7 @@ if (!empty($_GET["id"])) {
     $gsv .= engine::pano_print_link($this, $new_nav, 1);
     $fout .= '
             </a-entity>
-            <a-entity id="line" trigger="none" line="color: white; opacity:0;"></a-entity>
+            <a-entity id="line" trigger="none" line="color: white; opacity:1;"></a-entity>
             <a-circle id="floor" position="'.$data["floor_position"].'" rotation="-90 0 0" color="white" radius="'.$data["floor_radius"].'" opacity="0"></a-circle>
             <a-circle id="move_point" action=\'document.panorama.navigate();\' position="0 0.01 0" rotation="-90 0 0" color="white" radius="1" opacity="0" ></a-circle>
             <a-image id="cursor_img" transparent="true" position="0 0 0" look-at="#camera" scale="0.2 0.2 0.2" width="14" height="25" src="#arrow"></a-image>
@@ -436,6 +437,17 @@ echo '<!DOCTYPE html>
 <html style="background-color:#fff;">
 <head>
 <meta charset="UTF-8" />
+<link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script rel="preload" src="'.$_SERVER["DIR"].'/script/aframe-master.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
+<script>
+    document.framework.loadEvents = false;
+    document.framework.loadSite = () => {};
+    document.framework.rootDir = "'.$_SERVER["DIR"].'";
+</script>
 <style>
     .a-enter-vr {
         position: fixed !important;
@@ -444,16 +456,6 @@ echo '<!DOCTYPE html>
         display: none;
     }
 </style>
-<link href="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.css" rel="stylesheet" type="text/css" />
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/jquery.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/script.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/script/panorama.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-<script rel="preload" src="'.$_SERVER["DIR"].'/template/'.$_SESSION["template"].'/template.js" type="text/javascript" as="script" crossorigin="anonymous"></script>
-<script>
-    document.framework.loadEvents = false;
-    document.framework.loadSite = () => {};
-    document.framework.rootDir = "'.$_SERVER["DIR"].'";
-</script>
 </head>
 <body class="nodes">
     '.$fout.'
