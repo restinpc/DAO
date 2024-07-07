@@ -1246,7 +1246,8 @@ document.framework.showRotator = (obj) => {
         document.framework.addHandler(window, "orientationchange", document.framework.scaleSlider);
         initPhotoSwipeFromDOM(obj);
     } catch(e) {
-        document.framework.throw(`document.framework.showRotator()`, e);
+        console.error(e.message);
+        ///document.framework.throw(`document.framework.showRotator()`, e);
     }
 }
 
