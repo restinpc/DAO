@@ -276,7 +276,7 @@ static function mysql($query, $throw = 1) {
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     if ($throw) {
-        $res = mysqli_query($_SERVER["sql_connection"], $query) or engine::throw($query.' -> '.mysqli_error($_SERVER["sql_connection"]));
+        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::throw($query.' -> '.mysqli_error($_SERVER["sql_connection"])));
     } else {
         $res = mysqli_query($_SERVER["sql_connection"], $query) or throw new Error($_SERVER["sql_connection"]);
     }
