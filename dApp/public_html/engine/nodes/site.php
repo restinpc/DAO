@@ -266,8 +266,8 @@ function __construct() {
 </style>
 </head>
 <body style="display: none;" class="nodes">
-    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />'
-    . $this->content;
+    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+            $fout .= $this->content;
         } else {
             $fout = '<title>'.$this->title.'</title><!-- content -->'.$this->content.'<!-- /content -->';
         }

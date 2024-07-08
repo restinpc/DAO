@@ -196,14 +196,8 @@ function print_admin_attendance($cms) {
         $data = mysqli_fetch_array($res);
         $views = $data['b'];
         $visit = $data['a'];
-        $query = 'SELECT COUNT(DISTINCT `att`.`token`, `att`.`ip`) as `a` FROM `nodes_attendance` AS `att` '
-            . 'WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'" AND `display` = "1"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        $bots_visit = $data['a'];
-        $fout .= '<center class="lh2"><span class="statistic_span">'.engine::lang("Visitors").": ".$visit.'</span> ';
+        $fout .= '<center class="lh2"><span class="statistic_span">'.engine::lang("Visitors").": ".$visit.'</span> / ';
         $fout .= '<span class="statistic_span"  style="color: rgb(20,180,180);">'.engine::lang("Views").": ".$views.'</span> ';
-        $fout .= '<span class="statistic_span blue">'.engine::lang("Bots").": ".$bots_visit.'</span> ';
         $fout .= '<img width=100% class="w600" src="'.$_SERVER["DIR"].'/attandance.php?interval='.((!empty($_GET["interval"])) ? $_GET["interval"] : "day").'&date='.$_GET["date"].'&rand='.rand(0, 100).'" /></center>';
     } else if($_GET["action"] == "pages") {
         $query = 'SELECT a.id, a.token, cache.url FROM nodes_attendance as a '
