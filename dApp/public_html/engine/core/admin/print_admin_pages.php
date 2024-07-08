@@ -47,6 +47,7 @@ function print_admin_pages($cms) {
                     `description` = "",
                     `keywords` = "",
                     `content` = "",
+                    `script` = "",
                     `time` = 0
                 WHERE `id` = "'.$_POST["id"].'"';
         }
@@ -59,6 +60,7 @@ function print_admin_pages($cms) {
                 `description` = "",
                 `keywords` = "",
                 `content` = "",
+                `script` = "",
                 `time` = 0
             WHERE 1';
         engine::mysql($query);

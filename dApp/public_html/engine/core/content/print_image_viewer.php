@@ -94,7 +94,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
                 </div>
             </div>
         </div>';
-        $site->onload .= '; document.framework.showRotator(".nodes_gallery"); ';
+        $site->onload .= 'document.framework.showRotator(".nodes_gallery"); ';
         return $fout;
     } else {
         return $text;

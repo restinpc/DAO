@@ -741,6 +741,7 @@ document.framework.goto = (href) => {
                                     let script = jQuery(data).filter('script').text();
                                     try {
                                         eval(script);
+                                        document.framework.onLoad();
                                     } catch(e){
                                         document.framework.throw(`document.framework.goto(${href}).success().eval(${script})`, e);
                                     }
@@ -1199,7 +1200,7 @@ document.framework.scaleSlider = () => {
         }else {
             window.setTimeout(document.framework.scaleSlider, 30);
         }
-    } catch(e) {}
+    } catch(e) {/* known exception */}
 }
 
 /**
@@ -1238,7 +1239,7 @@ document.framework.showRotator = (obj) => {
               $Class: $JssorBulletNavigator$
             }
         });
-    } catch(e) {}
+    } catch(e) {/* known exception */}
     try {
         document.framework.scaleSlider();
         document.framework.addHandler(window, "load", document.framework.scaleSlider);

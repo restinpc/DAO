@@ -231,17 +231,17 @@ function __construct() {
 <link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon.ico" type="image/x-icon" />
 <link rel="icon" href="'.$_SERVER["DIR"].'/favicon/favicon-32x32.png" type="image/png" />
 <link rel="shortcut icon" href="'.$_SERVER["DIR"].'/favicon.ico" />
-<style>.material-icons{ visibility:hidden; }</style>';
-            if (!isset($_POST["jQuery"])) {
-    $fout .= '<script>
+<style>.material-icons{ visibility:hidden; }</style>
+<script>
     if (!document.framework) {
         document.framework = {};
     }
     document.framework.rootDir = "'.$_SERVER["DIR"].'";
     document.framework.blackBox = "'.$_SERVER["configs"]["exceptions_handler"].'";
     document.framework.preload = () => {
+        document.framework.log(`document.framework.preload()`);
         if (!document.framework.preloaded) {
-            '.$this->onload.';
+            document.framework.onLoad();
             document.framework.handleUserEvents();
             document.framework.preloaded = 1;
         }
@@ -261,14 +261,13 @@ function __construct() {
         src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
     }
 </style>';
-            }
-            $fout .= '</head>
-<body style="display: none;" class="nodes">
-    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
         } else {
             $fout = '<title>'.$this->title.'</title>
-    <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
+<link rel="canonical" itemprop="url" href="'.$canonical.'" />';
         }
+        $fout .= '</head>
+<body style="display: none;" class="nodes">
+    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
         $fout .= $this->content;
         if (!empty($_SESSION["user"]["id"])) {
             $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
@@ -284,9 +283,6 @@ function __construct() {
                 $fout .= engine::print_new_message();
             }
         }
-        if (!empty($_POST["jQuery"])) {
-            $fout .= '<script>document.framework.loadSite();</script>';
-        }
         if ($_SERVER["configs"]["cron"] == "1") {
             $fout .= '<script type="text/javascript">
                 if (window.jQuery) {
@@ -299,14 +295,25 @@ function __construct() {
             </script>';
         }
         if (!isset($_POST["jQuery"])) {
-            $fout .= '<script>
+            $fout .= '<script>   
         document.framework.timeout = setTimeout(document.framework.display, 5000);
         window.onload = document.framework.loadSite;
+    </script>
+    <script rel="onload">
+        document.framework.onLoad = () => {
+            document.framework.log(`document.framework.onLoad()`);
+            '.$this->onload.'
+        }
     </script>
 </body>
 </html>';
         } else {
-            $fout .= '<script type="text/javascript">document.framework.loadEvents = false; '.$this->onload.' </script>';
+            $fout .= '<script rel="onload">
+    document.framework.onLoad = () => {
+        document.framework.log(`document.framework.onLoad()`);
+        '.$this->onload.'
+    }
+</script>';
         }
         if ($_SERVER["configs"]["compress"] || $_POST["nocache"]) {
             $search = array('#>[\s]+<#si', '#>[\s]+([^\s]+)#si', '#([^\s]+)[\s]+<#si');

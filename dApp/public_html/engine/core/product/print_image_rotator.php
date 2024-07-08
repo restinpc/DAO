@@ -115,6 +115,6 @@ function print_image_rotator($site, $caption, $images) {
             </div>
         </div>
     </div>';
-    $site->onload .= '; document.framework.showRotator(".nodes_gallery");';
+    $site->onload .= 'document.framework.showRotator(".nodes_gallery");';
     return $fout;
 }
