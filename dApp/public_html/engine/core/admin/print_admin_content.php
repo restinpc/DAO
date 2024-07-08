@@ -260,7 +260,7 @@ function print_admin_content($cms) {
             </div>
             <div class="clear"><br/></div>';
             if (!empty($_POST["comment"])) {
-                $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
+                $text = trim(htmlspecialchars(strip_tags(engine::escape_string($_POST["comment"]))));
                 $text = str_replace("\n", "<br/>", $text);
                 $query = 'SELECT * FROM `nodes_comment` WHERE `text` LIKE "'.$text.'" AND `url` LIKE "'.$data["url"].'" AND `user_id` = "1"';
                 $res = engine::mysql($query);
@@ -361,7 +361,7 @@ function print_admin_content($cms) {
                 <input id="input-save-changes" type="submit" class="btn w280" value="'.engine::lang("Save changes").'" />
             </form>';
             if (!empty($_POST["comment"])) {
-                $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
+                $text = trim(htmlspecialchars(strip_tags(engine::escape_string($_POST["comment"]))));
                 $text = str_replace("\n", "<br/>", $text);
                 $query = 'SELECT * FROM `nodes_comment` WHERE `text` LIKE "'.$text.'" AND `url` LIKE "'.$url.'" AND `user_id` = "1"';
                 $res = engine::mysql($query);

@@ -43,7 +43,7 @@ function print_order_confirm($site) {
             if (!empty($_POST["comment"])) {
                 $url = '/product/'.$product["id"];
                 $url = trim(str_replace('"', "'", urldecode($url)));
-                $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
+                $text = trim(htmlspecialchars(strip_tags(engine::escape_string($_POST["comment"]))));
                 $text = str_replace("\n", "<br/>", $text);
                 $query = 'SELECT * FROM `nodes_comment` WHERE `text` LIKE "'.$text.'" AND `url` LIKE "'.$url.'" AND `user_id` = "'.$_SESSION["user"]["id"].'"';
                 $res = engine::mysql($query);

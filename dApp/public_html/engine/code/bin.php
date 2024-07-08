@@ -94,7 +94,7 @@ if (!empty($_POST["id"])) {
             </script>');
         } else {
             if (!empty($_POST["text"])) {
-                $text = trim(str_replace('"', "'", htmlspecialchars(strip_tags($_POST["text"]))));
+                $text = trim(htmlspecialchars(strip_tags(engine::escape_string($_POST["text"]))));
                 $text = str_replace("\n", "<br/>", $text);
                 $query = 'SELECT * FROM `nodes_inbox` WHERE `from` = "'.intval($_SESSION["user"]["id"]).'" AND `to` = "'.intval($_GET["message"]).'" AND `text` LIKE "'.$text.'" AND `date` > "'.(date("U") - 600).'"';
                 $res = engine::mysql($query);

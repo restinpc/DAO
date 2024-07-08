@@ -61,7 +61,7 @@ function print_comments($url) {
     $fout1 = '';
     $url = trim(str_replace('"', "'", urldecode($url)));
     if (!empty($_POST["comment"])) {
-        $text = str_replace('"', "'", htmlspecialchars(strip_tags($_POST["comment"])));
+        $text = trim(htmlspecialchars(strip_tags(engine::escape_string($_POST["comment"]))));
         $text = str_replace("\n", "<br/>", $text);
         $query = 'SELECT * FROM `nodes_comment` WHERE `text` LIKE "'.$text.'" AND `url` LIKE "'.$url.'" AND `user_id` = "'.$_SESSION["user"]["id"].'"';
         $res = engine::mysql($query);
