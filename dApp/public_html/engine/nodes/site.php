@@ -260,14 +260,14 @@ function __construct() {
         font-weight: 400;
         src: local("Material Icons"), local("MaterialIcons-Regular"), url('.$_SERVER["DIR"].'/font/MaterialIcons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
     }
-</style>';
+</style>
+</head>
+<body style="display: none;" class="nodes">
+    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
         } else {
             $fout = '<title>'.$this->title.'</title>
 <link rel="canonical" itemprop="url" href="'.$canonical.'" />';
         }
-        $fout .= '</head>
-<body style="display: none;" class="nodes">
-    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
         $fout .= $this->content;
         if (!empty($_SESSION["user"]["id"])) {
             $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
