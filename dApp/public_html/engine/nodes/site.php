@@ -285,35 +285,28 @@ function __construct() {
         }
         if ($_SERVER["configs"]["cron"] == "1") {
             $fout .= '<script type="text/javascript">
-                if (window.jQuery) {
-                    jQuery.ajax({
-                        url: "'.$_SERVER["DIR"].'/cron.php",
-                        async: true,
-                        type: "GET"
-                    });
-                }
-            </script>';
+    if (window.jQuery) {
+        jQuery.ajax({
+            url: "'.$_SERVER["DIR"].'/cron.php",
+            async: true,
+            type: "GET"
+        });
+    }
+</script>';
         }
-        if (!isset($_POST["jQuery"])) {
-            $fout .= '<script>   
-        document.framework.timeout = setTimeout(document.framework.display, 5000);
-        window.onload = document.framework.loadSite;
-    </script>
-    <script rel="onload">
-        document.framework.onLoad = () => {
-            document.framework.log(`document.framework.onLoad()`);
-            '.$this->onload.'
-        }
-    </script>
-</body>
-</html>';
-        } else {
-            $fout .= '<script rel="onload">
+        $fout .= '<script rel="onload">
     document.framework.onLoad = () => {
         document.framework.log(`document.framework.onLoad()`);
         '.$this->onload.'
     }
 </script>';
+        if (!isset($_POST["jQuery"])) {
+            $fout .= '<script>   
+        document.framework.timeout = setTimeout(document.framework.display, 5000);
+        window.onload = document.framework.loadSite;
+    </script>
+</body>
+</html>';
         }
         if ($_SERVER["configs"]["compress"] || $_POST["nocache"]) {
             $search = array('#>[\s]+<#si', '#>[\s]+([^\s]+)#si', '#([^\s]+)[\s]+<#si');
