@@ -140,8 +140,10 @@ function __construct() {
                     }
                 }
             }
-            require_once("template/".$_SESSION["template"]."/template.php");
-            $template = $_SESSION["template"];
+            if (!isset($_POST["jQuery"])) {
+                require_once("template/".$_SESSION["template"]."/template.php");
+                $template = $_SESSION["template"];
+            }
         }
         $canonical = $_SERVER["SCRIPT_URI"];
         if ($_SESSION["Lang"] != "ru" && !strpos($canonical, "lang=".$_SESSION["Lang"])) {
