@@ -289,7 +289,7 @@ static function mysql($query, $throw = 1) {
 
 static function escape_string($string) {
     engine::log("engine::escape_string(".$string.")");
-    return strip_tags(mysqli_real_escape_string($_SERVER["sql_connection"], trim($string)));
+    return mysqli_real_escape_string($_SERVER["sql_connection"], trim($string));
 }
 
 /**

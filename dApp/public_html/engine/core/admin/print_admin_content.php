@@ -21,9 +21,9 @@
 
 function print_admin_content($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "content" '
-            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-            . 'AND `access`.`admin_id` = `admin`.`id`';
+        . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "content" '
+        . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+        . 'AND `access`.`admin_id` = `admin`.`id`';
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
