@@ -263,12 +263,15 @@ function __construct() {
 </style>
 </head>
 <body style="display: none;" class="nodes">
-    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />';
+    <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />'
+    . $this->content;
         } else {
             $fout = '<title>'.$this->title.'</title>
-<link rel="canonical" itemprop="url" href="'.$canonical.'" />';
+<link rel="canonical" itemprop="url" href="'.$canonical.'" />
+<!-- content -->
+'.$this->content.'
+<!-- /content -->';
         }
-        $fout .= $this->content;
         if (!empty($_SESSION["user"]["id"])) {
             $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
             $res = engine::mysql($query);
