@@ -203,8 +203,9 @@ function __construct() {
                 $keywords = mb_substr($keywords, 0, 300) . '..';
             }
             $loader = $_SERVER["DIR"]."/img/load.gif";
+            $style = 'background: #1a1d1d url('.$_SERVER["DIR"].$loader.') no-repeat center center fixed; min-height: 400px; background-size: 45px;';
             $fout = '<!DOCTYPE html>
-<html itemscope itemtype="https://schema.org/WebSite" lang="'.$_SESSION["Lang"].'" style="background: #1a1d1d url('.$_SERVER["DIR"].$loader.') no-repeat center center fixed; min-height: 400px; background-size: 45px;">
+<html itemscope itemtype="https://schema.org/WebSite" lang="'.$_SESSION["Lang"].'" style="'.$style.'">
 <head>
 <title>'.$this->title.'</title>
 <meta http-equiv="content-type" content="text/html" />
@@ -268,11 +269,7 @@ function __construct() {
     <img src="'.$loader.'" style="display:none;" onLoad=\'document.framework.loadSite();\' width=64 height=64 alt="'.engine::lang("Loading").'" />'
     . $this->content;
         } else {
-            $fout = '<title>'.$this->title.'</title>
-<link rel="canonical" itemprop="url" href="'.$canonical.'" />
-<!-- content -->
-'.$this->content.'
-<!-- /content -->';
+            $fout = '<title>'.$this->title.'</title><!-- content -->'.$this->content.'<!-- /content -->';
         }
         if (!empty($_SESSION["user"]["id"])) {
             $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
@@ -289,24 +286,21 @@ function __construct() {
             }
         }
         if ($_SERVER["configs"]["cron"] == "1") {
-            $fout .= '<script type="text/javascript">
-    if (window.jQuery) {
-        jQuery.ajax({
-            url: "'.$_SERVER["DIR"].'/cron.php",
-            async: true,
-            type: "GET"
-        });
-    }
-</script>';
+            $fout .= '
+    <script type="text/javascript">
+        if (window.jQuery) {
+            jQuery.ajax({
+                url: "'.$_SERVER["DIR"].'/cron.php",
+                async: true,
+                type: "GET"
+            });
         }
-        $fout .= '<script rel="onload">
-    document.framework.onLoad = () => {
-        document.framework.log(`document.framework.onLoad()`);
-        '.$this->onload.'
-    }
-</script>';
+    </script>';
+        }
+        $fout .= '<script rel="onload">document.framework.onLoad = () => { document.framework.log(`document.framework.onLoad()`); '.$this->onload.' }</script>';
         if (!isset($_POST["jQuery"])) {
-            $fout .= '<script>   
+            $fout .= '
+    <script>
         document.framework.timeout = setTimeout(document.framework.display, 5000);
         window.onload = document.framework.loadSite;
     </script>

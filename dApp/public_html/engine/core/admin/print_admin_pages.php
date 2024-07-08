@@ -64,6 +64,8 @@ function print_admin_pages($cms) {
                 `time` = 0
             WHERE 1';
         engine::mysql($query);
+        $query = 'OPTIMIZE TABLE `nodes_cache`';
+        engine::mysql($query);
     }
     $fout = '<div class="document980" style="max-width: 1200px;">';
     if ($_SESSION["order"] == "id") {
