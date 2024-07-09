@@ -27,9 +27,6 @@ document.uploader.scale = 1;
 * Positions a crop-frame on image.
 */
 document.uploader.drag = (e) => {
-    if (document.uploader.dragMode != 0) {
-        document.framework.log(`document.uploader.drag()`);
-    }
     try {
         if (!e) {
             e = window.event;
@@ -66,15 +63,15 @@ document.uploader.drag = (e) => {
             if (document.uploader.posX < 34) {
                 document.uploader.posX = 34;
             }
-            $id("frame").style.left = (document.uploader.posX-6)+"px";
-            $id("frame").style.top = (document.uploader.posY-6)+"px";
-            $id("t").value = document.uploader.posY-32;
-            $id("l").value = document.uploader.posX-32;
+            $id("frame").style.left = (document.uploader.posX - 6) + "px";
+            $id("frame").style.top = (document.uploader.posY - 6) + "px";
+            $id("t").value = document.uploader.posY - 32;
+            $id("l").value = document.uploader.posX - 32;
         } else if (document.uploader.dragMode == 2) {
             const width1 = document.uploader.posX - parseInt($id("frame").style.left);
             const height1 = width1 * (document.uploader.thumbWidth / document.uploader.thumbHeight);
-            if ((width1-26 <= $id("img").clientWidth - parseInt($id("frame").style.left))
-                && (height1-26 <= $id("img").clientHeight - parseInt($id("frame").style.top))
+            if ((width1 - 26 <= $id("img").clientWidth - parseInt($id("frame").style.left))
+                && (height1 - 26 <= $id("img").clientHeight - parseInt($id("frame").style.top))
                 && height1 >= document.uploader.thumbHeight / document.uploader.scale
                 && width1 >= document.uploader.thumbWidth / document.uploader.scale
             ) {
@@ -133,7 +130,6 @@ document.uploader.load = () => {
 * Disables dragging mode.
 */
 document.uploader.undrag = () => {
-    document.framework.log(`document.uploader.undrag()`);
     document.uploader.dragMode = 0;
 }
 

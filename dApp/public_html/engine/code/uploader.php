@@ -219,10 +219,10 @@ function uploader() {
     <div id="image" draggable="false" onDragStart="return false;" style="background: url('.$_SERVER["DIR"].'/'.$f_name.') top left no-repeat; width: '.($width / $scale).'px; height: '.($height / $scale).'px; background-size: cover;" >
         <img id="img" draggable="false" onDragStart="return false;" src="'.$_SERVER["DIR"].'/'.$f_name.'" style="width: '.($width / $scale).'px; height: '.($height / $scale).'px;" />
     </div>
-    <div id="frame" draggable="false" onDragStart="return false;" style="width:'.($THUWIDTH / $scale).'px; height:'.($THUHEIGHT / $scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
+    <div id="frame" style="width:'.($THUWIDTH / $scale).'px; height:'.($THUHEIGHT / $scale).'px;position: absolute;top: 28px;left: 28px;display:block;">
         <table draggable="false" cellpadding=0 cellspacing=0 onDragStart="return false;" onMouseDown=\'if (document.uploader.dragMode != 3) { document.uploader.dragMode = 1; }\'>
         <tr><td align=left valign=top></td></tr></table>
-        <div id="bottom_dot" onMouseDown=\'document.uploader.dragMode = 2;\' draggable="false" onDragStart="return false;">
+        <div id="bottom_dot" onMouseDown=\'document.uploader.dragMode = 2;\' style="z-index:99999;">
             <div class="dot" draggable="false"> </div>
         </div>
     </div><br/>
@@ -259,6 +259,8 @@ function uploader() {
         $id("scale").value = document.uploader.scale;
         document.framework.addHandler($id("frame"), "touchstart", () => { document.uploader.dragMode = 1; });
         document.framework.addHandler($id("frame"), "touchend", () => { document.uploader.dragMode = 0; });
+        // document.framework.addHandler($id("frame"), "touchmove", () => { document.uploader.dragMode = 1; });
+        document.framework.addHandler($id("bottom_dot"), "touchmove", () => { document.uploader.dragMode = 2; });
         document.framework.addHandler($id("bottom_dot"), "touchend", () => { document.uploader.dragMode = 0; });
         document.framework.addHandler($id("bottom_dot"), "touchstart", () => { document.uploader.dragMode = 2; });
         try{
