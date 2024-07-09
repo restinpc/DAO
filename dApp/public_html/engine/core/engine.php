@@ -112,8 +112,8 @@ static function throw($function, $exception) {
         $fout .= $key.': '.$value.'
 ';
     }
-    $fout .= date("Y-m-d H:i:s").'.000000: engine::throw('.$function.' -> '.$exception->getMessage().')
---------------------------------------------------------------------------------
+    $fout .= date("Y-m-d H:i:s").'.100000: engine::throw('.$function.' -> '.$exception->getMessage().')
+------------------------------------------------------------------
 ';
     foreach($exception->getTrace() as $text) {
         $fout .= json_encode($text).'
@@ -224,6 +224,7 @@ static function bsod($error_code = 404) {
 * @usage <code> engine::error(401); </code>
 */
 static function error($error_code = 404) {
+    engine::log("engine::error(".$error_code.")");
     $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
     while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
         $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"]) - 1);
@@ -232,17 +233,14 @@ static function error($error_code = 404) {
     if (empty($_SERVER["SCRIPT_URI"])) {
         $_SERVER["SCRIPT_URI"] = "/";
     }
-    $get = json_encode($_GET);
-    $post = json_encode($_POST);
-    $get = engine::escape_string($get);
-    $post = engine::escape_string($post);
+    $get = engine::escape_string(json_encode($_GET));
+    $post = engine::escape_string(json_encode($_POST));
     $fout = '';
     foreach($_SESSION["LOG"] as $key => $value) {
         $fout .= $key.': '.$value.'
 ';
     }
-    $fout .= date("Y-m-d H:i:s").'.000000: engine::error('.$error_code.')
---------------------------------------------------------------------------------
+    $fout .= '------------------------------------------------------------------
 ';
     $fout .= json_encode(error_get_last());
     $logs = engine::escape_string($fout);

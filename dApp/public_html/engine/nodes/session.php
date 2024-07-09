@@ -53,7 +53,7 @@ if (!empty($_SESSION["user"]["id"])) {
     $query = 'UPDATE `nodes_user` SET `online` = '.date("U").' WHERE `id` = '.intval($_SESSION["user"]["id"]);
     engine::mysql($query);
 }
-if (!$_SERVER["configs"]) {
+if (!array_key_exists("configs", $_SERVER)) {
     $_SERVER["configs"] = array();
     $query = 'SELECT * FROM `nodes_config`';
     $res = engine::mysql($query);
