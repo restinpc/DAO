@@ -922,7 +922,7 @@ document.framework.removeSiteFade = () => {
     document.framework.log(`document.framework.removeSiteFade()`);
     try {
         jQuery('#nodes_fade').fadeOut(() => {
-            jQuery(this).remove()
+            jQuery('#nodes_fade').remove()
         });
     } catch(e) {
         document.framework.throw(`document.framework.removeSiteFade()`, e);
