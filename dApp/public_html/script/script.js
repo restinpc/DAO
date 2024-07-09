@@ -1523,7 +1523,7 @@ document.framework.submitTraceStack = () => {
             jQuery.ajax({
                 type: "POST",
                 url: document.framework.blackBox + "/trace",
-                data: JSON.stringify({ text: logs }),
+                data: JSON.stringify({ url: window.location.href, text: logs }),
                 contentType: "text/json; charset=UTF-8",
                 processData: false,
                 dataType: 'json',
@@ -1544,7 +1544,7 @@ document.framework.submitTraceStack = () => {
                 jQuery.ajax({
                     type: "POST",
                     url: document.framework.rootDir + "/trace.php",
-                    data: { "logs": logs },
+                    data: { url: window.location.href, "logs": logs },
                     success: () => {
                         document.framework.errorState = true;
                     },

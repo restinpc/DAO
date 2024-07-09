@@ -13,6 +13,10 @@ function trace() {
     try {
         if (!empty($_POST["logs"])) {
             $logs = engine::escape_string($_POST["logs"]);
+            $url = engine::escape_string($_SERVER["SCRIPT_URI"]);
+            if (!empty($_POST["url"])) {
+                $url = engine::escape_string($_POST["url"]);
+            }
             $query = 'SELECT id FROM `nodes_exception` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
@@ -20,8 +24,8 @@ function trace() {
                 $query = 'UPDATE `nodes_exception` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
                 engine::mysql($query);
             } else {
-                $query = 'INSERT INTO `nodes_exception`(name, data, date) '
-                    . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$logs.'", NOW())';
+                $query = 'INSERT INTO `nodes_exception`(url, name, data, date) '
+                    . 'VALUES("'.$url.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.$logs.'", NOW())';
                 engine::mysql($query);
             }
             $_SESSION["LOG"] = array();

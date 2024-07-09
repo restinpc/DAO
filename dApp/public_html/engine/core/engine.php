@@ -108,12 +108,13 @@ public static function __callStatic($name, $arguments) {
 
 static function throw($function, $exception) {
     $fout = '';
+    $url = engine::escape_string($_SERVER["SCRIPT_URI"]);
     foreach($_SESSION["LOG"] as $key => $value) {
         $fout .= $key.': '.$value.'
 ';
     }
     $fout .= date("Y-m-d H:i:s").'.100000: engine::throw('.$function.' -> '.$exception->getMessage().')
-'.$_SERVER["SCRIPT_URI"].'
+'.$url.'
 ------------------------------------------------------------------
 ';
     foreach($exception->getTrace() as $text) {
@@ -130,7 +131,7 @@ static function throw($function, $exception) {
             engine::mysql($query, 0);
         } else {
             $query = 'INSERT INTO `nodes_exception`(name, url, data, date) '
-                . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$_SERVER["SCRIPT_URI"].'", "'.$logs.'", NOW())';
+                . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$url.'", "'.$logs.'", NOW())';
             engine::mysql($query, 0);
         }
     } catch(Exception $e) {
@@ -226,6 +227,7 @@ static function bsod($error_code = 404) {
 */
 static function error($error_code = 404) {
     engine::log("engine::error(".$error_code.")");
+    /*
     $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
     while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
         $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"]) - 1);
@@ -234,6 +236,8 @@ static function error($error_code = 404) {
     if (empty($_SERVER["SCRIPT_URI"])) {
         $_SERVER["SCRIPT_URI"] = "/";
     }
+     */
+    $url = engine::escape_string($_SERVER["SCRIPT_URI"]);
     $get = engine::escape_string(json_encode($_GET));
     $post = engine::escape_string(json_encode($_POST));
     $fout = '';
@@ -245,11 +249,11 @@ static function error($error_code = 404) {
 ';
     $fout .= json_encode(error_get_last());
     $logs = engine::escape_string($fout);
-    $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" '
+    $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$url.'" '
         . 'AND `lang` = "'.$_SESSION["Lang"].'"';
     engine::mysql($query);
     $query = 'SELECT * FROM `nodes_error` WHERE '
-        . '`url` = "'.$_SERVER["SCRIPT_URI"].'" AND '
+        . '`url` = "'.$url.'" AND '
         . '`lang` = "'.$_SESSION["Lang"].'" AND '
         . '`code` = "'.$error_code.'" AND '
         . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'"';
@@ -257,7 +261,7 @@ static function error($error_code = 404) {
     $data = mysqli_fetch_array($res);
     if (empty($data)) {
         $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `code`, `ip`, `get`, `post`, `logs`, `count`) '
-        . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", '
+        . 'VALUES("'.$url.'", '
             . '"'.$_SESSION["Lang"].'", '
             . '"'.date("U").'", '
             . '"'.$error_code.'", '
