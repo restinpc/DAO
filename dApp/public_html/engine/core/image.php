@@ -25,6 +25,7 @@ private $type;
 * @param string $file Source image.
 */
 function __construct($file) {
+    engine::log('image.__construct('.$file.')');
     if (@!file_exists($file)) {
         exit("File does not exist");
     }
@@ -43,6 +44,7 @@ function __construct($file) {
 * Resizes an image
 */
 function resize($width = false, $height = false) {
+    engine::log('image.resize('.$width.', '.$height.')');
     if (is_numeric($width) && is_numeric($height) && $width > 0 && $height > 0) {
         $newSize = $this->getSizeByFramework($width, $height);
     } else if (is_numeric($width) && $width > 0) {
@@ -63,6 +65,7 @@ function resize($width = false, $height = false) {
 * Crops an image.
 */
 function crop($x0 = 0, $y0 = 0, $w = false, $h = false) {
+    engine::log('image.crop('.$x.', '.$y.', '.$w.', '.$h.')');
     if (!is_numeric($x0) || $x0 < 0 || $x0 >= $this->width) {
         $x0 = 0;
     }
@@ -82,6 +85,7 @@ function crop($x0 = 0, $y0 = 0, $w = false, $h = false) {
 * Crops an image and returs canvas.
 */
 private function cropSave($x0, $y0, $w, $h) {
+    engine::log('image.cropSave('.$x.', '.$y.', '.$w.', '.$h.')');
     $newImage = imagecreatetruecolor($w, $h);
     imagecopyresampled($newImage, $this->image, 0, 0, $x0, $y0, $w, $h, $w, $h);
     $this->image = $newImage;
@@ -98,6 +102,7 @@ private function cropSave($x0, $y0, $w, $h) {
 * </code> copies /img/1.jpg to /img/2.jpg
 */
 function save($path = '', $fileName, $type = false, $rewrite = false, $quality = 95) {
+    engine::log('image.save('.$path.', '.$fileName.', '.$type.', '.$rewrite.', '.$quality.')');
     if (trim($fileName) == '' || $this->image === false) return false;
     $type = strtolower($type);
     $savePath = $path.trim($fileName).".".$type;
@@ -132,6 +137,7 @@ function save($path = '', $fileName, $type = false, $rewrite = false, $quality =
 * Parsed image type based on mime.
 */
 private function setType($file) {
+    engine::log('image.setType('.$file.')');
     $size = getimagesize($file);
     $mime = strtolower(mb_substr($size['mime'], strpos($size['mime'], '/') + 1));
     switch($mime) {
@@ -156,6 +162,7 @@ private function setType($file) {
 * Calculates an image size.
 */
 private function setSize() {
+    engine::log('image.setSize()');
     $this->width = imagesx($this->image);
     $this->height = imagesy($this->image);
 }
@@ -164,6 +171,7 @@ private function setSize() {
 * Gets an image size based on arguments.
 */
 private function getSizeByFramework($width, $height) {
+    engine::log('image.getSizeByFramework('.$width.', '.$height.')');
     if ($this->width <= $width && $this->height <= height)
         return array($this->width, $this->height);
     if ($this->width / $width > $this->height / $height) {
@@ -180,6 +188,7 @@ private function getSizeByFramework($width, $height) {
 * Gets an image size by width.
 */
 private function getSizeByWidth($width) {
+    engine::log('image.getSizeByWidth('.$width.')');
     if ($width >= $this->width) {
         return array($this->width, $this->height);
     }
@@ -192,6 +201,7 @@ private function getSizeByWidth($width) {
 * Gets an image size by height.
 */
 private function getSizeByHeight($height) {
+    engine::log('image.getSizeByHeight('.$height.')');
     if ($height >= $this->height) {
         return array($this->width, $this->height);
     }
@@ -216,6 +226,7 @@ private function getSizeByHeight($height) {
 * </code>
 */
 static function resize_image($src, $dest, $width, $height, $rgb = 0x1d1d1d, $quality = 95, $proportions = 0) {
+    engine::log('image::resize_image('.$src.', '.$dest.', '.$width.', '.$height.', '.$rgb.', '.$quality.', '.$proportions.')');
     if (!file_exists($src)) {
         return false;
     }
@@ -251,6 +262,7 @@ static function resize_image($src, $dest, $width, $height, $rgb = 0x1d1d1d, $qua
 }
 
 static function upload_plan($src, $dest, $ext, $width = 600, $height = 600, $rgb = 0xffffff, $quality = 100, $proportions = 1) {
+    engine::log('image::upload_plan('.$src.', '.$dest.', '.$ext.', '.$width.', '.$height.', '.$rgb.', '.$quality.', '.$proportions.')');
     if (!file_exists($src)) {
         return false;
     }
@@ -314,6 +326,7 @@ static function upload_plan($src, $dest, $ext, $width = 600, $height = 600, $rgb
 * </code>
 */
 static function base64_to_jpg($base64_string, $output_file) {
+    engine::log('image::base64_to_jpg('.$output_file.')');
     $ifp = fopen($output_file, 'wb');
     $data = explode(',', $base64_string);
     fwrite($ifp, base64_decode($data[1]));

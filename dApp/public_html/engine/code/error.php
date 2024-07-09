@@ -8,7 +8,10 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-$fout = '
+function error() {
+    engine::log('error('.json_encode($_GET).')');
+    try {
+        $fout = '
 <style>
 html {
     background: rgb(26, 29, 29);
@@ -107,7 +110,11 @@ html {
     </div>
 </div>
 <div class="clear">&nbsp;</div>';
-echo str_replace("
+        echo str_replace("
 ", "", $fout);
+    } catch(Exception $e) {
+        engine::throw('error('.json_encode($_GET).')', $e);
+    }
+}
 
-
+error();

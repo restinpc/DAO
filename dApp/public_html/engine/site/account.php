@@ -35,7 +35,7 @@ if (!empty($_SESSION["user"]["id"])) {
             }
             $title = engine::lang("Settings");
             $this->title = $title;
-            $this->content .= engine::print_navigation($this, $title);
+            $this->content .= engine::print_navigation($title);
             $this->content .= engine::print_settings($this);
         } else if ($_GET[1] == "confirm") {
             if (!empty($_GET[3]) || empty($_GET[2])) {
@@ -44,7 +44,7 @@ if (!empty($_SESSION["user"]["id"])) {
             }
             $title = engine::lang("Delivery confirmation");
             $this->title = $title;
-            $this->content .= engine::print_navigation($this, $title);
+            $this->content .= engine::print_navigation($title);
             $this->content .= engine::print_order_confirm($this);
         } else if ($_GET[1] == "purchases") {
             if (!empty($_GET[2])) {
@@ -53,7 +53,7 @@ if (!empty($_SESSION["user"]["id"])) {
             }
             $title = engine::lang("Purchases");
             $this->title = $title;
-            $this->content .= engine::print_navigation($this, $title);
+            $this->content .= engine::print_navigation($title);
             $this->content .= engine::print_purchases($this);
         } else if ($_GET[1] == "inbox") {
             if (!empty($_GET[3])) {
@@ -62,7 +62,7 @@ if (!empty($_SESSION["user"]["id"])) {
             }
             $title = engine::lang("Messages");
             $this->title = $title;
-            $this->content .= engine::print_navigation($this, $title);
+            $this->content .= engine::print_navigation($title);
             $this->content .= engine::print_inbox($this);
         } else if ($_GET[1] == "finances") {
             if (!empty($_GET[3])) {
@@ -71,7 +71,7 @@ if (!empty($_SESSION["user"]["id"])) {
             }
             $title = engine::lang("Finances");
             $this->title = $title;
-            $this->content .= engine::print_navigation($this, $title);
+            $this->content .= engine::print_navigation($title);
             $this->content .= engine::print_finances($this);
         } else {
             $this->content = engine::error();
@@ -80,8 +80,8 @@ if (!empty($_SESSION["user"]["id"])) {
     } else {
         $title = engine::lang("Profile");
         $this->title = $user["name"];
-        $this->content = engine::print_header($this, intval($_SESSION["user"]["id"]));
-        $this->content .= engine::print_navigation($this, $title);
+        $this->content = engine::print_header($_SESSION["user"]["id"]);
+        $this->content .= engine::print_navigation($title);
         $this->content .= '<div class="document">'
         . '<div class="clear_block">'
         . '<p>'.engine::lang("Member of").' <b>Web 3.0 </b> '.engine::lang("community").'</p>'

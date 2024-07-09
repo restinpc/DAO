@@ -1,7 +1,7 @@
 <?php
 /**
 * Prints an image viewer and updates pictures inside article.
-* @path /engine/core/function/print_image_viewer.php
+* @path /engine/core/content/print_image_viewer.php
 *
 * @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>

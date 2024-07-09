@@ -68,10 +68,10 @@ if (empty($_GET[1])) {
                 $_SESSION["user"] = $data;
                 $_SESSION["user"]["session_id"] = $d["id"];
                 if (!empty($_SESSION["redirect"])) {
-                    $this->content .= '<script language="JavaScript">setTimeout(function() { window.location = "'.($_SESSION["redirect"]).'"; }, 1);</script>';
+                    $this->content .= '<script language="JavaScript">setTimeout(() => { window.location = "'.($_SESSION["redirect"]).'"; }, 1);</script>';
                     unset($_SESSION["redirect"]);
                 } else {
-                    $this->content .= '<script language="JavaScript">setTimeout(function() { window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
+                    $this->content .= '<script language="JavaScript">setTimeout(() => { window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
                 }
                 $flag = 1;
             }
@@ -135,7 +135,7 @@ if (empty($_GET[1])) {
                     $query = 'UPDATE `nodes_user` SET `pass` = "'.$password.'" WHERE `email` = "'.$email.'"';
                     engine::mysql($query);
                     $this->content .= '<div class="clear_block">'.engine::lang("Your password has been updated").'!</div>'
-                    .'<script>function redirect() { window.location="'.$_SERVER["DIR"].'/login"; }setTimeout(redirect, 3000);</script>';
+                    .'<script>setTimeout(() => { window.location = "'.$_SERVER["DIR"].'/login"; }, 3000);</script>';
                 } else {
                     $this->content .= '<h1>'.engine::lang("Setup new password").'</h1><br/>'
                         . '<form method="POST" class="lh2">'
@@ -162,10 +162,7 @@ if (empty($_GET[1])) {
             $new_pass = mb_substr(md5($email.date("Y-m-d")), 0, 8);
             email::restore_password($data["email"], $new_pass, $code);
             $this->content .= '<div class="clear_block">'.engine::lang("To process restore, please check your email").'.</div>'
-                . '<script>'
-                . ' function redirect() { this.location = "'.$_SERVER["DIR"].'/login"; } '
-                . ' setTimeout(redirect, 3000);'
-                . '</script>';
+                . '<script>setTimeout(() => { this.location = "'.$_SERVER["DIR"].'/login"; }, 3000);</script>';
             $flag = 1;
         } else {
             $this->onload .= 'alert("Email '.engine::lang("not found").'");';

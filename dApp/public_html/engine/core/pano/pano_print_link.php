@@ -26,7 +26,7 @@ function pano_print_link($site, $object, $new=0) {
         transparent="true"
         look-at="#camera" 
         action=\' 
-            setTimeout(function(id) {
+            setTimeout((id) => {
                 if ($id("scene_editor") && $id("scene_editor").style.display == "block") {
                     if (!document.panorama.objectId) {
                         jQuery(".vr_object_window").css("display", "none");

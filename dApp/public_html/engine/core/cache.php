@@ -13,65 +13,7 @@
 * </code>
 */
 
-class cache{
-/*
-* Update a cache data in DB.
-*
-* @param string $url Page URL.
-* @param bool $jQuery jQuery mode.
-* @param string $lang Request language.
-* @return string Returns HTML contents of page.
-* $usage <code> cache::update_cache("/", TRUE); </code>
-*/
-public static function update_cache($url, $jQuery = 0, $lang="en") {
-    if (strpos($url, $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"]) === FALSE) {
-        $path = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$url;
-    } else {
-        $path = $url;
-    }
-    $current = floatval(microtime(1));
-    $html = engine::curl_post_query($path, "nocache=1&lang=".$lang);
-    $load_time = floatval(microtime(1) - $current);
-    $c = explode('<!DOCTYPE', $html);
-    preg_match('/<title>(.*?)<\/title>.*?itemprop="description" content="(.*?)".*?itemprop="keywords" '
-        . 'content="(.*?)".*?<\!-- content -->(.*?)<\!-- \/content -->.*?'
-        . '<script rel="onload">(.*?)<\/script>/sim', $html, $m);
-    $title = trim($m[1]);
-    $description = trim($m[2]);
-    $keywords = trim($m[3]);
-    $content = trim($m[4]);
-    $script = trim($m[5]);
-    if (!empty($content)) {
-        $fout = '<!DOCTYPE'.str_replace('<content/>', $content, $c[1]);
-    } else {
-        $fout = '<!DOCTYPE'.$c[1];
-    }
-    if (!empty($content)) {
-        $query = 'UPDATE `nodes_cache` SET '
-            . '`html` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($html))).'", '
-            . '`date` = "'.date("U").'", '
-            . '`title` = "'.$title.'", '
-            . '`description` = "'.$description.'", '
-            . '`keywords` = "'.$keywords.'", '
-            . '`content` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($content))).'", '
-            . '`script` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($script))).'", '
-            . '`time` = "'.$load_time.'" '
-            . 'WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
-        engine::mysql($query);
-    } else if (empty($html)) {
-        $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
-        engine::mysql($query);
-        return;
-    }
-    if (!$jQuery) {
-        return($fout.'
-<!-- Refreshing cache. Time loading: '.(floatval(microtime(1)) - $GLOBALS["time"]).' -->');
-    } else {
-        return('<title>'.$data["title"].'</title>'.$content.'
-<script rel="onload">'.$data["script"].'</script>
-<!-- Refreshing cache and return content. Time loading: '.(floatval(microtime(1)) - $GLOBALS["time"]).' -->');
-    }
-}
+class cache {
 /*
 * Output requested page from cache DB.
 *
@@ -79,6 +21,7 @@ public static function update_cache($url, $jQuery = 0, $lang="en") {
 * $usage <code> $cache = new cache(); </code>
 */
 public function __construct() {
+    engine::log('cache.__construct()');
     $is_cache = intval($_SERVER["configs"]["cache"]);
     $fout = '';
     if (empty($_POST) || !empty($_POST["cache"])) {
@@ -160,6 +103,66 @@ public function __construct() {
     return $fout;
 }
 /*
+* Update a cache data in DB.
+*
+* @param string $url Page URL.
+* @param bool $jQuery jQuery mode.
+* @param string $lang Request language.
+* @return string Returns HTML contents of page.
+* $usage <code> cache::update_cache("/", TRUE); </code>
+*/
+public static function update_cache($url, $jQuery = 0, $lang = "en") {
+    engine::log('cache::update_cache('.$url.', '.$jQuery.', '.$lang.')');
+    if (strpos($url, $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"]) === FALSE) {
+        $path = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$url;
+    } else {
+        $path = $url;
+    }
+    $current = floatval(microtime(1));
+    $html = engine::curl_post_query($path, "nocache=1&lang=".$lang);
+    $load_time = floatval(microtime(1) - $current);
+    $c = explode('<!DOCTYPE', $html);
+    preg_match('/<title>(.*?)<\/title>.*?itemprop="description" content="(.*?)".*?itemprop="keywords" '
+        . 'content="(.*?)".*?<\!-- content -->(.*?)<\!-- \/content -->.*?'
+        . '<script rel="onload">(.*?)<\/script>/sim', $html, $m);
+    $title = trim($m[1]);
+    $description = trim($m[2]);
+    $keywords = trim($m[3]);
+    $content = trim($m[4]);
+    $script = trim($m[5]);
+    if (!empty($content)) {
+        $fout = '<!DOCTYPE'.str_replace('<content/>', $content, $c[1]);
+    } else {
+        $fout = '<!DOCTYPE'.$c[1];
+    }
+    if (!empty($content)) {
+        $query = 'UPDATE `nodes_cache` SET '
+            . '`html` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($html))).'", '
+            . '`date` = "'.date("U").'", '
+            . '`title` = "'.$title.'", '
+            . '`description` = "'.$description.'", '
+            . '`keywords` = "'.$keywords.'", '
+            . '`content` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($content))).'", '
+            . '`script` = "'.str_replace("\\\\", "\\\\\\", str_replace('"', '\"', trim($script))).'", '
+            . '`time` = "'.$load_time.'" '
+            . 'WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
+        engine::mysql($query);
+    } else if (empty($html)) {
+        $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$url.'" AND `lang` = "'.$lang.'"';
+        engine::mysql($query);
+        return;
+    }
+    if (!$jQuery) {
+        return($fout.'
+<!-- Refreshing cache. Time loading: '.(floatval(microtime(1)) - $GLOBALS["time"]).' -->');
+    } else {
+        return('<title>'.$data["title"].'</title>'.$content.'
+<script rel="onload">'.$data["script"].'</script>
+<!-- Refreshing cache and return content. Time loading: '.(floatval(microtime(1)) - $GLOBALS["time"]).' -->');
+    }
+}
+
+/*
 * Gets current page ID.
 *
 * @return string Returns id of page in MySQL DB.
@@ -169,6 +172,7 @@ public function __construct() {
 * </code>
 */
 public function page_id() {
+    engine::log('cache.page_id()');
     if (empty($_POST["nocache"])) {
         $query = 'SELECT `id` FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
@@ -188,6 +192,7 @@ public function page_id() {
 }
 
 public function addAttendance($cache_id, $ref_id = 0) {
+    engine::log('cache.addAttendance('.$cache_id.', '.$ref_id.')');
     if (!$ref_id) {
         $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
         $res = engine::mysql($query);

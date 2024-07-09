@@ -88,10 +88,10 @@ if (!empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["telegram
                 email::registration($email, $name);
             }
             if (empty($_SESSION["redirect"])) {
-                $this->content = '<script language="JavaScript">setTimeout(function() { window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
+                $this->content = '<script language="JavaScript">setTimeout(() => { window.location = "'.$_SERVER["DIR"].'/account"; }, 1);</script>';
                 $this->onload .= 'window.location = "'.$_SERVER["DIR"].'/account";';
             } else {
-                $this->content = '<script language="JavaScript">setTimeout(function() { window.location = "'.$_SESSION["redirect"].'"; }, 1);</script>';
+                $this->content = '<script language="JavaScript">setTimeout(() => { window.location = "'.$_SESSION["redirect"].'"; }, 1);</script>';
             }
             return;
         } else {

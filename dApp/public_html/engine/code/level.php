@@ -8,9 +8,11 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/headers.php");
-
-$fout = '<!DOCTYPE html>
+function level() {
+    engine::log('level('.json_encode($_GET).')');
+    try {
+        require_once("engine/nodes/headers.php");
+        $fout = '<!DOCTYPE html>
 <html>
 <head>
     <link href="'.$_SERVER["DIR"].'/template/nodes.css" rel="stylesheet" type="text/css" />
@@ -30,4 +32,10 @@ $fout = '<!DOCTYPE html>
     '.engine::print_level_plan($_GET["id"]).'
 </body>
 </html>';
-echo $fout;
+        echo $fout;
+    } catch(Exception $e) {
+        engine::throw('level('.json_encode($_GET).')', $e);
+    }
+}
+
+level();

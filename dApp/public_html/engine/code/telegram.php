@@ -8,9 +8,11 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-require_once("engine/nodes/headers.php");
-
-echo '<!DOCTYPE html>
+function telegram() {
+    engine::log('telegram()');
+    try {
+        require_once("engine/nodes/headers.php");
+        echo '<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -53,20 +55,26 @@ echo '<!DOCTYPE html>
     if (tme_bg) {
         TWallpaper.init(tme_bg);
         TWallpaper.animate(true);
-        window.onfocus = function() { TWallpaper.update(); };
+        window.onfocus = () => { TWallpaper.update(); };
     }
     document.body.classList.remove("no_transition");
-    function toggleTheme(dark) {
+    const toggleTheme = (dark) => {
         document.documentElement.classList.toggle("theme_dark", dark);
         window.Telegram && Telegram.setWidgetOptions({dark: dark});
     }
     if (window.matchMedia) {
         var darkMedia = window.matchMedia("(prefers-color-scheme: dark)");
         toggleTheme(darkMedia.matches);
-        darkMedia.addListener(function(e) {
+        darkMedia.addListener((e) => {
             toggleTheme(e.matches);
         });
     }
 </script>
 </body>
 </html>';
+    } catch(Exception $e) {
+        engine::throw('telegram()', $e);
+    }
+}
+
+telegram();

@@ -7,11 +7,12 @@
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
-
-require_once("engine/nodes/headers.php");
-
-if (!empty($_GET["file"]) && $_SESSION["user"]["admin"] == "1") {
-    echo '<!DOCTYPE html>
+function edit() {
+    engine::log('edit('.json_encode($_GET).')');
+    try {
+        require_once("engine/nodes/headers.php");
+        if (!empty($_GET["file"]) && $_SESSION["user"]["admin"] == "1") {
+            echo '<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -22,31 +23,37 @@ if (!empty($_GET["file"]) && $_SESSION["user"]["admin"] == "1") {
   </style>
 </head>
 <body>
-<pre id="editor">';
-    $file = '';
-    $name = explode('.', $_GET["file"]);
-    $ext = $name[count($name) - 1];
-    $source = str_replace($ext, 'source.'.$ext, $_GET["file"]);
-    if (file_exists($source)) {
-        $file = $source;
-    } else {
-        $file = $_GET["file"];
-    }
-    $file = file_get_contents($file);
-    if ($ext == "js") {
-        $ace_mode = 'javascript';
-    }
-    if ($ext == "css") {
-        $ace_mode = 'css';
-    }
-    if ($ext == "php") {
-        $ace_mode = 'php';
-        $file = htmlspecialchars($file);
-    }
-    echo $file.'
-</pre>
+    <pre id="editor">';
+            $file = '';
+            $name = explode('.', $_GET["file"]);
+            $ext = $name[count($name) - 1];
+            $source = str_replace($ext, 'source.'.$ext, $_GET["file"]);
+            if (file_exists($source)) {
+                $file = $source;
+            } else {
+                $file = $_GET["file"];
+            }
+            $file = file_get_contents($file);
+            if ($ext == "js") {
+                $ace_mode = 'javascript';
+            }
+            if ($ext == "css") {
+                $ace_mode = 'css';
+            }
+            if ($ext == "php") {
+                $ace_mode = 'php';
+                $file = htmlspecialchars($file);
+            }
+            echo $file.'
+    </pre>
 </body>
 </html>';
-} else {
-    engine::error();
+        } else {
+            engine::error();
+        }
+    } catch(Exception $e) {
+        engine::throw('edit('.json_encode($_GET).')', $e);
+    }
 }
+
+edit();

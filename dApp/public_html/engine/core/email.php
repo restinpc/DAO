@@ -18,6 +18,7 @@ class email{
 * @return string Returns generated HTML of message to email.
 */
 static function email_template($text) {
+    engine::log('email::email_template('.$text.')');
     $css = file_get_contents("template/email.css");
     if (empty($css)) {
         $css = file_get_contents ($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/template/email.css');
@@ -43,6 +44,7 @@ static function email_template($text) {
 * @param array $data Array, based on @mysql[nodes_user_outbox].
 */
 static function bulk_mail($data) {
+    engine::log('email::bulk_mail('.$data.')');
     $_SERVER["configs"]["name"] = $_SERVER["configs"]["name"];
     $language = $_SESSION["Lang"];
     $query = 'SELECT `id`,`name`,`email`, `lang` FROM `nodes_user` WHERE `id` = "'.$data["user_id"].'"';
@@ -81,6 +83,7 @@ static function bulk_mail($data) {
 * Sends a message with daily report to admin.
 */
 static function daily_report() {
+    engine::log('email::daily_report()');
     $file = engine::curl_get_query($_SERVER["PUBLIC_URL"].'/perfomance.php?interval=day&date='.date("Y-m-d"));
     $perfomance_image = base64_encode($file);
     $caption = $_SERVER["HTTP_HOST"].' '.date("d/m/Y").' '.engine::lang('daily report');
@@ -118,6 +121,7 @@ static function daily_report() {
 * @param string $name User name.
 */
 static function registration($email, $name) {
+    engine::log('email::registration('.$email.', '.$name.')');
     $caption = engine::lang('Registration at').' '.$_SERVER["HTTP_HOST"];
     $body = engine::lang('Dear').' '.$name.'!<br/><br/>'
         .engine::lang('We are glad to confirm successful registration at').' '
@@ -133,6 +137,7 @@ static function registration($email, $name) {
 * @param string $code Confirmation code
 */
 static function confirmation($email, $name, $code) {
+    engine::log('email::confirmation('.$email.', '.$name.')');
     $caption = engine::lang('Registration at').' '.$_SERVER["HTTP_HOST"];
     $body = engine::lang('Dear').' '.$name.',<br/><br/>'
         .engine::lang('We are glad to confirm successful registration at').' '
@@ -150,6 +155,7 @@ static function confirmation($email, $name, $code) {
 * @param string $code Confirmation code.
 */
 static function restore_password($email, $new_pass, $code) {
+    engine::log('email::restore_password('.$email.')');
     $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
@@ -168,6 +174,7 @@ static function restore_password($email, $new_pass, $code) {
 * @param string $url Page URL.
 */
 static function new_comment($user_id, $url) {
+    engine::log('email::new_comment('.$user_id.', '.$url.')');
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
@@ -184,6 +191,7 @@ static function new_comment($user_id, $url) {
 * @param double $amount Transaction sum.
 */
 static function new_transaction($user_id, $amount) {
+    engine::log('email::new_transaction('.$user_id.', '.$amount.')');
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
@@ -201,6 +209,7 @@ static function new_transaction($user_id, $amount) {
 * @param int $sender_id From user ID @mysql[nodes_user]->id.
 */
 static function new_message($user_id, $sender_id) {
+    engine::log('email::new_message('.$user_id.', '.$sender_id.')');
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
@@ -222,6 +231,7 @@ static function new_message($user_id, $sender_id) {
 * @param string $paypal Receiver PayPal ID.
 */
 static function new_withdrawal($user_id, $amount, $wallet, $id) {
+    engine::log('email::new_withdrawal('.$user_id.', '.$amount.', '.$wallet.', '.$id.')');
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
@@ -231,9 +241,9 @@ static function new_withdrawal($user_id, $amount, $wallet, $id) {
     } else if ($wallet == "Yandex") {
         $wallet_string = engine::lang("on your Yandex Money account");
     }
-    $body = engine::lang('Dear').' '.$user["name"].'!<br/><br/>
-        '.engine::lang("You withdrawal request is pending now").'.<br/>
-        '.engine::lang("After some time you will receive").' $'.$amount.' '.$wallet_string.' <b>'.$id.'</b>.';
+    $body = engine::lang('Dear').' '.$user["name"].'!<br/><br/>'
+        . engine::lang("You withdrawal request is pending now").'.<br/>'
+        . engine::lang("After some time you will receive").' $'.$amount.' '.$wallet_string.' <b>'.$id.'</b>.';
     engine::send_mail($user["email"], $_SERVER["configs"]["name"]."<no-reply@".$_SERVER["HTTP_HOST"].'>', $caption, email::email_template($body));
     $body = engine::lang("Dear").' Admin!<br/><br/>'
         . engine::lang("There in new withdrawal request at").' '.$_SERVER["HTTP_HOST"].'.<br/>'
@@ -248,6 +258,7 @@ static function new_withdrawal($user_id, $amount, $wallet, $id) {
 * @param int $user_id User ID @mysql[nodes_user]->id.
 */
 static function finish_withdrawal($user_id) {
+    engine::log('email::finish_withdrawal('.$user_id.')');
     $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$user_id.'"';
     $res = engine::mysql($query);
     $user = mysqli_fetch_array($res);
@@ -264,6 +275,7 @@ static function finish_withdrawal($user_id) {
 * @param int $id Order ID @mysql[nodes_order]->id.
 */
 static function new_purchase($id) {
+    engine::log('email::new_purchase('.$id.')');
     $query = 'SELECT * FROM `nodes_order` WHERE `id` = "'.$id.'"';
     $res = engine::mysql($query);
     $order = mysqli_fetch_array($res);
@@ -297,6 +309,7 @@ static function new_purchase($id) {
 * @param int $id Order ID @mysql[nodes_order]->id.
 */
 static function shipping_confirmation($id) {
+    engine::log('email::shipping_confirmation('.$id.')');
     $query = 'SELECT * FROM `nodes_product_order` WHERE `id` = "'.intval($id).'"';
     $res = engine::mysql($query);
     $product_order = mysqli_fetch_array($res);
@@ -325,6 +338,7 @@ static function shipping_confirmation($id) {
 * @param int $id Order ID @mysql[nodes_order]->id.
 */
 static function delivery_confirmation($id) {
+    engine::log('email::delivery_confirmation('.$id.')');
     $query = 'SELECT * FROM `nodes_product_order` WHERE `id` = "'.intval($id).'"';
     $res = engine::mysql($query);
     $product = mysqli_fetch_array($res);

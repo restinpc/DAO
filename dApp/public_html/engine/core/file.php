@@ -25,6 +25,7 @@ class file {
 * @usage <code> file::copy("/img", "/temp"); </code>
 */
 static function copy($source, $dest, $permissions = 0755) {
+    engine::log('file::copy('.$source.', '.$dest.', '.$permissions.')');
     if (is_link($source)) {
         return symlink(readlink($source), $dest);
     }
@@ -59,6 +60,7 @@ static function copy($source, $dest, $permissions = 0755) {
 * @usage <code> file::delete("/temp"); </code>
 */
 static function delete($dir) {
+    engine::log('file::delete('.$dir.')');
     foreach (scandir($dir) as $file) {
         if ('.' === $file || '..' === $file) {
             continue;
@@ -83,6 +85,7 @@ static function delete($dir) {
 * @usage <code> file::upload("new_image", "/img", true); </code>
 */
 static function upload($filename, $path, $md5 = 0) {
+    engine::log('file::upload('.$filename.', '.$path.', '.$md5.')');
     if (!is_array($_FILES[$filename]["name"])) {
         if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
             if (!$md5) {
@@ -124,6 +127,7 @@ static function upload($filename, $path, $md5 = 0) {
 * @param int $exclusiveLength Number of text to be exclusived from the file path.
 */
 private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
+    engine::log('file::zip_folder('.$folder.', '.$zipFile.', '.$exclusiveLength.')');
     $handle = opendir($folder);
     while (false !== ($f = readdir($handle))) {
         if ($f != '.' && $f != '..') {
@@ -148,6 +152,7 @@ private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
 * @usage <code> file::zip('/img', '/backup/img.zip'); </code>
 */
 static function zip($sourcePath, $outZipPath) {
+    engine::log('file::zip('.$sourcePath.', '.$outZipPath.')');
     $pathInfo = pathInfo($sourcePath);
     $parentPath = $pathInfo['dirname'];
     $dirName = $pathInfo['basename'];

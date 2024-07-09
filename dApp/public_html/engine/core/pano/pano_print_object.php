@@ -33,9 +33,8 @@ function pano_print_object($site, $object, $new = 0) {
         width="1"
         depth="1"
         color="'.$object["color"].'"
-        onMouseOver=\'console.log("onMouseOver");\'
         action=\'
-            setTimeout(function(id) {
+            setTimeout((id) => {
                 if ($id("scene_editor") && $id("scene_editor").style.display== "block") {
                     if (!document.panorama.objectId) {
                         jQuery(".vr_object_window").css("display", "none");

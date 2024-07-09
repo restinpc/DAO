@@ -106,12 +106,12 @@ public static function __callStatic($name, $arguments) {
     }
 }
 
-static function throw($exception) {
+static function throw($function, $exception) {
     $fout = '';
     foreach($_SESSION["LOG"] as $key => $value) {
         $fout .= $key.": ".$value."\n";
     }
-    $fout .= date("Y-m-d H:i:s").'.000000: engine::throw('.$exception->getMessage.')\n';
+    $fout .= date("Y-m-d H:i:s").'.000000: engine::throw('.$function.' -> '.$exception->getMessage().')\n';
     foreach($exception->getTrace() as $text) {
         $fout .= $text.'\n';
     }
@@ -135,6 +135,10 @@ static function throw($exception) {
 }
 
 static function log($text) {
+    $type = gettype($text);
+    if ($type != 'string' && $type != 'integer' && $type != 'double' && $type != 'float') {
+        $text = json_encode($text);
+    }
     if (!empty($_SESSION["LOG"][date("Y-m-d H:i:s").'.000000'])) {
         $flag = 0;
         $i = 1;
@@ -424,7 +428,7 @@ static function curl_post_query($url, $query, $format = 0) {
 
 static function redirect($url) {
     engine::log('engine::redirect('.$url.')');
-    header( 'Location: '.$url );
+    // header( 'Location: '.$url );
     die('<script>window.location = "'.$url.'";</script>');
 }
 

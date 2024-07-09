@@ -35,7 +35,7 @@ if (intval($_GET[1]) > 0) {
             $description = mb_substr($this->description, 0, 198);
             $this->description = $description.(strcmp($description, $this->description) ? '..' : '');
         }
-        $this->content .= engine::print_navigation($this, $d["caption"]);
+        $this->content .= engine::print_navigation($d["caption"]);
         $this->content .= engine::print_product($this, $data);
     } else {
         $this->content = engine::error();
@@ -57,6 +57,6 @@ if (intval($_GET[1]) > 0) {
             $title = lang("Products");
         }
     }
-    $this->content .= engine::print_navigation($this, $title);
+    $this->content .= engine::print_navigation($title);
     $this->content .= engine::print_products($this);
 }

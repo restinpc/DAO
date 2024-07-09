@@ -8,19 +8,26 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
 
-if (!isset($_SERVER["CRON"])) {
-    $_SESSION["display"] = "1";
-    $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `token` = "'.session_id().'"';
-    engine::mysql($query);
-    if (!$data["ref_id"] && !empty($_GET["ref"])) {
-        $ref = engine::escape_string(urldecode($_GET["ref"]));
-        if (mb_strpos($ref, $_SERVER["HTTP_HOST"]) === FALSE) {
-            $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$ref.'")';
-            engine::mysql($query);
-            $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
-            $query = 'UPDATE `nodes_attendance` SET `ref_id` = "'.$ref_id.'" WHERE `id` = "'.$data["id"].'"';
-            engine::mysql($query);
+function timeout() {
+    engine::log('timeout('.json_encode($_GET).')');
+    try {
+        $_SESSION["display"] = "1";
+        $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `token` = "'.session_id().'"';
+        engine::mysql($query);
+        if (!$data["ref_id"] && !empty($_GET["ref"])) {
+            $ref = engine::escape_string(urldecode($_GET["ref"]));
+            if (mb_strpos($ref, $_SERVER["HTTP_HOST"]) === FALSE) {
+                $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$ref.'")';
+                engine::mysql($query);
+                $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
+                $query = 'UPDATE `nodes_attendance` SET `ref_id` = "'.$ref_id.'" WHERE `id` = "'.$data["id"].'"';
+                engine::mysql($query);
+            }
         }
+    } catch(Exception $e) {
+        engine::throw('timeout('.json_encode($_GET).')', $e);
     }
 }
+
+timeout();
 

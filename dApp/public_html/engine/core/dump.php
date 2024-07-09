@@ -30,6 +30,7 @@ protected $isWritten = false;
 * @param boolean $hexValue It defines if the outup values are base-16 or not
 */
 function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hexValue = false) {
+    engine::log('dump.__construct('.$db.', '.$filepath.', '.$compress.', '.$hexValue.')');
     $this->compress = $compress;
     if (!$this->setOutputFile($filepath)) {
         return false;
@@ -42,6 +43,7 @@ function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hex
 * @param string $db The database name
 */
 function setDatabase($db) {
+    engine::log('dump.setDatabase('.$db.')');
     $this->database = $db;
     if (!@mysqli_select_db($_SERVER["sql_connection"], $this->database)) {
         return false;
@@ -62,6 +64,7 @@ function getDatabase() {
 * @param boolean $compress If it's true, the output file will be compressed
 */
 function setCompress($compress) {
+    engine::log('dump.setCompress('.$compress.')');
     if ($this->isWritten) {
         return false;
     }
@@ -83,6 +86,7 @@ function getCompress() {
 * @param string $filepath The file where the dump will be written
 */
 function setOutputFile($filepath) {
+    engine::log('dump.setOutputFile('.$filepath.')');
     if ($this->isWritten) {
         return false;
     }
@@ -104,6 +108,7 @@ function getOutputFile() {
 * @param string $table The table name
 */
 function getTableStructure($table) {
+    engine::log('dump.getTableStructure('.$table.')');
     if (!$this->setDatabase($this->database)) {
         return false;
     }
@@ -155,6 +160,7 @@ function getTableStructure($table) {
 * @param boolean $hexValue It defines if the output is base 16 or not
 */
 function getTableData($table, $hexValue = true) {
+    engine::log('dump.getTableData('.$table.', '.$hexValue.')');
     if (!$this->setDatabase($this->database) ) {
         return false;
     }
@@ -224,6 +230,7 @@ function getTableData($table, $hexValue = true) {
 * @return boolean
 */
 function getDatabaseStructure() {
+    engine::log('dump.getDatabaseStructure()');
     $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
     if (@mysqli_num_rows($records) == 0) {
         return false;
@@ -240,6 +247,7 @@ function getDatabaseStructure() {
 * @param boolean $hexValue It defines if the output is base-16 or not
 */
 function getDatabaseData($hexValue = true) {
+    engine::log('dump.getDatabaseData('.$hexValue.')');
     $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
     if (@mysqli_num_rows($records) == 0) {
         return false;
@@ -253,6 +261,7 @@ function getDatabaseData($hexValue = true) {
 * Writes to file the selected database dump
 */
 function doDump($params = array(), $close_file = true) {
+    engine::log('dump.doDump('.$params.', '.$close_file.')');
     $this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 0;\n\n");
     if (!isset($params['skip_structure'])) {
         $this->getDatabaseStructure();
@@ -271,6 +280,7 @@ function doDump($params = array(), $close_file = true) {
 * @deprecated Look at the doDump() method
 */
 function writeDump($filename) {
+    engine::log('dump.writeDump('.$filename.')');
     if (!$this->setOutputFile($filename)) {
         return false;
     }
@@ -280,6 +290,7 @@ function writeDump($filename) {
 }
 
 function getSqlKeysTable($table) {
+    engine::log('dump.getSqlKeysTable('.$table.')');
     $primary = "";
     unset($unique);
     unset($index);
@@ -350,6 +361,7 @@ function getSqlKeysTable($table) {
 }
 
 function isTextValue($field_type) {
+    engine::log('dump.isTextValue('.$field_type.')');
     switch ($field_type) {
         case "tinytext":
         case "text":
@@ -369,6 +381,7 @@ function isTextValue($field_type) {
 }
 
 function openFile($filename) {
+    engine::log('dump.openFile('.$filename.')');
     $file = false;
     if ($this->compress) {
         $file = @gzopen($filename, "w9");
@@ -379,6 +392,7 @@ function openFile($filename) {
 }
 
 function saveToFile($file, $data) {
+    engine::log('dump.saveToFile('.$file.')');
     if ($this->compress) {
         @gzwrite($file, $data);
     } else {
@@ -388,6 +402,7 @@ function saveToFile($file, $data) {
 }
 
 function closeFile($file) {
+    engine::log('dump.closeFile('.$file.')');
     if ($this->compress) {
         @gzclose($file);
     } else {

@@ -314,7 +314,7 @@ function __construct() {
         }
         echo $fout;
     } catch(Exception $e) {
-        engine::throw($e);
+        engine::throw("site.__construct()", $e);
     }
 }
 }

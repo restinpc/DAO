@@ -7,20 +7,12 @@
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
-* @var $site->title - Page title.
-* @var $site->content - Page HTML data.
-* @var $site->keywords - Array meta keywords.
-* @var $site->description - Page meta description.
-* @var $site->img - Page meta image.
-* @var $site->onload - Page executable JavaScript code.
-*
-* @param object $site Site class object.
 * @param string $title Page title.
 * @return string Returns content of page on success, or die with error.
-* @usage <code> engine::print_navigation($site, engine::lang("Product")); </code>
+* @usage <code> engine::print_navigation(engine::lang("Product")); </code>
 */
 
-function print_navigation($site, $title) {
+function print_navigation($title) {
     $i = 0;
     $fout = '<div class="profile_menu">
         <div class="container">

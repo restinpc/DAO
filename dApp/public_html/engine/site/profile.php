@@ -32,7 +32,7 @@ if (empty($user) || empty($user["pass"])) {
         engine::lang("Member of") . ' Web 3.0 ' . engine::lang("community"),
         $user["email"], $user["url"]
     );
-    $this->content = engine::print_header($this, $user["id"]);
+    $this->content = engine::print_header($user["id"]);
     if ($_SERVER["configs"]["free_message"]) {
         if (empty($_SESSION["user"]["id"])) {
             $button = '<a id="link-send-message" hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["DIR"].'/login').'"><input type="button" class="btn w280" value="'.engine::lang("Login to Send message").'" /><br/><br/>';

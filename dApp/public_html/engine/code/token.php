@@ -8,11 +8,20 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-$query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_GET["token"].'" AND expire_at > NOW()';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-if (!empty($data)) {
-    echo 'Ok';
-} else {
-    echo 'Error';
+function token() {
+    engine::log('token('.json_encode($_GET).')');
+    try {
+        $query = 'SELECT * FROM nodes_session WHERE `token` LIKE "'.$_GET["token"].'" AND expire_at > NOW()';
+        $res = engine::mysql($query);
+        $data = mysqli_fetch_array($res);
+        if (!empty($data)) {
+            echo 'Ok';
+        } else {
+            echo 'Error';
+        }
+    } catch(Exception $e) {
+        engine::throw('token('.json_encode($_GET).')', $e);
+    }
 }
+
+token();

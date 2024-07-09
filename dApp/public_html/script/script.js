@@ -30,6 +30,7 @@ document.framework.traceStack = [];
 document.framework.loadEvents = true;
 document.framework.chatInterval = null;
 document.framework.confirmed = false;
+document.framework.errorState = false;
 window.stateChangeIsLocal = true;
 History.enabled = true;
 
@@ -779,10 +780,10 @@ document.framework.showAnchor = (anchor) => {
     document.framework.log(`document.framework.showAnchor(${anchor})`);
     try {
         if (anchor) {
-            if (jQuery('.android-content')) {
+            if (jQuery('.android-content') && jQuery('.android-content').length) {
                 jQuery('.android-content').animate({ scrollTop: parseInt(jQuery("a[name='"+anchor+"']").offset().top - 80)}, 200,'swing');
             } else {
-                jQuery('html, body').animate({ scrollTop: parseInt(jQuery("a[name='"+anchor+"']").offset().top - 80)}, 200,'swing');
+                jQuery('html, body').animate({ scrollTop: parseInt(jQuery("a[name='"+anchor+"']").offset().top - 80)}, 200, 'swing');
             }
         }
     } catch(e) {
@@ -1517,37 +1518,46 @@ document.framework.getLogs = (callback) => {
 */
 document.framework.submitTraceStack = () => {
     document.framework.log(`document.framework.submitTraceStack()`);
-    document.framework.getLogs((logs) => {
-        jQuery.ajax({
-            type: "POST",
-            url: document.framework.rootDir + "/trace.php",
-            data: { "logs": logs },
-            success: () => {
-                // window.location = document.framework.rootDir + "/error.php?500=1";
-            },
-            error: (response, exception) => {
-                document.framework.ajaxError('document.framework.submitTraceStack()', response, exception);
-                if (document.framework.blackBox) {
-                    jQuery.ajax({
-                        type: "POST",
-                        url: document.framework.blackBox + "/trace",
-                        data: JSON.stringify({ text: logs }),
-                        contentType: "text/json; charset=UTF-8",
-                        processData: false,
-                        dataType: 'json',
-                        success: () => {
-                            // window.location = document.framework.rootDir + "/error.php?500=1";
-                        },
-                        error: () => {
-                            // window.location = document.framework.rootDir + "/error.php?500=1";
-                        }
-                    });
-                } else {
-                    // window.location = document.framework.rootDir + "/error.php?500=1";
+    const requery = () => {
+        if (document.framework.blackBox && !document.framework.errorState) {
+            jQuery.ajax({
+                type: "POST",
+                url: document.framework.blackBox + "/trace",
+                data: JSON.stringify({ text: logs }),
+                contentType: "text/json; charset=UTF-8",
+                processData: false,
+                dataType: 'json',
+                success: () => {
+                    document.framework.errorState = true;
+                },
+                error: () => {
+                    document.framework.errorState = true;
                 }
-            }
-        });
-    });
+            });
+        } else {
+            document.framework.errorState = true;
+        }
+    }
+    if (!document.framework.errorState) {
+        try {
+            document.framework.getLogs((logs) => {
+                jQuery.ajax({
+                    type: "POST",
+                    url: document.framework.rootDir + "/trace.php",
+                    data: { "logs": logs },
+                    success: () => {
+                        document.framework.errorState = true;
+                    },
+                    error: (response, exception) => {
+                        document.framework.ajaxError('document.framework.submitTraceStack()', response, exception);
+                        requery();
+                    }
+                });
+            });
+        } catch(e) {
+            requery();
+        }
+    }
 }
 
 setTimeout(() => {
