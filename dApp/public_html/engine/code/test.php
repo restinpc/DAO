@@ -8,9 +8,13 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-$_GET["mode"] = "a";
-$_GET["action"] = "b";
+function test() {
+    engine::log('test('.json_encode($_GET).')');
+    try {
+        throw new Exception('Test');
+    } catch(Exception $e) {
+        engine::throw('test('.json_encode($_GET).')', $e);
+    }
+}
 
-echo print_r($_GET, 1);
-echo '<br/>';
-echo json_encode($_GET);
+test();

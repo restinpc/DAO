@@ -13,17 +13,18 @@ function trace() {
     try {
         if (!empty($_POST["logs"])) {
             $logs = engine::escape_string($_POST["logs"]);
-            $query = 'SELECT id FROM `nodes_exceptions` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
+            $query = 'SELECT id FROM `nodes_exception` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             if (!empty($data)) {
-                $query = 'UPDATE `nodes_exceptions` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
+                $query = 'UPDATE `nodes_exception` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
                 engine::mysql($query);
             } else {
-                $query = 'INSERT INTO `nodes_exceptions`(name, data, date) '
+                $query = 'INSERT INTO `nodes_exception`(name, data, date) '
                     . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$logs.'", NOW())';
                 engine::mysql($query);
             }
+            $_SESSION["LOG"] = array();
         }
     } catch(Exception $e) {
         engine::throw('trace()', $e);

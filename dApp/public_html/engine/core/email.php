@@ -109,7 +109,7 @@ static function daily_report() {
         $caption,
         email::email_template($body)
     )) {
-        $query = 'TRUNCATE TABLE nodes_error';
+        $query = 'TRUNCATE TABLE `nodes_error`';
         engine::mysql($query);
     }
 }

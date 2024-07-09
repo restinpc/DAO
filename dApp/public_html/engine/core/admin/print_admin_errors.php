@@ -36,7 +36,7 @@ function print_admin_errors($cms) {
             engine::error(401);
             return;
         }
-        $query = 'DELETE FROM `nodes_error`';
+        $query = 'TRUNCATE TABLE `nodes_error`';
         engine::mysql($query);
     } else if (!empty($_POST["id"])) {
         if ($admin_access != 2) {

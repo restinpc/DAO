@@ -97,19 +97,22 @@ if (date("U") - $date < 60) {
         header('HTTP/ 429 Too Many Requests', true, 429);
         die("Too many requests from your IP. Try again after ".(60 - (date("U") - $date))." seconds.");
     } else {
-        $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
-        $res = engine::mysql($query);
-        $ref = mysqli_fetch_array($res);
+        $ref_id = 0;
         if (!empty($_SERVER["HTTP_REFERER"])) {
-            if (empty($ref) && strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
-                $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$_SERVER["HTTP_REFERER"].'")';
-                engine::mysql($query);
-                $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
+            if (strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
+                $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
+                $res = engine::mysql($query);
+                $ref = mysqli_fetch_array($res);
+                if (empty($ref)) {
+                    $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$_SERVER["HTTP_REFERER"].'")';
+                    engine::mysql($query);
+                    $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
+                } else {
+                    $ref_id = $ref["id"];
+                }
             } else {
                 $ref_id = -1;
             }
-        } else {
-            $ref_id = 0;
         }
         if (strpos($_SERVER["SCRIPT_URI"], "/search") === false
             && strpos($_SERVER["SCRIPT_URI"], "/account") === false

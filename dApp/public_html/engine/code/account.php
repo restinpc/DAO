@@ -42,7 +42,7 @@ function account() {
             session_destroy();
             die('<script language="JavaScript">parent.window.location = "'.$_SERVER["DIR"].'/";</script>');
         } else {
-            engine::error(404);
+            engine::error();
         }
     } catch(Exception $e) {
         engine::throw('account('.json_encode($_GET).')', $e);

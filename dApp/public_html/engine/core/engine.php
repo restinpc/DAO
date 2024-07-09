@@ -109,29 +109,34 @@ public static function __callStatic($name, $arguments) {
 static function throw($function, $exception) {
     $fout = '';
     foreach($_SESSION["LOG"] as $key => $value) {
-        $fout .= $key.": ".$value."\n";
+        $fout .= $key.': '.$value.'
+';
     }
-    $fout .= date("Y-m-d H:i:s").'.000000: engine::throw('.$function.' -> '.$exception->getMessage().')\n';
+    $fout .= date("Y-m-d H:i:s").'.000000: engine::throw('.$function.' -> '.$exception->getMessage().')
+--------------------------------------------------------------------------------
+';
     foreach($exception->getTrace() as $text) {
-        $fout .= $text.'\n';
+        $fout .= json_encode($text).'
+';
     }
     $logs = engine::escape_string($fout);
-    $query = 'SELECT id FROM `nodes_exceptions` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
+    $query = 'SELECT id FROM `nodes_exception` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
     $res = engine::mysql($query, 0);
     $data = mysqli_fetch_array($res);
     try {
         if (!empty($data)) {
-            $query = 'UPDATE `nodes_exceptions` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
+            $query = 'UPDATE `nodes_exception` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
             engine::mysql($query, 0);
         } else {
-            $query = 'INSERT INTO `nodes_exceptions`(name, data, date) '
+            $query = 'INSERT INTO `nodes_exception`(name, data, date) '
                 . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$logs.'", NOW())';
             engine::mysql($query, 0);
         }
     } catch(Exception $e) {
         // todo - black box
     }
-    engine::error(500);
+    $_SESSION["LOG"] = array();
+    engine::bsod(500);
 }
 
 static function log($text) {
@@ -192,66 +197,13 @@ static function href($url) {
     return $fout;
 }
 
-/**
-* Register error in a DB and print error page.
-*
-* @param string $error_code HTTP code of error.
-* @usage <code> engine::error(401); </code>
-*/
-static function error($error_code = '0') {
-    engine::log('engine::error('.$error_code.')');
-    if (false) {
-        // todo - trace errors
-        print_r(error_get_last());
-    }
-    if ($error_code !== 500 && $error_code !== 204 && $error_code !== 504) {
-        $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
-        while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
-            $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"]) - 1);
-        }
-        $_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
-        if (empty($_SERVER["SCRIPT_URI"])) {
-            $_SERVER["SCRIPT_URI"] = "/";
-        }
-        $get = $session = $post = '';
-        $get = print_r($_GET, 1);
-        $post = print_r($_POST, 1);
-        $get = engine::escape_string($get);
-        $post = engine::escape_string($post);
-        $session = engine::escape_string($session);
-        $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" '
-                . 'AND `lang` = "'.$_SESSION["Lang"].'"';
-        engine::mysql($query);
-        $query = 'SELECT * FROM `nodes_error` WHERE '
-                . '`url` = "'.$_SERVER["SCRIPT_URI"].'" AND '
-                . '`lang` = "'.$_SESSION["Lang"].'" AND '
-                . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'" AND '
-                . '`get` = "'.$get.'" AND '
-                . '`post` = "'.$post.'"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        if (empty($data)) {
-            $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `ip`, `get`, `post`, `count`) '
-            . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", '
-                    . '"'.$_SESSION["Lang"].'", '
-                    . '"'.date("U").'", '
-                    . '"'.$_SERVER["REMOTE_ADDR"].'", '
-                    . '"'.$get.'", '
-                    . '"'.$post.'", '
-                    . '"1")';
-        } else {
-           $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"] + 1).'" WHERE `id` = "'.$data["id"].'"';
-        }
-        self::mysql($query);
-    }
-    if ($error_code != 0) {
-        $_GET[$error_code] = 1;
-    }
+static function bsod($error_code = 404) {
+    $_GET[$error_code] = 1;
     if (empty($_POST["jQuery"])) { 
         echo '<!DOCTYPE html>
 <html style="background: #1a1d1d; height: 100%; font-family: sans-serif;">
 <head>
-    <title>Error</title>
+    <title>'.engine::lang("Error").'</title>
     <meta charset="UTF-8" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -263,6 +215,63 @@ static function error($error_code = '0') {
         require_once("engine/code/error.php");
     }
     die();
+}
+
+/**
+* Register error in a DB and print error page.
+*
+* @param string $error_code HTTP code of error.
+* @usage <code> engine::error(401); </code>
+*/
+static function error($error_code = 404) {
+    $_SERVER["SCRIPT_URI"] = str_replace($_SERVER["PROTOCOL"]."://", "\$h", $_SERVER["SCRIPT_URI"]);
+    while ($_SERVER["SCRIPT_URI"][strlen($_SERVER["SCRIPT_URI"]) - 1] == "/") {
+        $_SERVER["SCRIPT_URI"] = mb_substr($_SERVER["SCRIPT_URI"], 0, strlen($_SERVER["SCRIPT_URI"]) - 1);
+    }
+    $_SERVER["SCRIPT_URI"] = str_replace("\$h", $_SERVER["PROTOCOL"]."://", $_SERVER["SCRIPT_URI"]);
+    if (empty($_SERVER["SCRIPT_URI"])) {
+        $_SERVER["SCRIPT_URI"] = "/";
+    }
+    $get = json_encode($_GET);
+    $post = json_encode($_POST);
+    $get = engine::escape_string($get);
+    $post = engine::escape_string($post);
+    $fout = '';
+    foreach($_SESSION["LOG"] as $key => $value) {
+        $fout .= $key.': '.$value.'
+';
+    }
+    $logs .= date("Y-m-d H:i:s").'.000000: engine::error('.$error_code.')
+--------------------------------------------------------------------------------';
+    $logs .= json_encode(error_get_last());
+    $logs = engine::escape_string($fout);
+    $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" '
+        . 'AND `lang` = "'.$_SESSION["Lang"].'"';
+    engine::mysql($query);
+    $query = 'SELECT * FROM `nodes_error` WHERE '
+        . '`url` = "'.$_SERVER["SCRIPT_URI"].'" AND '
+        . '`lang` = "'.$_SESSION["Lang"].'" AND '
+        . '`code` = "'.$error_code.'" AND '
+        . '`ip` = "'.$_SERVER["REMOTE_ADDR"].'"';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    if (empty($data)) {
+        $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `code`, `ip`, `get`, `post`, `logs`, `count`) '
+        . 'VALUES("'.$_SERVER["SCRIPT_URI"].'", '
+            . '"'.$_SESSION["Lang"].'", '
+            . '"'.date("U").'", '
+            . '"'.$error_code.'", '
+            . '"'.$_SERVER["REMOTE_ADDR"].'", '
+            . '"'.$get.'", '
+            . '"'.$post.'", '
+            . '"'.$logs.'", '
+            . '"1")';
+    } else {
+       $query = 'UPDATE `nodes_error` SET `date` = "'.date("U").'", `count` = "'.($data["count"] + 1).'" WHERE `id` = "'.$data["id"].'"';
+    }
+    self::mysql($query);
+    $_SESSION["LOG"] = array();
+    engine::bsod($error_code);
 }
 
 /**
@@ -280,7 +289,7 @@ static function mysql($query, $throw = 1) {
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     if ($throw) {
-        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::throw($query.' -> '.mysqli_error($_SERVER["sql_connection"])));
+        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::throw($query, new Exception(mysqli_error($_SERVER["sql_connection"]))));
     } else {
         $res = mysqli_query($_SERVER["sql_connection"], $query);
         if (!$res) {
