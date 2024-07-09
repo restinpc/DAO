@@ -1493,7 +1493,7 @@ document.framework.getLogs = (callback) => {
     try {
         jQuery.ajax({
             type: "GET",
-            url: document.framework.rootDir + "/log.php",
+            url: document.framework.rootDir + "/logs.php",
             success: (data) => {
                 document.framework.log(`document.framework.getLogs().success()`);
                 let logs = {...document.framework.traceStack, ...JSON.parse(data)};

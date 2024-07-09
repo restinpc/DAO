@@ -8,13 +8,13 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-function log() {
-    engine::log('log()');
+function logs() {
+    engine::log('logs()');
     try {
         echo json_encode($_SESSION["LOG"]);
     } catch(Exception $e) {
-        engine::throw('log()', $e);
+        engine::throw('logs()', $e);
     }
 }
 
-log();
+logs();

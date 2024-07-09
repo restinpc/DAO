@@ -114,8 +114,8 @@ static function throw($function, $exception) {
 ';
     }
     $fout .= date("Y-m-d H:i:s").'.100000: engine::throw('.$function.' -> '.$exception->getMessage().')
-'.$url.'
 ------------------------------------------------------------------
+'.$url.' >>
 ';
     foreach($exception->getTrace() as $text) {
         $fout .= json_encode($text).'
