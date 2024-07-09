@@ -24,7 +24,7 @@ class engine {
 * </code>
 */
 public static function __callStatic($name, $arguments) {
-    engine::log('engine::'.$name.'('.json_decode($arguments).')');
+    engine::log('engine::'.$name.'('.json_encode($arguments).')');
     $exec = function_exists($name);
     if (!$exec && !empty($_SERVER["CORE_PATH"])) {
         if (is_file('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php')) {
@@ -167,7 +167,7 @@ static function lang($key) {
     if ($_SESSION["Lang"] && $_SESSION["Lang"] == "en") {
         return $key;
     }
-    if (!$GLOBALS["_LANG"] || !is_array($GLOBALS["_LANG"])) {
+    if (!array_key_exists("_LANG", $GLOBALS) || !is_array($GLOBALS["_LANG"])) {
         $GLOBALS["_LANG"] = array();
         $query = 'SELECT * FROM `nodes_language` WHERE `lang` = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);

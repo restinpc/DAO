@@ -20,12 +20,13 @@
 * @usage <code> engine::print_articles($site, $data); </code>
 */
 
-function print_articles($site, $data=array()) {
+function print_articles($site, $data = array()) {
     $fout = '';
-    $cat_id = $data["id"];
+    $cat_id = 0;
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     if (!empty($data)) {
+        $cat_id = $data["id"];
         $query = 'SELECT * FROM `nodes_content` WHERE `cat_id` = "'.$data["id"].'" AND `lang` = "'.$_SESSION["Lang"].'"'
             . ' ORDER BY `order` DESC LIMIT '.($from-1).', '.$_SESSION["count"];
         $requery = 'SELECT COUNT(*) FROM `nodes_content` WHERE `cat_id` = "'.$data["id"].'" AND `lang` = "'.$_SESSION["Lang"].'"';

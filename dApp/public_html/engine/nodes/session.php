@@ -133,8 +133,6 @@ if (date("U") - $date < 60) {
             }
             $cache = new cache();
             $cache_id = $cache->page_id();
-            engine::mysql($query);
-            $date_now = date("U");
             $cache->addAttendance($cache_id, $ref_id);
         }
     }

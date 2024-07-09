@@ -173,6 +173,7 @@ public static function update_cache($url, $jQuery = 0, $lang = "en") {
 */
 public function page_id() {
     engine::log('cache.page_id()');
+    $cache_id = 0;
     if (empty($_POST["nocache"])) {
         $query = 'SELECT `id` FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" AND `lang` = "'.$_SESSION["Lang"].'"';
         $res = engine::mysql($query);
@@ -185,8 +186,6 @@ public function page_id() {
             engine::mysql($query);
             $cache_id = mysqli_insert_id($_SERVER["sql_connection"]);
         }
-    } else {
-        $cache_id = 0;
     }
     return $cache_id;
 }

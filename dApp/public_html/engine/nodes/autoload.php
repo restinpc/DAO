@@ -8,10 +8,17 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-error_reporting(0);
-ini_set('error_reporting', 0);
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+if (strpos($_SERVER["SCRIPT_URI"], 'dev.') !== false) {
+    error_reporting(-1);
+    ini_set('error_reporting', -1);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+} else {
+    error_reporting(0);
+    ini_set('error_reporting', 0);
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);  
+}
 ini_set("upload_max_filesize", "1024M");
 ini_set("post_max_size", "1024M");
 ini_set("max_input_time", "180");
@@ -102,16 +109,16 @@ foreach ($files as $file) {
     }
 }
 require_once('engine/nodes/session.php');
-if (strpos($_GET[0], "robots.txt") !== FALSE) {
+if (count($_GET) && strpos($_GET[0], "robots.txt") !== FALSE) {
     $_GET[0] = str_replace("robots.txt", "robots.php", $_GET[0]);
 }
-if (strpos($_GET[0], "rss.xml") !== FALSE) {
+if (count($_GET) && strpos($_GET[0], "rss.xml") !== FALSE) {
     $_GET[0] = str_replace("rss.xml", "rss.php", $_GET[0]);
 }
-if (strpos($_GET[0], "sitemap.xml") !== FALSE) {
+if (count($_GET) && strpos($_GET[0], "sitemap.xml") !== FALSE) {
     $_GET[0] = str_replace("sitemap.xml", "sitemap.php", $_GET[0]);
 }
-if (!empty($_GET[0]) && strpos($_GET[0], ".php") && (
+if (count($_GET) && !empty($_GET[0]) && strpos($_GET[0], ".php") && (
         file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/code/".$_GET[0])
         || file_exists("engine/code/".$_GET[0])
     )

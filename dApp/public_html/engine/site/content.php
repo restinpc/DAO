@@ -25,13 +25,10 @@ if ($_GET[0] != "content") {
         $this->content = engine::error();
         return;
     }
-} else {
-    $link = $_GET[1];
-    if (!empty($_GET[2])) {
-        $this->content = engine::error();
-        return;
-    }
-}
+} else if (!empty($_GET[2])) {
+    $this->content = engine::error();
+    return;
+} 
 if (!empty($_POST["from"])) {
     $_SESSION["from"] = $_POST["from"];
 }
@@ -51,6 +48,7 @@ if ($_SESSION["method"] != "DESC") {
     $_SESSION["method"] = "DESC";
 }
 if ($_GET[0] != "content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
+    $link = $_GET[1];
     $query = 'SELECT * FROM `nodes_catalog` WHERE `url` = "'.$link.'" AND `lang` = "'.$_SESSION["Lang"].'"';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);

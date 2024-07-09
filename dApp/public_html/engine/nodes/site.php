@@ -106,17 +106,18 @@ function __construct() {
             unset($_SESSION["redirect"]);
         }
         if (!empty($_SESSION["user"]["id"])
-            && empty($_SESSION["user"]["email"]) 
+            && empty($_SESSION["user"]["email"])
+            && count($_GET)
             && ($_GET[0] != "account" || $_GET[1] != "settings")
         ) {
             $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
         } else {
-            if ($_GET[0] == "admin") {
+            if (count($_GET) && $_GET[0] == "admin") {
                 $_SERVER["CORE_PATH"] = $_GET[0];
                 require_once("engine/nodes/admin.php");
                 new admin($this);
             } else {
-                $query = 'SELECT * FROM `nodes_backend` WHERE `mode` = "'.$_GET[0].'"';
+                $query = 'SELECT * FROM `nodes_backend` WHERE `mode` = "'.(count($_GET) ? $_GET[0] : '').'"';
                 $res = engine::mysql($query);
                 $object = mysqli_fetch_object($res);
                 if (!empty($object->file)) {
@@ -215,7 +216,7 @@ function __construct() {
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta http-equiv="Cache-control" content="no-cache" />
 <meta name="robots" content="index, follow" />
-<meta http-equiv="content-language" content="'.$_SESSION["lang"].'" />
+<meta http-equiv="content-language" content="'.$_SESSION["Lang"].'" />
 <meta name="description" itemprop="description" content="'.str_replace('"', "", $this->description).'" />
 <meta property="og:title" itemprop="name" content="'.$this->title.'" />
 <meta property="og:image" itemprop="image" content="'.$this->img.'" />

@@ -29,7 +29,7 @@ $header = '
                     <span class="icon-bar"></span>
                 </button>
             </noindex>
-            <a class="navbar-brand" '.($_SERVER["app"] == "TRUE" ? '' : ' hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/').'"').'>
+            <a class="navbar-brand" '.((array_key_exists("app", $_SERVER) && $_SERVER["app"] == "TRUE") ? '' : ' hreflang="'.$_SESSION["Lang"].'" href="'.engine::href('/').'"').'>
                 <noindex class="material-icons nav-btn">home</noindex>
                 <span>Mansion</span>
             </a>
@@ -121,7 +121,7 @@ $header = '
                         <li><a onClick=\'document.framework.changeLang("en");\'>'.($_SESSION["Lang"] == "en" ? '<noindex class="material-icons">done</noindex>' : '').' English </a></li>
                     </ul>
                 </li>
-                <div id="header-app" lang="'.$_SESSION["Lang"].'" dir="'.$_SERVER["DIR"].'" isApp="'.($_SERVER["app"]=="TRUE").'"></div>
+                <div id="header-app" lang="'.$_SESSION["Lang"].'" dir="'.$_SERVER["DIR"].'" isApp="'.(array_key_exists("app", $_SERVER) && $_SERVER["app"] == "TRUE").'"></div>
                 <script id="header-script" src="'.$_SERVER["DIR"].'/apps/header/bundle.js"></script>
             </ul>
         </div>

@@ -52,9 +52,8 @@ function print_admin_errors($cms) {
     $arr_count = 0;
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
-    $query = 'SELECT * FROM `nodes_error` WHERE `url` NOT LIKE "%/admin%"'
-        . ' ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
-    $requery = 'SELECT COUNT(*) FROM `nodes_error` WHERE `url` NOT LIKE "%/admin%"';
+    $query = 'SELECT * FROM `nodes_error` ORDER BY `'.$_SESSION["order"].'` '.$_SESSION["method"].' LIMIT '.($from-1).', '.$_SESSION["count"];
+    $requery = 'SELECT COUNT(*) FROM `nodes_error`';
     $fout = '<div class="document980">';
     $table = '<div class="table">
         <table width=100% id="table" class="mw100p">
