@@ -241,9 +241,9 @@ static function error($error_code = 404) {
         $fout .= $key.': '.$value.'
 ';
     }
-    $logs .= date("Y-m-d H:i:s").'.000000: engine::error('.$error_code.')
+    $fout .= date("Y-m-d H:i:s").'.000000: engine::error('.$error_code.')
 --------------------------------------------------------------------------------';
-    $logs .= json_encode(error_get_last());
+    $fout .= json_encode(error_get_last());
     $logs = engine::escape_string($fout);
     $query = 'DELETE FROM `nodes_cache` WHERE `url` = "'.$_SERVER["SCRIPT_URI"].'" '
         . 'AND `lang` = "'.$_SESSION["Lang"].'"';
