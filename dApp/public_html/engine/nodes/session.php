@@ -16,7 +16,7 @@ session_name('token');
 session_start();
 if (strpos($_SERVER["REQUEST_URI"], ".php") === false && !isset($_POST["jQuery"])) {
     $_SESSION["LOG"] = array();
-} else if (!is_array($_SESSION["LOG"])) {
+} else if (!array_key_exists("LOG", $_SESSION) || !is_array($_SESSION["LOG"])) {
     $_SESSION["LOG"] = array();
 }
 engine::log(">> ".$_SERVER["SCRIPT_URI"]);
