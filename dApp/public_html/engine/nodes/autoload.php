@@ -19,7 +19,6 @@ ini_set("max_execution_time", "180");
 ini_set("mbstring.func_overload", "2");
 $GLOBALS["time"] = floatval(microtime(1));
 $_SERVER["PROTOCOL"] = "https";
-$_SESSION["display"] = 0;
 if (function_exists("date_default_timezone_set")) {
     date_default_timezone_set('UTC');
 }

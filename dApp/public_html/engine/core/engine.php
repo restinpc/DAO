@@ -113,6 +113,7 @@ static function throw($function, $exception) {
 ';
     }
     $fout .= date("Y-m-d H:i:s").'.100000: engine::throw('.$function.' -> '.$exception->getMessage().')
+'.$_SERVER["SCRIPT_URI"].'
 ------------------------------------------------------------------
 ';
     foreach($exception->getTrace() as $text) {
@@ -288,7 +289,9 @@ static function mysql($query, $throw = 1) {
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     if ($throw) {
-        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(engine::throw($query, new Exception(mysqli_error($_SERVER["sql_connection"]))));
+        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(
+            engine::throw($query, new Exception(mysqli_error($_SERVER["sql_connection"])))
+        );
     } else {
         $res = mysqli_query($_SERVER["sql_connection"], $query);
         if (!$res) {

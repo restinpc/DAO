@@ -20,13 +20,18 @@ if (strpos($_SERVER["REQUEST_URI"], ".php") === false && !isset($_POST["jQuery"]
     $_SESSION["LOG"] = array();
 }
 engine::log(">> ".$_SERVER["SCRIPT_URI"]);
-$_SESSION["user"] = array();
-$query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0, 1';
-$res = engine::mysql($query);
-$data = mysqli_fetch_array($res);
-foreach ($data as $key => $value) {
-    if (is_string($key)) {
-        $_SESSION["user"][$key] = '';
+if (!array_key_exists("display", $_SESSION)) {
+    $_SESSION["display"] = 0;
+}
+if (!array_key_exists("user", $_SESSION)) {
+    $_SESSION["user"] = array();
+    $query = 'SELECT * FROM `nodes_user` ORDER BY `id` DESC LIMIT 0, 1';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    foreach ($data as $key => $value) {
+        if (is_string($key)) {
+            $_SESSION["user"][$key] = '';
+        }
     }
 }
 if (empty($_COOKIE["token"])) {
