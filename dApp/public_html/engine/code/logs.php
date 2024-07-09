@@ -1,7 +1,7 @@
 <?php
 /**
 * Output backend logs.
-* @path /engine/code/log.php
+* @path /engine/code/logs.php
 *
 * @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>

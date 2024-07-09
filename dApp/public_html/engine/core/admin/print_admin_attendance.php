@@ -198,7 +198,7 @@ function print_admin_attendance($cms) {
         $visit = $data['a'];
         $fout .= '<center class="lh2"><span class="statistic_span">'.engine::lang("Visitors").": ".$visit.'</span> / ';
         $fout .= '<span class="statistic_span"  style="color: rgb(20,180,180);">'.engine::lang("Views").": ".$views.'</span> ';
-        $fout .= '<img width=100% class="w600" src="'.$_SERVER["DIR"].'/attandance.php?interval='.((!empty($_GET["interval"])) ? $_GET["interval"] : "day").'&date='.$_GET["date"].'&rand='.rand(0, 100).'" /></center>';
+        $fout .= '<img width=100% class="w600" src="'.$_SERVER["DIR"].'/attendance.php?interval='.((!empty($_GET["interval"])) ? $_GET["interval"] : "day").'&date='.$_GET["date"].'&rand='.rand(0, 100).'" /></center>';
     } else if($_GET["action"] == "pages") {
         $query = 'SELECT a.id, a.token, cache.url FROM nodes_attendance as a '
             . 'LEFT JOIN `nodes_cache` AS `cache` ON cache.id = a.`cache_id` '

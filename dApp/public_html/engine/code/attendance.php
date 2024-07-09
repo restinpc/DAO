@@ -1,15 +1,15 @@
 <?php
 /**
 * Attendance graph.
-* @path /engine/code/attandance.php
+* @path /engine/code/attendance.php
 *
 * @name    DAO Mansion    @version 1.0.3
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-function attandance() {
-    engine::log('attandance('.json_encode($_GET).')');
+function attendance() {
+    engine::log('attendance('.json_encode($_GET).')');
     try {
         header("Content-Type: image/gif");
         if ($_SESSION["user"]["id"] != 1) {
@@ -162,8 +162,8 @@ function attandance() {
         imagegif($im);
         imagedestroy($im);
     } catch(Exception $e) {
-        engine::throw('attandance('.json_encode($_GET).')', $e);
+        engine::throw('attendance('.json_encode($_GET).')', $e);
     }
 }
 
-attandance();
+attendance();

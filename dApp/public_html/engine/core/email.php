@@ -86,32 +86,28 @@ static function daily_report() {
     engine::log('email::daily_report()');
     $file = engine::curl_get_query($_SERVER["PUBLIC_URL"].'/perfomance.php?interval=day&date='.date("Y-m-d"));
     $perfomance_image = base64_encode($file);
+    $file = engine::curl_get_query($_SERVER["PUBLIC_URL"].'/attendance.php?interval=day&date='.date("Y-m-d"));
+    $attendance_image = base64_encode($file);
     $caption = $_SERVER["HTTP_HOST"].' '.date("d/m/Y").' '.engine::lang('daily report');
-    $body = '<h3>'.engine::lang("Average response time").'</h3>
+    $body = '<h3>'.engine::lang("Attendance").'</h3>
+        <center>
+        <a href="'.$_SERVER["PUBLIC_URL"].'/admin?mode=attendance" target="_blank">
+            <img src="data:image/png;base64,'.$attendance_image.'">
+        </a>
+        </center>
+        <h3>'.engine::lang("Average response time").'</h3>
         <center>
         <a href="'.$_SERVER["PUBLIC_URL"].'/admin?mode=perfomance" target="_blank">
             <img src="data:image/png;base64,'.$perfomance_image.'">
         </a>
         </center>
-        <h3>'.engine::lang("Errors").'</h3>
-        <ul>';
-    $query = 'SELECT * FROM nodes_error ORDER BY id ASC';
-    $res = engine::mysql($query);
-    while ($data = mysqli_fetch_array($res)) {
-        $body .= '<li>'.$data["url"].' ('.$data["lang"].')</li>';
-    }
-    $body .= '</ul>
-        <br/>
         <br/>';
-    if (engine::send_mail(
+    engine::send_mail(
         $_SERVER["configs"]["email"],
         $_SERVER["configs"]["name"]."<no-reply@".$_SERVER["HTTP_HOST"].'>',
         $caption,
         email::email_template($body)
-    )) {
-        $query = 'TRUNCATE TABLE `nodes_error`';
-        engine::mysql($query);
-    }
+    );
 }
 
 /**
