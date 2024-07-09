@@ -129,8 +129,8 @@ static function throw($function, $exception) {
             $query = 'UPDATE `nodes_exception` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
             engine::mysql($query, 0);
         } else {
-            $query = 'INSERT INTO `nodes_exception`(name, data, date) '
-                . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$logs.'", NOW())';
+            $query = 'INSERT INTO `nodes_exception`(name, url, data, date) '
+                . 'VALUES("'.$_SERVER["REMOTE_ADDR"].'", "'.$_SERVER["SCRIPT_URI"].'", "'.$logs.'", NOW())';
             engine::mysql($query, 0);
         }
     } catch(Exception $e) {
