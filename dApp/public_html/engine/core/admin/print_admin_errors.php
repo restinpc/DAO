@@ -62,6 +62,7 @@ function print_admin_errors($cms) {
         <tr>';
     $array = array(
         "url" => "Link",
+        "code" => "Code",
         "ip" => "IP",
         "date" => "Date",
         "lang" => "Language"
@@ -86,10 +87,10 @@ function print_admin_errors($cms) {
     $res = engine::mysql($query);
     while ($data = mysqli_fetch_array($res)) {
         $arr_count++;
+        $url = mb_substr(str_replace($_SERVER["PUBLIC_URL"], "", $data["url"]), 0, 60);
         $table .= '<tr>
-            <td  id="error-details-'.$arr_count.'" align=left valign=middle onClick=\'alert("<b>GET</b> '.(!empty($data["get"])?$data["get"]:engine::lang("Empty")).'<hr/>'
-                . ' <b>POST</b> '.(!empty($data["post"])?$data["post"]:engine::lang("Empty")).'<hr/>'
-                . ' <b>SESSION</b> '.(!empty($data["session"])?$data["session"]:engine::lang("Empty")).'");\' class="pointer">'.mb_substr(str_replace($_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"], "", $data["url"]), 0,60).'</td>
+            <td id="error-details-'.$arr_count.'" align=left valign=middle onClick=\'document.framework.showLogs("'.$data["id"].'");\' class="pointer">'.$url.'</td>
+            <td align=left valign=middle>'.$data["code"].'</td>
             <td align=left valign=middle>'.$data["ip"].'</td>
             <td align=left valign=middle>'.date("d/m/Y H:i", $data["date"]).'</td>
             <td align=left valign=middle>'.$data["lang"].'</td>

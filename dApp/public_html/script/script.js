@@ -420,6 +420,19 @@ document.framework.showPopup = (content, showCloseBtn = true) => {
 /**
 * Displays file source code viewer.
 */
+document.framework.showLogs = (id) => {
+    document.framework.log(`document.framework.showLogs(${id})`);
+    try {
+        document.framework.showWindow('<iframe width=100% height=100% frameborder=0 src="' + document.framework.rootDir + '/logs.php?id='+id+'" />'
+        );
+    } catch(e) {
+        document.framework.throw(`document.framework.showLogs(${id})`, e);
+    }
+}
+
+/**
+* Displays file source code viewer.
+*/
 document.framework.showEditor = (file) => {
     document.framework.log(`document.framework.showEditor(${file})`);
     try {

@@ -215,14 +215,14 @@ h1,h2,h3,h4,h5,h6{
     word-break: break-word;
 }
 #nodes_fade{
-    position: fixed;
+    position: absolute;
     z-index: 4;
     top: 0px;
     left: 0px;
     right: 0px;
     bottom: 0px;
     background: #000;
-    display:none;
+    /* display:none; */
     opacity: 0.75;
 }
 #nodes_message_text{
