@@ -242,9 +242,11 @@ static function error($error_code = 404) {
         $fout .= $key.': '.$value.'
 ';
     }
-    $fout .= '--------------------------------------------------------------
+    if ($error) {
+        $fout .= '--------------------------------------------------------------
 ';
-    $fout .= engine::escape_string(json_encode($error));
+        $fout .= engine::escape_string(json_encode($error));
+    }
     $logs = engine::escape_string($fout);
     $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `code`, `token`, `ip`, `get`, `post`, `logs`, `display`) '
         . 'VALUES("'.$url.'", '

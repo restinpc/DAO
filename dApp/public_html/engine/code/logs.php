@@ -21,8 +21,7 @@ function logs() {
             $res = engine::mysql($query);
             $data = mysqli_fetch_array($res);
             $logs = str_replace('\"', '"', $data["logs"]);
-            echo str_replace('
-', '<br/>', $logs);
+            echo str_replace("\n", '<br/>', $logs);
         } else {
             echo json_encode($_SESSION["LOG"]);
         }
