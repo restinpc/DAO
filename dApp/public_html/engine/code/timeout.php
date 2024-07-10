@@ -19,8 +19,8 @@ function timeout() {
             if (mb_strpos($ref, $_SERVER["HTTP_HOST"]) === FALSE) {
                 $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$ref.'")';
                 engine::mysql($query);
-                $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
-                $query = 'UPDATE `nodes_attendance` SET `ref_id` = "'.$ref_id.'" WHERE `id` = "'.$data["id"].'"';
+                $refId = mysqli_insert_id($_SERVER["sql_connection"]);
+                $query = 'UPDATE `nodes_attendance` SET `ref_id` = "'.$refId.'" WHERE `id` = "'.$data["id"].'"';
                 engine::mysql($query);
             }
         }

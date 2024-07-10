@@ -118,7 +118,7 @@ if (date("U") - $date < 60) {
         header('HTTP/ 429 Too Many Requests', true, 429);
         die("Too many requests from your IP. Try again after ".(60 - (date("U") - $date))." seconds.");  
     } else {
-        $ref_id = 0;
+        $refId = 0;
         if (!empty($_SERVER["HTTP_REFERER"])) {
             if (strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
                 $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
@@ -127,12 +127,12 @@ if (date("U") - $date < 60) {
                 if (empty($ref)) {
                     $query = 'INSERT INTO `nodes_referrer`(name) VALUES("'.$_SERVER["HTTP_REFERER"].'")';
                     engine::mysql($query);
-                    $ref_id = mysqli_insert_id($_SERVER["sql_connection"]);
+                    $refId = mysqli_insert_id($_SERVER["sql_connection"]);
                 } else {
-                    $ref_id = $ref["id"];
+                    $refId = $ref["id"];
                 }
             } else {
-                $ref_id = -1;
+                $refId = -1;
             }
         }
         if (strpos($_SERVER["SCRIPT_URI"], "/search") === false
@@ -147,9 +147,9 @@ if (date("U") - $date < 60) {
             if (empty($_SERVER["SCRIPT_URI"])) {
                 $_SERVER["SCRIPT_URI"] = '/';
             }
-            $cache = new cache($ref_id);
+            $cache = new cache($refId);
             $cache_id = $cache->page_id();
-            $cache->addAttendance($cache_id, $ref_id);
+            $cache->addAttendance($cache_id, $refId);
         }
     }
 }

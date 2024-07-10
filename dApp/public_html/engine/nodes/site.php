@@ -245,9 +245,17 @@ function __construct() {
     document.framework.preload = () => {
         document.framework.log(`document.framework.preload()`);
         if (!document.framework.preloaded) {
+            document.framework.preloaded = 1;
             document.framework.onLoad();
             document.framework.handleUserEvents();
-            document.framework.preloaded = 1;
+            setTimeout(() => window.location.reload(), 86500); 
+            ';
+            if (!empty($_SESSION["user"]["id"])) {
+                $fout .= 'if (!document.framework.messageInterval) {
+                    document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
+                }';
+            }
+            $fout .= '
         }
     }
 </script>
@@ -302,7 +310,6 @@ function __construct() {
         if (!isset($_POST["jQuery"])) {
             $fout .= '
     <script>
-        setTimeout(() => window.location.reload(), 86500); 
         document.framework.timeout = setTimeout(document.framework.display, 5000);
         window.onload = document.framework.loadSite;
     </script>

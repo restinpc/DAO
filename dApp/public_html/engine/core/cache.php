@@ -14,16 +14,16 @@
 */
 
 class cache {
-public $ref_id;
+public $refId;
 /*
 * Output requested page from cache DB.
 *
 * @return string Returns HTML contents of requested page.
 * $usage <code> $cache = new cache(); </code>
 */
-public function __construct($ref_id) {
-    engine::log('cache.__construct('.$ref_id.')');
-    $this->ref_id = $ref_id;
+public function __construct($refId) {
+    engine::log('cache.__construct('.$refId.')');
+    $this->ref_id = $refId;
     $is_cache = intval($_SERVER["configs"]["cache"]);
     $fout = '';
     if (empty($_POST) || !empty($_POST["cache"])) {
@@ -192,10 +192,10 @@ public function page_id() {
     return $cache_id;
 }
 
-public function addAttendance($cache_id, $ref_id) {
-    engine::log('cache.addAttendance('.$cache_id.', '.$ref_id.')');
+public function addAttendance($cache_id, $refId) {
+    engine::log('cache.addAttendance('.$cache_id.', '.$refId.')');
     $query = 'INSERT INTO `nodes_attendance`(cache_id, user_id, token, ref_id, ip, date, display) '
-        . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.date("U").'", "'.intval($_SESSION["display"]).'")';
+        . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$refId.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.date("U").'", "'.intval($_SESSION["display"]).'")';
     engine::mysql($query);
 }
 }

@@ -15,6 +15,7 @@ if (!document.framework) {
 if (!document.framework.preload) {
     document.framework.preload = () => {}
 }
+document.framework.loaded = false;
 document.framework.loading_stages = 6;
 document.framework.loading_state = 0;
 document.framework.preloaded = 0;
@@ -31,6 +32,7 @@ document.framework.loadEvents = true;
 document.framework.chatInterval = null;
 document.framework.confirmed = false;
 document.framework.errorState = false;
+document.framework.onLoad = () => {}
 window.stateChangeIsLocal = true;
 History.enabled = true;
 
@@ -178,14 +180,14 @@ document.framework.loadSite = () => {
         if (document.framework.loading_state != document.framework.loading_stages) {
             return;
         }
-        if (!document.framework.messageInterval) {
+        if (!document.framework.loaded) {
+            document.framework.loaded = true;
             document.framework.loading_state = 4;
             document.framework.materialIcons();
             document.framework.preload();
             document.framework.ajaxing();
             document.framework.checkAnchors();
             setTimeout(document.framework.display, 1000);
-            document.framework.messageInterval = setInterval(document.framework.checkMessage, 60000);
         }
         if (document.framework.timeout) {
             clearTimeout(document.framework.timeout);

@@ -241,20 +241,20 @@ static function error($error_code = 404) {
     }
     $fout .= '--------------------------------------------------------------
 ';
-    $fout .= json_encode(error_get_last());
+    $fout .= engine::escape_string(json_encode($error));
     $logs = engine::escape_string($fout);
     $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `code`, `token`, `ip`, `get`, `post`, `logs`, `display`) '
-    . 'VALUES("'.$url.'", '
-        . '"'.$_SESSION["Lang"].'", '
-        . '"'.date("U").'", '
-        . '"'.$error_code.'", '
-        . '"'.session_id().'", '
-        . '"'.$_SERVER["REMOTE_ADDR"].'", '
-        . '"'.$get.'", '
-        . '"'.$post.'", '
-        . '"'.$logs.'", '
-        . '"'.($error || $error_code != 404 ? 1 : 0).'"'
-    . ')';
+        . 'VALUES("'.$url.'", '
+            . '"'.$_SESSION["Lang"].'", '
+            . '"'.date("U").'", '
+            . '"'.$error_code.'", '
+            . '"'.session_id().'", '
+            . '"'.$_SERVER["REMOTE_ADDR"].'", '
+            . '"'.$get.'", '
+            . '"'.$post.'", '
+            . '"'.$logs.'", '
+            . '"'.($error || $error_code != 404 ? 1 : 0).'"'
+        . ')';
     self::mysql($query);
     $_SESSION["LOG"] = array();
     engine::bsod($error_code);
