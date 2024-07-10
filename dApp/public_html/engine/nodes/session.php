@@ -93,7 +93,15 @@ $date = $data["date"];
 if (date("U") - $date < 60) {
     header('HTTP/ 429 Too Many Requests', true, 429);
     die("Too many requests in this session. Try again after ".(60 - (date("U") - $date))." seconds.");
-} else if (!empty($_SERVER["REMOTE_ADDR"]) && !isset($_SERVER["CRON"])) {
+}
+$query = 'SELECT * FROM `nodes_error` WHERE `token` = "'.$_COOKIE["token"].'" ORDER BY `date` DESC LIMIT '.($_SERVER["configs"]["token_limit"]-1).', 1';
+$res = engine::mysql($query);
+$data = mysqli_fetch_array($res);
+$date = $data["date"];
+if (date("U") - $date < 60) {
+    header('HTTP/ 429 Too Many Requests', true, 429);
+    die("Too many requests in this session. Try again after ".(60 - (date("U") - $date))." seconds.");
+}else if (!empty($_SERVER["REMOTE_ADDR"]) && !isset($_SERVER["CRON"])) {
     $query = 'SELECT * FROM `nodes_attendance` WHERE `ip` = "'.$_SERVER["REMOTE_ADDR"].'" ORDER BY `date` DESC LIMIT '.($_SERVER["configs"]["ip_limit"] - 1).', 1';
     $res = engine::mysql($query);
     $data = mysqli_fetch_array($res);
@@ -101,6 +109,14 @@ if (date("U") - $date < 60) {
     if (date("U") - $date < 60) {
         header('HTTP/ 429 Too Many Requests', true, 429);
         die("Too many requests from your IP. Try again after ".(60 - (date("U") - $date))." seconds.");
+    }
+    $query = 'SELECT * FROM `nodes_error` WHERE `ip` = "'.$_SERVER["REMOTE_ADDR"].'" ORDER BY `date` DESC LIMIT '.($_SERVER["configs"]["ip_limit"] - 1).', 1';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    $date = $data["date"];
+    if (date("U") - $date < 60) {
+        header('HTTP/ 429 Too Many Requests', true, 429);
+        die("Too many requests from your IP. Try again after ".(60 - (date("U") - $date))." seconds.");  
     } else {
         $ref_id = 0;
         if (!empty($_SERVER["HTTP_REFERER"])) {
@@ -131,7 +147,7 @@ if (date("U") - $date < 60) {
             if (empty($_SERVER["SCRIPT_URI"])) {
                 $_SERVER["SCRIPT_URI"] = '/';
             }
-            $cache = new cache();
+            $cache = new cache($ref_id);
             $cache_id = $cache->page_id();
             $cache->addAttendance($cache_id, $ref_id);
         }

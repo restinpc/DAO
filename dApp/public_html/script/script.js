@@ -1150,7 +1150,7 @@ document.framework.checkMessage = () => {
                     if (!$id("nodes_message")) {
                         let regexp = /from="(.*?)"/su;
                         let match = data.match(regexp);
-                        if (window.location.href.indexOf(`/${match[1]}`) != window.location.href.length - parseInt(`/${match[1]}`.length)) {
+                        if (match && match.length && window.location.href.indexOf(`/${match[1]}`) != window.location.href.length - parseInt(`/${match[1]}`.length)) {
                             const div = document.createElement('div');
                             div.innerHTML = data;
                             document.body.appendChild(div);

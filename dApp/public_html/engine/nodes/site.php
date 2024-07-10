@@ -302,6 +302,7 @@ function __construct() {
         if (!isset($_POST["jQuery"])) {
             $fout .= '
     <script>
+        setTimeout(() => window.location.reload(), 86500); 
         document.framework.timeout = setTimeout(document.framework.display, 5000);
         window.onload = document.framework.loadSite;
     </script>

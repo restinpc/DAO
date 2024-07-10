@@ -14,14 +14,16 @@
 */
 
 class cache {
+public $ref_id;
 /*
 * Output requested page from cache DB.
 *
 * @return string Returns HTML contents of requested page.
 * $usage <code> $cache = new cache(); </code>
 */
-public function __construct() {
-    engine::log('cache.__construct()');
+public function __construct($ref_id) {
+    engine::log('cache.__construct('.$ref_id.')');
+    $this->ref_id = $ref_id;
     $is_cache = intval($_SERVER["configs"]["cache"]);
     $fout = '';
     if (empty($_POST) || !empty($_POST["cache"])) {
@@ -30,7 +32,7 @@ public function __construct() {
         $data = mysqli_fetch_array($res);
         if (!empty($data) && $data["interval"] > 0) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
-                self::addAttendance($data["id"]);
+                self::addAttendance($data["id"], $this->ref_id);
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 0, $data["lang"]));
             } else if (!empty($data["html"])) {
                 if (!empty($data["content"])) {
@@ -38,7 +40,7 @@ public function __construct() {
                 } else {
                     $html = str_replace('<content/>', $data["content"], $data["html"]);
                 }
-                self::addAttendance($data["id"]);
+                self::addAttendance($data["id"], $this->ref_id);
                 die($html.engine::print_new_message().'
 <!-- Time loading from cache: '.(floatval(microtime(1)) - $GLOBALS["time"]).' -->');
             }
@@ -50,7 +52,7 @@ public function __construct() {
             engine::mysql($query);
         } else if ($data["interval"] == "0") {
             if ($is_cache) {
-                self::addAttendance($data["id"]);
+                self::addAttendance($data["id"], $this->ref_id);
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 0, $data["lang"]));
                 }
@@ -70,10 +72,10 @@ public function __construct() {
         $data = mysqli_fetch_array($res);
         if (!empty($data) && $data["interval"] > 0) {
             if ($data["date"] <= intval(date("U") - $data["interval"])) {
-                self::addAttendance($data["id"]);
+                self::addAttendance($data["id"], $this->ref_id);
                 die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
             } else if (!empty($data["html"])) {
-                self::addAttendance($data["id"]);
+                self::addAttendance($data["id"], $this->ref_id);
                 die('<title>'.$data["title"].'</title>'
 .$data["content"]
 .engine::print_new_message().'
@@ -89,7 +91,7 @@ public function __construct() {
         } else if ($data["interval"] == "0") {
             if ($is_cache) {
                 if (empty($data["html"]) || !empty($_POST["cache"])) {
-                    self::addAttendance($data["id"]);
+                    self::addAttendance($data["id"], $this->ref_id);
                     die(self::update_cache($_SERVER["SCRIPT_URI"], 1, $data["lang"]));
                 }
                 die('<title>'.$data["title"].'</title>'
@@ -190,14 +192,8 @@ public function page_id() {
     return $cache_id;
 }
 
-public function addAttendance($cache_id, $ref_id = 0) {
+public function addAttendance($cache_id, $ref_id) {
     engine::log('cache.addAttendance('.$cache_id.', '.$ref_id.')');
-    if (!$ref_id) {
-        $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        $ref_id = $data[0];
-    }
     $query = 'INSERT INTO `nodes_attendance`(cache_id, user_id, token, ref_id, ip, date, display) '
         . 'VALUES("'.$cache_id.'", "'.intval($_SESSION["user"]["id"]).'", "'.session_id().'", "'.$ref_id.'", "'.$_SERVER["REMOTE_ADDR"].'", "'.date("U").'", "'.intval($_SESSION["display"]).'")';
     engine::mysql($query);
