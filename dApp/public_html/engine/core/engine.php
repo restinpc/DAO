@@ -26,7 +26,7 @@ class engine {
 public static function __callStatic($name, $arguments) {
     engine::log('engine::'.$name.'('.json_encode($arguments).')');
     $exec = function_exists($name);
-    if (!$exec && !empty($_SERVER["CORE_PATH"])) {
+    if (!$exec && array_key_exists("CORE_PATH", $_SERVER) && !empty($_SERVER["CORE_PATH"])) {
         if (is_file('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php')) {
             require_once('engine/core/'.$_SERVER["CORE_PATH"].'/'.$name.'.php');
             $exec = 1;
@@ -37,7 +37,10 @@ public static function __callStatic($name, $arguments) {
         $exec = 1;
     }
     if (!$exec) {
-        $skip = array('.', '..', 'function', $_SERVER["CORE_PATH"]);
+        $skip = array('.', '..', 'function');
+        if (array_key_exists("CORE_PATH", $_SERVER) && !empty($_SERVER["CORE_PATH"])) {
+            array_push($_SERVER["CORE_PATH"]);
+        }
         $files = scandir('engine/core/');
         foreach ($files as $file) {
             if (!in_array($file, $skip)) {
@@ -258,6 +261,29 @@ static function error($error_code = 404) {
     self::mysql($query);
     $_SESSION["LOG"] = array();
     engine::bsod($error_code);
+}
+
+static function handle_error($type, $message, $file, $line, $vars)
+{
+    $file = str_replace($_SERVER["DOCUMENT_ROOT"], '', $file);
+    $error = array(
+        'type'    => $type,
+        'message' => $message,
+        'file'    => $file,
+        'line'    => $line
+    );
+    engine::log("engine::handle_error(". json_encode($error).")");
+    $query = 'SELECT * FROM `nodes_handler` WHERE `file` = "'.$file.'" AND `line` = "'.$line.'"';
+    $res = engine::mysql($query);
+    $data = mysqli_fetch_array($res);
+    if (empty($data)) {
+        $query = 'INSERT INTO `nodes_handler`(type, message, file, line) VALUES('
+            . '"'.$error["type"].'",'
+            . '"'.$error["message"].'",'
+            . '"'.$error["file"].'",'
+            . '"'.$error["line"].'")';
+        engine::mysql($query);
+    }
 }
 
 /**

@@ -90,7 +90,7 @@ if ($_GET[0] != "content" || (!empty($_GET[1]) && $_GET[0] == "content")) {
             $r = engine::mysql($query);
             $catalog = mysqli_fetch_array($r);
             $this->title = $data["caption"];
-            $this->description = mb_substr(strip_tags($data["text"]));
+            $this->description = mb_substr(strip_tags($data["text"]), 198);
             $this->content .= engine::print_content_navigation($this, $catalog["caption"]);
             $this->content .= '<div class="document980">';
             $this->content .= engine::print_article($this, $data);

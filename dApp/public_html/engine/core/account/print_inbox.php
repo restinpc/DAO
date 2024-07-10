@@ -19,10 +19,10 @@
 * @usage <code> engine::print_inbox($site); </code>
 */
 
-function print_inbox($site, $target_id) {
+function print_inbox($site, $target_id = 0) {
     $fout = '<div style="height: 65px;"></div>
         <div style="width: calc(100% - 10px); margin: 0px auto;">';
-    if (!empty($_GET[2]) || $target_id!=0) {
+    if (!empty($_GET[2]) || $target_id != 0) {
         if (!$target_id) {
             $target_id = $_GET[2];
         }

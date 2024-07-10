@@ -8,17 +8,10 @@
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
-if (strpos($_SERVER["SCRIPT_URI"], 'dev.') !== false) {
-    error_reporting(-1);
-    ini_set('error_reporting', -1);
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-} else {
-    error_reporting(0);
-    ini_set('error_reporting', 0);
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);  
-}
+error_reporting(-1);
+ini_set('error_reporting', -1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 ini_set("upload_max_filesize", "1024M");
 ini_set("post_max_size", "1024M");
 ini_set("max_input_time", "180");
@@ -50,6 +43,7 @@ $_SERVER["DIR"] = str_replace("/cron.php", "",
 $_SERVER["PUBLIC_URL"] = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$_SERVER["DIR"];
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]);
 require_once('engine/core/engine.php');
+set_error_handler('engine::handle_error');
 if (!file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/nodes/config.php")
     && !file_exists("engine/nodes/config.php")
 ) {

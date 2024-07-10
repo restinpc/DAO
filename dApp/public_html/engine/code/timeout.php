@@ -12,6 +12,9 @@ function timeout() {
     engine::log('timeout('.json_encode($_GET).')');
     try {
         $_SESSION["display"] = "1";
+        $query = 'SELECT `id`, `display`, `ref_id` FROM `nodes_attendance` WHERE `token` = "'.session_id().'" ORDER BY `id` DESC LIMIT 0, 1';
+        $res = engine::mysql($query);
+        $data = mysqli_fetch_array($res);
         $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `token` = "'.session_id().'"';
         engine::mysql($query);
         if (!$data["ref_id"] && !empty($_GET["ref"])) {

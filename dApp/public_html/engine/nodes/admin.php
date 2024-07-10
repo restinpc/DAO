@@ -52,6 +52,7 @@ function __construct($site) {
         $res = engine::mysql($query);
         $d = mysqli_fetch_array($res);
         $this->statistic["perfomance"] = round($d[0], 2);
+        $this->statistic["cron"] = '';
         if ($_SERVER["configs"]["cron"]) {
             $this->statistic["cron"] = 'jQuery ';
         }

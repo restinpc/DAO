@@ -38,12 +38,12 @@ function print_admin_outbox($cms) {
     $from = ($_SESSION["page"] - 1) * $_SESSION["count"] + 1;
     $to = ($_SESSION["page"] - 1) * $_SESSION["count"] + $_SESSION["count"];
     $fout = '<div class="document640">';
-    if ($_GET["act"] == "new") {
+    if (array_key_exists("act", $_GET) && $_GET["act"] == "new") {
         if ($admin_access != 2) {
             engine::error(401);
             return;
         }
-        if (!empty($_POST["caption"])) {
+        if (array_key_exists("caption", $_POST) && !empty($_POST["caption"])) {
             $caption = trim(engine::escape_string($_POST["caption"]));
             $action = intval($_POST["action"]);
             $text = engine::escape_string(str_replace("\n", "<br/>", $_POST["text"]));
@@ -95,7 +95,7 @@ function print_admin_outbox($cms) {
             <a id="back-to-outbox" href="'.$_SERVER["DIR"].'/admin/?mode=outbox"><input class="btn w280" type="button" value="'.engine::lang("Back to outbox").'" /></a>
         </div>';
     } else {
-        if (!empty($_POST["id"])) {
+        if (array_key_exists("id", $_POST) && !empty($_POST["id"])) {
             if ($admin_access != 2) {
                 engine::error(401);
                 return;

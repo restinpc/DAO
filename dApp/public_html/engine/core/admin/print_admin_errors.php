@@ -31,14 +31,14 @@ function print_admin_errors($cms) {
         engine::error(401);
         return;
     }
-    if ($_GET["act"] == "reset") {
+    if (array_key_exists("act", $_GET) && $_GET["act"] == "reset") {
         if ($admin_access != 2) {
             engine::error(401);
             return;
         }
         $query = 'TRUNCATE TABLE `nodes_error`';
         engine::mysql($query);
-    } else if (!empty($_POST["id"])) {
+    } else if (array_key_exists("id", $_POST) && !empty($_POST["id"])) {
         if ($admin_access != 2) {
             engine::error(401);
             return;

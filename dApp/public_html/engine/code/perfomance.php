@@ -126,9 +126,6 @@ function perfomance() {
             imageline($im, $X0 + $i * ($RW / $count), $Y0, $X0 + $i * ($RW / $count), $Y0 - $RH, $c);
         }
         $dx = ($RW/ $count) / 2;
-        $pi = $Y0 - ($RH / $max * $DATA[0][0]);
-        $po = $Y0 - ($RH / $max * $DATA[1][0]);
-        $px = intval($X0 + $dx);
         for ($i = 0; $i < $count; $i++) {
             $x = intval($X0 + $i * ($RW / $count) + $dx);
             if ($DATA[0][$i] >= $DATA[1][$i]) {
@@ -153,8 +150,6 @@ function perfomance() {
                 $str = round($DATA[0][$i],2);
                 imagestring($im, 2, $x - (strlen($str) * $LW) / 2, 3, $str, $text);
             }
-            $po = $y;
-            $px = $x;
         }
         $ML -= $text_width;
         for ($i = 0; $i <= $county + 1; $i++) {

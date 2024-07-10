@@ -39,14 +39,14 @@ function bin() {
             if ($count) {
                 echo engine::print_cart($count);
             }
-        } else if (intval($_POST["scene"]) > 0) {
+        } else if (array_key_exists("scene", $_POST) && intval($_POST["scene"]) > 0) {
             $fout = engine::curl_get_query($_SERVER["HTTP_HOST"].'/panorama.php?id='.$_POST["scene"], 1);
             preg_match_all('#(<a-scene.*?>.*</a-scene>)#', $fout, $m);
             if (!empty($m[1][0])) {
                 echo json_encode(engine::html_to_obj($m[1][0]));
             }
             die();
-        } else if (intval($_POST["scene_reset"]) > 0) {
+        } else if (array_key_exists("scene_reset", $_POST) && intval($_POST["scene_reset"]) > 0) {
             $id = intval($_POST["scene_reset"]);
             $query = 'DELETE FROM `nodes_vr_object` WHERE `scene_id` = "'.$id.'"';
             engine::mysql($query);
