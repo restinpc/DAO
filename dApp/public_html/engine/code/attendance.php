@@ -19,22 +19,23 @@ function attendance() {
         }
         $W = 600;       // Width
         $H = 300;       // Height
-        $MB = 20;       // Padding bottom
-        $ML = 8;        // Padding left
-        $M = 10;        // Padding right & top
+        $MB = 20;       // Margin bottom
+        $ML = 8;        // Margin left
+        $MT = 20;       // Margin top
+        $MR = 5;        // Margin right
         $county = 10;   // Lines count
         $DATA = array();
         for ($i = 0; $i < 10; $i++) {
-            if (!empty($_GET["date"])) {
+            if (array_key_exists("date", $_GET) && !empty($_GET["date"])) {
                 $date = $_GET["date"];
             } else {
                 $date = date("Y-m-d");
             }
-            if ($_GET["interval"] == "day") {
+            if (array_key_exists("interval", $_GET) && $_GET["interval"] == "day") {
                 $from = strtotime($date." 23:59:59 - ".(10 - $i)." days");
                 $to = strtotime($date." 23:59:59 - ".(9 - $i)." days");
                 $DATA["x"][] = date("d.m", $to);
-            } else if($_GET["interval"] == "week") {
+            } else if(array_key_exists("interval", $_GET) && $_GET["interval"] == "week") {
                 $from = strtotime($date." 23:59:59 - ".((10 - $i) * 7)." days");
                 $to = strtotime($date." 23:59:59 - ".((9 - $i) * 7)." days");
                 $DATA["x"][] = date("d.m", $to);
@@ -54,9 +55,6 @@ function attendance() {
         if (count($DATA[1]) > $count) {
             $count = count($DATA[1]);
         }
-        if (count($DATA[2]) > $count) {
-            $count = count($DATA[2]);
-        }
         if ($count == 0) {
             $count = 1;
         }
@@ -64,7 +62,6 @@ function attendance() {
         for ($i = 0; $i < $count; $i++) {
             $max = $max < $DATA[0][$i] ? $DATA[0][$i] : $max;
             $max = $max < $DATA[1][$i] ? $DATA[1][$i] : $max;
-            $max = $max < $DATA[2][$i] ? $DATA[2][$i] : $max;
         }
         $max = intval($max) > 10 ? intval($max) : 10;
         $im = imagecreate($W, $H);
@@ -86,8 +83,8 @@ function attendance() {
             }
         }
         $ML += $text_width;
-        $RW = $W - $ML - 5;
-        $RH = $H - $MB - 25;
+        $RW = $W - $ML - $MR;
+        $RH = $H - $MB - $MT;
         $X0 = $ML;
         $Y0 = $H - $MB;
         $step = $RH / $county;
@@ -128,6 +125,7 @@ function attendance() {
             $str = $DATA[1][$i].'/'.$DATA[0][$i];
             imagestring($im, 2, $x - (strlen($str) * $LW / 2) + 1, 5, $str, $text);
         }
+        $prev_str = '';
         for ($i = 1; $i <= $county; $i++) {
             $str = intval(($max / ($county)) * $i);
             if ($str != $prev_str) {

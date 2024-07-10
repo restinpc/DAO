@@ -19,7 +19,7 @@ public $statistic;      // Array CMS statistic.
 * Admin class constructor.
 * @param object $site Admin Site object.
 */
-function admin($site) {
+function __construct($site) {
     $this->site = $site;
     $_SERVER["SCRIPT_URI"] = str_replace("/admin", $_SERVER["REQUEST_URI"], $_SERVER["SCRIPT_URI"]);
     if ($_SESSION["Lang"] != 'ru' && !strpos($_SERVER["SCRIPT_URI"], '?lang=')) {

@@ -13,7 +13,13 @@ require_once("engine/nodes/headers.php");
 function account() {
     engine::log('account('.json_encode($_GET).')');
     try {
-        if ($_GET["mode"] == "remember" && !empty($_GET["email"]) && !empty($_GET["code"])) {
+        if (array_key_exists("mode", $_GET)
+            && $_GET["mode"] == "remember"
+            && array_key_exists("email", $_GET)
+            && !empty($_GET["email"])
+            && array_key_exists("code", $_GET)
+            && !empty($_GET["code"])
+        ) {
             $email = urldecode($_GET["email"]);
             $query = 'SELECT * FROM `nodes_user` WHERE `email` = "'.$email.'"';
             $res = engine::mysql($query);
@@ -33,7 +39,7 @@ function account() {
                 echo '<div class="center pt100">Email '.engine::lang("not found").'.</div>';
             }
             echo '<script>setTimeout(() => { parent.window.location = "'.$_SERVER["DIR"].'/login"; }, 3000);</script>';
-        } else if ($_GET["mode"] == "logout") {
+        } else if (array_key_exists("mode", $_GET) && $_GET["mode"] == "logout") {
             $query = 'DELETE FROM nodes_session WHERE token LIKE "'.$_COOKIE["token"].'" AND user_id = "'.$_SESSION["user"]["id"].'"';
             engine::mysql($query);
             unset($_SESSION["user"]);

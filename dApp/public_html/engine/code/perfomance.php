@@ -19,9 +19,10 @@ function perfomance() {
         }
         $W = 600;       // Width
         $H = 300;       // Height
-        $MB = 20;       // Padding bottom
-        $ML = 8;        // Padding left
-        $M = 17;        // Padding right & top
+        $MB = 20;       // Margin bottom
+        $ML = 8;        // Margin left
+        $MT = 20;       // Margin top
+        $MR = 5;        // Margin right
         $county = 10;   // Lines count
         $DATA = array();
         for ($i = 0; $i < 10; $i++) {
@@ -81,17 +82,13 @@ function perfomance() {
         if (count($DATA[1]) > $count) {
             $count = count($DATA[1]);
         }
-        if (count($DATA[2]) > $count) {
-            $count = count($DATA[2]);
-        }
         if ($count == 0) {
             $count = 1;
         }
         $max = 0;
         for ($i = 0; $i < $count; $i++) {
-            $max = $max < $DATA[0][$i] ? $DATA[0][$i] : $max;
-            $max = $max < $DATA[1][$i] ? $DATA[1][$i] : $max;
-            $max = $max < $DATA[2][$i] ? $DATA[2][$i] : $max;
+            $max = array_key_exists(0, $DATA) && $max < $DATA[0][$i] ? $DATA[0][$i] : $max;
+            $max = array_key_exists(1, $DATA) && $max < $DATA[1][$i] ? $DATA[1][$i] : $max;
         }
         // $max = round($max + ($max / 10), 2);
         $im = imagecreate($W, $H);
@@ -106,21 +103,21 @@ function perfomance() {
         $bar[3] = imagecolorallocate($im, 220, 0, 0);
         $text_width = 0;
         for ($i = 1; $i <= $county; $i++) {
-            $strl = strlen(($max / $county) * $i) * $LW;
+            $strl = strlen(round(($max / $county) * $i, 2)) * $LW;
             if ($strl > $text_width) {
                 $text_width = $strl;
             }
         }
         $ML += $text_width;
-        $RW = $W - $ML - $M;
-        $RH = $H - $MB - $M;
+        $RW = $W - $ML - $MR;
+        $RH = $H - $MB - $MT;
         $X0 = $ML;
         $Y0 = $H - $MB;
         $step = $RH / ($county+1);
         imagefilledrectangle($im, $X0, $Y0 - $RH, $X0 + $RW, $Y0, $bg[1]);
         imagerectangle($im, $X0, $Y0, $X0 + $RW, $Y0 - $RH, $c);
         for ($i = 1; $i <= $county; $i++) {
-            $y = $Y0- $step * $i;
+            $y = $Y0 - $step * $i;
             imageline($im, $X0, $y, $X0+ $RW, $y, $c);
             //imageline($im, $X0, $y, $X0 - ($ML - $text_width) / 4, $y, $text);
         }
@@ -131,7 +128,6 @@ function perfomance() {
         $dx = ($RW/ $count) / 2;
         $pi = $Y0 - ($RH / $max * $DATA[0][0]);
         $po = $Y0 - ($RH / $max * $DATA[1][0]);
-        $pf = $Y0 - ($RH / $max * $DATA[2][0]);
         $px = intval($X0 + $dx);
         for ($i = 0; $i < $count; $i++) {
             $x = intval($X0 + $i * ($RW / $count) + $dx);
@@ -153,13 +149,11 @@ function perfomance() {
                     }
                 }
                 $str = $DATA["x"][$i];
-                imagestring($im, 2, $x - (strlen($str) * $LW) / 2, $Y0 + 7, $str, $text);
+                imagestring($im, 2, $x - (strlen($str) * $LW) / 2, $Y0 + 4, $str, $text);
                 $str = round($DATA[0][$i],2);
-                imagestring($im, 2, $x - (strlen($str) * $LW) / 2, 0, $str, $text);
+                imagestring($im, 2, $x - (strlen($str) * $LW) / 2, 3, $str, $text);
             }
             $po = $y;
-            $y = $Y0 - ($RH / $max * $DATA[2][$i]);
-            $pf = $y;
             $px = $x;
         }
         $ML -= $text_width;

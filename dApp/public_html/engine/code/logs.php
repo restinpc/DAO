@@ -11,9 +11,9 @@
 function logs() {
     engine::log('logs()');
     try {
-        if (!empty($_GET["id"])) {
+        if (array_key_exists("id", $_GET) && !empty($_GET["id"])) {
             $id = intval($_GET["id"]);
-            if ($_GET["mode"] == "exceptions") {
+            if (array_key_exists("mode", $_GET) && $_GET["mode"] == "exceptions") {
                 $query = 'SELECT data as logs FROM `nodes_exception` WHERE id = '.$id;
             } else {
                 $query = 'SELECT logs FROM `nodes_error` WHERE id = '.$id;
