@@ -248,7 +248,7 @@ function __construct() {
             document.framework.preloaded = 1;
             document.framework.onLoad();
             document.framework.handleUserEvents();
-            setTimeout(() => window.location.reload(), 3660); 
+            setTimeout(() => { window.location.reload(); }, 3660000); 
             ';
             if (!empty($_SESSION["user"]["id"])) {
                 $fout .= 'if (!document.framework.messageInterval) {
