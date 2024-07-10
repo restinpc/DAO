@@ -60,12 +60,12 @@ php_value client_max_body_size 512M;
     <FilesMatch "\.(obj|mtl|ply|dae|glb|flv|gif|jpg|jpeg|png|mp4|ico|swf|pdf|ttf|svg|eot|woff|woff2|OBJ|MTL|PLY|DAE|GLB|FLV|GIF|JPG|JPEG|PNG|MP4|ICO|SWF|PDF|TTF|SVG|EOT|WOFF|WOFF2)$">
         Header unset Cache-Control
         Header unset Expires
-        Header set Cache-Control "max-age=604 800"
+        Header set Cache-Control "max-age=604800"
     </FilesMatch>
     <FilesMatch "\.(js|css|JS|CSS)$">
         Header unset Cache-Control
         Header unset Expires
-        Header set Cache-Control "max-age=86400"
+        Header set Cache-Control "max-age=3600"
     </FilesMatch>
     <FilesMatch "\.(obj|mtl|ply|dae|glb|jpg|jpeg|gif|png|avi|mp4|webm|mss|json|OBJ|MTL|PLY|DAE|GLB|JPG|JPEG|GIF|PNG|AVI|MP4|WEBM|MSS|JSON)$">
         Header set Access-Control-Allow-Origin *
