@@ -233,6 +233,7 @@ static function error($error_code = 404) {
     engine::mysql($query);
     $get = engine::escape_string(json_encode($_GET));
     $post = engine::escape_string(json_encode($_POST));
+    $error = error_get_last();
     $fout = '';
     foreach($_SESSION["LOG"] as $key => $value) {
         $fout .= $key.': '.$value.'
@@ -242,7 +243,7 @@ static function error($error_code = 404) {
 ';
     $fout .= json_encode(error_get_last());
     $logs = engine::escape_string($fout);
-    $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `code`, `token`, `ip`, `get`, `post`, `logs`, `count`) '
+    $query = 'INSERT INTO `nodes_error`(`url`, `lang`, `date`, `code`, `token`, `ip`, `get`, `post`, `logs`, `display`) '
     . 'VALUES("'.$url.'", '
         . '"'.$_SESSION["Lang"].'", '
         . '"'.date("U").'", '
@@ -252,7 +253,7 @@ static function error($error_code = 404) {
         . '"'.$get.'", '
         . '"'.$post.'", '
         . '"'.$logs.'", '
-        . '"1"'
+        . '"'.($error || $error_code != 404 ? 1 : 0).'"'
     . ')';
     self::mysql($query);
     $_SESSION["LOG"] = array();
