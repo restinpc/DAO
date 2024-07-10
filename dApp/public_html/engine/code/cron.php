@@ -158,16 +158,6 @@ function cron() {
                     }
                 }
                 closedir($hdl);
-                $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_images"';
-                engine::mysql($query);
-            }
-        }
-        /*
-         * Deletes an expired sessions, errors and temp captcha images once a day
-         */
-        if (!$flag) {
-            if (intval($_SERVER["configs"]["cron_sessions"]) < date("U") - 86400) {
-                $flag = 4;
                 $path = "temp/";
                 $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
                 $hdl = opendir($dir);
@@ -180,6 +170,18 @@ function cron() {
                         unlink($dir.$file_name);
                     }
                 }
+                closedir($hdl);
+                $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_images"';
+                engine::mysql($query);
+            }
+        }
+        /*
+         * Deletes an expired sessions and errors once a day.
+         */
+        if (!$flag) {
+            if (intval($_SERVER["configs"]["cron_sessions"]) < date("U") - 86400) {
+                $flag = 4;
+                
                 $query = 'DELETE FROM `nodes_session` WHERE expire_at < NOW()';
                 engine::mysql($query);
                 $query = 'DELETE FROM `nodes_error` WHERE `date` < '.(date("U") - 86400).' AND `display` = 0';
