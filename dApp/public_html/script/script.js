@@ -1,7 +1,8 @@
 /**
 * Framework JavaScript library.
+* @path /script/script.js
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -107,19 +108,17 @@ document.framework.confirmAlive = () => {
         if (!document.framework.confirmed) {
             document.framework.log(`document.framework.confirmAlive()`);
             document.framework.confirmed = true;
-            setTimeout(() => {
-                jQuery.ajax({
-                    url: document.framework.rootDir + '/timeout.php?ref=' + encodeURI(document.referrer),
-                    type: "GET",
-                    success: () => {
-                        document.framework.log(`document.framework.confirmAlive().success()`);
-                    },
-                    error: (response, exception) => {
-                        document.framework.ajaxError(`document.framework.confirmAlive()`, response, exception);
-                        document.framework.submitTraceStack();
-                    }
-                });
-            }, 3000);
+            jQuery.ajax({
+                url: document.framework.rootDir + '/timeout.php?ref=' + encodeURI(document.referrer),
+                type: "GET",
+                success: () => {
+                    document.framework.log(`document.framework.confirmAlive().success()`);
+                },
+                error: (response, exception) => {
+                    document.framework.ajaxError(`document.framework.confirmAlive()`, response, exception);
+                    document.framework.submitTraceStack();
+                }
+            });
         }
     } catch (e) {
         document.framework.throw(`document.framework.confirmAlive()`, e);
@@ -154,16 +153,27 @@ document.framework.handleUserEvents = () => {
     document.framework.log(`document.framework.handleUserEvents()`);
     try {
         if (!document.framework.confirmed) {
+            document.framework.addHandler(window, "click", document.framework.confirmAlive);
             document.framework.addHandler(window, "mousemove", document.framework.confirmAlive);
-            document.framework.addHandler(document.body, "mousemove", document.framework.confirmAlive);
             document.framework.addHandler(window, "scroll", document.framework.confirmAlive);
-            document.framework.addHandler(document.body, "scroll", document.framework.confirmAlive);
             document.framework.addHandler(window, 'DOMMouseScroll', document.framework.confirmAlive);
-            document.framework.addHandler(document.body, "DOMMouseScroll", document.framework.confirmAlive);
             document.framework.addHandler(window, 'touchstart', document.framework.confirmAlive);
             document.framework.addHandler(window, 'touchmove', document.framework.confirmAlive);
+            document.framework.addHandler(document.body, "click", document.framework.confirmAlive);
+            document.framework.addHandler(document.body, "scroll", document.framework.confirmAlive);
+            document.framework.addHandler(document.body, "mousemove", document.framework.confirmAlive);
+            document.framework.addHandler(document.body, "DOMMouseScroll", document.framework.confirmAlive);
             document.framework.addHandler(document.body, 'touchstart', document.framework.confirmAlive);
             document.framework.addHandler(document.body, 'touchmove', document.framework.confirmAlive);
+            let content = $id("content");
+            if (content) {
+                document.framework.addHandler(content, 'click', document.framework.confirmAlive);
+                document.framework.addHandler(content, 'mousemove', document.framework.confirmAlive);
+                document.framework.addHandler(content, 'scroll', document.framework.confirmAlive);
+                document.framework.addHandler(content, 'DOMMouseScroll', document.framework.confirmAlive);
+                document.framework.addHandler(content, 'touchstart', document.framework.confirmAlive);
+                document.framework.addHandler(content, 'touchmove', document.framework.confirmAlive);
+            }
         }
     } catch(e) {
         document.framework.throw(`document.framework.handleUserEvents()`, e);

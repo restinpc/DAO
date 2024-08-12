@@ -3,7 +3,7 @@
 * Framework engine class.
 * @path /engine/core/engine.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -258,7 +258,7 @@ static function error($error_code = 404) {
             . '"'.$get.'", '
             . '"'.$post.'", '
             . '"'.$logs.'", '
-            . '"'.($error || $error_code != 404 ? 1 : 0).'"'
+            . '"'.($error ? 1 : 0).'"'
         . ')';
     self::mysql($query);
     $_SESSION["LOG"] = array();

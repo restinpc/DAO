@@ -1,9 +1,8 @@
 /**
 * Framework stylesheets source file.
-* Do not edit directly.
-* @path /template/nodes.source.css
+* @path /template/nodes.css
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -3353,7 +3352,6 @@ a.pswp__share--download:hover {
 
 @media (max-width: 1000px) {
     .nodes .product_left{ max-width: 500px; }
-
     .nodes .left-center{ text-align: center; }
     .nodes .right-center{ text-align: center; }
     .nodes .center-left{ text-align: left; }
@@ -3361,7 +3359,9 @@ a.pswp__share--download:hover {
     .nodes .left-right{ text-align: right; }
     .nodes .right-left{ text-align: left; }
     .nodes .preview_blocks{ max-width: 640px; }
+    /*
     .nodes .document980{ max-width: 750px; }
+    */
     .nodes .two_columns{  max-width: 730px; }
     .nodes .double_column{  max-width: 730px; }
     .nodes .left_column{ max-width: 725px;  width: 725px; }
@@ -3389,8 +3389,10 @@ a.pswp__share--download:hover {
 }
 @media (max-width: 750px) {
     .nodes .preview_blocks{ max-width: 320px; }
-    .nodes .document980{ max-width: 500px; }
+    /*
+    .nodes .document980{ max-width: 500px; } 
     .nodes .document, .nodes .document640{ max-width: 500px; }
+    */
     .nodes .two_columns{ max-width: 480px; }
     .nodes .left_column{ max-width: none; width: 100%; }
     .nodes .right_column{ max-width: none; width: 100%; }
@@ -3417,9 +3419,11 @@ a.pswp__share--download:hover {
         width: auto;
         margin-left: 0px;
     }
-    .nodes .document980{ max-width: 320px; }
+    /*
+    .nodes .document980{ max-width: 320px; } 
     .nodes .document, .nodes .document640{ max-width: 320px; }
     .nodes .document420{ max-width: 320px; }
+    */
     .nodes .two_columns{ max-width: 300px; }
     .nodes .top_right_column{ margin-left: 0px; max-width: 300px; width: 300px; margin-top: 0px; }
 }

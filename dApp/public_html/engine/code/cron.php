@@ -3,7 +3,7 @@
 * Crontab system script.
 * @path /engine/code/cron.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -176,15 +176,16 @@ function cron() {
             }
         }
         /*
-         * Deletes an expired sessions and errors once a day.
+         * Deletes an expired sessions, errors and unconfirmed visits once a day.
          */
         if (!$flag) {
             if (intval($_SERVER["configs"]["cron_sessions"]) < date("U") - 86400) {
                 $flag = 4;
-                
                 $query = 'DELETE FROM `nodes_session` WHERE expire_at < NOW()';
                 engine::mysql($query);
                 $query = 'DELETE FROM `nodes_error` WHERE `date` < '.(date("U") - 86400).' AND `display` = 0';
+                engine::mysql($query);
+                $query = 'DELETE FROM `nodes_attendance` WHERE `date` < '.(date("U") - 86400).' AND `display` = 0';
                 engine::mysql($query);
                 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_sessions"';
                 engine::mysql($query);

@@ -3,7 +3,7 @@
 * Backend main page file.
 * @path /engine/site/main.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -40,7 +40,7 @@ if ($_SESSION["Lang"] == "ru") {
         <div class="whitepaper text">
         <h1>DAO</h1>
         <p>
-            <video id="intro" width="100%" height="auto" autoplay muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
+            <video id="intro" width="100%" height="auto" muted controls="controls" poster="'.$_SERVER["DIR"].'/img/video.jpg">
                <source src="'.$_SERVER["DIR"].'/file/1.mp4" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\'>
             </video>
         </p>
