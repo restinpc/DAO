@@ -3,7 +3,7 @@
 * Framework session loader.
 * @path /engine/nodes/session.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -121,7 +121,7 @@ if (date("U") - $date < 60) {
         $refId = 0;
         if (!empty($_SERVER["HTTP_REFERER"])) {
             if (strpos($_SERVER["HTTP_REFERER"], $_SERVER["HTTP_HOST"]) === false) {
-                $query = 'SELECT * FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
+                $query = 'SELECT id FROM `nodes_referrer` WHERE `name` LIKE "'.$_SERVER["HTTP_REFERER"].'"';
                 $res = engine::mysql($query);
                 $ref = mysqli_fetch_array($res);
                 if (empty($ref)) {

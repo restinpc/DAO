@@ -183,9 +183,15 @@ function cron() {
                 $flag = 4;
                 $query = 'DELETE FROM `nodes_session` WHERE expire_at < NOW()';
                 engine::mysql($query);
+                $query = 'OPTIMIZE TABLE `nodes_session`;';
+                engine::mysql($query);
                 $query = 'DELETE FROM `nodes_error` WHERE `date` < '.(date("U") - 86400).' AND `display` = 0';
                 engine::mysql($query);
+                $query = 'OPTIMIZE TABLE `nodes_error`;';
+                engine::mysql($query);
                 $query = 'DELETE FROM `nodes_attendance` WHERE `date` < '.(date("U") - 86400).' AND `display` = 0';
+                engine::mysql($query);
+                $query = 'OPTIMIZE TABLE `nodes_attendance`;';
                 engine::mysql($query);
                 $query = 'UPDATE `nodes_config` SET `value` = "'.date("U").'" WHERE `name` = "cron_sessions"';
                 engine::mysql($query);
