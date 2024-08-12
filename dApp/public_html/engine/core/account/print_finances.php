@@ -3,7 +3,7 @@
 * Print account finance page.
 * @path /engine/core/account/print_finances.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -21,7 +21,7 @@
 
 function print_finances($site) {
     $fout = '<div class="document640">';
-    if ($_GET[2] == "withdrawal") {
+    if (array_key_exists(2, $_GET) && $_GET[2] == "withdrawal") {
         if (!empty($_POST["amount"])) {
             $method = engine::escape_string($_POST["method"]);
             $id = engine::escape_string($_POST["id"]);
@@ -89,7 +89,7 @@ function print_finances($site) {
         $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$_SESSION["user"]["id"].'"';
         $res = engine::mysql($query);
         $data = mysqli_fetch_array($res);
-        if (floatval($_POST["amount"]) > 0) {
+        if (array_key_exists("amount", $_POST) && floatval($_POST["amount"]) > 0) {
             $amount = floatval($_POST["amount"]);
             $query = 'INSERT INTO `nodes_invoice`(user_id, order_id, amount, date) '
                 . 'VALUES("'.$_SESSION["user"]["id"].'", "-1", "'.$amount.'", "'.date("Y-m-d H:i:s").'")';

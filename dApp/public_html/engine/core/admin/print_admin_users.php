@@ -3,7 +3,7 @@
 * Print admin users page.
 * @path /engine/core/admin/print_admin_users.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -21,9 +21,9 @@
 
 function print_admin_users($cms) {
     $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "users" '
-            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-            . 'AND `access`.`admin_id` = `admin`.`id`';
+        . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "users" '
+        . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+        . 'AND `access`.`admin_id` = `admin`.`id`';
     $admin_res = engine::mysql($query);
     $admin_data = mysqli_fetch_array($admin_res);
     $admin_access = intval($admin_data["access"]);
@@ -108,6 +108,7 @@ function print_admin_users($cms) {
     $res = engine::mysql($query);
     while ($data = mysqli_fetch_array($res)) {
         $arr_count++;
+        $i = $data["id"];
         if ($data["online"] > date("U") - 600) {
             $online = engine::lang("Online");
         } else {

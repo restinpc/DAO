@@ -3,7 +3,7 @@
 * Backend login page file.
 * @path /engine/site/login.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Alexandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -83,10 +83,10 @@ if (empty($_GET[1])) {
         $this->content .= '<h1>'.engine::lang("Login").'</h1>
         <form method="POST" action="'.$_SERVER["DIR"].'/login" id="login_form" class="lh2">
             <div class="input-caption">'.engine::lang("Email").'</div>
-            <input id="input-login-email" type="text" required name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="Email" />
+            <input id="input-login-email" type="text" required name="email" value="'.(array_key_exists("email", $_POST) ? $_POST["email"] : "").'" class="input reg_email" placeHolder="Email" />
             <br/>
             <div class="input-caption">'.engine::lang("Password").'</div>
-            <input id="input-login-password" type="password" required name="pass" class="input reg_email" value="'.$_POST["pass"].'" placeHolder="'.engine::lang("Password").'" />
+            <input id="input-login-password" type="password" required name="pass" class="input reg_email" value="'.(array_key_exists("pass", $_POST) ? $_POST["pass"] : "").'" placeHolder="'.engine::lang("Password").'" />
             <br/>
             <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Continue").'" />
             <br/>
@@ -173,7 +173,7 @@ if (empty($_GET[1])) {
         $this->content .= '<h1>'.engine::lang("Reset password").'</h1>
         <form method="POST" class="lh2">
             <div class="input-caption">'.engine::lang("Email").'</div>
-            <input id="input-login-email" type="text" required name="email" value="'.$_POST["email"].'" class="input reg_email" placeHolder="Email" /><br/>
+            <input id="input-login-email" type="text" required name="email" value="'.(array_key_exists("email", $_POST) ? $_POST["email"] : "").'" class="input reg_email" placeHolder="Email" /><br/>
             <input id="input-login-submit" type="submit" class="btn reg_submit" value="'.engine::lang("Submit").'" />
         </form>';
     }

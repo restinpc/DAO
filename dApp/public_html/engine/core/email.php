@@ -3,7 +3,7 @@
 * Email library.
 * @path /engine/core/email.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -19,9 +19,12 @@ class email{
 */
 static function email_template($text) {
     engine::log('email::email_template('.$text.')');
-    $css = file_get_contents("template/email.css");
-    if (empty($css)) {
-        $css = file_get_contents ($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/template/email.css');
+    $css = '';
+    if (file_exists("template/email.css")) {
+        $css = file_get_contents("template/email.css");
+    }
+    if (empty($css) && file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/template/email.css')) {
+        $css = file_get_contents($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/template/email.css');
     }
     if ($_SERVER["configs"]["email_image"][0] == "/") {
         $_SERVER["configs"]["email_image"] = $_SERVER["PUBLIC_URL"].$_SERVER["configs"]["email_image"];
@@ -34,7 +37,7 @@ static function email_template($text) {
         $fout .= '<img src="data:image/png;base64,'.$image.'" alt="'.$_SERVER["configs"]["name"].'" title="'.$_SERVER["configs"]["name"].'" /><br/><br/>';
     }
     $fout .= ' <p>'.$text.'</p><hr/>
-        <center>'.engine::lang("Thanks for using our service").' <a href="'.$_SERVER["PUBLIC_URL"].'/" target="_blank">'.$_SERVER["configs"]["name"]["value"].'</a></center>
+        <center>'.engine::lang("Thanks for using our service").' <a href="'.$_SERVER["PUBLIC_URL"].'/" target="_blank">'.$_SERVER["configs"]["name"].'</a></center>
         </div>';
     return $fout;
 }

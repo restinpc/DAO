@@ -3,7 +3,7 @@
 * Print admin pages file.
 * @path /engine/core/admin/print_admin_pages.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -134,8 +134,6 @@ function print_admin_pages($cms) {
     $res = engine::mysql($query);
     while ($data = mysqli_fetch_array($res)) {
         $arr_count++;
-        $opt = array();
-        $opt[$data["interval"]] = "selected";
         $url = str_replace($_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"], "", $data["url"]);
         if (strlen($url) > 25) {
             $url = mb_substr($url, 0, 25).'..';
@@ -171,14 +169,14 @@ function print_admin_pages($cms) {
             <td align=left valign=middle>
                 <form method="POST" id="form_'.$data["id"].'">
                 <input type="hidden" name="id" value="'.$data["id"].'" />
-                <select id="select-page-'.$arr_count.'" name="date" '.($admin_access!=2?'disabled':'').' class="table_selector input w120" onChange=\'$id("form_'.$data["id"].'").submit();\'>
-                    <option id="option-interval-0" value="-1" '.$opt[-1].'>'.engine::lang("Not cathing").'</option>
-                    <option id="option-interval-1" value="0" '.$opt[0].'>'.engine::lang("Not refreshing").'</option>
-                    <option id="option-interval-2" value="60" '.$opt[60].'>1 '.engine::lang("minut").'</option>
-                    <option id="option-interval-3" value="600" '.$opt[600].'>10 '.engine::lang("minuts").'</option>
-                    <option id="option-interval-4" value="3600" '.$opt[3600].'>1 '.engine::lang("hours").'</option>
-                    <option id="option-interval-5" value="43200" '.$opt[43200].'>12 '.engine::lang("hours").'</option>
-                    <option id="option-interval-6" value="86400" '.$opt[86400].'>'.engine::lang("Dayly").'</option>
+                <select id="select-page-'.$arr_count.'" name="date" '.($admin_access !=2 ? 'disabled' : '').' class="table_selector input w120" onChange=\'$id("form_'.$data["id"].'").submit();\'>
+                    <option id="option-interval-0" value="-1" '.($data["interval"] == -1 ? 'selected' : "").'>'.engine::lang("Not cathing").'</option>
+                    <option id="option-interval-1" value="0" '.($data["interval"] == 0 ? 'selected' : "").'>'.engine::lang("Not refreshing").'</option>
+                    <option id="option-interval-2" value="60" '.($data["interval"] == 60 ? 'selected' : "").'>1 '.engine::lang("minut").'</option>
+                    <option id="option-interval-3" value="600" '.($data["interval"] == 600 ? 'selected' : "").'>10 '.engine::lang("minuts").'</option>
+                    <option id="option-interval-4" value="3600" '.($data["interval"] == 3600 ? 'selected' : "").'>1 '.engine::lang("hours").'</option>
+                    <option id="option-interval-5" value="43200" '.($data["interval"] == 43200 ? 'selected' : "").'>12 '.engine::lang("hours").'</option>
+                    <option id="option-interval-6" value="86400" '.($data["interval"] == 86400 ? 'selected' : "").'>'.engine::lang("Dayly").'</option>
                     <option id="option-interval-7" value="-3">'.engine::lang("Delete").'</option>
                 </select>
                 </form>

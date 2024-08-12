@@ -3,7 +3,7 @@
 * Print admin files page.
 * @path /engine/core/admin/print_admin_files.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -44,7 +44,7 @@ function print_admin_files($cms) {
             @unlink($images);
         }
     }
-    $fout .= '<div class="document980">
+    $fout = '<div class="document980">
         <div class="table">
             <table id="table">
             <tr><td align=left>';

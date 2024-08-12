@@ -3,7 +3,7 @@
 * Prints VR panorama navigation hyperlink.
 * @path /engine/core/pano/pano_print_link.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -34,7 +34,7 @@ function pano_print_link($site, $object, $new=0) {
                         document.panorama.objectId = "'.$object["id"].'";
                     }
                 } else {
-                    window.location = "'.$object["url"].'";
+                    '.(array_key_exists("url", $object) ? 'window.location = "'.$object["url"].'";' : "").'
                 }
             }, 500, "'.$object["id"].'");
         \'

@@ -3,7 +3,7 @@
 * Prints VR panorama navigation object.
 * @path /engine/core/pano/pano_print_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -21,21 +21,21 @@
 * @usage <code> engine::pano_print_navigation($site, $object, $new=0); </code>
 */
 
-function pano_print_navigation($site, $object, $new=0) {
+function pano_print_navigation($site, $object, $new = 0) {
     $site->content .= '<a-image
         transparent="true"
         class="hotpoint"
         look-at="#camera" 
         action=\'
             setTimeout((id) => {
-                if ('.($_SESSION["user"]["id"] == 1?'1':'0').' && $id("scene_editor").style.display == "block") {
+                if ('.($_SESSION["user"]["id"] == 1 ? '1' : '0').' && $id("scene_editor").style.display == "block") {
                     if (!document.panorama.objectId) {
                         jQuery(".vr_object_window").css("display", "none");
                         $id("point_'.$object["id"].'_window").style.display = "block";
                         document.panorama.objectId = "'.$object["id"].'";
                     }
                 } else {
-                    '.($object["target"] ? 'document.panorama.loadScene("'.$object["target"].'", "point_'.$object["id"].'")' : '').'
+                    '.(array_key_exists("target", $object) ? 'document.panorama.loadScene("'.$object["target"].'", "point_'.$object["id"].'")' : '').'
                 }
             }, 500, "'.$object["id"].'");
         \'

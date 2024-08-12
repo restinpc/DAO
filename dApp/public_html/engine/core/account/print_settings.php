@@ -3,7 +3,7 @@
 * Print account settings page.
 * @path /engine/core/account/print_settings.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,7 +20,7 @@
 */
 
 function print_settings($site) {
-    if ($_GET[2] == "delete") {
+    if (array_key_exists(2, $_GET) && $_GET[2] == "delete") {
         $query = 'DELETE FROM `nodes_comment` WHERE `user_id` = "'.$_SESSION["user"]["id"].'"';
         engine::mysql($query);
         $query = 'DELETE FROM `nodes_inbox` WHERE `from` = "'.$_SESSION["user"]["id"].'" OR `to` = "'.$_SESSION["user"]["id"].'"';

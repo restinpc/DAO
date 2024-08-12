@@ -17,7 +17,7 @@ function timeout() {
         $data = mysqli_fetch_array($res);
         $query = 'UPDATE `nodes_attendance` SET `display` = "1" WHERE `token` = "'.session_id().'"';
         engine::mysql($query);
-        if (!$data["ref_id"] && !empty($_GET["ref"])) {
+        if (!$data["ref_id"] && !array_key_exists("ref", $_GET) && !empty($_GET["ref"])) {
             $referrer = engine::escape_string(urldecode($_GET["ref"]));
             if (mb_strpos($ref, $_SERVER["HTTP_HOST"]) === FALSE) {
                 $query = 'SELECT id FROM `nodes_referrer` WHERE `name` LIKE "'.$referrer.'"';

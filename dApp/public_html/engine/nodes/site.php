@@ -3,7 +3,7 @@
 * DAO Mansion site primary class.
 * @path /engine/nodes/site.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -112,37 +112,48 @@ function __construct() {
         ) {
             $this->content = '<script>window.location = "'.$_SERVER["DIR"].'/account/settings";</script>';
         } else {
-            if (count($_GET) && $_GET[0] == "admin") {
+            if (array_key_exists(0, $_GET) && $_GET[0] == "admin") {
                 $_SERVER["CORE_PATH"] = $_GET[0];
                 require_once("engine/nodes/admin.php");
                 new admin($this);
             } else {
-                $query = 'SELECT * FROM `nodes_backend` WHERE `mode` = "'.(count($_GET) ? $_GET[0] : '').'"';
+                $query = 'SELECT * FROM `nodes_backend` WHERE `mode` = "'.(array_key_exists(0, $_GET) ? $_GET[0] : '').'"';
                 $res = engine::mysql($query);
                 $object = mysqli_fetch_object($res);
                 if (!empty($object->file)) {
                     $_SERVER["CORE_PATH"] = $object->mode;
-                    require_once("engine/site/".$object->file);
+                    if (file_exists("engine/site/".$object->file)) {
+                        require_once("engine/site/".$object->file);
+                    } else if (file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/site/".$object->file)) {
+                        require_once($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/site/".$object->file);
+                    }
                 } else {
-                    if ($_SERVER["configs"]["default"] != "site.php") {
-                        $query = 'SELECT * FROM `nodes_backend` WHERE `file` = "'.$_SERVER["configs"]["default"].'"';
-                        $res = engine::mysql($query);
-                        $object = mysqli_fetch_object($res);
-                        if (!empty($object->file)) {
-                            $_SERVER["CORE_PATH"] = $object->mode;
+                    $query = 'SELECT * FROM `nodes_backend` WHERE `file` = "'.$_SERVER["configs"]["default"].'"';
+                    $res = engine::mysql($query);
+                    $object = mysqli_fetch_object($res);
+                    if (!empty($object->file)) {
+                        $_SERVER["CORE_PATH"] = $object->mode;
+                        if (file_exists("engine/site/".$object->file)) {
                             require_once("engine/site/".$object->file);
-                        } else {
-                            $_SERVER["CORE_PATH"] = "profile";
-                            require_once("engine/site/profile.php");
+                        } else if (file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/site/".$object->file)) {
+                            require_once($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/site/".$object->file);
                         }
                     } else {
                         $_SERVER["CORE_PATH"] = "profile";
-                        require_once("engine/site/profile.php");
+                        if (file_exists("engine/site/profile.php")) {
+                            require_once("engine/site/profile.php");
+                        } else if (file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/site/profile.php")) {
+                            require_once($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/site/profile.php");
+                        }
                     }
                 }
             }
             if (!isset($_POST["jQuery"])) {
-                require_once("template/".$_SESSION["template"]."/template.php");
+                if (file_exists("template/".$_SESSION["template"]."/template.php")) {
+                    require_once("template/".$_SESSION["template"]."/template.php");
+                } else if (file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/template/".$_SESSION["template"]."/template.php")) {
+                    require_once($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/template/".$_SESSION["template"]."/template.php");
+                }
                 $template = $_SESSION["template"];
             }
         }

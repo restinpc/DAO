@@ -38,9 +38,6 @@ public static function __callStatic($name, $arguments) {
     }
     if (!$exec) {
         $skip = array('.', '..', 'function');
-        if (array_key_exists("CORE_PATH", $_SERVER) && !empty($_SERVER["CORE_PATH"])) {
-            array_push($_SERVER["CORE_PATH"]);
-        }
         $files = scandir('engine/core/');
         foreach ($files as $file) {
             if (!in_array($file, $skip)) {
@@ -459,10 +456,7 @@ static function redirect($url) {
 
 static function encode_password($password) {
     engine::log('engine::encode_password('.$password.')');
-    return password_hash($password, PASSWORD_BCRYPT, [
-        'cost' => 11,
-        'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-    ]);
+    return password_hash($password, PASSWORD_BCRYPT, ['cost' => 11]);
 }
 
 static function match_passwords($password, $hashed_password) {

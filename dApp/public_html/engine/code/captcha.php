@@ -3,7 +3,7 @@
 * Captcha generator.
 * @path /engine/code/captcha.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -36,7 +36,7 @@ function captcha() {
             rand($width * 0.1, $width - $width * 0.1),
             rand($height * 0.2, $height), $color, $font, $letter);
         }
-        if (date("U") > intval($_SESSION["captcha_date"] + 60) || empty($_SESSION["captcha_img"])) {
+        if (empty($_SESSION["captcha_img"] || (array_key_exists("captcha_date", $_SESSION) && date("U") > intval($_SESSION["captcha_date"] + 60)))) {
             $_SESSION["captcha"] = '';
             for ($i = 0; $i < $let_amount; $i++) {
                 $letter = $letters[rand(0, sizeof($letters) - 1)];

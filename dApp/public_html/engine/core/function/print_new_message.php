@@ -3,7 +3,7 @@
 * Prints new message block.
 * @path /engine/core/function/print_new_message.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -24,6 +24,7 @@ function print_new_message() {
         if (mb_strlen($data["text"]) > 110) {
             $data["text"] = mb_substr($data["text"], 0, 110)."..";
         }
+        $online = engine::lang("offline");
         if ($user["online"] > date("U") - 600) {
             $online = '<span class="fs11">'.engine::lang("online").'</span>';
         }

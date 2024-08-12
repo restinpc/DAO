@@ -3,7 +3,7 @@
 * Print admin content page.
 * @path /engine/core/admin/print_admin_content.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -397,7 +397,7 @@ function print_admin_content($cms) {
                     $table .= '<select id="select-action-'.$arr_count.'" class="input" onChange=\'if (confirm("'.engine::lang("Are you sure?").'")) {window.location=this.value;} else {this.selectedIndex=0;}\'>
                         <option id="option-action-0" disabled selected>'.engine::lang("Select an action").'</option>
                         <option id="option-action-1" value="'.$_SERVER["DIR"].'/admin/?mode='.$_GET["mode"].'&cat_id='.$_GET["cat_id"].'&id='.$data["id"].'&act=edit">'.engine::lang("Edit article").'</option>';
-                    $arr = explode(";", $_SERVER["configs"]["value"]);
+                    $arr = explode(";", $_SERVER["configs"]["languages"]);
                     foreach ($arr as $value) {
                         if (!empty($value)) {
                             if ($_SESSION["Lang"] != $value) {

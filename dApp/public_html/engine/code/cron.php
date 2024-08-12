@@ -71,11 +71,13 @@ function cron() {
                 $res = engine::mysql($query);
                 while ($data = mysqli_fetch_array($res)) {
                     $imgs = explode(';', $data["img"]);
-                    foreach ($imgs as $img) {
-                        $img = trim($img);
-                        if (!empty($img)) {
-                            if (!in_array($img, $images)) {
-                                array_push($images, $img);
+                    if (count($imgs) > 0) {
+                        foreach ($imgs as $img) {
+                            $img = trim($img);
+                            if (!empty($img)) {
+                                if (!in_array($img, $images)) {
+                                    array_push($images, $img);
+                                }
                             }
                         }
                     }
@@ -90,11 +92,13 @@ function cron() {
                         }
                     }
                     $imgs = explode(';', $data["imgs"]);
-                    foreach ($imgs as $img) {
-                        $img = trim($img);
-                        if (!empty($img)) {
-                            if (!in_array($img, $images)) {
-                                array_push($images, $img);
+                    if (count($imgs) > 0) {
+                        foreach ($imgs as $img) {
+                            $img = trim($img);
+                            if (!empty($img)) {
+                                if (!in_array($img, $images)) {
+                                    array_push($images, $img);
+                                }
                             }
                         }
                     }

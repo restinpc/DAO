@@ -3,7 +3,7 @@
 * Cache library.
 * @path /engine/core/cache.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -127,15 +127,18 @@ public static function update_cache($url, $jQuery = 0, $lang = "en") {
     preg_match('/<title>(.*?)<\/title>.*?itemprop="description" content="(.*?)".*?itemprop="keywords" '
         . 'content="(.*?)".*?<\!-- content -->(.*?)<\!-- \/content -->.*?'
         . '<script rel="onload">(.*?)<\/script>/sim', $html, $m);
-    $title = trim($m[1]);
-    $description = trim($m[2]);
-    $keywords = trim($m[3]);
-    $content = trim($m[4]);
-    $script = trim($m[5]);
-    if (!empty($content)) {
-        $fout = '<!DOCTYPE'.str_replace('<content/>', $content, $c[1]);
-    } else {
-        $fout = '<!DOCTYPE'.$c[1];
+    $content = '';
+    if (count($m) > 0) { 
+        $title = trim($m[1]);
+        $description = trim($m[2]);
+        $keywords = trim($m[3]);
+        $content = trim($m[4]);
+        $script = trim($m[5]);
+        if (!empty($content)) {
+            $fout = '<!DOCTYPE'.str_replace('<content/>', $content, $c[1]);
+        } else {
+            $fout = '<!DOCTYPE'.$c[1];
+        }
     }
     if (!empty($content)) {
         $query = 'UPDATE `nodes_cache` SET '

@@ -759,7 +759,9 @@ document.framework.goto = (href) => {
                                     $id("content").innerHTML = data;
                                     jQuery("#content").animate({opacity: 1}, 300);
                                     clearTimeout(to);
-                                    document.documentElement.style.background = "#1a1d1d";
+                                    if (document.documentElement) {
+                                        document.documentElement.style.background = "#1a1d1d";
+                                    }
                                     if (anchor != '') {
                                         document.framework.showAnchor(anchor);
                                     }
@@ -1564,6 +1566,7 @@ document.framework.submitTraceStack = () => {
         }
     }
     if (!document.framework.errorState) {
+        document.framework.errorState = true;
         try {
             document.framework.getLogs((logs) => {
                 jQuery.ajax({
@@ -1571,7 +1574,7 @@ document.framework.submitTraceStack = () => {
                     url: document.framework.rootDir + "/trace.php",
                     data: { url: window.location.href, "logs": logs },
                     success: () => {
-                        document.framework.errorState = true;
+                        document.framework.log(`document.framework.submitTraceStack().success()`);
                     },
                     error: (response, exception) => {
                         document.framework.ajaxError('document.framework.submitTraceStack()', response, exception);

@@ -3,7 +3,7 @@
 * Framework autoloader.
 * @path /engine/nodes/autoload.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -103,16 +103,16 @@ foreach ($files as $file) {
     }
 }
 require_once('engine/nodes/session.php');
-if (count($_GET) && strpos($_GET[0], "robots.txt") !== FALSE) {
+if (array_key_exists(0, $_GET) && strpos($_GET[0], "robots.txt") !== FALSE) {
     $_GET[0] = str_replace("robots.txt", "robots.php", $_GET[0]);
 }
-if (count($_GET) && strpos($_GET[0], "rss.xml") !== FALSE) {
+if (array_key_exists(0, $_GET) && strpos($_GET[0], "rss.xml") !== FALSE) {
     $_GET[0] = str_replace("rss.xml", "rss.php", $_GET[0]);
 }
-if (count($_GET) && strpos($_GET[0], "sitemap.xml") !== FALSE) {
+if (array_key_exists(0, $_GET) && strpos($_GET[0], "sitemap.xml") !== FALSE) {
     $_GET[0] = str_replace("sitemap.xml", "sitemap.php", $_GET[0]);
 }
-if (count($_GET) && !empty($_GET[0]) && strpos($_GET[0], ".php") && (
+if (array_key_exists(0, $_GET) && !empty($_GET[0]) && strpos($_GET[0], ".php") && (
         file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/code/".$_GET[0])
         || file_exists("engine/code/".$_GET[0])
     )
