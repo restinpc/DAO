@@ -285,7 +285,7 @@ function print_admin_attendance($cms) {
                     $user = mysqli_fetch_array($dr);
                     $user_name = $user["name"];
                 }
-                $query = 'SELECT `ref_id` FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'" AND `ref_id` != 0';
+                $query = 'SELECT `id`, `ref_id` FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'" AND `ref_id` != 0';
                 $ref = engine::mysql($query);
                 $dref = mysqli_fetch_array($ref);
                 if ($dref) {

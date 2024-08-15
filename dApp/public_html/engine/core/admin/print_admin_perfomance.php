@@ -43,10 +43,9 @@ function print_admin_perfomance($cms) {
     if (array_key_exists("date", $_GET) && !empty($_GET["date"])) {
         $inputDate = $_GET["date"];
     }
-    if ($action == "stat") {
-        $stat = '<b>'.engine::lang("Statistic").'</b>';
-        $pages = '<a id="perfomance-pages" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action=pages&interval='.$interval.'&date='.$inputDate.'">'.engine::lang("Pages").'</a>';
-    } else if ($action == "pages") {
+    $stat = '<b>'.engine::lang("Statistic").'</b>';
+    $pages = '<a id="perfomance-pages" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action=pages&interval='.$interval.'&date='.$inputDate.'">'.engine::lang("Pages").'</a>';
+    if ($action == "pages") {
         $stat = '<a id="perfomance-stat" href="'.$_SERVER["DIR"].'/admin?mode=perfomance&action=stat&interval='.$interval.'&date='.$inputDate.'">'.engine::lang("Statistic").'</a>';
         $pages = '<b>'.engine::lang("Pages").'</b>';
     }

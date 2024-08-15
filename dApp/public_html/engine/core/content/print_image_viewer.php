@@ -3,7 +3,7 @@
 * Prints an image viewer and updates pictures inside article.
 * @path /engine/core/content/print_image_viewer.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.4
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -34,7 +34,7 @@ function print_image_viewer($site, $text, $caption, $images, $captions) {
         for ($i = 0; $i < count($images); $i++) {
             $image = $images[$i];
             $image = str_replace('../img', '/img', $image);
-            $size = getimagesize($image);
+            $size = getimagesize($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].$image);
             $text = str_replace($images[$i].'"', $image.'" id="viewer-image-'.$i.'" alt="'.$image.'" onClick=\'document.framework.nodesGallery("'.$image.'");\' class="img pointer"', $text);
             if (!$size[0]) {
                 $size = getimagesize($_SERVER["PUBLIC_URL"].$image);

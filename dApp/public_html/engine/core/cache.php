@@ -128,7 +128,8 @@ public static function update_cache($url, $jQuery = 0, $lang = "en") {
         . 'content="(.*?)".*?<\!-- content -->(.*?)<\!-- \/content -->.*?'
         . '<script rel="onload">(.*?)<\/script>/sim', $html, $m);
     $content = '';
-    if (count($m) > 0) { 
+    $fout = '';
+    if (count($m) > 0 && count($c) > 0) { 
         $title = trim($m[1]);
         $description = trim($m[2]);
         $keywords = trim($m[3]);

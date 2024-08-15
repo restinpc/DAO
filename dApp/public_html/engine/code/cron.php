@@ -91,9 +91,11 @@ function cron() {
                             array_push($images, $img);
                         }
                     }
-                    $imgs = explode(';', $data["imgs"]);
+                    preg_match_all('#<img.*?src="(.*?)".*?/>#i', $data["text"], $m);
+                    $imgs = $m[1];
                     if (count($imgs) > 0) {
                         foreach ($imgs as $img) {
+                            $img = str_replace("../img/data/", "", $img);
                             $img = trim($img);
                             if (!empty($img)) {
                                 if (!in_array($img, $images)) {
@@ -125,6 +127,17 @@ function cron() {
                 }
                 closedir($hdl);
                 $path = "img/data/thumb/";
+                $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
+                $hdl = opendir($dir);
+                while ($file_name = readdir($hdl)) {
+                    if (($file_name != ".") && ($file_name != "..") && is_file($dir.$file_name)) {
+                        if (!in_array($file_name, $images)) {
+                            unlink($dir.$file_name);
+                        }
+                    }
+                }
+                closedir($hdl);
+                $path = "img/data/";
                 $dir = $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"].'/'.$path;
                 $hdl = opendir($dir);
                 while ($file_name = readdir($hdl)) {
