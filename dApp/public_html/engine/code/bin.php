@@ -3,7 +3,7 @@
 * AJAX requsts processor.
 * @path /engine/code/bin.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -67,6 +67,10 @@ function bin() {
                     die(engine::print_new_message());
                 }
             } else if (!empty($_GET["message"])) {
+                $lastId = 0;
+                if (array_key_exists("lastId", $_GET) && intval($_GET["lastId"]) > 0) {
+                    $lastId = intval($_GET["lastId"]);
+                }
                 $query = 'SELECT * FROM `nodes_user` WHERE `id` = '.intval($_SESSION["user"]["id"]);
                 $res = engine::mysql($query);
                 $user = mysqli_fetch_array($res);
@@ -96,7 +100,7 @@ function bin() {
                             }
                         }
                     }
-                    die(engine::print_chat($_GET["message"]));
+                    die(engine::print_chat($_GET["message"], $lastId));
                 }
             } else if (!empty($_POST["paypal"])) {
                 $paypal = engine::escape_string($_POST["paypal"]);

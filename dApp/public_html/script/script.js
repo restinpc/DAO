@@ -2,7 +2,7 @@
 * Framework JavaScript library.
 * @path /script/script.js
 *
-* @name    DAO Mansion    @version 1.0.4
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -31,6 +31,7 @@ document.framework.messageInterval = null;
 document.framework.traceStack = [];
 document.framework.loadEvents = true;
 document.framework.chatInterval = null;
+document.framework.chatData = {};
 document.framework.confirmed = false;
 document.framework.errorState = false;
 document.framework.onLoad = () => {}
@@ -773,6 +774,7 @@ document.framework.goto = (href) => {
                                     } catch(e){
                                         document.framework.throw(`document.framework.goto(${href}).success().eval(${script})`, e);
                                     }
+                                    document.framework.chatData = {};
                                     setTimeout(document.framework.ajaxing, 1);
                                     setTimeout(document.framework.checkAnchors, 1);
                                 } catch(e) {
@@ -1087,18 +1089,31 @@ document.framework.postMessage = (id) => {
     document.framework.log(`document.framework.postMessage(${id})`);
     try {
         let txt = jQuery("#nodes_message_text").val();
+        let chat = $id("nodes_chat");
         jQuery("#nodes_message_text").val("");
-        jQuery("#nodes_chat").html($id("nodes_chat").innerHTML +
-            '<br/><div class="chat_loader"><img src="' + document.framework.rootDir + '/img/white_load.gif" /></div>');
-        jQuery("#nodes_chat").scrollTop(jQuery("#nodes_chat")[0].scrollHeight);
+        chat.innerHTML += '<div class="chat_loader"><img src="' + document.framework.rootDir + '/img/white_load.gif" /></div>';
+        chat.scrollTop = chat.scrollHeight;
         jQuery.ajax({
             type: "POST",
             data: { "text" : txt },
-            url: document.framework.rootDir + '/bin.php?message=' + id,
+            url: document.framework.rootDir + '/bin.php?message=' + id + '&lastId=' + document.framework.chatData[id],
             success: (data) => {
                 document.framework.log(`document.framework.postMessage(${id}).success()`);
-                jQuery("#nodes_chat").html(data);
-                jQuery("#nodes_chat").scrollTop(jQuery("#nodes_chat")[0].scrollHeight);
+                let script = jQuery(data).filter('script').text();
+                try {
+                    eval(script);
+                } catch(e){
+                    document.framework.throw(`document.framework.postMessage(${id}).success().eval(${script})`, e);
+                }
+                const loader = document.getElementsByClassName("chat_loader")[0];
+                loader.parentNode.removeChild(loader);
+                let chatTable = document.getElementsByClassName("chat_table")[0];
+                if (chatTable) {
+                    chatTable.innerHTML += data;
+                } else {
+                    chat.innerHTML = data;
+                }
+                chat.scrollTop = chat.scrollHeight;
             },
             error: (response, exception) => {
                 document.framework.ajaxError(`document.framework.postMessage(${id})`, response, exception);
@@ -1119,17 +1134,31 @@ document.framework.refreshChat = (id) => {
         let chat = $id("nodes_chat");
         if (chat) {
             if (chat.getAttribute("target") == id) {
+                if (!document.framework.chatData[id]) {
+                    document.framework.chatData[id] = 0;
+                }
                 jQuery.ajax({
                     type: "GET",
-                    url: document.framework.rootDir + '/bin.php?message=' + id,
+                    url: document.framework.rootDir + '/bin.php?message=' + id + '&lastId=' + document.framework.chatData[id],
                     success: (data) => {
                         document.framework.log(`document.framework.refreshChat(${id}).success()`);
+                        let script = jQuery(data).filter('script').text();
+                        try {
+                            eval(script);
+                        } catch(e){
+                            document.framework.throw(`document.framework.refreshChat(${id}).success().eval(${script})`, e);
+                        }
                         let height = chat.scrollHeight;
                         let flag = chat.innerHTML.length == 0;
                         if (height - chat.scrollTop - chat.clientHeight < 2) {
                             flag = true;
                         }
-                        chat.innerHTML = data;
+                        let chatTable = document.getElementsByClassName("chat_table")[0];
+                        if (chatTable) {
+                            chatTable.innerHTML += data;
+                        } else {
+                            chat.innerHTML = data;
+                        }
                         if (flag || (!flag && chat.scrollHeight > height)) {
                             chat.scrollTop = chat.scrollHeight;
                         }

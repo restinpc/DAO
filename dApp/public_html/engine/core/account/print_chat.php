@@ -3,7 +3,7 @@
 * Print account chat page.
 * @path /engine/core/account/print_chat.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -12,12 +12,21 @@
 * @usage <code> engine::print_chat(1); </code>
 */
 
-function print_chat($user_id) {
-    $query = 'SELECT * FROM `nodes_inbox` WHERE (`from` = '.$_SESSION["user"]["id"].' AND `to` = '.$user_id.') OR '
-        . '(`from` = '.$user_id.' AND `to` = '.$_SESSION["user"]["id"].') ORDER BY `date` ASC';
+function print_chat($user_id, $lastId = 0) {
+    $query = 'SELECT * FROM `nodes_inbox` 
+        WHERE id > '.$lastId.' AND (
+            (`from` = '.$_SESSION["user"]["id"].' AND `to` = '.$user_id.') 
+            OR (`from` = '.$user_id.' AND `to` = '.$_SESSION["user"]["id"].')
+        ) 
+        ORDER BY `date` ASC';
     $res = engine::mysql($query);
-    $fout = '<table class="chat_table" border=0 >';
+    $fout = '';
+    if (!$lastId) {
+        $fout = '<table class="chat_table" border=0>';
+    }
+    $id = $lastId;
     while ($data = mysqli_fetch_array($res)) {
+        $id = $data["id"];
         if ($data["from"] == $_SESSION["user"]["id"]) {
             if ($data["readed"] == "0") {
                 $fout .= '<tr><td class="chat_unreaded">';
@@ -62,11 +71,19 @@ function print_chat($user_id) {
                     . '</tr>'
                     . '</table>'
                     . '<div class="chat_right_bubble">&nbsp;</div>'
-                    . '</div>'
-                    . '</td></tr>';
+                    . '</div>';
         }
+        $fout .= '</td></tr>';
     }
-    $fout .= '<tr><td> </td></tr></table>
-    <script>document.framework.browserTime();</script>';
-    return $fout;
+    if (!$lastId) {
+        $fout .= '</table>';
+    }
+    $fout .= '
+        <script>
+            document.framework.browserTime();
+            document.framework.chatData['.$user_id.'] = '.$id.';
+        </script>';
+    if ($id != $lastId) {
+        return $fout;
+    }
 }
