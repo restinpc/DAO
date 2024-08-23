@@ -147,7 +147,7 @@ function template($site) {
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/94315933" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->';
-            $site->content .= $header.$site->content.$footer;
+            $site->content = $header.$site->content.$footer;
         }
     } catch (Exception $e) {
         engine::throw('template()', $e);
