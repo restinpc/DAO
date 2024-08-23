@@ -7,49 +7,58 @@
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
- * @var $this->title - Page title.
- * @var $this->content - Page HTML data.
- * @var $this->keywords - Array meta keywords.
- * @var $this->description - Page meta description.
- * @var $this->img - Page meta image.
- * @var $this->onload - Page executable JavaScript code.
+ * @var $site->title - Page title.
+ * @var $site->content - Page HTML data.
+ * @var $site->keywords - Array meta keywords.
+ * @var $site->description - Page meta description.
+ * @var $site->img - Page meta image.
+ * @var $site->onload - Page executable JavaScript code.
  */
 
-if (!empty($_GET[2])) {
-    $this->content = engine::error();
-    return;
+function booking($site) {
+    engine::log('booking()');
+    try {
+        if (!empty($_GET[2])) {
+            $site->content = engine::error();
+            return;
+        }
+        $site->title = engine::lang("Booking rooms");
+        if ($_SESSION["Lang"] == "en") {
+            $site->keywords = array(
+                "DAO Mansion",
+                "Rent a house",
+                "Rental Property",
+                "Rent a room",
+                "Guest House",
+                "Web 3.0"
+            );
+            $site->description = "Real estate rental online";
+        } else if ($_SESSION["Lang"] == "zh") {
+            $site->keywords = array(
+                "DAO 大廈",
+                "租一套公寓",
+                "出租物業",
+                "租一個房間",
+                "招待所",
+                "Web 3.0"
+            );
+            $site->description = '在線房地產租賃';
+        } else {
+            $site->keywords = array(
+                "DAO Особняк",
+                "Снять жилье",
+                "Аренда недвижимости",
+                "Арендовать комнату",
+                "Гостевой дом",
+                "Web 3.0"
+            );
+            $site->description = "Аренда недвижимости онлайн";
+        }
+        $site->content .= engine::print_site_navigation(engine::lang("Booking rooms")).
+        $site->content .= engine::print_under_construction();
+    } catch(Exception $e) {
+        engine::throw('booking()', $e);
+    }
 }
-$this->title = engine::lang("Booking rooms");
-if ($_SESSION["Lang"] == "en") {
-    $this->keywords = array(
-        "DAO Mansion",
-        "Rent a house",
-        "Rental Property",
-        "Rent a room",
-        "Guest House",
-        "Web 3.0"
-    );
-    $this->description = "Real estate rental online";
-} else if ($_SESSION["Lang"] == "zh") {
-    $this->keywords = array(
-        "DAO 大廈",
-        "租一套公寓",
-        "出租物業",
-        "租一個房間",
-        "招待所",
-        "Web 3.0"
-    );
-    $this->description = '在線房地產租賃';
-} else {
-    $this->keywords = array(
-        "DAO Особняк",
-        "Снять жилье",
-        "Аренда недвижимости",
-        "Арендовать комнату",
-        "Гостевой дом",
-        "Web 3.0"
-    );
-    $this->description = "Аренда недвижимости онлайн";
-}
-$this->content .= engine::print_site_navigation(engine::lang("Booking rooms")).
-$this->content .= engine::print_under_construction();
+
+booking($this);

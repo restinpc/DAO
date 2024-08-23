@@ -3,7 +3,7 @@
  * Prints an metaverse whitepaper.
  * @path /engine/core/webvr/print_en_metaverse.php
  *
- * @name    DAO Mansion    @version 1.0.3
+ * @name    DAO Mansion    @version 1.0.5
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -22,7 +22,9 @@
  */
 
 function print_en_metaverse($site) {
-    return '<h1>VR/AI multiplayer game</h1>
+    engine::log('webvr.print_en_metaverse()');
+    try {
+        return '<h1>VR/AI multiplayer game</h1>
 <p>
     The final stage of the startup will be the development of a VR product that will use tokens as an internal currency, and as a result, increase the value of both tokens and cryptocurrency in general.
     The development of this product can only be fully started when everything else is ready, since this product will require just a huge resource.
@@ -439,4 +441,7 @@ function print_en_metaverse($site) {
 <p><a target="_blank" href="https://github.com/restinpc/Metaverse-build">Metaverse VR demo version</a> </p>
 <br/>
 <br/>';
+    } catch(Exception $e) {
+        engine::throw('webvr.print_en_metaverse()', $e);
+    }
 }

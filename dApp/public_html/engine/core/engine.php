@@ -3,7 +3,7 @@
 * Framework engine class.
 * @path /engine/core/engine.php
 *
-* @name    DAO Mansion    @version 1.0.4
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -107,27 +107,27 @@ public static function __callStatic($name, $arguments) {
 }
 
 static function throw($function, $exception) {
-    $fout = '';
-    $url = engine::escape_string($_SERVER["SCRIPT_URI"]);
-    foreach($_SESSION["LOG"] as $key => $value) {
-        $fout .= $key.': '.$value.'
+    try {
+        $fout = '';
+        $url = engine::escape_string($_SERVER["SCRIPT_URI"]);
+        foreach($_SESSION["LOG"] as $key => $value) {
+            $fout .= $key.': '.$value.'
 ';
-    }
-    $fout .= date("Y-m-d H:i:s").'.100000: engine::throw('.$function.' -> '.$exception->getMessage().')
+        }
+        $fout .= date("Y-m-d H:i:s").'.100000: engine::throw('.$function.' -> '.$exception->getMessage().')
 --------------------------------------------------------------
 '.$url.' >>
 ';
-    foreach($exception->getTrace() as $text) {
-        $fout .= json_encode($text).'
+        foreach($exception->getTrace() as $text) {
+            $fout .= json_encode($text).'
 ';
-    }
-    $logs = engine::escape_string($fout);
-    $query = 'SELECT id FROM `nodes_exception` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
-    $res = engine::mysql($query, 0);
-    $data = mysqli_fetch_array($res);
-    try {
+        }
+        $logs = engine::escape_string($fout);
+        $query = 'SELECT id FROM `nodes_exception` WHERE name LIKE "'.$_SERVER["REMOTE_ADDR"].'"';
+        $res = engine::mysql($query, 0);
+        $data = mysqli_fetch_array($res);
         if (!empty($data)) {
-            $query = 'UPDATE `nodes_exception` SET data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
+            $query = 'UPDATE `nodes_exception` SET url = "'.$url.'", data = "'.$logs.'", date = NOW() WHERE id = '.$data["id"];
             engine::mysql($query, 0);
         } else {
             $query = 'INSERT INTO `nodes_exception`(name, url, data, date) '
@@ -135,10 +135,16 @@ static function throw($function, $exception) {
             engine::mysql($query, 0);
         }
     } catch(Exception $e) {
-        // todo - black box
+        engine::retrace($text);
     }
     $_SESSION["LOG"] = array();
     engine::bsod(500);
+}
+
+static function retrace($text, $ip = null) {
+    $url = $_SERVER["PUBLIC_URL"].'/retrace.php?ip='.($ip == null ? $_SERVER["REMOTE_ADDR"] : $ip);
+    engine::curl_post_query($url, "logs=".$text);
+    // todo standalone handler call on error
 }
 
 static function log($text) {
@@ -300,13 +306,17 @@ static function mysql($query, $throw = 1) {
     require_once("engine/nodes/mysql.php");
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     if ($throw) {
+        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(mysqli_error($_SERVER["sql_connection"]));
+        /*
         $res = mysqli_query($_SERVER["sql_connection"], $query) or die(
             engine::throw($query, new Exception(mysqli_error($_SERVER["sql_connection"])))
         );
+         * 
+         */
     } else {
         $res = mysqli_query($_SERVER["sql_connection"], $query);
         if (!$res) {
-            throw new Error($_SERVER["sql_connection"]);
+            throw new Error(mysqli_error($_SERVER["sql_connection"]));
             return;
         }
     }

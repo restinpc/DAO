@@ -3,7 +3,7 @@
 * Print admin attendance page.
 * @path /engine/core/admin/print_admin_attendance.php
 * 
-* @name    DAO Mansion    @version 1.0.4
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,293 +20,298 @@
 */
 
 function print_admin_attendance($cms) {
-    $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
-        . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "attendance" '
-        . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-        . 'AND `access`.`admin_id` = `admin`.`id`';
-    $admin_res = engine::mysql($query);
-    $admin_data = mysqli_fetch_array($admin_res);
-    $admin_access = intval($admin_data["access"]);
-    if (!$admin_access) {
-        engine::error(401);
-        return;
-    }
-    $interval = "day";
-    if (array_key_exists("interval", $_GET) && !empty($_GET["interval"])) {
-        $interval = $_GET["interval"];
-    }
-    $action = "stat";
-    if (array_key_exists("action", $_GET) && !empty($_GET["action"])) {
-        $action = $_GET["action"];
-    }
-    $date = "";
-    if (array_key_exists("date", $_GET) && !empty($_GET["date"])) {
-        $date = $_GET["date"];
-    }
-    if ($action == "stat") {
-        $stat = '<b>'.engine::lang("Statistic").'</b>';
-        $pages = '<a id="attendance-pages" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=pages&interval='.$interval.'&date='.$date.'">'.engine::lang("Pages").'</a>';
-        $users = '<a id="attendance-users" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=users&interval='.$interval.'&date='.$date.'">'.engine::lang("Users").'</a>';
-    } else if($action == "pages") {
-        $stat = '<a id="attendance-statistic" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=stat&interval='.$interval.'&date='.$date.'">'.engine::lang("Statistic").'</a>';
-        $pages = '<b>'.engine::lang("Pages").'</b>';
-        $users = '<a id="attendance-users" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=users&interval='.$interval.'&date='.$date.'">'.engine::lang("Users").'</a>';
-    } else if($action == "users") {
-        $stat = '<a id="attendance-statistic" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=stat&interval='.$interval.'&date='.$date.'">'.engine::lang("Statistic").'</a>';
-        $pages = '<a id="attendance-pages" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=pages&interval='.$interval.'&date='.$date.'">'.engine::lang("Pages").'</a>';
-        $referrers = '<a id="attendance-referrers" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=ref&interval='.$interval.'&date='.$date.'">'.engine::lang("Referrers").'</a>';
-        $users = '<b>'.engine::lang("Users").'</b>';
-    }
-    $from = '';
-    $to = '';
-    if ($interval == "day") {
-        $by_hour = '<a id="by-hours" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=hour&date='.$date.'">'.engine::lang("By hours").'</a>';
-        $by_day = '<b>'.engine::lang("By days").'</b>';
-        $by_week = '<a id="by-weeks" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$date.'">'.engine::lang("By weeks").'</a>';
-        $by_month = '<a id="by-months" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$date.'">'.engine::lang("By months").'</a>';
-        if (empty($date)) {
-            $from = strtotime(date('Y-m-d')." 00:00:00");
-            $to = strtotime(date('Y-m-d')." 23:59:59");
-            $timeStamp = strtotime(date('Y-m-d')." 00:00:00 - 1 days");
-            $date1 = date('d/m/Y', $timeStamp);
-            $url_date1 = date("Y-m-d", $timeStamp);
-            $prev = '<a id="date-'.$url_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$url_date1.'">&laquo; '.$date1.'</a>';
-            $now = '<b>'.date("d/m/Y").'</b>';
-            $next = '&nbsp;';
-        } else {
-            $from = strtotime($date." 00:00:00");
-            $to = strtotime($date." 23:59:59");
-            $timeStamp = strtotime($date." 00:00:00 - 1 days");
-            $date1 = date('d/m/Y', $timeStamp);
-            $url_date1 = date("Y-m-d", $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00 + 1 days");
-            $date2 = date('d/m/Y', $timeStamp);
-            $url_date2 = date("Y-m-d", $timeStamp);
-            $prev = '<a id="date-'.$url_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$url_date1.'">&laquo; '.$date1.'</a>';
-            $now = '<b>'.date("d/m/Y", strtotime($date)).'</b>';
-            if (strtotime($url_date2) <= strtotime(date("Y-m-d"))) {
-                $next = '<a id="date-'.$url_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$url_date2.'">'.$date2.' &raquo;</a>';
-            } else {
+    engine::log('admin.print_admin_attendance()');
+    try {
+        $query = 'SELECT `access`.`access` FROM `nodes_access` AS `access` '
+            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`url` = "attendance" '
+            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+            . 'AND `access`.`admin_id` = `admin`.`id`';
+        $admin_res = engine::mysql($query);
+        $admin_data = mysqli_fetch_array($admin_res);
+        $admin_access = intval($admin_data["access"]);
+        if (!$admin_access) {
+            engine::error(401);
+            return;
+        }
+        $interval = "day";
+        if (array_key_exists("interval", $_GET) && !empty($_GET["interval"])) {
+            $interval = $_GET["interval"];
+        }
+        $action = "stat";
+        if (array_key_exists("action", $_GET) && !empty($_GET["action"])) {
+            $action = $_GET["action"];
+        }
+        $date = "";
+        if (array_key_exists("date", $_GET) && !empty($_GET["date"])) {
+            $date = $_GET["date"];
+        }
+        if ($action == "stat") {
+            $stat = '<b>'.engine::lang("Statistic").'</b>';
+            $pages = '<a id="attendance-pages" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=pages&interval='.$interval.'&date='.$date.'">'.engine::lang("Pages").'</a>';
+            $users = '<a id="attendance-users" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=users&interval='.$interval.'&date='.$date.'">'.engine::lang("Users").'</a>';
+        } else if($action == "pages") {
+            $stat = '<a id="attendance-statistic" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=stat&interval='.$interval.'&date='.$date.'">'.engine::lang("Statistic").'</a>';
+            $pages = '<b>'.engine::lang("Pages").'</b>';
+            $users = '<a id="attendance-users" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=users&interval='.$interval.'&date='.$date.'">'.engine::lang("Users").'</a>';
+        } else if($action == "users") {
+            $stat = '<a id="attendance-statistic" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=stat&interval='.$interval.'&date='.$date.'">'.engine::lang("Statistic").'</a>';
+            $pages = '<a id="attendance-pages" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=pages&interval='.$interval.'&date='.$date.'">'.engine::lang("Pages").'</a>';
+            $referrers = '<a id="attendance-referrers" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action=ref&interval='.$interval.'&date='.$date.'">'.engine::lang("Referrers").'</a>';
+            $users = '<b>'.engine::lang("Users").'</b>';
+        }
+        $from = '';
+        $to = '';
+        if ($interval == "day") {
+            $by_hour = '<a id="by-hours" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=hour&date='.$date.'">'.engine::lang("By hours").'</a>';
+            $by_day = '<b>'.engine::lang("By days").'</b>';
+            $by_week = '<a id="by-weeks" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$date.'">'.engine::lang("By weeks").'</a>';
+            $by_month = '<a id="by-months" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$date.'">'.engine::lang("By months").'</a>';
+            if (empty($date)) {
+                $from = strtotime(date('Y-m-d')." 00:00:00");
+                $to = strtotime(date('Y-m-d')." 23:59:59");
+                $timeStamp = strtotime(date('Y-m-d')." 00:00:00 - 1 days");
+                $date1 = date('d/m/Y', $timeStamp);
+                $url_date1 = date("Y-m-d", $timeStamp);
+                $prev = '<a id="date-'.$url_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$url_date1.'">&laquo; '.$date1.'</a>';
+                $now = '<b>'.date("d/m/Y").'</b>';
                 $next = '&nbsp;';
+            } else {
+                $from = strtotime($date." 00:00:00");
+                $to = strtotime($date." 23:59:59");
+                $timeStamp = strtotime($date." 00:00:00 - 1 days");
+                $date1 = date('d/m/Y', $timeStamp);
+                $url_date1 = date("Y-m-d", $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00 + 1 days");
+                $date2 = date('d/m/Y', $timeStamp);
+                $url_date2 = date("Y-m-d", $timeStamp);
+                $prev = '<a id="date-'.$url_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$url_date1.'">&laquo; '.$date1.'</a>';
+                $now = '<b>'.date("d/m/Y", strtotime($date)).'</b>';
+                if (strtotime($url_date2) <= strtotime(date("Y-m-d"))) {
+                    $next = '<a id="date-'.$url_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$url_date2.'">'.$date2.' &raquo;</a>';
+                } else {
+                    $next = '&nbsp;';
+                }
+            }
+        } else if ($interval == "week") {
+            $by_hour = '<a id="by-hours" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=hour&date='.$date.'">'.engine::lang("By hours").'</a>';
+            $by_day = '<a id="by-days" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$date.'">'.engine::lang("By days").'</a>';
+            $by_week = '<b>'.engine::lang("By weeks").'</b>';
+            $by_month = '<a id="by-months" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$date.'">'.engine::lang("By months").'</a>';
+            $prev = ' - 7 days';
+            $prev2 = ' - 14 days';
+            $next = ' + 0 days';
+            $next2 = ' + 7 days';
+            if (empty($date)) {
+                $from = strtotime(date('Y-m-d')." 23:59:59 - 7 days");
+                $to = date("U");
+                $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev);
+                $date1 = date('d.m', $timeStamp);
+                $link_date1 = date('Y-m-d', $timeStamp);
+                $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev2);
+                $date11 = date('d.m', $timeStamp);
+                $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
+                $now = '<b>'.$date1.' - '.date("d.m").'</b>';
+                $next = '&nbsp;';
+            } else {
+                $from = strtotime($date." 23:59:59 - 7 days");
+                $to = strtotime($date." 23:59:59");
+                $timeStamp = strtotime($date." 00:00:00".$prev);
+                $date1 = date('d.m', $timeStamp);
+                $link_date1 = date('Y-m-d', $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00".$prev2);
+                $date11 = date('d.m', $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00".$next);
+                $date2 = date('d.m', $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00".$next2);
+                $date22 = date('d.m', $timeStamp);
+                $link_date2 = date('Y-m-d', $timeStamp);
+                $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
+                $now = '<b>'.$date1.' - '.date('d.m', strtotime($date)).'</b>';
+                if (strtotime($date." 00:00:00".$next2) <= strtotime(date("Y-m-d"))) {
+                    $next = '<a id="date-'.$link_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$link_date2.'">'.$date2.' - '.$date22.' &raquo;</a>';
+                } else {
+                    $next = '&nbsp;';
+                }
+            }
+        } else if ($interval == "month") {
+            $by_hour = '<a id="by-hours" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=hour&date='.$date.'">'.engine::lang("By hours").'</a>';
+            $by_day = '<a id="by-days" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$date.'">'.engine::lang("By days").'</a>';
+            $by_week = '<a id="by-weeks" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$date.'">'.engine::lang("By weeks").'</a>';
+            $by_month = '<b>'.engine::lang("By months").'</b>';
+            $prev = ' - 1 month';
+            $prev2 = ' - 2 month';
+            $next = ' + 0 month';
+            $next2 = ' + 1 month';
+            if (empty($date)) {
+                $from = strtotime(date('Y-m-d')." 23:59:59 - 1 month");
+                $to = date("U");
+                $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev);
+                $date1 = date('m.Y', $timeStamp);
+                $link_date1 = date('Y-m-d', $timeStamp);
+                $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev2);
+                $date11 = date('m.Y', $timeStamp);
+                $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
+                $now = '<b>'.$date1.' - '.date("m.Y").'</b>';
+                $next = '&nbsp;';
+            } else {
+                $from = strtotime($date." 23:59:59 - 1 month");
+                $to = strtotime($date." 23:59:59");
+                $timeStamp = strtotime($date." 00:00:00".$prev);
+                $date1 = date('m.Y', $timeStamp);
+                $link_date1 = date('Y-m-d', $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00".$prev2);
+                $date11 = date('m.Y', $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00".$next);
+                $date2 = date('m.Y', $timeStamp);
+                $timeStamp = strtotime($date." 00:00:00".$next2);
+                $date22 = date('m.Y', $timeStamp);
+                $link_date2 = date('Y-m-d', $timeStamp);
+                $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
+                $now = '<b>'.$date1.' - '.date('m.Y', strtotime($date)).'</b>';
+                if (strtotime($date." 00:00:00".$next2) <= strtotime(date("Y-m-d"))) {
+                    $next = '<a id="date-'.$link_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$link_date2.'">'.$date2.' - '.$date22.' &raquo;</a>';
+                } else {
+                    $next = '&nbsp;';
+                }
             }
         }
-    } else if ($interval == "week") {
-        $by_hour = '<a id="by-hours" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=hour&date='.$date.'">'.engine::lang("By hours").'</a>';
-        $by_day = '<a id="by-days" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$date.'">'.engine::lang("By days").'</a>';
-        $by_week = '<b>'.engine::lang("By weeks").'</b>';
-        $by_month = '<a id="by-months" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$date.'">'.engine::lang("By months").'</a>';
-        $prev = ' - 7 days';
-        $prev2 = ' - 14 days';
-        $next = ' + 0 days';
-        $next2 = ' + 7 days';
-        if (empty($date)) {
-            $from = strtotime(date('Y-m-d')." 23:59:59 - 7 days");
-            $to = date("U");
-            $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev);
-            $date1 = date('d.m', $timeStamp);
-            $link_date1 = date('Y-m-d', $timeStamp);
-            $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev2);
-            $date11 = date('d.m', $timeStamp);
-            $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
-            $now = '<b>'.$date1.' - '.date("d.m").'</b>';
-            $next = '&nbsp;';
-        } else {
-            $from = strtotime($date." 23:59:59 - 7 days");
-            $to = strtotime($date." 23:59:59");
-            $timeStamp = strtotime($date." 00:00:00".$prev);
-            $date1 = date('d.m', $timeStamp);
-            $link_date1 = date('Y-m-d', $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00".$prev2);
-            $date11 = date('d.m', $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00".$next);
-            $date2 = date('d.m', $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00".$next2);
-            $date22 = date('d.m', $timeStamp);
-            $link_date2 = date('Y-m-d', $timeStamp);
-            $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
-            $now = '<b>'.$date1.' - '.date('d.m', strtotime($date)).'</b>';
-            if (strtotime($date." 00:00:00".$next2) <= strtotime(date("Y-m-d"))) {
-                $next = '<a id="date-'.$link_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$link_date2.'">'.$date2.' - '.$date22.' &raquo;</a>';
-            } else {
-                $next = '&nbsp;';
-            }
-        }
-    } else if ($interval == "month") {
-        $by_hour = '<a id="by-hours" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=hour&date='.$date.'">'.engine::lang("By hours").'</a>';
-        $by_day = '<a id="by-days" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=day&date='.$date.'">'.engine::lang("By days").'</a>';
-        $by_week = '<a id="by-weeks" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=week&date='.$date.'">'.engine::lang("By weeks").'</a>';
-        $by_month = '<b>'.engine::lang("By months").'</b>';
-        $prev = ' - 1 month';
-        $prev2 = ' - 2 month';
-        $next = ' + 0 month';
-        $next2 = ' + 1 month';
-        if (empty($date)) {
-            $from = strtotime(date('Y-m-d')." 23:59:59 - 1 month");
-            $to = date("U");
-            $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev);
-            $date1 = date('m.Y', $timeStamp);
-            $link_date1 = date('Y-m-d', $timeStamp);
-            $timeStamp = strtotime(date('Y-m-d')." 00:00:00".$prev2);
-            $date11 = date('m.Y', $timeStamp);
-            $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
-            $now = '<b>'.$date1.' - '.date("m.Y").'</b>';
-            $next = '&nbsp;';
-        } else {
-            $from = strtotime($date." 23:59:59 - 1 month");
-            $to = strtotime($date." 23:59:59");
-            $timeStamp = strtotime($date." 00:00:00".$prev);
-            $date1 = date('m.Y', $timeStamp);
-            $link_date1 = date('Y-m-d', $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00".$prev2);
-            $date11 = date('m.Y', $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00".$next);
-            $date2 = date('m.Y', $timeStamp);
-            $timeStamp = strtotime($date." 00:00:00".$next2);
-            $date22 = date('m.Y', $timeStamp);
-            $link_date2 = date('Y-m-d', $timeStamp);
-            $prev = '<a id="date-'.$link_date1.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$link_date1.'">&laquo; '.$date11.' - '.$date1.'</a>';
-            $now = '<b>'.$date1.' - '.date('m.Y', strtotime($date)).'</b>';
-            if (strtotime($date." 00:00:00".$next2) <= strtotime(date("Y-m-d"))) {
-                $next = '<a id="date-'.$link_date2.'" href="'.$_SERVER["DIR"].'/admin?mode=attendance&action='.$action.'&interval=month&date='.$link_date2.'">'.$date2.' - '.$date22.' &raquo;</a>';
-            } else {
-                $next = '&nbsp;';
-            }
-        }
-    }
-    $fout = '<div class="statistic">
-        <div class="statistic_head">
-            <table>
+        $fout = '<div class="statistic">
+            <div class="statistic_head">
+                <table>
+                <tr>
+                    <td align=center>'.$stat.'</td> 
+                    <td align=center>'.$pages.'</td>
+                    <td align=center>'.$users.'</td>  
+                </tr>
+                </table>
+            </div>
+            <div class="statistic_date">
+                <table>
+                <tr>
+                    <td align=center>'.$by_day.'</td>
+                    <td align=center>'.$by_week.'</td>
+                    <td align=center>'.$by_month.'</td>
+                </tr>
+                </table>
+            </div>
+            <div class="clear"></div>
+            <table class="statistic_nav">
             <tr>
-                <td align=center>'.$stat.'</td> 
-                <td align=center>'.$pages.'</td>
-                <td align=center>'.$users.'</td>  
+                <td align=center>'.$prev.'</td>
+                <td align=center>'.$now.'</td>
+                <td align=center>'.$next.'</td>
             </tr>
-            </table>
-        </div>
-        <div class="statistic_date">
-            <table>
-            <tr>
-                <td align=center>'.$by_day.'</td>
-                <td align=center>'.$by_week.'</td>
-                <td align=center>'.$by_month.'</td>
-            </tr>
-            </table>
-        </div>
-        <div class="clear"></div>
-        <table class="statistic_nav">
-        <tr>
-            <td align=center>'.$prev.'</td>
-            <td align=center>'.$now.'</td>
-            <td align=center>'.$next.'</td>
-        </tr>
-        </table><br/>';
-    if ($action == "stat") {
-        $query = 'SELECT COUNT(DISTINCT `token`, `ip`) as `a`, COUNT(`id`) as `b` FROM `nodes_attendance` WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'" AND `display` = "1"';
-        $res = engine::mysql($query);
-        $data = mysqli_fetch_array($res);
-        $views = $data['b'];
-        $visit = $data['a'];
-        $fout .= '<center class="lh2"><span class="statistic_span">'.engine::lang("Visitors").": ".$visit.'</span> / ';
-        $fout .= '<span class="statistic_span"  style="color: rgb(20,180,180);">'.engine::lang("Views").": ".$views.'</span> ';
-        $fout .= '<img width=100% class="w600" src="'.$_SERVER["DIR"].'/attendance.php?interval='.$interval.'&date='.$date.'&rand='.rand(0, 100).'" /></center>';
-    } else if ($action == "pages") {
-        $query = 'SELECT a.id, a.token, cache.url FROM nodes_attendance as a '
-            . 'LEFT JOIN `nodes_cache` AS `cache` ON cache.id = a.`cache_id` '
-            . 'WHERE a.date >= "'.$from.'" AND a.date <= "'.$to.'" AND a.display = "1"';
-        $res = engine::mysql($query);
-        $pages = array();
-        while($data = mysqli_fetch_array($res)) {
-            if ($data["url"]) {
-                if (!array_key_exists($data["url"], $pages)) {
-                    $pages[$data["url"]] = array();
-                }
-                if (!array_key_exists($data["token"], $pages[$data["url"]])) {
-                    $pages[$data["url"]][$data["token"]] = 1;
-                } else {
-                    $pages[$data["url"]][$data["token"]]++;
+            </table><br/>';
+        if ($action == "stat") {
+            $query = 'SELECT COUNT(DISTINCT `token`, `ip`) as `a`, COUNT(`id`) as `b` FROM `nodes_attendance` WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'" AND `display` = "1"';
+            $res = engine::mysql($query);
+            $data = mysqli_fetch_array($res);
+            $views = $data['b'];
+            $visit = $data['a'];
+            $fout .= '<center class="lh2"><span class="statistic_span">'.engine::lang("Visitors").": ".$visit.'</span> / ';
+            $fout .= '<span class="statistic_span"  style="color: rgb(20,180,180);">'.engine::lang("Views").": ".$views.'</span> ';
+            $fout .= '<img width=100% class="w600" src="'.$_SERVER["DIR"].'/attendance.php?interval='.$interval.'&date='.$date.'&rand='.rand(0, 100).'" /></center>';
+        } else if ($action == "pages") {
+            $query = 'SELECT a.id, a.token, cache.url FROM nodes_attendance as a '
+                . 'LEFT JOIN `nodes_cache` AS `cache` ON cache.id = a.`cache_id` '
+                . 'WHERE a.date >= "'.$from.'" AND a.date <= "'.$to.'" AND a.display = "1"';
+            $res = engine::mysql($query);
+            $pages = array();
+            while($data = mysqli_fetch_array($res)) {
+                if ($data["url"]) {
+                    if (!array_key_exists($data["url"], $pages)) {
+                        $pages[$data["url"]] = array();
+                    }
+                    if (!array_key_exists($data["token"], $pages[$data["url"]])) {
+                        $pages[$data["url"]][$data["token"]] = 1;
+                    } else {
+                        $pages[$data["url"]][$data["token"]]++;
+                    }
                 }
             }
-        }
-        $visitors = array();
-        $views = array();
-        foreach ($pages as $page => $data) {
-            $visitors[$page] = count($data);
-            $v = 0;
-            foreach($data as $d) {
-                $v += $d;
+            $visitors = array();
+            $views = array();
+            foreach ($pages as $page => $data) {
+                $visitors[$page] = count($data);
+                $v = 0;
+                foreach($data as $d) {
+                    $v += $d;
+                }
+                $views[$page] = $v;
             }
-            $views[$page] = $v;
-        }
-        asort($visitors);
-        $visitors = array_reverse($visitors);
-        $fout .= '<div class="table">
-            <table width=100% id="table">
-            <thead>
-            <tr>
-                <th>URL</th>
-                <th>'.engine::lang("Visitors").'</th>
-                <th>'.engine::lang("Views").'</th>
-            </tr>';
-        $table = '';
-        foreach ($visitors as $page => $data) {
-            $table .= '<tr><td align=left><a id="p-'.$page.'" href="'.$page.'" target="_blank">'.$page.'</a></td>
-                    <td>'.$data.'</td>
-                    <td>'.$views[$page].'</td>
+            asort($visitors);
+            $visitors = array_reverse($visitors);
+            $fout .= '<div class="table">
+                <table width=100% id="table">
+                <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>'.engine::lang("Visitors").'</th>
+                    <th>'.engine::lang("Views").'</th>
                 </tr>';
-        }
-        $fout .= $table.'</table></div>';
-    } else if ($action == "users") {
-        $tokens = array();
-        $query = 'SELECT * FROM `nodes_attendance` WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'" AND `display` = "1" ORDER BY `date` ASC';
-        $res = engine::mysql($query);
-        $fout .= '<div class="table">
-            <table width=100% id="table">
-            <thead>
-            <tr>
-                <th>'.engine::lang("Date").'</th>
-                <th>'.engine::lang("Referrer").'</th>
-                <th>'.engine::lang("User").'</th>
-                <th>'.engine::lang("Pages").'</th>
-            </tr>';
-        while ($data = mysqli_fetch_array($res)) {
-            if (!in_array($data["token"], $tokens)) {
-                $query = 'SELECT COUNT(*) FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'"';
-                $rr = engine::mysql($query);
-                $dd = mysqli_fetch_array($rr);
-                array_push($tokens, $data["token"]);
-                $query = 'SELECT * FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'" AND `user_id` <> 0';
-                $kr = engine::mysql($query);
-                $kd = mysqli_fetch_array($kr);
-                if (empty($kd)) { 
-                    $user_name = "Anonim";
-                } else {
-                    $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$kd["user_id"].'"';
-                    $dr = engine::mysql($query);
-                    $user = mysqli_fetch_array($dr);
-                    $user_name = $user["name"];
-                }
-                $query = 'SELECT `id`, `ref_id` FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'" AND `ref_id` != 0';
-                $ref = engine::mysql($query);
-                $dref = mysqli_fetch_array($ref);
-                if ($dref) {
-                    $query = 'SELECT * FROM `nodes_referrer` WHERE `id` = "'.$dref["ref_id"].'"';
-                    $ddref = engine::mysql($query);
-                    $ref_data = mysqli_fetch_array($ddref);
-                    $url = parse_url($ref_data["name"]);
-                    $link = '<a id="ref-'.$dref["id"].'" href="'.$ref_data["name"].'" target="_blank">'.$url["host"].'</a>';
-                } else {
-                    $link = "Blank";
-                }
-                $fout .= '<tr style="text-align:left;">
-                    <td>'.date("Y-m-d H:i:s", $data["date"]).'</td>
-                    <td>'.$link.'</td>
-                    <td>'.$user_name.'</td>
-                    <td>'.$dd[0].'</td>
-                </tr>';
+            $table = '';
+            foreach ($visitors as $page => $data) {
+                $table .= '<tr><td align=left><a id="p-'.$page.'" href="'.$page.'" target="_blank">'.$page.'</a></td>
+                        <td>'.$data.'</td>
+                        <td>'.$views[$page].'</td>
+                    </tr>';
             }
+            $fout .= $table.'</table></div>';
+        } else if ($action == "users") {
+            $tokens = array();
+            $query = 'SELECT * FROM `nodes_attendance` WHERE `date` >= "'.$from.'" AND `date` <= "'.$to.'" AND `display` = "1" ORDER BY `date` ASC';
+            $res = engine::mysql($query);
+            $fout .= '<div class="table">
+                <table width=100% id="table">
+                <thead>
+                <tr>
+                    <th>'.engine::lang("Date").'</th>
+                    <th>'.engine::lang("Referrer").'</th>
+                    <th>'.engine::lang("User").'</th>
+                    <th>'.engine::lang("Pages").'</th>
+                </tr>';
+            while ($data = mysqli_fetch_array($res)) {
+                if (!in_array($data["token"], $tokens)) {
+                    $query = 'SELECT COUNT(*) FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'"';
+                    $rr = engine::mysql($query);
+                    $dd = mysqli_fetch_array($rr);
+                    array_push($tokens, $data["token"]);
+                    $query = 'SELECT * FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'" AND `user_id` <> 0';
+                    $kr = engine::mysql($query);
+                    $kd = mysqli_fetch_array($kr);
+                    if (empty($kd)) { 
+                        $user_name = "Anonim";
+                    } else {
+                        $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$kd["user_id"].'"';
+                        $dr = engine::mysql($query);
+                        $user = mysqli_fetch_array($dr);
+                        $user_name = $user["name"];
+                    }
+                    $query = 'SELECT `id`, `ref_id` FROM `nodes_attendance` WHERE `token` = "'.$data["token"].'" AND `ref_id` != 0';
+                    $ref = engine::mysql($query);
+                    $dref = mysqli_fetch_array($ref);
+                    if ($dref) {
+                        $query = 'SELECT * FROM `nodes_referrer` WHERE `id` = "'.$dref["ref_id"].'"';
+                        $ddref = engine::mysql($query);
+                        $ref_data = mysqli_fetch_array($ddref);
+                        $url = parse_url($ref_data["name"]);
+                        $link = '<a id="ref-'.$dref["id"].'" href="'.$ref_data["name"].'" target="_blank">'.$url["host"].'</a>';
+                    } else {
+                        $link = "Blank";
+                    }
+                    $fout .= '<tr style="text-align:left;">
+                        <td>'.date("Y-m-d H:i:s", $data["date"]).'</td>
+                        <td>'.$link.'</td>
+                        <td>'.$user_name.'</td>
+                        <td>'.$dd[0].'</td>
+                    </tr>';
+                }
+            }
+            $fout .= '</table></div>';
         }
-        $fout .= '</table></div>';
+        $fout .= '</div><br/>';
+        return $fout;
+    } catch(Exception $e) {
+        engine::throw('admin.print_admin_attendance()', $e);
     }
-    $fout .= '</div><br/>';
-    return $fout;
 }

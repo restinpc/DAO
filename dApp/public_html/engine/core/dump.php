@@ -3,7 +3,7 @@
 * Dump MySQL database.
 * @path /engine/core/dump.php
 * 
-* @name    MySQLDump    @version 1.0.3
+* @name    MySQLDump    @version 1.0.5
 * @author  Daniele Viganň - CreativeFactory.it <daniele.vigano@creativefactory.it>
 * @license http://opensource.org/licenses/gpl-license.php
 * 
@@ -31,11 +31,16 @@ protected $isWritten = false;
 */
 function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hexValue = false) {
     engine::log('dump.__construct('.$db.', '.$filepath.', '.$compress.', '.$hexValue.')');
-    $this->compress = $compress;
-    if (!$this->setOutputFile($filepath)) {
+    try {
+        $this->compress = $compress;
+        if (!$this->setOutputFile($filepath)) {
+            return false;
+        }
+        return $this->setDatabase($db);
+    } catch(Exception $e) {
+        engine::throw('dump.__construct('.$db.', '.$filepath.', '.$compress.', '.$hexValue.')', $e);
         return false;
     }
-    return $this->setDatabase($db);
 }
 
 /**
@@ -44,11 +49,16 @@ function __construct($db = null, $filepath = 'dump.sql', $compress = false, $hex
 */
 function setDatabase($db) {
     engine::log('dump.setDatabase('.$db.')');
-    $this->database = $db;
-    if (!@mysqli_select_db($_SERVER["sql_connection"], $this->database)) {
+    try {
+        $this->database = $db;
+        if (!@mysqli_select_db($_SERVER["sql_connection"], $this->database)) {
+            return false;
+        }
+        return true;
+    } catch(Exception $e) {
+        engine::throw('dump.setDatabase('.$db.')', $e);
         return false;
     }
-    return true;
  }
 
 /**
@@ -65,12 +75,17 @@ function getDatabase() {
 */
 function setCompress($compress) {
     engine::log('dump.setCompress('.$compress.')');
-    if ($this->isWritten) {
+    try {
+        if ($this->isWritten) {
+            return false;
+        }
+        $this->compress = $compress;
+        $this->openFile($this->filename);
+        return true;
+    } catch(Exception $e) {
+        engine::throw('dump.setCompress('.$compress.')', $e);
         return false;
     }
-    $this->compress = $compress;
-    $this->openFile($this->filename);
-    return true;
 }
 
 /**
@@ -87,12 +102,17 @@ function getCompress() {
 */
 function setOutputFile($filepath) {
     engine::log('dump.setOutputFile('.$filepath.')');
-    if ($this->isWritten) {
+    try {
+        if ($this->isWritten) {
+            return false;
+        }
+        $this->filename = $filepath;
+        $this->file = $this->openFile($this->filename);
+        return $this->file;
+    } catch(Exception $e) {
+        engine::throw('dump.setOutputFile('.$filepath.')', $e);
         return false;
     }
-    $this->filename = $filepath;
-    $this->file = $this->openFile($this->filename);
-    return $this->file;
 }
 
 /**
@@ -109,49 +129,54 @@ function getOutputFile() {
 */
 function getTableStructure($table) {
     engine::log('dump.getTableStructure('.$table.')');
-    if (!$this->setDatabase($this->database)) {
+    try {
+        if (!$this->setDatabase($this->database)) {
+            return false;
+        }
+        // Structure Header
+        $structure = "-- \n";
+        $structure .= "-- Table structure for table `{$table}` \n";
+        $structure .= "-- \n\n";
+        // Dump Structure
+        $structure .= 'DROP TABLE IF EXISTS `'.$table.'`;'."\n";
+        $structure .= "CREATE TABLE `".$table."` (\n";
+        $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW FIELDS FROM `'.$table.'`');
+        if (@mysqli_num_rows($records) == 0) {
+            return false;
+        }
+        while ($record = mysqli_fetch_assoc($records)) {
+            $structure .= '`'.$record['Field'].'` '.$record['Type'];
+            if (@strcmp($record['Null'],'YES') != 0) {
+                $structure .= ' NOT NULL';
+            }
+            if (!empty($record['Default']) || @strcmp($record['Null'],'YES') == 0) {
+                $structure .= ' DEFAULT '.(is_null($record['Default']) ? 'NULL' : "'{$record['Default']}'");
+            }
+            if (!empty($record['Extra'])) {
+                $structure .= ' '.$record['Extra'];
+            }
+            $structure .= ",\n";
+        }
+        $structure = @ereg_replace(",\n$", null, $structure);
+        // Save all Column Indexes
+        $structure .= $this->getSqlKeysTable($table);
+        $structure .= "\n)";
+        //Save table engine
+        $records = @mysqli_query($_SERVER["sql_connection"], "SHOW TABLE STATUS LIKE '".$table."'");
+        if ($record = @mysqli_fetch_assoc($records)) {
+            if (!empty($record['Engine'])) {
+                $structure .= ' ENGINE='.$record['Engine'];
+            }
+            if (!empty($record['Auto_increment'])) {
+                $structure .= ' AUTO_INCREMENT='.$record['Auto_increment'];
+            }
+        }
+        $structure .= ";\n\n-- --------------------------------------------------------\n\n";
+        $this->saveToFile($this->file, $structure);
+    } catch(Exception $e) {
+        engine::throw('dump.getTableStructure('.$table.')', $e);
         return false;
     }
-    // Structure Header
-    $structure = "-- \n";
-    $structure .= "-- Table structure for table `{$table}` \n";
-    $structure .= "-- \n\n";
-    // Dump Structure
-    $structure .= 'DROP TABLE IF EXISTS `'.$table.'`;'."\n";
-    $structure .= "CREATE TABLE `".$table."` (\n";
-    $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW FIELDS FROM `'.$table.'`');
-    if (@mysqli_num_rows($records) == 0) {
-        return false;
-    }
-    while ($record = mysqli_fetch_assoc($records)) {
-        $structure .= '`'.$record['Field'].'` '.$record['Type'];
-        if (@strcmp($record['Null'],'YES') != 0) {
-            $structure .= ' NOT NULL';
-        }
-        if (!empty($record['Default']) || @strcmp($record['Null'],'YES') == 0) {
-            $structure .= ' DEFAULT '.(is_null($record['Default']) ? 'NULL' : "'{$record['Default']}'");
-        }
-        if (!empty($record['Extra'])) {
-            $structure .= ' '.$record['Extra'];
-        }
-        $structure .= ",\n";
-    }
-    $structure = @ereg_replace(",\n$", null, $structure);
-    // Save all Column Indexes
-    $structure .= $this->getSqlKeysTable($table);
-    $structure .= "\n)";
-    //Save table engine
-    $records = @mysqli_query($_SERVER["sql_connection"], "SHOW TABLE STATUS LIKE '".$table."'");
-    if ($record = @mysqli_fetch_assoc($records)) {
-        if (!empty($record['Engine'])) {
-            $structure .= ' ENGINE='.$record['Engine'];
-        }
-        if (!empty($record['Auto_increment'])) {
-            $structure .= ' AUTO_INCREMENT='.$record['Auto_increment'];
-        }
-    }
-    $structure .= ";\n\n-- --------------------------------------------------------\n\n";
-    $this->saveToFile($this->file, $structure);
 }
 
 /**
@@ -161,67 +186,72 @@ function getTableStructure($table) {
 */
 function getTableData($table, $hexValue = true) {
     engine::log('dump.getTableData('.$table.', '.$hexValue.')');
-    if (!$this->setDatabase($this->database) ) {
-        return false;
-    }
-    // Header
-    $data = "-- \n";
-    $data .= "-- Dumping data for table `$table` \n";
-    $data .= "-- \n\n";
-    $records = mysqli_query($_SERVER["sql_connection"], 'SHOW FIELDS FROM `'.$table.'`');
-    $num_fields = @mysqli_num_rows($records);
-    if ($num_fields == 0) {
-        return false;
-    }
-    // Field names
-    $selectStatement = "SELECT ";
-    $insertStatement = "INSERT INTO `$table` (";
-    $hexField = array();
-    for ($x = 0; $x < $num_fields; $x++) {
-        $record = @mysqli_fetch_assoc($records);
-        if (($hexValue) && ($this->isTextValue($record['Type']))) {
-            $selectStatement .= 'HEX(`'.$record['Field'].'`)';
-            $hexField [$x] = true;
-        } else {
-            $selectStatement .= '`'.$record['Field'].'`';
-            $insertStatement .= '`'.$record['Field'].'`';
-            $insertStatement .= ", ";
-            $selectStatement .= ", ";
+    try {
+        if (!$this->setDatabase($this->database) ) {
+            return false;
         }
-    }
-    $insertStatement = @mb_substr($insertStatement, 0,-2).') VALUES';
-    $selectStatement = @mb_substr($selectStatement, 0,-2).' FROM `'.$table.'`';
-    $records = @mysqli_query($_SERVER["sql_connection"], $selectStatement);
-    $num_rows = @mysqli_num_rows($records);
-    $num_fields = @mysqli_num_fields($records);
-    // Dump data
-    if ($num_rows > 0) {
-        $data .= $insertStatement;
-        for ($i = 0; $i < $num_rows; $i++) {
+        // Header
+        $data = "-- \n";
+        $data .= "-- Dumping data for table `$table` \n";
+        $data .= "-- \n\n";
+        $records = mysqli_query($_SERVER["sql_connection"], 'SHOW FIELDS FROM `'.$table.'`');
+        $num_fields = @mysqli_num_rows($records);
+        if ($num_fields == 0) {
+            return false;
+        }
+        // Field names
+        $selectStatement = "SELECT ";
+        $insertStatement = "INSERT INTO `$table` (";
+        $hexField = array();
+        for ($x = 0; $x < $num_fields; $x++) {
             $record = @mysqli_fetch_assoc($records);
-            $data .= ' (';
-            for ($j = 0; $j < $num_fields; $j++) {
-                $field_name = mysqli_fetch_field_direct($records, $j)->name;
-                if (isset($hexField[$j]) && $hexField[$j] && (@strlen($record[$field_name]) > 0)) {
-                    $data .= "0x".$record[$field_name];
-                } else if (is_null($record[$field_name])) {
-                    $data .= "NULL";
-                } else {
-                    $data .= "'".@str_replace('\"','"',@mysqli_escape_string($_SERVER["sql_connection"], $record[$field_name]))."'";
-                }
-                $data .= ',';
-            }
-            $data = @mb_substr($data, 0,-1).")";
-            $data .= ( $i < ($num_rows-1) ) ? ',' : ';';
-            $data .= "\n";
-            //if data in greater than 1MB save
-            if (strlen($data) > 1048576) {
-                $this->saveToFile($this->file, $data);
-                $data = '';
+            if (($hexValue) && ($this->isTextValue($record['Type']))) {
+                $selectStatement .= 'HEX(`'.$record['Field'].'`)';
+                $hexField [$x] = true;
+            } else {
+                $selectStatement .= '`'.$record['Field'].'`';
+                $insertStatement .= '`'.$record['Field'].'`';
+                $insertStatement .= ", ";
+                $selectStatement .= ", ";
             }
         }
-        $data .= "\n-- --------------------------------------------------------\n\n";
-        $this->saveToFile($this->file, $data);
+        $insertStatement = @mb_substr($insertStatement, 0,-2).') VALUES';
+        $selectStatement = @mb_substr($selectStatement, 0,-2).' FROM `'.$table.'`';
+        $records = @mysqli_query($_SERVER["sql_connection"], $selectStatement);
+        $num_rows = @mysqli_num_rows($records);
+        $num_fields = @mysqli_num_fields($records);
+        // Dump data
+        if ($num_rows > 0) {
+            $data .= $insertStatement;
+            for ($i = 0; $i < $num_rows; $i++) {
+                $record = @mysqli_fetch_assoc($records);
+                $data .= ' (';
+                for ($j = 0; $j < $num_fields; $j++) {
+                    $field_name = mysqli_fetch_field_direct($records, $j)->name;
+                    if (isset($hexField[$j]) && $hexField[$j] && (@strlen($record[$field_name]) > 0)) {
+                        $data .= "0x".$record[$field_name];
+                    } else if (is_null($record[$field_name])) {
+                        $data .= "NULL";
+                    } else {
+                        $data .= "'".@str_replace('\"','"',@mysqli_escape_string($_SERVER["sql_connection"], $record[$field_name]))."'";
+                    }
+                    $data .= ',';
+                }
+                $data = @mb_substr($data, 0,-1).")";
+                $data .= ( $i < ($num_rows-1) ) ? ',' : ';';
+                $data .= "\n";
+                //if data in greater than 1MB save
+                if (strlen($data) > 1048576) {
+                    $this->saveToFile($this->file, $data);
+                    $data = '';
+                }
+            }
+            $data .= "\n-- --------------------------------------------------------\n\n";
+            $this->saveToFile($this->file, $data);
+        }
+    } catch(Exception $e) {
+        engine::throw('dump.getTableData('.$table.', '.$hexValue.')', $e);
+        return false;
     }
 }
 
@@ -231,15 +261,20 @@ function getTableData($table, $hexValue = true) {
 */
 function getDatabaseStructure() {
     engine::log('dump.getDatabaseStructure()');
-    $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
-    if (@mysqli_num_rows($records) == 0) {
+    try {
+        $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
+        if (@mysqli_num_rows($records) == 0) {
+            return false;
+        }
+        $structure = '';
+        while ($record = @mysqli_fetch_row($records)) {
+            $structure .= $this->getTableStructure($record[0]);
+        }
+        return true;
+    } catch(Exception $e) {
+        engine::throw('dump.getDatabaseStructure()', $e);
         return false;
     }
-    $structure = '';
-    while ($record = @mysqli_fetch_row($records)) {
-        $structure .= $this->getTableStructure($record[0]);
-    }
-    return true;
 }
 
 /**
@@ -248,12 +283,17 @@ function getDatabaseStructure() {
 */
 function getDatabaseData($hexValue = true) {
     engine::log('dump.getDatabaseData('.$hexValue.')');
-    $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
-    if (@mysqli_num_rows($records) == 0) {
+    try {
+        $records = @mysqli_query($_SERVER["sql_connection"], 'SHOW TABLES');
+        if (@mysqli_num_rows($records) == 0) {
+            return false;
+        }
+        while ($record = @mysqli_fetch_row($records)) {
+            $this->getTableData($record[0], $hexValue);
+        }
+    } catch(Exception $e) {
+        engine::throw('dump.getDatabaseData('.$hexValue.')', $e);
         return false;
-    }
-    while ($record = @mysqli_fetch_row($records)) {
-        $this->getTableData($record[0], $hexValue);
     }
 }
 
@@ -262,18 +302,23 @@ function getDatabaseData($hexValue = true) {
 */
 function doDump($params = array(), $close_file = true) {
     engine::log('dump.doDump('.$params.', '.$close_file.')');
-    $this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 0;\n\n");
-    if (!isset($params['skip_structure'])) {
-        $this->getDatabaseStructure();
+    try {
+        $this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 0;\n\n");
+        if (!isset($params['skip_structure'])) {
+            $this->getDatabaseStructure();
+        }
+        if (!isset($params['skip_data'])) {
+            $this->getDatabaseData($this->hexValue);
+        }
+        $this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 1;\n\n");
+        if ($close_file) {
+            $this->closeFile($this->file);
+        }
+        return true;
+    } catch(Exception $e) {
+        engine::throw('dump.doDump('.$params.', '.$close_file.')', $e);
+        return false;
     }
-    if (!isset($params['skip_data'])) {
-        $this->getDatabaseData($this->hexValue);
-    }
-    $this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 1;\n\n");
-    if ($close_file) {
-        $this->closeFile($this->file);
-    }
-    return true;
 }
 
 /**
@@ -281,132 +326,162 @@ function doDump($params = array(), $close_file = true) {
 */
 function writeDump($filename) {
     engine::log('dump.writeDump('.$filename.')');
-    if (!$this->setOutputFile($filename)) {
+    try {
+        if (!$this->setOutputFile($filename)) {
+            return false;
+        }
+        $this->doDump();
+        $this->closeFile($this->file);
+        return true;
+    } catch(Exception $e) {
+        engine::throw('dump.writeDump('.$filename.')', $e);
         return false;
     }
-    $this->doDump();
-    $this->closeFile($this->file);
-    return true;
 }
 
 function getSqlKeysTable($table) {
     engine::log('dump.getSqlKeysTable('.$table.')');
-    $primary = "";
-    unset($unique);
-    unset($index);
-    unset($fulltext);
-    $results = mysqli_query($_SERVER["sql_connection"], "SHOW KEYS FROM `{$table}`");
-    if (@mysqli_num_rows($results) == 0) {
+    try {
+        $primary = "";
+        unset($unique);
+        unset($index);
+        unset($fulltext);
+        $results = mysqli_query($_SERVER["sql_connection"], "SHOW KEYS FROM `{$table}`");
+        if (@mysqli_num_rows($results) == 0) {
+            return false;
+        }
+        while ($row = mysqli_fetch_object($results)) {
+            if (($row->Key_name == 'PRIMARY') AND ($row->Index_type == 'BTREE')) {
+                if ($primary == "") {
+                    $primary = " PRIMARY KEY (`{$row->Column_name}`";
+                } else {
+                    $primary .= ", `{$row->Column_name}`";
+                }
+            }
+            if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '0') AND ($row->Index_type == 'BTREE')) {
+                if ((!is_array($unique)) OR ($unique[$row->Key_name] == "")) {
+                    $unique[$row->Key_name] = " UNIQUE KEY `{$row->Key_name}` (`{$row->Column_name}`";
+                } else {
+                    $unique[$row->Key_name] .= ", `{$row->Column_name}`";
+                }
+            }
+            if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'BTREE')) {
+                if ((!is_array($index)) OR ($index[$row->Key_name] == "")) {
+                    $index[$row->Key_name] = " KEY `{$row->Key_name}` (`{$row->Column_name}`";
+                } else {
+                    $index[$row->Key_name] .= ", `{$row->Column_name}`";
+                }
+            }
+            if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'FULLTEXT')) {
+                if ((!is_array($fulltext)) OR ($fulltext[$row->Key_name] == "")) {
+                    $fulltext[$row->Key_name] = " FULLTEXT `{$row->Key_name}` (`{$row->Column_name}`";
+                } else {
+                    $fulltext[$row->Key_name] .= ", `{$row->Column_name}`";
+                }
+            }
+        }
+        $sqlKeyStatement = '';
+        // generate primary, unique, key and fulltext
+        if ($primary != "") {
+            $sqlKeyStatement .= ",\n";
+            $primary .= ")";
+            $sqlKeyStatement .= $primary;
+        }
+        if (isset($unique) && is_array($unique)) {
+            foreach ($unique as $keyName => $keyDef) {
+                $sqlKeyStatement .= ",\n";
+                $keyDef .= ")";
+                $sqlKeyStatement .= $keyDef;
+            }
+        }
+        if (isset($index) && is_array($index)) {
+            foreach ($index as $keyName => $keyDef) {
+                $sqlKeyStatement .= ",\n";
+                $keyDef .= ")";
+                $sqlKeyStatement .= $keyDef;
+            }
+        }
+        if (isset($fulltext) && is_array($fulltext)) {
+            foreach ($fulltext as $keyName => $keyDef) {
+                $sqlKeyStatement .= ",\n";
+                $keyDef .= ")";
+                $sqlKeyStatement .= $keyDef;
+            }
+        }
+        return $sqlKeyStatement;
+    } catch(Exception $e) {
+        engine::throw('dump.getSqlKeysTable('.$table.')', $e);
         return false;
     }
-    while ($row = mysqli_fetch_object($results)) {
-        if (($row->Key_name == 'PRIMARY') AND ($row->Index_type == 'BTREE')) {
-            if ($primary == "") {
-                $primary = " PRIMARY KEY (`{$row->Column_name}`";
-            } else {
-                $primary .= ", `{$row->Column_name}`";
-            }
-        }
-        if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '0') AND ($row->Index_type == 'BTREE')) {
-            if ((!is_array($unique)) OR ($unique[$row->Key_name] == "")) {
-                $unique[$row->Key_name] = " UNIQUE KEY `{$row->Key_name}` (`{$row->Column_name}`";
-            } else {
-                $unique[$row->Key_name] .= ", `{$row->Column_name}`";
-            }
-        }
-        if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'BTREE')) {
-            if ((!is_array($index)) OR ($index[$row->Key_name] == "")) {
-                $index[$row->Key_name] = " KEY `{$row->Key_name}` (`{$row->Column_name}`";
-            } else {
-                $index[$row->Key_name] .= ", `{$row->Column_name}`";
-            }
-        }
-        if (($row->Key_name != 'PRIMARY') AND ($row->Non_unique == '1') AND ($row->Index_type == 'FULLTEXT')) {
-            if ((!is_array($fulltext)) OR ($fulltext[$row->Key_name] == "")) {
-                $fulltext[$row->Key_name] = " FULLTEXT `{$row->Key_name}` (`{$row->Column_name}`";
-            } else {
-                $fulltext[$row->Key_name] .= ", `{$row->Column_name}`";
-            }
-        }
-    }
-    $sqlKeyStatement = '';
-    // generate primary, unique, key and fulltext
-    if ($primary != "") {
-        $sqlKeyStatement .= ",\n";
-        $primary .= ")";
-        $sqlKeyStatement .= $primary;
-    }
-    if (isset($unique) && is_array($unique)) {
-        foreach ($unique as $keyName => $keyDef) {
-            $sqlKeyStatement .= ",\n";
-            $keyDef .= ")";
-            $sqlKeyStatement .= $keyDef;
-        }
-    }
-    if (isset($index) && is_array($index)) {
-        foreach ($index as $keyName => $keyDef) {
-            $sqlKeyStatement .= ",\n";
-            $keyDef .= ")";
-            $sqlKeyStatement .= $keyDef;
-        }
-    }
-    if (isset($fulltext) && is_array($fulltext)) {
-        foreach ($fulltext as $keyName => $keyDef) {
-            $sqlKeyStatement .= ",\n";
-            $keyDef .= ")";
-            $sqlKeyStatement .= $keyDef;
-        }
-    }
-    return $sqlKeyStatement;
 }
 
 function isTextValue($field_type) {
     engine::log('dump.isTextValue('.$field_type.')');
-    switch ($field_type) {
-        case "tinytext":
-        case "text":
-        case "mediumtext":
-        case "longtext":
-        case "binary":
-        case "varbinary":
-        case "tinyblob":
-        case "blob":
-        case "mediumblob":
-        case "longblob":
-            return True;
-            break;
-        default:
-            return False;
+    try {
+        switch ($field_type) {
+            case "tinytext":
+            case "text":
+            case "mediumtext":
+            case "longtext":
+            case "binary":
+            case "varbinary":
+            case "tinyblob":
+            case "blob":
+            case "mediumblob":
+            case "longblob":
+                return True;
+                break;
+            default:
+                return False;
+        }
+    } catch(Exception $e) {
+        engine::throw('dump.isTextValue('.$field_type.')', $e);
+        return false;
     }
 }
 
 function openFile($filename) {
     engine::log('dump.openFile('.$filename.')');
-    $file = false;
-    if ($this->compress) {
-        $file = @gzopen($filename, "w9");
-    } else {
-        $file = @fopen($filename, "w");
+    try {
+        $file = false;
+        if ($this->compress) {
+            $file = @gzopen($filename, "w9");
+        } else {
+            $file = @fopen($filename, "w");
+        }
+        return $file;
+    } catch(Exception $e) {
+        engine::throw('dump.openFile('.$filename.')', $e);
+        return false;
     }
-    return $file;
 }
 
 function saveToFile($file, $data) {
     engine::log('dump.saveToFile('.$file.')');
-    if ($this->compress) {
-        @gzwrite($file, $data);
-    } else {
-        @fwrite($file, $data);
+    try {
+        if ($this->compress) {
+            @gzwrite($file, $data);
+        } else {
+            @fwrite($file, $data);
+        }
+        $this->isWritten = true;
+    } catch(Exception $e) {
+        engine::throw('dump.saveToFile('.$file.')', $e);
+        return false;
     }
-    $this->isWritten = true;
 }
 
 function closeFile($file) {
     engine::log('dump.closeFile('.$file.')');
-    if ($this->compress) {
-        @gzclose($file);
-    } else {
-        @fclose($file);
+    try {
+        if ($this->compress) {
+            @gzclose($file);
+        } else {
+            @fclose($file);
+        }
+    } catch(Exception $e) {
+        engine::throw('dump.closeFile('.$file.')', $e);
+        return false;
     }
 }
 }

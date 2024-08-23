@@ -3,19 +3,20 @@
 * Framework autoloader.
 * @path /engine/nodes/autoload.php
 *
-* @name    DAO Mansion    @version 1.0.4
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
 error_reporting(-1);
-ini_set('error_reporting', -1);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set("error_reporting", -1);
+ini_set("display_errors", 1);
+ini_set("display_startup_errors", 1);
 ini_set("upload_max_filesize", "1024M");
+ini_set("memory_limit", -1);
 ini_set("post_max_size", "1024M");
-ini_set("max_input_time", "180");
-ini_set("max_execution_time", "180");
+ini_set("max_input_time", "300");
+ini_set("max_execution_time", "60");
 ini_set("mbstring.func_overload", "2");
 $GLOBALS["time"] = floatval(microtime(1));
 $_SERVER["PROTOCOL"] = "https";
@@ -42,13 +43,14 @@ $_SERVER["DIR"] = str_replace("/cron.php", "",
 );
 $_SERVER["PUBLIC_URL"] = $_SERVER["PROTOCOL"]."://".$_SERVER["HTTP_HOST"].$_SERVER["DIR"];
 ini_set('include_path', $_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]);
-require_once('engine/core/engine.php');
-set_error_handler('engine::handle_error');
 if (!file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/nodes/config.php")
     && !file_exists("engine/nodes/config.php")
 ) {
     die(require_once("engine/code/install.php"));
 }
+require_once("engine/nodes/config.php");
+require_once("engine/core/engine.php");
+set_error_handler('engine::handle_error');
 $request = str_replace("index.php", "", 
     mb_substr($_SERVER["REQUEST_URI"],
         strpos($_SERVER["SCRIPT_NAME"], "index.php"),
@@ -102,6 +104,7 @@ foreach ($files as $file) {
         }
     }
 }
+require_once("engine/nodes/mysql.php");
 require_once('engine/nodes/session.php');
 if (array_key_exists(0, $_GET) && strpos($_GET[0], "robots.txt") !== FALSE) {
     $_GET[0] = str_replace("robots.txt", "robots.php", $_GET[0]);

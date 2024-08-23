@@ -1,6 +1,7 @@
 /.idea/
 /dApp/capital/node_modules/
 /dApp/public_html/engine/nodes/config.php
-/dApp/public_html/engine/nodes/config2.php
 /nbproject/private/
 /nbproject
+/project/
+/localhost/

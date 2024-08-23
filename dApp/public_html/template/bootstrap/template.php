@@ -3,21 +3,23 @@
 * Bootstrap template file.
 * @path /template/bootstrap/template.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
-* @var $this->title - Page title.
-* @var $this->content - Page HTML data.
-* @var $this->keywords - Array meta keywords.
-* @var $this->description - Page meta description.
-* @var $this->img - Page meta image.
-* @var $this->onload - Page executable JavaScript code.
+* @var $site->title - Page title.
+* @var $site->content - Page HTML data.
+* @var $site->keywords - Array meta keywords.
+* @var $site->description - Page meta description.
+* @var $site->img - Page meta image.
+* @var $site->onload - Page executable JavaScript code.
 */
 
-if(!isset($_POST["jQuery"])){
-//  Header Start
-$header = '
+function template($site) {
+    engine::log('template()');
+    try {
+        if(!isset($_POST["jQuery"])){
+            $header = '
 <nav class="navbar navbar-fixed-top" id="sectionsNav">
     <div class="container">
         <div class="navbar-header">
@@ -57,12 +59,12 @@ $header = '
                     </a>
                     <ul class="dropdown-menu">
                     ';
-    $query = 'SELECT * FROM `nodes_catalog` WHERE `visible` = "1" AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY `order` DESC';
-    $res = engine::mysql($query);
-    while($data = mysqli_fetch_array($res)){
-        $header .= '<li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["PUBLIC_URL"].'/content/'.$data["url"]).'">'.$data["caption"].'</a></li>';
-    }
-    $header .= '   
+            $query = 'SELECT * FROM `nodes_catalog` WHERE `visible` = "1" AND `lang` = "'.$_SESSION["Lang"].'" ORDER BY `order` DESC';
+            $res = engine::mysql($query);
+            while($data = mysqli_fetch_array($res)){
+                $header .= '<li><a hreflang="'.$_SESSION["Lang"].'" href="'.engine::href($_SERVER["PUBLIC_URL"].'/content/'.$data["url"]).'">'.$data["caption"].'</a></li>';
+            }
+            $header .= '   
                     </ul>
                 </li>
                 <li id="menu_3" class="dropdown">
@@ -129,12 +131,8 @@ $header = '
 </nav>
 <div class="wrapper"></div>
 <div id="content">
-<!-- content -->
-';
-//  Header End
-//------------------------------------------------------------------------------
-//  Footer Start
-$footer = '
+<!-- content -->';
+            $footer = '
 <!-- /content -->
 </div>
 <!-- Yandex.Metrika counter -->
@@ -149,5 +147,11 @@ $footer = '
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/94315933" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->';
+            $site->content .= $header.$site->content.$footer;
+        }
+    } catch (Exception $e) {
+        engine::throw('template()', $e);
+    }
 }
-$this->content = $header.$this->content.$footer;
+
+template($this);

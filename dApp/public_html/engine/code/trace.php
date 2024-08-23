@@ -3,15 +3,15 @@
 * Black box trace script.
 * @path /engine/code/trace.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
 
 function trace() {
     engine::log('trace()');
-    try {
-        if (!empty($_POST["logs"])) {
+    if (!empty($_POST["logs"])) {
+        try {
             $logs = engine::escape_string($_POST["logs"]);
             $url = engine::escape_string($_SERVER["SCRIPT_URI"]);
             if (!empty($_POST["url"])) {
@@ -29,9 +29,9 @@ function trace() {
                 engine::mysql($query);
             }
             $_SESSION["LOG"] = array();
+        } catch(Exception $e) {
+            engine::retrace($logs, $_SERVER["REMOTE_ADDR"]);
         }
-    } catch(Exception $e) {
-        engine::throw('trace()', $e);
     }
 }
 

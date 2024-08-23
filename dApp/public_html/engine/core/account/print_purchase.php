@@ -3,7 +3,7 @@
 * Print account purchase block.
 * @path /engine/core/account/print_purchase.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -21,82 +21,87 @@
 */
 
 function print_purchase($site, $data) {
-    $query = 'SELECT * FROM `nodes_product_order` WHERE `order_id` = "'.$data["id"].'"';
-    $r = engine::mysql($query);
-    while ($d = mysqli_fetch_array($r)) {
-        if ($d["count"] > 0) {
-            $query = 'SELECT * FROM `nodes_order` WHERE `id` = "'.$data["id"].'"';
-            $res = engine::mysql($query);
-            $order = mysqli_fetch_array($res);
-            $query = 'SELECT * FROM `nodes_shipping` WHERE `id` = "'.$order["shipping"].'"';
-            $res = engine::mysql($query);
-            $address = mysqli_fetch_array($res);
-            $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$d["product_id"].'"';
-            $res = engine::mysql($query);
-            $product = mysqli_fetch_array($res);
-            $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$product["user_id"].'"';
-            $res = engine::mysql($query);
-            $shipping = mysqli_fetch_array($res);
-            $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$product["user_id"].'"';
-            $res = engine::mysql($query);
-            $user = mysqli_fetch_array($res);
-            $images = explode(";", $product["img"]);
-            $addresstr = '';
-            if (!empty($d["track"])) {
-                $track = engine::lang("Tracking number").": ".$d["track"]."<br/><br/>";
-            }
-            if (!empty($address["fname"])) {
-                $addresstr .= $address["fname"].' '.$address["lname"].', ';
-            }
-            if (!empty($address["country"])) {
-                $addresstr .= $address["country"].', ';
-            }
-            if (!empty($address["state"])) {
-                $addresstr .= $address["state"].', ';
-            }
-            if (!empty($address["city"])) {
-                $addresstr .= $address["city"].', ';
-            }
-            if (!empty($address["street1"])) {
-                $addresstr .= $address["street1"].', ';
-            }
-            if (!empty($address["street2"])){
-                $addresstr .= $address["street2"].', ';
-            }
-            if (!empty($address["zip"])) {
-                $addresstr .= "zip ".$address["zip"];
-            }
-            $addresstr = '<a id="link-address-'.$d["id"].'" title="'.$addresstr.'" onClick=\'alert(this.title);\'>'.$address["country"].'</a>';
-            if ($d["status"] == 0) {
-                $status = engine::lang('Shipment in process');
-            } else if ($d["status"] == 1) {
-                $status = engine::lang('Sended');
-                $button = '<a id="link-confirm-'.$d["id"].'" href="'.$_SERVER["DIR"].'/account/confirm/'.$d["id"].'"><input type="button" class="btn confirm_receipt" value="'.engine::lang("Confirm receipt").'" /></a>';
-            } else {
-                $status = engine::lang('Finished');
-            }
-            $fout .= '<div class="print_order">
-                <div class="print_order_image"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].'" width=150 /></div>
-                <div>
-                    <div class="fl pb5"><b>'.$product["title"].'</b></div>
-                    <div class="print_order_date">
-                        '.date("d/m/Y", $data["date"]).'
-                        <br/><strong>'.$status.'</strong>
+    engine::log('account.print_purchase('.$data["id"].')');
+    try {
+        $query = 'SELECT * FROM `nodes_product_order` WHERE `order_id` = "'.$data["id"].'"';
+        $r = engine::mysql($query);
+        while ($d = mysqli_fetch_array($r)) {
+            if ($d["count"] > 0) {
+                $query = 'SELECT * FROM `nodes_order` WHERE `id` = "'.$data["id"].'"';
+                $res = engine::mysql($query);
+                $order = mysqli_fetch_array($res);
+                $query = 'SELECT * FROM `nodes_shipping` WHERE `id` = "'.$order["shipping"].'"';
+                $res = engine::mysql($query);
+                $address = mysqli_fetch_array($res);
+                $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$d["product_id"].'"';
+                $res = engine::mysql($query);
+                $product = mysqli_fetch_array($res);
+                $query = 'SELECT * FROM `nodes_shipping` WHERE `user_id` = "'.$product["user_id"].'"';
+                $res = engine::mysql($query);
+                $shipping = mysqli_fetch_array($res);
+                $query = 'SELECT * FROM `nodes_user` WHERE `id` = "'.$product["user_id"].'"';
+                $res = engine::mysql($query);
+                $user = mysqli_fetch_array($res);
+                $images = explode(";", $product["img"]);
+                $addresstr = '';
+                if (!empty($d["track"])) {
+                    $track = engine::lang("Tracking number").": ".$d["track"]."<br/><br/>";
+                }
+                if (!empty($address["fname"])) {
+                    $addresstr .= $address["fname"].' '.$address["lname"].', ';
+                }
+                if (!empty($address["country"])) {
+                    $addresstr .= $address["country"].', ';
+                }
+                if (!empty($address["state"])) {
+                    $addresstr .= $address["state"].', ';
+                }
+                if (!empty($address["city"])) {
+                    $addresstr .= $address["city"].', ';
+                }
+                if (!empty($address["street1"])) {
+                    $addresstr .= $address["street1"].', ';
+                }
+                if (!empty($address["street2"])){
+                    $addresstr .= $address["street2"].', ';
+                }
+                if (!empty($address["zip"])) {
+                    $addresstr .= "zip ".$address["zip"];
+                }
+                $addresstr = '<a id="link-address-'.$d["id"].'" title="'.$addresstr.'" onClick=\'alert(this.title);\'>'.$address["country"].'</a>';
+                if ($d["status"] == 0) {
+                    $status = engine::lang('Shipment in process');
+                } else if ($d["status"] == 1) {
+                    $status = engine::lang('Sended');
+                    $button = '<a id="link-confirm-'.$d["id"].'" href="'.$_SERVER["DIR"].'/account/confirm/'.$d["id"].'"><input type="button" class="btn confirm_receipt" value="'.engine::lang("Confirm receipt").'" /></a>';
+                } else {
+                    $status = engine::lang('Finished');
+                }
+                $fout .= '<div class="print_order">
+                    <div class="print_order_image"><img src="'.$_SERVER["DIR"].'/img/data/thumb/'.$images[0].'" width=150 /></div>
+                    <div>
+                        <div class="fl pb5"><b>'.$product["title"].'</b></div>
+                        <div class="print_order_date">
+                            '.date("d/m/Y", $data["date"]).'
+                            <br/><strong>'.$status.'</strong>
+                        </div>
+                        <div class="print_order_wrap"></div>
+                        <div class="cr"></div>
+                        <font class="fs18">$ '.$product["price"].'</font><br/><br/>
+                        '.engine::lang("Seller").': <a id="link-user-'.$user["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$user["id"].'" target="_blank">'.$user["name"].'</a><br/><br/>'
+                        .$track.
+                        engine::lang("Shipping address").': '.$addresstr.'<br/>
                     </div>
-                    <div class="print_order_wrap"></div>
-                    <div class="cr"></div>
-                    <font class="fs18">$ '.$product["price"].'</font><br/><br/>
-                    '.engine::lang("Seller").': <a id="link-user-'.$user["id"].'" href="'.$_SERVER["DIR"].'/account/inbox/'.$user["id"].'" target="_blank">'.$user["name"].'</a><br/><br/>'
-                    .$track.
-                    engine::lang("Shipping address").': '.$addresstr.'<br/>
-                </div>
-                <div class="clear"></div>
-                <div class="pt10 center">
-                    <form method="POST">'.$button.'</form>
-                </div>
-                <div class="clear"></div>
-            </div>';
+                    <div class="clear"></div>
+                    <div class="pt10 center">
+                        <form method="POST">'.$button.'</form>
+                    </div>
+                    <div class="clear"></div>
+                </div>';
+            }
         }
+        return $fout;
+    } catch(Exception $e) {
+        engine::throw('account.print_purchase('.$data["id"].')', $e);
     }
-    return $fout;
 }

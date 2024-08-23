@@ -3,7 +3,7 @@
 * File managment library.
 * @path /engine/core/file.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -26,30 +26,35 @@ class file {
 */
 static function copy($source, $dest, $permissions = 0755) {
     engine::log('file::copy('.$source.', '.$dest.', '.$permissions.')');
-    if (is_link($source)) {
-        return symlink(readlink($source), $dest);
-    }
-    if (is_file($source)) {
-        $res = copy($source, $dest);
-        chmod($dest, $permissions);
-        return $res;
-    }
-    if (!is_dir($dest)) {
-        mkdir($dest, $permissions);
-    }
-    $dir = dir($source);
-    while (false !== ($entry = $dir->read())) {
-        if ($entry == '.'
-            || $entry == '..'
-            || $entry == 'backup'
-            || $entry == 'session'
-        ) {
-            continue;
+    try {
+        if (is_link($source)) {
+            return symlink(readlink($source), $dest);
         }
-        self::copy("$source/ $entry", "$dest/ $entry", $permissions);
+        if (is_file($source)) {
+            $res = copy($source, $dest);
+            chmod($dest, $permissions);
+            return $res;
+        }
+        if (!is_dir($dest)) {
+            mkdir($dest, $permissions);
+        }
+        $dir = dir($source);
+        while (false !== ($entry = $dir->read())) {
+            if ($entry == '.'
+                || $entry == '..'
+                || $entry == 'backup'
+                || $entry == 'session'
+            ) {
+                continue;
+            }
+            self::copy("$source/ $entry", "$dest/ $entry", $permissions);
+        }
+        $dir->close();
+        return true;
+    } catch(Exception $e) {
+        engine::throw('file::copy('.$source.', '.$dest.', '.$permissions.')', $e);
+        return false;
     }
-    $dir->close();
-    return true;
 }
 
 /**
@@ -61,18 +66,23 @@ static function copy($source, $dest, $permissions = 0755) {
 */
 static function delete($dir) {
     engine::log('file::delete('.$dir.')');
-    foreach (scandir($dir) as $file) {
-        if ('.' === $file || '..' === $file) {
-            continue;
+    try {
+        foreach (scandir($dir) as $file) {
+            if ('.' === $file || '..' === $file) {
+                continue;
+            }
+            if (is_dir("$dir/ $file")) {
+                self::delete("$dir/ $file");
+            } else {
+                unlink("$dir/ $file");
+            }
         }
-        if (is_dir("$dir/ $file")) {
-            self::delete("$dir/ $file");
-        } else {
-            unlink("$dir/ $file");
-        }
+        rmdir($dir);
+        return true;
+    } catch(Exception $e) {
+        engine::throw('file::delete('.$dir.')', $e);
+        return false;
     }
-    rmdir($dir);
-    return true;
 }
 
 /**
@@ -86,36 +96,41 @@ static function delete($dir) {
 */
 static function upload($filename, $path, $md5 = 0) {
     engine::log('file::upload('.$filename.', '.$path.', '.$md5.')');
-    if (!is_array($_FILES[$filename]["name"])) {
-        if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
-            if (!$md5) {
-                $a = $_FILES[$filename]["name"];
-            } else {
-                $a = substr(md5($_FILES[$filename]["name"].date("U")), 0, 8).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"])));
-            }
-            $f_name = $path."/".$a;
-            if (move_uploaded_file($_FILES[$filename]["tmp_name"], $f_name)) {
-                return $a;
-            }
-            return 'error';
-        }
-        return 'error';
-    } else {
-        $fout = '';
-        for ($i = 0; $i < count($_FILES[$filename]['tmp_name']); $i++) {
-            if (is_uploaded_file($_FILES[$filename]['tmp_name'][$i])) {
+    try {
+        if (!is_array($_FILES[$filename]["name"])) {
+            if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
                 if (!$md5) {
-                    $a = $_FILES[$filename]["name"][$i];
+                    $a = $_FILES[$filename]["name"];
                 } else {
-                    $a = md5($_FILES[$filename]["name"][$i].date("U")).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"][$i])));;
+                    $a = substr(md5($_FILES[$filename]["name"].date("U")), 0, 8).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"])));
                 }
                 $f_name = $path."/".$a;
-                if (move_uploaded_file($_FILES[$filename]["tmp_name"][$i], $f_name)) {
-                    $fout .= $a.';';
+                if (move_uploaded_file($_FILES[$filename]["tmp_name"], $f_name)) {
+                    return $a;
+                }
+                return 'error';
+            }
+            return 'error';
+        } else {
+            $fout = '';
+            for ($i = 0; $i < count($_FILES[$filename]['tmp_name']); $i++) {
+                if (is_uploaded_file($_FILES[$filename]['tmp_name'][$i])) {
+                    if (!$md5) {
+                        $a = $_FILES[$filename]["name"][$i];
+                    } else {
+                        $a = md5($_FILES[$filename]["name"][$i].date("U")).".".strtolower(array_pop(explode(".", $_FILES[$filename]["name"][$i])));;
+                    }
+                    $f_name = $path."/".$a;
+                    if (move_uploaded_file($_FILES[$filename]["tmp_name"][$i], $f_name)) {
+                        $fout .= $a.';';
+                    }
                 }
             }
+            return $fout;
         }
-        return $fout;
+    } catch(Exception $e) {
+        engine::throw('file::upload('.$filename.', '.$path.', '.$md5.')', $e);
+        return 'error';
     }
  }
 
@@ -128,20 +143,24 @@ static function upload($filename, $path, $md5 = 0) {
 */
 private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
     engine::log('file::zip_folder('.$folder.', '.$zipFile.', '.$exclusiveLength.')');
-    $handle = opendir($folder);
-    while (false !== ($f = readdir($handle))) {
-        if ($f != '.' && $f != '..') {
-            $filePath = "$folder/ $f";
-            $localPath = mb_substr($filePath, $exclusiveLength);
-            if (is_file($filePath)) {
-                $zipFile->addFile($filePath, $localPath);
-            } elseif (is_dir($filePath)) {
-                $zipFile->addEmptyDir($localPath);
-                self::zip_folder($filePath, $zipFile, $exclusiveLength);
+    try {
+        $handle = opendir($folder);
+        while (false !== ($f = readdir($handle))) {
+            if ($f != '.' && $f != '..') {
+                $filePath = "$folder/ $f";
+                $localPath = mb_substr($filePath, $exclusiveLength);
+                if (is_file($filePath)) {
+                    $zipFile->addFile($filePath, $localPath);
+                } elseif (is_dir($filePath)) {
+                    $zipFile->addEmptyDir($localPath);
+                    self::zip_folder($filePath, $zipFile, $exclusiveLength);
+                }
             }
         }
+        closedir($handle);
+    } catch(Exception $e) {
+        engine::throw('file::zip_folder('.$folder.', '.$zipFile.', '.$exclusiveLength.')', $e);
     }
-    closedir($handle);
 }
 
 /**
@@ -153,14 +172,18 @@ private static function zip_folder($folder, &$zipFile, $exclusiveLength) {
 */
 static function zip($sourcePath, $outZipPath) {
     engine::log('file::zip('.$sourcePath.', '.$outZipPath.')');
-    $pathInfo = pathInfo($sourcePath);
-    $parentPath = $pathInfo['dirname'];
-    $dirName = $pathInfo['basename'];
-    $z = new ZipArchive();
-    $z->open($outZipPath, ZIPARCHIVE::CREATE);
-    $z->addEmptyDir($dirName);
-    self::zip_folder($sourcePath, $z, strlen("$parentPath/"));
-    $z->close();
-    return is_file($outZipPath);
+    try {
+        $pathInfo = pathInfo($sourcePath);
+        $parentPath = $pathInfo['dirname'];
+        $dirName = $pathInfo['basename'];
+        $z = new ZipArchive();
+        $z->open($outZipPath, ZIPARCHIVE::CREATE);
+        $z->addEmptyDir($dirName);
+        self::zip_folder($sourcePath, $z, strlen("$parentPath/"));
+        $z->close();
+        return is_file($outZipPath);
+    } catch(Exception $e) {
+        engine::throw('file::zip('.$sourcePath.', '.$outZipPath.')', $e);
+    }
 }
 }

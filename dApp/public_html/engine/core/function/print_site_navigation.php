@@ -3,7 +3,7 @@
 * Prints mansion navigation block.
 * @path /engine/core/function/print_site_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,12 +13,17 @@
 */
 
 function print_site_navigation($current) {
-    $arr = array(
-        engine::lang("Booking rooms") => $_SERVER["DIR"]."/booking",
-        engine::lang("Developed by") => $_SERVER["DIR"]."/developer",
-        engine::lang("Terms & conditions") => $_SERVER["DIR"]."/content/terms_and_conditions",
-        engine::lang("Privacy policy") => $_SERVER["DIR"]."/content/privacy_policy",
-        engine::lang("Contact us") => $_SERVER["DIR"]."/contacts",
-    );
-    return engine::print_navigation($current, $arr);
+    engine::log('function.print_site_navigation('.$current.')');
+    try {
+        $arr = array(
+            engine::lang("Booking rooms") => $_SERVER["DIR"]."/booking",
+            engine::lang("Developed by") => $_SERVER["DIR"]."/developer",
+            engine::lang("Terms & conditions") => $_SERVER["DIR"]."/content/terms_and_conditions",
+            engine::lang("Privacy policy") => $_SERVER["DIR"]."/content/privacy_policy",
+            engine::lang("Contact us") => $_SERVER["DIR"]."/contacts",
+        );
+        return engine::print_navigation($current, $arr);
+    } catch(Exception $e) {
+        engine::throw('function.print_site_navigation('.$current.')', $e);
+    }
 }

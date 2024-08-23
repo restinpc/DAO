@@ -3,7 +3,7 @@
 * Print email confirmation page.
 * @path /engine/core/account/print_email_confirm.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,29 +20,34 @@
 */
 
 function print_email_confirm($site) {
-    $code = '';
-    if (!empty($_POST["code"])) {
-        $code = $_POST["code"];
-    } else if (!empty($_GET[1])) {
-        $code = $_GET[1];
-    }
-    if (!empty($code)) {
-        if ($code== $_SESSION["user"]["code"]) {
-            $query = 'UPDATE `nodes_user` SET `confirm` = 1 WHERE `id` = "'.$_SESSION["user"]["id"].'"';
-            engine::mysql($query);
-            die('<script>window.location = "'.$_SERVER["DIR"].'/account";</script>');
-        } else {
-            $site->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Invalid confirmation code").'"); ';
+    engine::log('account.print_email_confirm()');
+    try {
+        $code = '';
+        if (!empty($_POST["code"])) {
+            $code = $_POST["code"];
+        } else if (!empty($_GET[1])) {
+            $code = $_GET[1];
         }
+        if (!empty($code)) {
+            if ($code== $_SESSION["user"]["code"]) {
+                $query = 'UPDATE `nodes_user` SET `confirm` = 1 WHERE `id` = "'.$_SESSION["user"]["id"].'"';
+                engine::mysql($query);
+                die('<script>window.location = "'.$_SERVER["DIR"].'/account";</script>');
+            } else {
+                $site->onload .= ' alert("'.engine::lang("Error").'. '.engine::lang("Invalid confirmation code").'"); ';
+            }
+        }
+        $fout = '<div class="document640">
+                <h3>'.engine::lang("Email confirmation").'</h3><br/>'
+                . '<p class="confirm_email">'.engine::lang("Please check your email and enter the code from the mail to activate your account").'</p><br/>'
+                . '<form method="POST">'
+                    . '<input id="confirmation-code" type="text" class="input w280" required name="code" placeHolder="'.engine::lang("Confirmation code").'" />'
+                    . '<br/><br/><br/>'
+                    . '<input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" />'
+                . '</form>'
+            . '</div>';
+        return $fout;
+    } catch(Exception $e) {
+        engine::throw('account.print_email_confirm()', $e);
     }
-    $fout = '<div class="document640">
-            <h3>'.engine::lang("Email confirmation").'</h3><br/>'
-            . '<p class="confirm_email">'.engine::lang("Please check your email and enter the code from the mail to activate your account").'</p><br/>'
-            . '<form method="POST">'
-                . '<input id="confirmation-code" type="text" class="input w280" required name="code" placeHolder="'.engine::lang("Confirmation code").'" />'
-                . '<br/><br/><br/>'
-                . '<input id="input-submit" type="submit" class="btn w280" value="'.engine::lang("Submit").'" />'
-            . '</form>'
-        . '</div>';
-    return $fout;
 }

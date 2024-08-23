@@ -3,7 +3,7 @@
 * Framework admin class.
 * @path /engine/nodes/admin.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -14,74 +14,77 @@ public $title;          // Page title.
 public $content;        // Page HTML data.
 public $onload;         // Page executable JavaScript code.
 public $statistic;      // Array CMS statistic.
-
 /**
 * Admin class constructor.
 * @param object $site Admin Site object.
 */
 function __construct($site) {
-    $this->site = $site;
-    $_SERVER["SCRIPT_URI"] = str_replace("/admin", $_SERVER["REQUEST_URI"], $_SERVER["SCRIPT_URI"]);
-    if ($_SESSION["Lang"] != 'ru' && !strpos($_SERVER["SCRIPT_URI"], '?lang=')) {
-        if (strpos($_SERVER["SCRIPT_URI"], '?')) {
-            $_SERVER["SCRIPT_URI"] .= '&lang='.$_SESSION["Lang"];
-        } else {
-            $_SERVER["SCRIPT_URI"] .= '?lang='.$_SESSION["Lang"];
+    engine::log("admin.__construct()");
+    try {
+        $this->site = $site;
+        $_SERVER["SCRIPT_URI"] = str_replace("/admin", $_SERVER["REQUEST_URI"], $_SERVER["SCRIPT_URI"]);
+        if ($_SESSION["Lang"] != 'ru' && !strpos($_SERVER["SCRIPT_URI"], '?lang=')) {
+            if (strpos($_SERVER["SCRIPT_URI"], '?')) {
+                $_SERVER["SCRIPT_URI"] .= '&lang='.$_SESSION["Lang"];
+            } else {
+                $_SERVER["SCRIPT_URI"] .= '?lang='.$_SESSION["Lang"];
+            }
         }
+        if (!empty($_SESSION["user"]["email"]) && $_SESSION["user"]["admin"] == "1") {
+            $this->statistic = array();
+            $this->statistic["version"] = $_SERVER["configs"]["version"];
+            $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `title` <> ""';
+            $res = engine::mysql($query);
+            $d = mysqli_fetch_array($res);
+            $this->statistic["pages"] = $d[0];
+            $query = 'SELECT COUNT(`id`) FROM `nodes_content`';
+            $res = engine::mysql($query);
+            $d = mysqli_fetch_array($res);
+            $this->statistic["articles"] = $d[0];
+            $query = 'SELECT COUNT(`id`) FROM `nodes_comment`';
+            $res = engine::mysql($query);
+            $d = mysqli_fetch_array($res);
+            $this->statistic["comments"] = $d[0];
+            $query = 'SELECT COUNT(`id`) FROM `nodes_user` WHERE `id` > 1';
+            $res = engine::mysql($query);
+            $d = mysqli_fetch_array($res);
+            $this->statistic["users"] = $d[0];
+            $query = 'SELECT AVG(`script_time`) FROM `nodes_perfomance` WHERE `script_time` > 0';
+            $res = engine::mysql($query);
+            $d = mysqli_fetch_array($res);
+            $this->statistic["perfomance"] = round($d[0], 2);
+            $this->statistic["cron"] = '';
+            if ($_SERVER["configs"]["cron"]) {
+                $this->statistic["cron"] = 'jQuery ';
+            }
+            if (intval($_SERVER["configs"]["cron_exec"]) < date("U") - 3600) {
+                $this->statistic["cron"] .= engine::lang("Disabled");
+            } else if (intval($_SERVER["configs"]["cron_exec"]) > intval($_SERVER["configs"]["cron_done"]) + 300) {
+                $this->statistic["cron"] .= engine::lang("Error");
+            } else {
+                $this->statistic["cron"] .= engine::lang("Ok");
+            }
+            if (!empty($_GET["mode"])) {
+                $this->title = engine::lang(ucfirst($_GET["mode"]));
+                $function = 'print_admin_'.$_GET["mode"];
+                $site->content = '<div class="profile_menu fs9">
+                        <div class="container">'.engine::print_admin_navigation($this).'</div>
+                    </div>';
+            } else {
+                $this->title = engine::lang("Admin");
+                $function = 'print_admin';
+            }
+            $this->content = engine::$function($this);
+            $site->title = $this->title." - ".$site->title;
+            $site->content .= '<div class="admin_content">'.$this->content.'</div>';
+            $site->onload .= ' document.framework.adminInit();'
+                . ' document.framework.browserTime();'
+                . $this->onload;
+        } else {
+            $this->content = engine::error(401);
+        }
+    } catch(Exception $e) {
+        engine::throw("admin.__construct()", $e);
     }
-    if (!empty($_SESSION["user"]["email"]) && $_SESSION["user"]["admin"] == "1") {
-        $this->statistic = array();
-        $this->statistic["version"] = $_SERVER["configs"]["version"];
-        $query = 'SELECT COUNT(`id`) FROM `nodes_cache` WHERE `title` <> ""';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        $this->statistic["pages"] = $d[0];
-        $query = 'SELECT COUNT(`id`) FROM `nodes_content`';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        $this->statistic["articles"] = $d[0];
-        $query = 'SELECT COUNT(`id`) FROM `nodes_comment`';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        $this->statistic["comments"] = $d[0];
-        $query = 'SELECT COUNT(`id`) FROM `nodes_user` WHERE `id` > 1';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        $this->statistic["users"] = $d[0];
-        $query = 'SELECT AVG(`script_time`) FROM `nodes_perfomance` WHERE `script_time` > 0';
-        $res = engine::mysql($query);
-        $d = mysqli_fetch_array($res);
-        $this->statistic["perfomance"] = round($d[0], 2);
-        $this->statistic["cron"] = '';
-        if ($_SERVER["configs"]["cron"]) {
-            $this->statistic["cron"] = 'jQuery ';
-        }
-        if (intval($_SERVER["configs"]["cron_exec"]) < date("U") - 3600) {
-            $this->statistic["cron"] .= engine::lang("Disabled");
-        } else if (intval($_SERVER["configs"]["cron_exec"]) > intval($_SERVER["configs"]["cron_done"]) + 300) {
-            $this->statistic["cron"] .= engine::lang("Error");
-        } else {
-            $this->statistic["cron"] .= engine::lang("Ok");
-        }
-        if (!empty($_GET["mode"])) {
-            $this->title = engine::lang(ucfirst($_GET["mode"]));
-            $function = 'print_admin_'.$_GET["mode"];
-            $site->content = '<div class="profile_menu fs9">
-                    <div class="container">'.engine::print_admin_navigation($this).'</div>
-                </div>';
-        } else {
-            $this->title = engine::lang("Admin");
-            $function = 'print_admin';
-        }
-        $this->content = engine::$function($this);
-        $site->title = $this->title." - ".$site->title;
-        $site->content .= '<div class="admin_content">
-                '.$this->content.'
-            </div>';
-        $site->onload .= ' document.framework.adminInit();'
-            . ' document.framework.browserTime();'
-            . $this->onload;
-    } else {
-        $this->content = engine::error(401);
-    }
-}}
+}
+}

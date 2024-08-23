@@ -3,7 +3,7 @@
 * Print admin navigation menu.
 * @path /engine/core/admin/print_admin_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,25 +20,30 @@
 */
 
 function print_admin_navigation($cms) {
-    $i = 1;
-    $fout = '<span class="profile_menu_item show_all selected" >
-            <a>'.$cms->title.'</a>
-            <div id="profile_menu_show_nav" class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>
-        </span>';
-    $query = 'SELECT `admin`.*, `access`.`access` FROM `nodes_access` AS `access` '
-            . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`id` = `access`.`admin_id` '
-            . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
-            . 'ORDER BY `admin`.`id` ASC';
-    $res = engine::mysql($query);
-    while ($data = mysqli_fetch_array($res)) {
-        if ($data["access"]) {
-            $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($cms->title == engine::lang($data["name"])?'selected':'').'"
-                onClick=\'$id("profile_menu_link_'.$i.'").click();\'
-            >
-                <a id="profile_menu_link_'.$i.'" href="'.$_SERVER["DIR"].'/admin/?mode='.$data["url"].'">'.engine::lang($data["name"]).'</a>
+    engine::log('admin.print_admin_navigation()');
+    try {
+        $i = 1;
+        $fout = '<span class="profile_menu_item show_all selected" >
+                <a>'.$cms->title.'</a>
+                <div id="profile_menu_show_nav" class="fr nav_button" alt="'.engine::lang("Show navigation").'">&nbsp;</div>
             </span>';
-            $i++;
+        $query = 'SELECT `admin`.*, `access`.`access` FROM `nodes_access` AS `access` '
+                . 'LEFT JOIN `nodes_admin` AS `admin` ON `admin`.`id` = `access`.`admin_id` '
+                . 'WHERE `access`.`user_id` = "'.$_SESSION["user"]["id"].'" '
+                . 'ORDER BY `admin`.`id` ASC';
+        $res = engine::mysql($query);
+        while ($data = mysqli_fetch_array($res)) {
+            if ($data["access"]) {
+                $fout .= '<span id="profile_menu_span_'.$i.'" class="profile_menu_item '.($cms->title == engine::lang($data["name"])?'selected':'').'"
+                    onClick=\'$id("profile_menu_link_'.$i.'").click();\'
+                >
+                    <a id="profile_menu_link_'.$i.'" href="'.$_SERVER["DIR"].'/admin/?mode='.$data["url"].'">'.engine::lang($data["name"]).'</a>
+                </span>';
+                $i++;
+            }
         }
+        return $fout;
+    } catch(Exception $e) {
+        engine::throw('admin.print_admin_navigation()', $e);
     }
-    return $fout;
 }

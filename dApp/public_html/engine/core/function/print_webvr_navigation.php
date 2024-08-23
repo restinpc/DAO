@@ -3,7 +3,7 @@
 * Prints webvr navigaiton block.
 * @path /engine/core/function/print_webvr_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,11 +13,16 @@
 */
 
 function print_webvr_navigation($current) {
-    $arr = array(
-        engine::lang("Free look mode") => $_SERVER["DIR"]."/webvr/free-look",
-        engine::lang("Orbital preview") => $_SERVER["DIR"]."/webvr/orbital",
-        engine::lang("Panorama viewer") => $_SERVER["DIR"]."/webvr/panorama",
-        engine::lang("Metaverse") => $_SERVER["DIR"]."/webvr/metaverse"
-    );
-    return engine::print_navigation($current, $arr);
+    engine::log('function.print_webvr_navigation('.$current.')');
+    try {
+        $arr = array(
+            engine::lang("Free look mode") => $_SERVER["DIR"]."/webvr/free-look",
+            engine::lang("Orbital preview") => $_SERVER["DIR"]."/webvr/orbital",
+            engine::lang("Panorama viewer") => $_SERVER["DIR"]."/webvr/panorama",
+            engine::lang("Metaverse") => $_SERVER["DIR"]."/webvr/metaverse"
+        );
+        return engine::print_navigation($current, $arr);
+    } catch(Exception $e) {
+        engine::throw('function.print_webvr_navigation('.$current.')', $e);
+    }
 }

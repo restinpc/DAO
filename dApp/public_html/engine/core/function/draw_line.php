@@ -3,7 +3,7 @@
 * Draws a wide canvas line.
 * @path /engine/core/function/draw_line.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -19,26 +19,30 @@
 */
 
 function draw_line($image, $x1, $y1, $x2, $y2, $color, $thick = 1){
-    engine::log('engine::draw_line()');
-    $t = $thick / 2 - 0.5;
-    if ($x1 == $x2 || $y1 == $y2) {
-        return imagefilledrectangle(
-            $image, 
-            round(min($x1, $x2) - $t), 
-            round(min($y1, $y2) - $t), 
-            round(max($x1, $x2) + $t), 
-            round(max($y1, $y2) + $t), 
-            $color
+    engine::log('function.draw_line()');
+    try {
+        $t = $thick / 2 - 0.5;
+        if ($x1 == $x2 || $y1 == $y2) {
+            return imagefilledrectangle(
+                $image, 
+                round(min($x1, $x2) - $t), 
+                round(min($y1, $y2) - $t), 
+                round(max($x1, $x2) + $t), 
+                round(max($y1, $y2) + $t), 
+                $color
+            );
+        }
+        $k = ($y2 - $y1) / ($x2 - $x1);
+        $a = $t / sqrt(1 + pow($k, 2));
+        $points = array(
+            round($x1 - (1 + $k) * $a), round($y1 + (1 - $k) * $a),
+            round($x1 - (1 - $k) * $a), round($y1 - (1 + $k) * $a),
+            round($x2 + (1 + $k) * $a), round($y2 - (1 - $k) * $a),
+            round($x2 + (1 - $k) * $a), round($y2 + (1 + $k) * $a),
         );
+        imagefilledpolygon($image, $points, 4, $color);
+        return imagepolygon($image, $points, 4, $color);
+    } catch(Exception $e) {
+        engine::throw('function.draw_line()', $e);
     }
-    $k = ($y2 - $y1) / ($x2 - $x1);
-    $a = $t / sqrt(1 + pow($k, 2));
-    $points = array(
-        round($x1 - (1 + $k) * $a), round($y1 + (1 - $k) * $a),
-        round($x1 - (1 - $k) * $a), round($y1 - (1 + $k) * $a),
-        round($x2 + (1 + $k) * $a), round($y2 - (1 - $k) * $a),
-        round($x2 + (1 - $k) * $a), round($y2 + (1 + $k) * $a),
-    );
-    imagefilledpolygon($image, $points, 4, $color);
-    return imagepolygon($image, $points, 4, $color);
 }

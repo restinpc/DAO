@@ -3,7 +3,7 @@
 * Prints see also product block.
 * @path /engine/core/product/print_more_products.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -15,31 +15,36 @@
 * @var $site->onload - Page executable JavaScript code.
 *
 * @param object $site Site class object.
-* @param string $url Page URL.
+* @param string id @mysql[nodes_product]->id.
 * @return string Returns Show more block on article or product page.
 * @usage <code> engine::print_more_products($site, 1); </code>
 */
 
 function print_more_products($site, $id) {
-    $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$id.'"';
-    $res = engine::mysql($query);
-    $product = mysqli_fetch_array($res);
-    $urls = array();
-    $count = 0;
-    $fout = '';
-    do {
-        $query = 'SELECT * FROM `nodes_product` WHERE `id` <> "'.$product["id"].'" ORDER BY RAND() DESC';
+    engine::log('product.print_more_products('.$id.')');
+    try {
+        $query = 'SELECT * FROM `nodes_product` WHERE `id` = "'.$id.'"';
         $res = engine::mysql($query);
-        while ($d = mysqli_fetch_array($res)) {
-            if (!in_array($d["id"], $urls)) {
-                if ($count > 5) {
-                    break;
+        $product = mysqli_fetch_array($res);
+        $urls = array();
+        $count = 0;
+        $fout = '';
+        do {
+            $query = 'SELECT * FROM `nodes_product` WHERE `id` <> "'.$product["id"].'" ORDER BY RAND() DESC';
+            $res = engine::mysql($query);
+            while ($d = mysqli_fetch_array($res)) {
+                if (!in_array($d["id"], $urls)) {
+                    if ($count > 5) {
+                        break;
+                    }
+                    $count++;
+                    $fout .= engine::print_product_preview($site, $d);
+                    array_push($urls, $d["id"]);
                 }
-                $count++;
-                $fout .= engine::print_product_preview($site, $d);
-                array_push($urls, $d["id"]);
             }
-        }
-    } while ($count < 6);
-    return $fout;
+        } while ($count < 6);
+        return $fout;
+    } catch(Exception $e) {
+        engine::throw('product.print_more_products('.$id.')', $e);
+    }
 }

@@ -3,7 +3,7 @@
 * Converts text HTML element to object.
 * @path /engine/core/function/element_to_obj.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,16 +13,21 @@
 */
 
 function element_to_obj($element) {
-    $obj = array("tag" => $element->tagName);
-    foreach($element->attributes as $attribute) {
-        $obj[$attribute->name] = $attribute->value;
-    }
-    foreach($element->childNodes as $subElement) {
-        if ($subElement->nodeType == XML_TEXT_NODE) {
-            $obj["html"] = $subElement->wholeText;
-        } else {
-            $obj["children"][] = engine::element_to_obj($subElement);
+    engine::log('function.element_to_obj('.$element->tagName.')');
+    try {
+        $obj = array("tag" => $element->tagName);
+        foreach($element->attributes as $attribute) {
+            $obj[$attribute->name] = $attribute->value;
         }
+        foreach($element->childNodes as $subElement) {
+            if ($subElement->nodeType == XML_TEXT_NODE) {
+                $obj["html"] = $subElement->wholeText;
+            } else {
+                $obj["children"][] = engine::element_to_obj($subElement);
+            }
+        }
+        return $obj;
+    } catch(Exception $e) {
+        engine::throw('function.element_to_obj('.$element->tagName.')', $e);
     }
-    return $obj;
 }

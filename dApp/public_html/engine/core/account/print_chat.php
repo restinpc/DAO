@@ -13,77 +13,82 @@
 */
 
 function print_chat($user_id, $lastId = 0) {
-    $query = 'SELECT * FROM `nodes_inbox` 
-        WHERE id > '.$lastId.' AND (
-            (`from` = '.$_SESSION["user"]["id"].' AND `to` = '.$user_id.') 
-            OR (`from` = '.$user_id.' AND `to` = '.$_SESSION["user"]["id"].')
-        ) 
-        ORDER BY `date` ASC';
-    $res = engine::mysql($query);
-    $fout = '';
-    if (!$lastId) {
-        $fout = '<table class="chat_table" border=0>';
-    }
-    $id = $lastId;
-    while ($data = mysqli_fetch_array($res)) {
-        $id = $data["id"];
-        if ($data["from"] == $_SESSION["user"]["id"]) {
-            if ($data["readed"] == "0") {
-                $fout .= '<tr><td class="chat_unreaded">';
-            } else {
-                $fout .= '<tr><td>';
-            }
-            $fout .= '<div class="chat_left">'
-                    . '<table class="list">'
-                    . '<td align=left width=100% valign=top>';
-            if (!$data["system"]) {
-                $text = $data["text"];
-                if (strpos($text, "http") >= 0) {
-                    $text = preg_replace('/((https:|http:\/\/)[^ |<]+)/', '<a target="_blank" href="\1">\1</a>', $text);
-                } 
-                $fout .= '<span class="chat_left_text">'.engine::lang("Sended").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></span><br/>'.$text;
-            } else {
-                $fout .= '<span class="chat_left_text">'.engine::lang("System message").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span><br/>'.'<i>'.engine::lang($data["text"]).'</i>';
-            }
-            $fout .= '</td>'
-                    . '</tr>'
-                    . '</table>'
-                    . '<div class="chat_left_bubble">&nbsp;</div>'
-                    . '</div>';
-        } else {
-            $fout .= '<tr><td><div class="chat_right">'
-                    . '<table cellpadding=0 cellspacing=0 height=100% class="list received" >'
-                    . '<td align=left width=100% valign=top>';
-            if (!$data["system"]) {
-                $text = $data["text"];
-                if (strpos($text, "http") >= 0) {
-                    $text = preg_replace('/((https:|http:\/\/)[^ |<]+)/', '<a target="_blank" href="\1">\1</a>', $text);
-                } 
-                $fout .= '<div class="chat_right_text">'
-                        . engine::lang("Received").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
-                    . '<div class="clear"></div>'.$text;
-            } else {
-                $fout .= '<div class="chat_right_text">'
-                        . engine::lang("System message").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
-                    . '<div class="clear"></div>'.'<i>'.engine::lang($data["text"]).'</i>';
-            }
-            $fout .= '</td>'
-                    . '</tr>'
-                    . '</table>'
-                    . '<div class="chat_right_bubble">&nbsp;</div>'
-                    . '</div>';
+    engine::log('account.print_chat('.$user_id.', '.$lastId.')');
+    try {
+        $query = 'SELECT * FROM `nodes_inbox` 
+            WHERE id > '.$lastId.' AND (
+                (`from` = '.$_SESSION["user"]["id"].' AND `to` = '.$user_id.') 
+                OR (`from` = '.$user_id.' AND `to` = '.$_SESSION["user"]["id"].')
+            ) 
+            ORDER BY `date` ASC';
+        $res = engine::mysql($query);
+        $fout = '';
+        if (!$lastId) {
+            $fout = '<table class="chat_table" border=0>';
         }
-        $fout .= '</td></tr>';
-    }
-    if (!$lastId) {
-        $fout .= '</table>';
-    }
-    $fout .= '
-        <script>
-            document.framework.browserTime();
-            document.framework.chatData['.$user_id.'] = '.$id.';
-        </script>';
-    if ($id != $lastId) {
-        return $fout;
+        $id = $lastId;
+        while ($data = mysqli_fetch_array($res)) {
+            $id = $data["id"];
+            if ($data["from"] == $_SESSION["user"]["id"]) {
+                if ($data["readed"] == "0") {
+                    $fout .= '<tr><td class="chat_unreaded">';
+                } else {
+                    $fout .= '<tr><td>';
+                }
+                $fout .= '<div class="chat_left">'
+                        . '<table class="list">'
+                        . '<td align=left width=100% valign=top>';
+                if (!$data["system"]) {
+                    $text = $data["text"];
+                    if (strpos($text, "http") >= 0) {
+                        $text = preg_replace('/((https:|http:\/\/)[^ |<]+)/', '<a target="_blank" href="\1">\1</a>', $text);
+                    } 
+                    $fout .= '<span class="chat_left_text">'.engine::lang("Sended").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></span><br/>'.$text;
+                } else {
+                    $fout .= '<span class="chat_left_text">'.engine::lang("System message").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span><br/>'.'<i>'.engine::lang($data["text"]).'</i>';
+                }
+                $fout .= '</td>'
+                        . '</tr>'
+                        . '</table>'
+                        . '<div class="chat_left_bubble">&nbsp;</div>'
+                        . '</div>';
+            } else {
+                $fout .= '<tr><td><div class="chat_right">'
+                        . '<table cellpadding=0 cellspacing=0 height=100% class="list received" >'
+                        . '<td align=left width=100% valign=top>';
+                if (!$data["system"]) {
+                    $text = $data["text"];
+                    if (strpos($text, "http") >= 0) {
+                        $text = preg_replace('/((https:|http:\/\/)[^ |<]+)/', '<a target="_blank" href="\1">\1</a>', $text);
+                    } 
+                    $fout .= '<div class="chat_right_text">'
+                            . engine::lang("Received").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
+                        . '<div class="clear"></div>'.$text;
+                } else {
+                    $fout .= '<div class="chat_right_text">'
+                            . engine::lang("System message").' <span class="utc_date" alt="'.$data["date"].'">'.date("d.m.Y H:i", $data["date"]).'</span></div>'
+                        . '<div class="clear"></div>'.'<i>'.engine::lang($data["text"]).'</i>';
+                }
+                $fout .= '</td>'
+                        . '</tr>'
+                        . '</table>'
+                        . '<div class="chat_right_bubble">&nbsp;</div>'
+                        . '</div>';
+            }
+            $fout .= '</td></tr>';
+        }
+        if (!$lastId) {
+            $fout .= '</table>';
+        }
+        $fout .= '
+            <script>
+                document.framework.browserTime();
+                document.framework.chatData['.$user_id.'] = '.$id.';
+            </script>';
+        if ($id != $lastId) {
+            return $fout;
+        }
+    } catch(Exception $e) {
+        engine::throw('account.print_chat('.$user_id.', '.$lastId.')', $e);
     }
 }

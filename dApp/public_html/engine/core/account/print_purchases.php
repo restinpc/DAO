@@ -3,7 +3,7 @@
 * Print account purchases page.
 * @path /engine/core/account/print_purchases.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,26 +20,31 @@
 */
 
 function print_purchases($site) {
-    $fout = '<div class="document640">';
-    $query = 'SELECT * FROM `nodes_order` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `date` DESC';
-    $res = engine::mysql($query);
-    $flag = 0;
-    while ($data = mysqli_fetch_array($res)) {
-        if ($data["status"] == "1") {
-            $site->onload .= '
-                alert("'.engine::lang("Thank you for your order! Shipment in process now.").'");
-                $id("purcases_count").innerHTML = "";
-                $id("purcases").style.display = "none";
-                ';
-            $query = 'UPDATE `nodes_order` SET `status` = "2" WHERE `id` = "'.$data["id"].'"';
-            engine::mysql($query);
+    engine::log('account.print_purchases()');
+    try {
+        $fout = '<div class="document640">';
+        $query = 'SELECT * FROM `nodes_order` WHERE `user_id` = "'.$_SESSION["user"]["id"].'" ORDER BY `date` DESC';
+        $res = engine::mysql($query);
+        $flag = 0;
+        while ($data = mysqli_fetch_array($res)) {
+            if ($data["status"] == "1") {
+                $site->onload .= '
+                    alert("'.engine::lang("Thank you for your order! Shipment in process now.").'");
+                    $id("purcases_count").innerHTML = "";
+                    $id("purcases").style.display = "none";
+                    ';
+                $query = 'UPDATE `nodes_order` SET `status` = "2" WHERE `id` = "'.$data["id"].'"';
+                engine::mysql($query);
+            }
+            $flag = 1;
+            $fout .= engine::print_purchase($site, $data);
         }
-        $flag = 1;
-        $fout .= engine::print_purchase($site, $data);
+        if (!$flag) {
+            $fout .= '<div class="clear_block">'.engine::lang("There is no purchases").'</div>';
+        }
+        $fout .= '</div>';
+        return $fout;
+    } catch(Exception $e) {
+        engine::throw('account.print_purchases()', $e);
     }
-    if (!$flag) {
-        $fout .= '<div class="clear_block">'.engine::lang("There is no purchases").'</div>';
-    }
-    $fout .= '</div>';
-    return $fout;
 }

@@ -1546,6 +1546,15 @@ document.framework.ajaxError = (method, response, exception) => {
 */
 document.framework.getLogs = (callback) => {
     document.framework.log(`document.framework.getLogs()`);
+    const fallback = (callback) => {
+        document.framework.log(`document.framework.getLogs().fallback()`);
+        let logs = {...document.framework.traceStack};
+        let text = '';
+        Object.keys(logs).sort().forEach((key) => {
+            text += key + ": " + logs[key] + "\n";
+        });
+        callback(text);
+    }
     try {
         jQuery.ajax({
             type: "GET",
@@ -1559,13 +1568,12 @@ document.framework.getLogs = (callback) => {
                 });
                 callback(text);
             },
-            error: (response, exception) => {
-                document.framework.ajaxError(`document.framework.getLogs()`, response, exception);
-                document.framework.submitTraceStack();
+            error: () => {
+                fallback(callback);
             }
         });
     } catch(e){
-        document.framework.throw(`document.framework.getLogs()`, e);
+        fallback(callback);
     }
 }
 
@@ -1574,8 +1582,9 @@ document.framework.getLogs = (callback) => {
 */
 document.framework.submitTraceStack = () => {
     document.framework.log(`document.framework.submitTraceStack()`);
-    const requery = () => {
-        if (document.framework.blackBox && !document.framework.errorState) {
+    const fallback = (logs) => {
+        document.framework.log(`document.framework.submitTraceStack().fallback()`);
+        try {
             jQuery.ajax({
                 type: "POST",
                 url: document.framework.blackBox + "/trace",
@@ -1584,20 +1593,37 @@ document.framework.submitTraceStack = () => {
                 processData: false,
                 dataType: 'json',
                 success: () => {
-                    document.framework.errorState = true;
-                },
-                error: () => {
-                    document.framework.errorState = true;
+                    document.framework.log(`document.framework.submitTraceStack().fallback().success()`);
                 }
             });
-        } else {
-            document.framework.errorState = true;
+        } catch(e) {
+            document.framework.log(`document.framework.submitTraceStack().fallback().catch() -> ${e.message}`);
+        }
+    }
+    const requery = (logs) => {
+        document.framework.log(`document.framework.submitTraceStack().requery()`);
+        try {
+            jQuery.ajax({
+                type: "POST",
+                url: document.framework.rootDir + "/retrace.php",
+                data: { "logs": logs  },
+                success: () => {
+                    document.framework.log(`document.framework.submitTraceStack().requery().success()`);
+                },
+                error: (response, exception) => {
+                    document.framework.log(`document.framework.submitTraceStack().requery().error() -> ${exception}, ${response.responseText}`);
+                    fallback(logs);
+                }
+            });
+        } catch(e) {
+            document.framework.log(`document.framework.submitTraceStack().requery().catch() -> ${e.message}`);
+            fallback(logs);
         }
     }
     if (!document.framework.errorState) {
         document.framework.errorState = true;
-        try {
-            document.framework.getLogs((logs) => {
+        document.framework.getLogs((logs) => {
+            try {
                 jQuery.ajax({
                     type: "POST",
                     url: document.framework.rootDir + "/trace.php",
@@ -1606,14 +1632,15 @@ document.framework.submitTraceStack = () => {
                         document.framework.log(`document.framework.submitTraceStack().success()`);
                     },
                     error: (response, exception) => {
-                        document.framework.ajaxError('document.framework.submitTraceStack()', response, exception);
-                        requery();
+                        document.framework.log(`document.framework.submitTraceStack().error() -> ${exception}, ${response.responseText}`);
+                        requery(logs);
                     }
                 });
-            });
-        } catch(e) {
-            requery();
-        }
+            } catch(e) {
+                document.framework.log(`document.framework.submitTraceStack().catch() -> ${e.message}`);
+                requery(logs);
+            }
+        });
     }
 }
 

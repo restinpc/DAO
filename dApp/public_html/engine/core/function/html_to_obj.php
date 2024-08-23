@@ -3,7 +3,7 @@
 * Converts text HTML elements to object.
 * @path /engine/core/function/html_to_obj.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -13,7 +13,12 @@
 */
 
 function html_to_obj($html) {
-    $dom = new DOMDocument();
-    $dom->loadHTML($html);
-    return engine::element_to_obj($dom->documentElement);
+    engine::log('function.html_to_obj('.$html.')');
+    try {
+        $dom = new DOMDocument();
+        $dom->loadHTML($html);
+        return engine::element_to_obj($dom->documentElement);
+    } catch(Exception $e) {
+        engine::throw('function.html_to_obj('.$html.')', $e);
+    }
 }

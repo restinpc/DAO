@@ -3,7 +3,7 @@
  * Prints an metaverse whitepaper.
  * @path /engine/core/webvr/print_zh_metaverse.php
  *
- * @name    DAO Mansion    @version 1.0.3
+ * @name    DAO Mansion    @version 1.0.5
  * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -22,7 +22,9 @@
  */
 
 function print_zh_metaverse($site) {
-    return '<h1>VR/AI多人遊戲</h1>
+    engine::log('webvr.print_zh_metaverse()');
+    try {
+        return '<h1>VR/AI多人遊戲</h1>
 <p>
     初创企业的最后阶段将是开发一款使用代币作为内部货币的VR产品，从而提高代币和加密货币的价值。
     开发这个产品只有在其他一切准备就绪时才能全面展开，因为这个产品需要巨大的资源。
@@ -438,4 +440,7 @@ function print_zh_metaverse($site) {
 <p><a target="_blank" href="https://github.com/restinpc/Metaverse-build">元界VR演示版</a> </p>
 <br/>
 <br/>';
+    } catch(Exception $e) {
+        engine::throw('webvr.print_zh_metaverse()', $e);
+    }
 }

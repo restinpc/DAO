@@ -3,7 +3,7 @@
 * Prints DAO navigation block.
 * @path /engine/core/function/print_dao_navigation.php
 *
-* @name    DAO Mansion    @version 1.0.3
+* @name    DAO Mansion    @version 1.0.5
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -20,12 +20,17 @@
 */
 
 function print_dao_navigation($current) {
-    $arr = array(
-        engine::lang("Git repository") => $_SERVER["DIR"]."/dao/git",
-        engine::lang("Capitalization") => $_SERVER["DIR"]."/dao/capitalization",
-        engine::lang("Blockchain monitor") => $_SERVER["DIR"]."/dao/monitor",
-        engine::lang("Decentralized management") => $_SERVER["DIR"]."/dao/management",
-        engine::lang("P2P marketplace") => $_SERVER["DIR"]."/dao/market"
-    );
-    return engine::print_navigation($current, $arr);
+    engine::log('function.print_dao_navigation('.$current.')');
+    try {
+        $arr = array(
+            engine::lang("Git repository") => $_SERVER["DIR"]."/dao/git",
+            engine::lang("Capitalization") => $_SERVER["DIR"]."/dao/capitalization",
+            engine::lang("Blockchain monitor") => $_SERVER["DIR"]."/dao/monitor",
+            engine::lang("Decentralized management") => $_SERVER["DIR"]."/dao/management",
+            engine::lang("P2P marketplace") => $_SERVER["DIR"]."/dao/market"
+        );
+        return engine::print_navigation($current, $arr);
+    } catch(Exception $e) {
+        engine::throw('function.print_dao_navigation('.$current.')', $e);
+    }
 }
