@@ -3,7 +3,7 @@
 * Framework engine class.
 * @path /engine/core/engine.php
 *
-* @name    DAO Mansion    @version 1.0.5
+* @name    DAO Mansion    @version 1.0.6
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -217,10 +217,18 @@ static function bsod($error_code = 404) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>';
-        require_once("engine/code/error.php");
+        if (file_exists("engine/code/error.php")) {
+            require_once("engine/code/error.php");
+        } else if (file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/code/error.php")) {
+            require_once($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/code/error.php");
+        }
         echo '</body></html>';
     } else {
-        require_once("engine/code/error.php");
+        if (file_exists("engine/code/error.php")) {
+            require_once("engine/code/error.php");
+        } else if (file_exists($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/code/error.php")) {
+            require_once($_SERVER["DOCUMENT_ROOT"].$_SERVER["DIR"]."/engine/code/error.php");
+        }
     }
     die();
 }
@@ -303,16 +311,14 @@ static function handle_error($type, $message, $file, $line, $vars)
 */
 static function mysql($query, $throw = 1) {
     engine::log('engine::mysql('.str_replace('"', '\"', $query).')');
-    require_once("engine/nodes/mysql.php");
+    if (!$_SERVER["sql_connection"]) {
+        require_once("engine/nodes/mysql.php");
+    }
     @mysqli_query($_SERVER["sql_connection"], "SET NAMES utf8");
     if ($throw) {
-        $res = mysqli_query($_SERVER["sql_connection"], $query) or die(mysqli_error($_SERVER["sql_connection"]));
-        /*
         $res = mysqli_query($_SERVER["sql_connection"], $query) or die(
             engine::throw($query, new Exception(mysqli_error($_SERVER["sql_connection"])))
         );
-         * 
-         */
     } else {
         $res = mysqli_query($_SERVER["sql_connection"], $query);
         if (!$res) {

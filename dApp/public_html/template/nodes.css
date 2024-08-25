@@ -2,7 +2,7 @@
 * Framework stylesheets source file.
 * @path /template/nodes.css
 *
-* @name    DAO Mansion    @version 1.0.4
+* @name    DAO Mansion    @version 1.0.6
 * @author  Aleksandr Vorkunov  <devbyzero@yandex.ru>
 * @license http://www.apache.org/licenses/LICENSE-2.0
 */
@@ -1497,6 +1497,7 @@ h1,h2,h3,h4,h5,h6{
     text-decoration: none;
     text-transform: uppercase;
     transition: all 0.2s ease-in-out 0.1s;
+    white-space: nowrap;
 }
 .nodes .profile_menu_item:hover{
     background: #2eb8b3;
